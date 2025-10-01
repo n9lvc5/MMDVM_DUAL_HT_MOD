@@ -68,7 +68,7 @@
 #define I2C_ADDR 0x22
 
 // Enable mode detection:
-#define ENABLE_SCAN_MODE
+// #define ENABLE_SCAN_MODE
 
 // Send RSSI value:
 #define SEND_RSSI_DATA
@@ -124,7 +124,7 @@
 // Enable DMR support.
 #define MODE_DMR
 // Enable System Fusion support.
-#define MODE_YSF
+// #define MODE_YSF
 // Enable P25 support.
 // #define MODE_P25
 // Enable NXDN support.
