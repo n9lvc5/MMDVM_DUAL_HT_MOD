@@ -116,4 +116,22 @@
 // Enable UDID feature
 #define ENABLE_UDID
 
+//
+// Digital Modes (You MUST enable at least one)
+//
+// Enable D-Star support.
+// #define MODE_DSTAR
+// Enable DMR support.
+#define MODE_DMR
+// Enable System Fusion support.
+#define MODE_YSF
+// Enable P25 support.
+// #define MODE_P25
+// Enable NXDN support.
+// #define MODE_NXDN
+// Enable M17 support.
+// #define MODE_M17
+// Enable POCSAG support.
+// #define MODE_POCSAG
+
 #endif
