@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2017,2018,2019,2020 by Andy Uribe CA6JAU, Florian Wolters DF2ET
+ *   Copyright (C) 2017,2018,2019,2020 by Andy Uribe CA6JAU
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@
 // 2) Libre Kit board or any homebrew hotspot with modified RF7021SE and Blue Pill STM32F103:
 // #define LIBRE_KIT_ADF7021
 // 3) MMDVM_HS_Hat revisions 1.1, 1.2 and 1.4 (DB9MAT & DF2ET)
-// #define MMDVM_HS_HAT_REV12
+#define MMDVM_HS_HAT_REV12
 // 4) MMDVM_HS_Dual_Hat revisions 1.0 (DB9MAT & DF2ET & DO7EN)
-#define MMDVM_HS_DUAL_HAT_REV10
+// #define MMDVM_HS_DUAL_HAT_REV10
 // 5) Nano hotSPOT (BI7JTA)
 // #define NANO_HOTSPOT
 // 6) NanoDV NPi or USB revisions 1.0 (BG4TGO & BG5HHP)
@@ -41,13 +41,13 @@
 #define ENABLE_ADF7021
 
 // Enable full duplex support with dual ADF7021 (valid for homebrew hotspots only):
-#define DUPLEX
+// #define DUPLEX
 
 // TCXO of the ADF7021
 // For 14.7456 MHz:
-// #define ADF7021_14_7456
+#define ADF7021_14_7456
 // For 12.2880 MHz:
-#define ADF7021_12_2880
+// #define ADF7021_12_2880
 
 // Configure receiver gain for ADF7021
 // AGC automatic, default settings:
@@ -105,7 +105,7 @@
 // #define LONG_USB_RESET
 
 // Enable modem debug messages
-// #define ENABLE_DEBUG
+#define ENABLE_DEBUG
 
 // Disable frequency bands check
 // #define DISABLE_FREQ_CHECK
