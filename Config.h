@@ -1,6 +1,6 @@
 /*
- * MMDVM_HS_Dual_Hat - GPIO Configuration
- * As per https://github.com/phl0/MMDVM_HS_Dual_Hat
+ * MMDVM_HS_Dual_Hat - GPIO Configuration in Simplex Mode
+ * Forcing single-radio operation to bypass suspected hardware fault.
  */
 
 #if !defined(CONFIG_H)
@@ -12,8 +12,8 @@
 // ADF7021 Support
 #define ENABLE_ADF7021
 
-// Duplex Mode
-#define DUPLEX
+// Duplex Mode (Disabled to force simplex operation)
+// #define DUPLEX
 
 // TCXO Frequency
 #define ADF7021_14_7456
