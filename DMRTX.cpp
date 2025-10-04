@@ -136,8 +136,21 @@ uint8_t CDMRTX::writeData1(const uint8_t* data, uint8_t length)
     m_abort[0U] = false;
   }
 
+  // Create a mutable copy of the frame data
+  uint8_t frame[DMR_FRAME_LENGTH_BYTES];
+  ::memcpy(frame, data + 1, DMR_FRAME_LENGTH_BYTES);
+
+  // Check for BS Voice Sync and replace with MS Voice Sync
+  if (::memcmp(frame, DMR_BS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+    ::memcpy(frame, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
+  }
+  // Check for BS Data Sync and replace with MS Data Sync
+  else if (::memcmp(frame, DMR_BS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+    ::memcpy(frame, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
+  }
+
   for (uint8_t i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++)
-    m_fifo[0U].put(data[i + 1U]);
+    m_fifo[0U].put(frame[i]);
 
   // Start the TX if it isn't already on
   if (!m_tx)
@@ -160,8 +173,21 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
     m_abort[1U] = false;
   }
 
+  // Create a mutable copy of the frame data
+  uint8_t frame[DMR_FRAME_LENGTH_BYTES];
+  ::memcpy(frame, data + 1, DMR_FRAME_LENGTH_BYTES);
+
+  // Check for BS Voice Sync and replace with MS Voice Sync
+  if (::memcmp(frame, DMR_BS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+    ::memcpy(frame, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
+  }
+  // Check for BS Data Sync and replace with MS Data Sync
+  else if (::memcmp(frame, DMR_BS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+    ::memcpy(frame, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
+  }
+
   for (uint8_t i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++)
-    m_fifo[1U].put(data[i + 1U]);
+    m_fifo[1U].put(frame[i]);
 
   // Start the TX if it isn't already on
   if (!m_tx)
