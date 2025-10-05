@@ -25,10 +25,10 @@
 #include "Globals.h"
 #include "DMRSlotType.h"
 
-// The PR FILL and BS Data Sync pattern.
+// The PR FILL and MS Data Sync pattern, corrected for MS operation.
 const uint8_t IDLE_DATA[] =
         {0x53U, 0xC2U, 0x5EU, 0xABU, 0xA8U, 0x67U, 0x1DU, 0xC7U, 0x38U, 0x3BU, 0xD9U,
-         0x36U, 0x00U, 0x0DU, 0xFFU, 0x57U, 0xD7U, 0x5DU, 0xF5U, 0xD0U, 0x03U, 0xF6U,
+         0x36U, 0x00U, 0x0DU, 0x5DU, 0x7FU, 0x77U, 0xFDU, 0x75U, 0x70U, 0x03U, 0xF6U,
          0xE4U, 0x65U, 0x17U, 0x1BU, 0x48U, 0xCAU, 0x6DU, 0x4FU, 0xC6U, 0x10U, 0xB4U};
 
 const uint8_t CACH_INTERLEAVE[] =
@@ -46,6 +46,10 @@ const uint8_t BIT_MASK_TABLE[] = {0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02
 #define READ_BIT1(p,i)    (p[(i)>>3] & BIT_MASK_TABLE[(i)&7])
 
 const uint32_t STARTUP_COUNT = 20U;
+
+// Control flags, must match MMDVMHost protocol and DMRSlotRX
+const uint8_t CONTROL_VOICE = 0x20U;
+const uint8_t CONTROL_DATA  = 0x40U;
 
 CDMRTX::CDMRTX() :
 m_fifo(),
@@ -140,12 +144,10 @@ uint8_t CDMRTX::writeData1(const uint8_t* data, uint8_t length)
   uint8_t frame[DMR_FRAME_LENGTH_BYTES];
   ::memcpy(frame, data + 1, DMR_FRAME_LENGTH_BYTES);
 
-  // Check for BS Voice Sync and replace with MS Voice Sync
-  if (::memcmp(frame, DMR_BS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+  // Unconditionally set the MS sync pattern
+  if ((data[0] & CONTROL_VOICE) == CONTROL_VOICE) {
     ::memcpy(frame, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
-  }
-  // Check for BS Data Sync and replace with MS Data Sync
-  else if (::memcmp(frame, DMR_BS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+  } else {
     ::memcpy(frame, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
   }
 
@@ -177,12 +179,10 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
   uint8_t frame[DMR_FRAME_LENGTH_BYTES];
   ::memcpy(frame, data + 1, DMR_FRAME_LENGTH_BYTES);
 
-  // Check for BS Voice Sync and replace with MS Voice Sync
-  if (::memcmp(frame, DMR_BS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+  // Unconditionally set the MS sync pattern
+  if ((data[0] & CONTROL_VOICE) == CONTROL_VOICE) {
     ::memcpy(frame, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
-  }
-  // Check for BS Data Sync and replace with MS Data Sync
-  else if (::memcmp(frame, DMR_BS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+  } else {
     ::memcpy(frame, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
   }
 
