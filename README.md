@@ -35,3 +35,18 @@ The following options in MMDVM.ini ([Modem] section) are very important for MMDV
     POCSAGTXLevel: POCSAG deviation setting (recommended value: 50)
 
     Disclaimer: This , like many other codes on Github, do not come with any warranty or guaentee, or the corrected spelling. Enter at your own risk
+
+    # Goals for this project:
+    
+BS = Base Station DMR Repeater
+MS = Mobile Station Handi talkie
+HS = Hotspot MMDVM
+
+•	HS shall act as an MS to be a bridge for internet access to Brandmeister  and the like.
+•	When BS is transmitting, HS shall not retransmit the audio data.
+•	When HS is transmitting audio data from internet, it shall handshake with BS like a MS for the BS to retransmit the audio data.
+•	For a Digital Mobile Radio (DMR) call to be established, a mobile station (MS) and base station (BS), or repeater, engage in a precise signaling sequence as defined by the ETSI TS 102 361 air interface protocol.
+
+
+    
+
