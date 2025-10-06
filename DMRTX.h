@@ -50,7 +50,7 @@ public:
   uint8_t writeShortLC(const uint8_t* data, uint8_t length);
   uint8_t writeAbort(const uint8_t* data, uint8_t length);
 
-  void setStart(bool start);
+  void reset();
 
   void process();
 

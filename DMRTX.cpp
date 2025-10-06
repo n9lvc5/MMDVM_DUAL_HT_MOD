@@ -47,6 +47,10 @@ const uint8_t BIT_MASK_TABLE[] = {0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02
 
 const uint32_t STARTUP_COUNT = 20U;
 
+// Control flags, must match MMDVMHost protocol and DMRSlotRX
+const uint8_t CONTROL_VOICE = 0x20U;
+const uint8_t CONTROL_DATA  = 0x40U;
+
 CDMRTX::CDMRTX() :
 m_fifo(),
 m_state(DMRTXSTATE_IDLE),
@@ -148,7 +152,7 @@ void CDMRTX::process()
   }
 }
 
-uint8_t CDMRTX::writeData1(const uint8_t* data, uint8_t length)
+uint8_t CDMRTX::writeData1([[maybe_unused]] const uint8_t* data, [[maybe_unused]] uint8_t length)
 {
   // Disabled for TS2-only operation
   return 0U;
@@ -227,7 +231,7 @@ uint8_t CDMRTX::writeAbort(const uint8_t* data, uint8_t length)
   }
 }
 
-void CDMRTX::setStart(bool start)
+void CDMRTX::reset()
 {
     m_state = DMRTXSTATE_IDLE;
     m_frameCount = 0U;
