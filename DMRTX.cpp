@@ -191,7 +191,7 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
 
   // Start the TX if it isn't already on
   if (!m_tx)
-    m_state = DMRTXSTATE_SLOT1;
+    m_state = DMRTXSTATE_SLOT2;
 
   return 0U;
 }
