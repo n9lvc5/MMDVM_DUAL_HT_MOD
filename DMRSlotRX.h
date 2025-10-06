@@ -53,38 +53,24 @@ private:
   uint8_t     m_buffer[DMR_BUFFER_LENGTH_BITS / 8U];  // 72 bytes
   uint16_t    m_dataPtr;
 
-  uint8_t     frame1[DMR_FRAME_LENGTH_BYTES + 3U];
-  uint16_t    m_syncPtr1;
-  uint16_t    m_startPtr1;
-  uint16_t    m_endPtr1;
-  uint8_t     m_control1;
-  uint8_t     m_syncCount1;
-  DMRRX_STATE m_state1;
-  uint8_t     m_n1;
-  uint8_t     m_type1;
-
-  uint8_t     frame2[DMR_FRAME_LENGTH_BYTES + 3U];
-  uint16_t    m_syncPtr2;
-  uint16_t    m_startPtr2;
-  uint16_t    m_endPtr2;
-  uint8_t     m_control2;
-  uint8_t     m_syncCount2;
-  DMRRX_STATE m_state2;
-  uint8_t     m_n2;
-  uint8_t     m_type2;
+  uint8_t     frame[DMR_FRAME_LENGTH_BYTES + 3U];
+  uint16_t    m_syncPtr;
+  uint16_t    m_startPtr;
+  uint16_t    m_endPtr;
+  uint8_t     m_control;
+  uint8_t     m_syncCount;
+  DMRRX_STATE m_state;
+  uint8_t     m_n;
+  uint8_t     m_type;
 
   uint16_t    m_delayPtr;
   uint8_t     m_colorCode;
   uint16_t    m_delay;
 
-  void procSlot1();
   void procSlot2();
   void correlateSync();
   void bitsToBytes(uint16_t start, uint8_t count, uint8_t* buffer);
-  void writeRSSIData1();
-  void writeRSSIData2();
-  void reset1();
-  void reset2();
+  void writeRSSIData();
 };
 
 #endif

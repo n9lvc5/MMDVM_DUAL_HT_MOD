@@ -103,6 +103,9 @@ void CDMRTX::process()
                 m_state = DMRTXSTATE_IDLE;
                 m_fifo[1U].reset(); // Clear data buffer
             }
+          } else {
+            // Continue sending idle frames while waiting
+            createData(1, true);
           }
         }
         break;
@@ -152,7 +155,7 @@ void CDMRTX::process()
   }
 }
 
-uint8_t CDMRTX::writeData1([[maybe_unused]] const uint8_t* data, [[maybe_unused]] uint8_t length)
+uint8_t CDMRTX::writeData1(const uint8_t* /*data*/, uint8_t /*length*/)
 {
   // Disabled for TS2-only operation
   return 0U;
