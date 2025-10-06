@@ -25,10 +25,10 @@
 #include "Globals.h"
 #include "DMRSlotType.h"
 
-// The PR FILL and BS Data Sync pattern.
+// The PR FILL and MS Data Sync pattern, corrected for MS operation.
 const uint8_t IDLE_DATA[] =
         {0x53U, 0xC2U, 0x5EU, 0xABU, 0xA8U, 0x67U, 0x1DU, 0xC7U, 0x38U, 0x3BU, 0xD9U,
-         0x36U, 0x00U, 0x0DU, 0xFFU, 0x57U, 0xD7U, 0x5DU, 0xF5U, 0xD0U, 0x03U, 0xF6U,
+         0x36U, 0x00U, 0x0DU, 0x5DU, 0x7FU, 0x77U, 0xFDU, 0x75U, 0x70U, 0x03U, 0xF6U,
          0xE4U, 0x65U, 0x17U, 0x1BU, 0x48U, 0xCAU, 0x6DU, 0x4FU, 0xC6U, 0x10U, 0xB4U};
 
 const uint8_t CACH_INTERLEAVE[] =
@@ -47,6 +47,10 @@ const uint8_t BIT_MASK_TABLE[] = {0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02
 
 const uint32_t STARTUP_COUNT = 20U;
 
+// Control flags, must match MMDVMHost protocol and DMRSlotRX
+const uint8_t CONTROL_VOICE = 0x20U;
+const uint8_t CONTROL_DATA  = 0x40U;
+
 CDMRTX::CDMRTX() :
 m_fifo(),
 m_state(DMRTXSTATE_IDLE),
@@ -60,7 +64,10 @@ m_poLen(0U),
 m_poPtr(0U),
 m_frameCount(0U),
 m_abort(),
-m_control_old(0U)
+m_control_old(0U),
+m_bs_sync_confirmed(false),
+m_wait_timeout(0U),
+m_request_retries(0U)
 {
   ::memcpy(m_newShortLC, EMPTY_SHORT_LC, 12U);
   ::memcpy(m_shortLC,    EMPTY_SHORT_LC, 12U);
@@ -76,6 +83,32 @@ void CDMRTX::process()
 
   if (m_poLen == 0U) {
     switch (m_state) {
+      case DMRTXSTATE_REQUEST_CHANNEL:
+        // Transmit an idle frame to request the channel on TS2
+        createData(1, true);
+        m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
+        m_wait_timeout = 20; // ~1 second timeout
+        break;
+      case DMRTXSTATE_WAIT_BS_CONFIRM:
+        if (m_bs_sync_confirmed) {
+          m_state = DMRTXSTATE_SLOT2;
+          m_request_retries = 0U;
+        } else {
+          m_wait_timeout--;
+          if (m_wait_timeout == 0U) {
+            if (m_request_retries > 0) {
+                m_request_retries--;
+                m_state = DMRTXSTATE_REQUEST_CHANNEL;
+            } else {
+                m_state = DMRTXSTATE_IDLE;
+                m_fifo[1U].reset(); // Clear data buffer
+            }
+          } else {
+            // Continue sending idle frames while waiting
+            createData(1, true);
+          }
+        }
+        break;
       case DMRTXSTATE_SLOT1:
         createData(0U);
         m_state = DMRTXSTATE_CACH2;
@@ -122,40 +155,9 @@ void CDMRTX::process()
   }
 }
 
-uint8_t CDMRTX::writeData1(const uint8_t* data, uint8_t length)
+uint8_t CDMRTX::writeData1(const uint8_t* /*data*/, uint8_t /*length*/)
 {
-  if (length != (DMR_FRAME_LENGTH_BYTES + 1U))
-    return 4U;
-
-  uint16_t space = m_fifo[0U].getSpace();
-  if (space < DMR_FRAME_LENGTH_BYTES)
-    return 5U;
-
-  if (m_abort[0U]) {
-    m_fifo[0U].reset();
-    m_abort[0U] = false;
-  }
-
-  // Create a mutable copy of the frame data
-  uint8_t frame[DMR_FRAME_LENGTH_BYTES];
-  ::memcpy(frame, data + 1, DMR_FRAME_LENGTH_BYTES);
-
-  // Check for BS Voice Sync and replace with MS Voice Sync
-  if (::memcmp(frame, DMR_BS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
-    ::memcpy(frame, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
-  }
-  // Check for BS Data Sync and replace with MS Data Sync
-  else if (::memcmp(frame, DMR_BS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
-    ::memcpy(frame, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
-  }
-
-  for (uint8_t i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++)
-    m_fifo[0U].put(frame[i]);
-
-  // Start the TX if it isn't already on
-  if (!m_tx)
-    m_state = DMRTXSTATE_SLOT1;
-
+  // Disabled for TS2-only operation
   return 0U;
 }
 
@@ -177,12 +179,10 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
   uint8_t frame[DMR_FRAME_LENGTH_BYTES];
   ::memcpy(frame, data + 1, DMR_FRAME_LENGTH_BYTES);
 
-  // Check for BS Voice Sync and replace with MS Voice Sync
-  if (::memcmp(frame, DMR_BS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+  // Unconditionally set the MS sync pattern
+  if ((data[0] & CONTROL_VOICE) == CONTROL_VOICE) {
     ::memcpy(frame, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
-  }
-  // Check for BS Data Sync and replace with MS Data Sync
-  else if (::memcmp(frame, DMR_BS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH) == 0) {
+  } else {
     ::memcpy(frame, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
   }
 
@@ -190,8 +190,11 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
     m_fifo[1U].put(frame[i]);
 
   // Start the TX if it isn't already on
-  if (!m_tx)
-    m_state = DMRTXSTATE_SLOT1;
+  if (m_state == DMRTXSTATE_IDLE) {
+    m_state = DMRTXSTATE_REQUEST_CHANNEL;
+    m_bs_sync_confirmed = false;
+    m_request_retries = 3; // Number of handshake retries
+  }
 
   return 0U;
 }
@@ -231,14 +234,16 @@ uint8_t CDMRTX::writeAbort(const uint8_t* data, uint8_t length)
   }
 }
 
-void CDMRTX::setStart(bool start)
+void CDMRTX::reset()
 {
-  m_state = start ? DMRTXSTATE_SLOT1 : DMRTXSTATE_IDLE;
-
-  m_frameCount = 0U;
-
-  m_abort[0U] = false;
-  m_abort[1U] = false;
+    m_state = DMRTXSTATE_IDLE;
+    m_frameCount = 0U;
+    m_abort[0U] = false;
+    m_abort[1U] = false;
+    m_bs_sync_confirmed = false;
+    m_request_retries = 0U;
+    m_fifo[0U].reset();
+    m_fifo[1U].reset();
 }
 
 void CDMRTX::writeByte(uint8_t c, uint8_t control)
@@ -276,9 +281,9 @@ uint8_t CDMRTX::getSpace2() const
   return m_fifo[1U].getSpace() / (DMR_FRAME_LENGTH_BYTES + 2U);
 }
 
-void CDMRTX::createData(uint8_t slotIndex)
+void CDMRTX::createData(uint8_t slotIndex, bool forceIdle)
 {
-  if (m_fifo[slotIndex].getData() > 0U && m_frameCount >= STARTUP_COUNT) {
+  if (!forceIdle && m_fifo[slotIndex].getData() > 0U && m_frameCount >= STARTUP_COUNT) {
     for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++) {
       m_poBuffer[i]   = m_fifo[slotIndex].get();
       if (i == 8U)
@@ -357,6 +362,18 @@ void CDMRTX::setColorCode(uint8_t colorCode)
 
   CDMRSlotType slotType;
   slotType.encode(colorCode, DT_IDLE, m_idle);
+}
+
+void CDMRTX::confirmBSSync()
+{
+  if (m_state == DMRTXSTATE_WAIT_BS_CONFIRM) {
+    m_bs_sync_confirmed = true;
+  }
+}
+
+bool CDMRTX::isWaitingForBSSync() const
+{
+  return (m_state == DMRTXSTATE_WAIT_BS_CONFIRM);
 }
 
 #endif
