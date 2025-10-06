@@ -31,6 +31,8 @@
 
 enum DMRTXSTATE {
   DMRTXSTATE_IDLE,
+  DMRTXSTATE_REQUEST_CHANNEL,
+  DMRTXSTATE_WAIT_BS_CONFIRM,
   DMRTXSTATE_SLOT1,
   DMRTXSTATE_CACH1,
   DMRTXSTATE_SLOT2,
@@ -56,6 +58,8 @@ public:
   uint8_t getSpace2() const;
 
   void setColorCode(uint8_t colorCode);
+  void confirmBSSync();
+  bool isWaitingForBSSync() const;
 
 private:
   CSerialRB                        m_fifo[2U];
@@ -71,8 +75,11 @@ private:
   uint32_t                         m_frameCount;
   bool                             m_abort[2U];
   uint8_t                          m_control_old;
+  bool                             m_bs_sync_confirmed;
+  uint8_t                          m_wait_timeout;
+  uint8_t                          m_request_retries;
 
-  void createData(uint8_t slotIndex);
+  void createData(uint8_t slotIndex, bool forceIdle = false);
   void createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex);
   void writeByte(uint8_t c, uint8_t control);
 };

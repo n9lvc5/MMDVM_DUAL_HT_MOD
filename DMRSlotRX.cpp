@@ -149,8 +149,6 @@ bool CDMRSlotRX::databit(bool bit)
 
   if(m_slot)
     procSlot2();
-  else
-    procSlot1();
 
   m_dataPtr++;
 
@@ -366,6 +364,9 @@ void CDMRSlotRX::procSlot2()
 
 void CDMRSlotRX::correlateSync()
 {
+  if (!m_slot) // Only process TS2
+    return;
+
   uint16_t syncPtr;
   uint16_t startPtr;
   uint16_t endPtr;
@@ -376,12 +377,18 @@ void CDMRSlotRX::correlateSync()
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_VOICE;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-    if (m_slot) reset2(); else reset1();
-    DEBUG2("DMRSlotRX: ignored BS data sync on slot", m_slot ? 2: 1);
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+    reset2(); // Always ignore BS frames
+    DEBUG2("DMRSlotRX: ignored BS data sync on slot", 2);
     return;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-    if (m_slot) reset2(); else reset1();
-    DEBUG2("DMRSlotRX: ignored BS voice sync on slot", m_slot ? 2: 1);
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+    reset2(); // Always ignore BS frames
+    DEBUG2("DMRSlotRX: ignored BS voice sync on slot", 2);
     return;
   }
 
@@ -396,21 +403,15 @@ void CDMRSlotRX::correlateSync()
     if (endPtr >= DMR_BUFFER_LENGTH_BITS)
       endPtr -= DMR_BUFFER_LENGTH_BITS;
 
-    if(m_slot) {
-      m_syncPtr2 = syncPtr;
-      m_startPtr2 = startPtr;
-      m_endPtr2 = endPtr;
-      m_control2 = control;
-    } else {
-      m_syncPtr1 = syncPtr;
-      m_startPtr1 = startPtr;
-      m_endPtr1 = endPtr;
-      m_control1 = control;
-    }
+    m_syncPtr2 = syncPtr;
+    m_startPtr2 = startPtr;
+    m_endPtr2 = endPtr;
+    m_control2 = control;
+
     if (control == CONTROL_DATA) {
-        DEBUG5("SYNC corr MS Data found slot/pos/start/end:", m_slot ? 2U : 1U, m_dataPtr, startPtr, endPtr);
+        DEBUG5("SYNC corr MS Data found slot/pos/start/end:", 2U, m_dataPtr, startPtr, endPtr);
     } else {
-        DEBUG5("SYNC corr MS Voice found slot/pos/start/end: ", m_slot ? 2U : 1U, m_dataPtr, startPtr, endPtr);
+        DEBUG5("SYNC corr MS Voice found slot/pos/start/end: ", 2U, m_dataPtr, startPtr, endPtr);
     }
   }
 }
