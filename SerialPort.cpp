@@ -771,13 +771,14 @@ void CSerialPort::process()
             if (m_dmrEnable) {
               err = 4U;
               if (m_len == 4U) {
+                // The concept of starting the transmitter without data is now obsolete.
+                // The transmitter is started by the arrival of data.
                 if (m_buffer[3U] == 0x01U && m_modemState == STATE_DMR) {
-                  if (!m_tx)
-                    dmrTX.setStart(true);
                   err = 0U;
                 } else if (m_buffer[3U] == 0x00U && m_modemState == STATE_DMR) {
+                  // A value of 0 indicates a request to stop transmitting.
                   if (m_tx)
-                    dmrTX.setStart(false);
+                    dmrTX.reset();
                   err = 0U;
                 }
               }
