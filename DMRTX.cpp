@@ -87,14 +87,18 @@ void CDMRTX::process()
         // Transmit an idle frame to request the channel on TS2
         createData(1, true);
         m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
-
+        m_wait_timestamp = millis();
         break;
       case DMRTXSTATE_WAIT_BS_CONFIRM:
         if (m_bs_sync_confirmed) {
           m_state = DMRTXSTATE_SLOT2;
           m_request_retries = 0U;
         } else {
-
+          if ((millis() - m_wait_timestamp) >= 500) {
+            if (m_request_retries > 0) {
+                m_request_retries--;
+                createData(1, true); // Re-transmit idle frame
+                m_wait_timestamp = millis(); // Reset timer
             } else {
                 m_state = DMRTXSTATE_IDLE;
                 m_fifo[1U].reset(); // Clear data buffer
