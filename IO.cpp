@@ -39,7 +39,8 @@ m_scanPos(0U),
 m_ledValue(true),
 m_watchdog(0U),
 m_int1counter(0U),
-m_int2counter(0U)
+m_int2counter(0U),
+m_ms_ticks(0U)
 {
   Init();
 
@@ -485,4 +486,9 @@ void CIO::getIntCounter(uint16_t &int1, uint16_t &int2)
   int2 = m_int2counter;
   m_int1counter = 0U;
   m_int2counter = 0U;
+}
+
+uint32_t CIO::millis()
+{
+  return m_ms_ticks;
 }

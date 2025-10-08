@@ -66,7 +66,7 @@ m_frameCount(0U),
 m_abort(),
 m_control_old(0U),
 m_bs_sync_confirmed(false),
-m_wait_timeout(0U),
+m_wait_timestamp(0U),
 m_request_retries(0U)
 {
   ::memcpy(m_newShortLC, EMPTY_SHORT_LC, 12U);
@@ -87,25 +87,22 @@ void CDMRTX::process()
         // Transmit an idle frame to request the channel on TS2
         createData(1, true);
         m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
-        m_wait_timeout = 20; // ~1 second timeout
+        m_wait_timestamp = io.millis();
         break;
       case DMRTXSTATE_WAIT_BS_CONFIRM:
         if (m_bs_sync_confirmed) {
           m_state = DMRTXSTATE_SLOT2;
           m_request_retries = 0U;
         } else {
-          m_wait_timeout--;
-          if (m_wait_timeout == 0U) {
+          if ((io.millis() - m_wait_timestamp) >= 500) {
             if (m_request_retries > 0) {
                 m_request_retries--;
-                m_state = DMRTXSTATE_REQUEST_CHANNEL;
+                createData(1, true); // Re-transmit idle frame
+                m_wait_timestamp = io.millis(); // Reset timer
             } else {
                 m_state = DMRTXSTATE_IDLE;
                 m_fifo[1U].reset(); // Clear data buffer
             }
-          } else {
-            // Continue sending idle frames while waiting
-            createData(1, true);
           }
         }
         break;
@@ -193,7 +190,7 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
   if (m_state == DMRTXSTATE_IDLE) {
     m_state = DMRTXSTATE_REQUEST_CHANNEL;
     m_bs_sync_confirmed = false;
-    m_request_retries = 3; // Number of handshake retries
+    m_request_retries = 4; // Number of handshake retries
   }
 
   return 0U;
