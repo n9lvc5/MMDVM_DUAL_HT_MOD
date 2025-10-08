@@ -103,9 +103,6 @@ void CDMRTX::process()
                 m_state = DMRTXSTATE_IDLE;
                 m_fifo[1U].reset(); // Clear data buffer
             }
-          } else {
-            // Continue sending idle frames while waiting
-            createData(1, true);
           }
         }
         break;
