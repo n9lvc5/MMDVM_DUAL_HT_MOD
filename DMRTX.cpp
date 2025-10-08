@@ -87,7 +87,7 @@ void CDMRTX::process()
         // Transmit an idle frame to request the channel on TS2
         createData(1, true);
         m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
-        m_wait_timeout = 20; // ~1 second timeout
+        m_wait_timeout = 25; // ~500ms timeout
         break;
       case DMRTXSTATE_WAIT_BS_CONFIRM:
         if (m_bs_sync_confirmed) {
