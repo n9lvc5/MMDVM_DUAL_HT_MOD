@@ -189,10 +189,6 @@ private:
   volatile uint16_t  m_int1counter;
   volatile uint16_t  m_int2counter;
 
-public:
-    // This must be public to be accessible from the SysTick_Handler ISR
-    volatile uint32_t  m_ms_ticks;
-    uint32_t millis(void);
 };
 
 #endif
