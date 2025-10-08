@@ -144,6 +144,12 @@ extern "C" {
 }
 #endif
 
+extern "C" {
+  void SysTick_Handler(void) {
+    io.m_ms_ticks++;
+  }
+}
+
 void CIO::delay_IFcal() {
   delayMicroseconds(10000);
 }
@@ -155,6 +161,7 @@ void CIO::delay_reset() {
 void CIO::Init()
 {
 #if defined (__STM32F1__)
+  SysTick_Config(SystemCoreClock / 1000);
 
 #if defined(ZUMSPOT_ADF7021) || defined(LONESTAR_USB) || defined(LIBRE_KIT_ADF7021) || defined(MMDVM_HS_HAT_REV12) || defined(MMDVM_HS_DUAL_HAT_REV10) || defined(NANO_HOTSPOT) || defined(NANO_DV_REV10) || defined(SKYBRIDGE_HS)
   afio_cfg_debug_ports(AFIO_DEBUG_SW_ONLY);
