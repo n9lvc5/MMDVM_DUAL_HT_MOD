@@ -33,6 +33,7 @@ enum DMRTXSTATE {
   DMRTXSTATE_IDLE,
   DMRTXSTATE_REQUEST_CHANNEL,
   DMRTXSTATE_WAIT_BS_CONFIRM,
+  DMRTXSTATE_BACKOFF,
   DMRTXSTATE_SLOT1,
   DMRTXSTATE_CACH1,
   DMRTXSTATE_SLOT2,
@@ -78,6 +79,7 @@ private:
   bool                             m_bs_sync_confirmed;
   uint32_t                         m_wait_timestamp;
   uint8_t                          m_request_retries;
+  uint32_t                         m_backoff_timer;
 
   void createData(uint8_t slotIndex, bool forceIdle = false);
   void createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex);
