@@ -76,7 +76,7 @@ private:
   bool                             m_abort[2U];
   uint8_t                          m_control_old;
   bool                             m_bs_sync_confirmed;
-  uint8_t                          m_wait_timeout;
+  uint32_t                         m_wait_timestamp;
   uint8_t                          m_request_retries;
 
   void createData(uint8_t slotIndex, bool forceIdle = false);
