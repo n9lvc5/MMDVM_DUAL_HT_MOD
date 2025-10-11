@@ -22,6 +22,7 @@
 
 #if defined(DUPLEX)
 
+#include <Arduino.h>
 #include "Globals.h"
 #include "DMRSlotType.h"
 
@@ -67,7 +68,8 @@ m_abort(),
 m_control_old(0U),
 m_bs_sync_confirmed(false),
 m_wait_timeout(0U),
-m_request_retries(0U)
+m_request_retries(0U),
+m_backoff_timer(0U)
 {
   ::memcpy(m_newShortLC, EMPTY_SHORT_LC, 12U);
   ::memcpy(m_shortLC,    EMPTY_SHORT_LC, 12U);
@@ -87,26 +89,26 @@ void CDMRTX::process()
         // Transmit an idle frame to request the channel on TS2
         createData(1, true);
         m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
-        m_wait_timeout = 20; // ~1 second timeout
+        m_wait_timeout = millis() + 1000U; // 1 second timeout
         break;
       case DMRTXSTATE_WAIT_BS_CONFIRM:
         if (m_bs_sync_confirmed) {
           m_state = DMRTXSTATE_SLOT2;
           m_request_retries = 0U;
-        } else {
-          m_wait_timeout--;
-          if (m_wait_timeout == 0U) {
-            if (m_request_retries > 0) {
-                m_request_retries--;
-                m_state = DMRTXSTATE_REQUEST_CHANNEL;
-            } else {
-                m_state = DMRTXSTATE_IDLE;
-                m_fifo[1U].reset(); // Clear data buffer
-            }
+        } else if (millis() > m_wait_timeout) {
+          if (m_request_retries > 0) {
+              m_request_retries--;
+              m_state = DMRTXSTATE_BACKOFF;
+              m_backoff_timer = millis() + random(500, 1501);
           } else {
-            // Continue sending idle frames while waiting
-            createData(1, true);
+              m_state = DMRTXSTATE_IDLE;
+              m_fifo[1U].reset(); // Clear data buffer
           }
+        }
+        break;
+      case DMRTXSTATE_BACKOFF:
+        if (millis() > m_backoff_timer) {
+          m_state = DMRTXSTATE_REQUEST_CHANNEL;
         }
         break;
       case DMRTXSTATE_SLOT1:
