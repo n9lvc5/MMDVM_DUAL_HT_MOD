@@ -1,0 +1,2161 @@
+
+ETSI TR 102 398 V1.5.1 (2023-11) 
+TECHNICAL REPORT 
+Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) General System Design 
+Reference 
+RTR/ERM-TGDMR-383 
+Keywords 
+digital, PMR, radio 
+ETSI 
+650 Route des Lucioles F-06921 Sophia Antipolis Cedex - FRANCE 
+Tel.: +33 4 92 94 42 00   Fax: +33 4 93 65 47 16 
+Siret N° 348 623 562 00017 -APE 7112B Association à but non lucratif enregistrée à la Sous-Préfecture de Grasse (06) N° w061004871 
+Important notice 
+The present document can be downloaded from: 
+https://www.etsi.org/standards-search 
+The present document may be made available in electronic versions and/or in print. The content of any electronic and/or print versions of the present document shall not be modified without the prior written authorization of ETSI. In case of any existing or perceived difference in contents between such versions and/or in print, the prevailing version of an ETSI deliverable is the one made publicly available in PDF format at www.etsi.org/deliver. 
+Users of the present document should be aware that the document may be subject to revision or change of status. Information on the current status of this and other ETSI documents is available at 
+https://portal.etsi.org/TB/ETSIDeliverableStatus.aspx 
+If you find errors in the present document, please send your comment to one of the following services: 
+https://portal.etsi.org/People/CommiteeSupportStaff.aspx 
+If you find a security vulnerability in the present document, please report it through our Coordinated Vulnerability Disclosure Program: 
+https://www.etsi.org/standards/coordinated-vulnerability-disclosure 
+Notice of disclaimer & limitation of liability 
+The information provided in the present deliverable is directed solely to professionals who have the appropriate degree of experience to understand and interpret its content in accordance with generally accepted engineering or other professional standard and applicable regulations. No recommendation as to products and services or vendors is made or should be implied. No representation or warranty is made that this deliverable is technically accurate or sufficient or conforms to any law and/or governmental rule and/or regulation and further, no representation or warranty is made of merchantability or fitness for any particular purpose or against infringement of intellectual property rights. In no event shall ETSI be held liable for loss of profits or any other incidental or consequential damages. 
+Any software contained in this deliverable is provided "AS IS" with no warranties, express or implied, including but not limited to, the warranties of merchantability, fitness for a particular purpose and non-infringement of intellectual property rights and ETSI shall not be held liable in any event for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, or any other pecuniary loss) arising out of or related to the use of or inability to use the software. 
+Copyright Notification 
+No part may be reproduced or utilized in any form or by any means, electronic or mechanical, including photocopying and microfilm except as authorized by written permission of ETSI. The content of the PDF version shall not be modified without the written authorization of ETSI. The copyright and the foregoing restriction extend to reproduction in all media. 
+© ETSI 2023. All rights reserved. 
+Contents 
+Intellectual Property Rights................................................................................................................................ 6 
+Foreword ............................................................................................................................................................. 6 
+Modal verbs terminology .................................................................................................................................... 6 
+Introduction ........................................................................................................................................................ 6 
+1 Scope ........................................................................................................................................................ 8 
+2 References ................................................................................................................................................ 8 
+2.1 Normative references .........................................................................................................................................8 
+2.2 Informative references........................................................................................................................................8 
+3 Definition of terms, symbols and abbreviations....................................................................................... 9 3.1 Terms.................................................................................................................................................................. 9 3.2 Symbols............................................................................................................................................................ 13 
+3.3 Abbreviations ...................................................................................................................................................13 
+4 Overview of DMR .................................................................................................................................. 15 
+5 Over-the-Air Protocol Summary ............................................................................................................ 17 
+5.0 General .............................................................................................................................................................17 
+5.1 Over-the-Air Protocol Description ................................................................................................................... 18 5.1.0 General........................................................................................................................................................ 18 
+5.1.1 Signalling Advantages ................................................................................................................................ 19 
+5.1.2 6,25 kHz Equivalence ................................................................................................................................. 20 
+5.1.3 The Vocoder ...............................................................................................................................................20 
+5.1.4 Radiated Power and Range ......................................................................................................................... 20 
+5.2 Frequency Considerations ................................................................................................................................ 21 
+5.3 DMR Burst and Frame Structure ...................................................................................................................... 22 
+5.4 Frame Synchronization ..................................................................................................................................... 23 
+5.5 Basic Channel Types ........................................................................................................................................ 25 
+5.5.1 Traffic Channel with CACH....................................................................................................................... 25 
+5.5.2 Traffic Channel with Guard Time............................................................................................................... 25 
+5.5.3 Bi-directional Channel................................................................................................................................ 26 
+5.5.4 Direct Mode with Continuous Transmission ..............................................................................................27 
+5.5.5 TDMA Direct Mode Timing ....................................................................................................................... 27 
+5.6 Channel access .................................................................................................................................................27 
+6 DMR Services ........................................................................................................................................ 29 
+6.0 General .............................................................................................................................................................29 
+6.1 DMR Services Overview.................................................................................................................................. 29 
+6.2 Description of Voice Services.......................................................................................................................... 30 
+6.2.1 Individual Call Service ...............................................................................................................................30 
+6.2.2 Group Call Service......................................................................................................................................30 
+6.2.3 Unaddressed Voice Call Service ................................................................................................................. 30 
+6.2.4 All Call Voice Service ................................................................................................................................ 31 
+6.2.5 Broadcast Call Voice Service .....................................................................................................................31 
+6.3 Description of Data Services............................................................................................................................ 31 
+6.3.1 IP over PDP ................................................................................................................................................31 
+6.3.2 Short Data Services over PDP ....................................................................................................................31 6.3.2.0 General.................................................................................................................................................. 31 
+6.3.2.1 Short Data over PDP - Status/Precoded ................................................................................................32 
+6.3.2.2 Short Data over PDP - Raw Data .......................................................................................................... 32 
+6.3.2.3 Short Data over PDP - Defined Data ....................................................................................................32 
+6.3.3 Data Services using the Alternate Control Channel Slot (TSCCAS) .......................................................... 32 
+7 DMR Data Services................................................................................................................................ 32 
+7.0 General .............................................................................................................................................................32 
+7.1 The Packet Data Protocol (PDP) ...................................................................................................................... 32 
+7.2 Internet Protocol over PDP ............................................................................................................................... 34 
+7.2.0 General........................................................................................................................................................ 34 
+7.2.1 IPv6 Transport over PDP ............................................................................................................................ 34 
+7.3 Short Data Services over PDP.......................................................................................................................... 35 
+8 Trunking (DMR tier III) ......................................................................................................................... 36 8.0 General .............................................................................................................................................................36 8.1 Introduction ...................................................................................................................................................... 36 8.2 Feature set ........................................................................................................................................................37 8.3 Single Site/Wide Area ...................................................................................................................................... 39 8.4 MS Location and Registration .......................................................................................................................... 39 8.5 Power Save.......................................................................................................................................................40 8.6 Security Features .............................................................................................................................................. 40 8.7 MS Management from the System................................................................................................................... 40 8.8 Physical Link Organization .............................................................................................................................. 40 8.8.0 General........................................................................................................................................................ 40 8.8.1 Radio Frequency Allocation .......................................................................................................................41 8.8.2 Colour Code ................................................................................................................................................ 41 8.9 Data Transport.................................................................................................................................................. 41 8.9.0 Introduction to Data Transport.................................................................................................................... 41 8.9.1 Unified Data Transport mechanism (UDT) ................................................................................................41 8.9.2 USBD Data Polling Service........................................................................................................................ 42 8.10 Tier III Frame Structure ...................................................................................................................................42 8.10.0 General........................................................................................................................................................ 42 8.10.1 TSCC Structure........................................................................................................................................... 43 8.10.2 Payload Channel Structure .......................................................................................................................... 43 8.10.3 Random Access ..........................................................................................................................................43 8.11 Tier III User Services .......................................................................................................................................44 8.11.0 General........................................................................................................................................................ 44 8.11.1 MS Initiating Calls...................................................................................................................................... 44 8.11.2 MS Receiving Calls ....................................................................................................................................45 8.11.2.0 General.................................................................................................................................................. 45 8.11.2.1 MS Receiving Individual Calls .............................................................................................................45 8.11.2.2 MS Receiving Calls to Talkgroups .......................................................................................................45 8.11.3 Some Examples of Tier III Calls ................................................................................................................45 8.11.3.0 General.................................................................................................................................................. 45 8.11.3.1 An individual MS/MS Voice Call Example.......................................................................................... 45 8.11.3.2 An MS Calls a Talkgroup Example ......................................................................................................46 8.11.3.2.0 General ............................................................................................................................................46 8.11.3.2.1 Talkgroup Subscription and Attachment ......................................................................................... 47 8.11.3.3 A Call to the PSTN (PABX) Example .................................................................................................. 47 8.11.3.4 A UDT Short Data Call Example .......................................................................................................... 48 8.12 The Use of the CACH ......................................................................................................................................48 8.12.0 General........................................................................................................................................................ 48 8.12.1 System Identity Code Subset ......................................................................................................................48 8.12.2 Reg Bit........................................................................................................................................................ 48 8.12.3 Common Slot Counter ................................................................................................................................49 
+9 Numbering and Dialling Plan ................................................................................................................. 49 
+10 Network Design and Management ......................................................................................................... 51 10.0 General .............................................................................................................................................................51 10.1 General Issues for DMR Tier III Networks......................................................................................................51 10.2 Network Design Process ..................................................................................................................................52 10.2.1 Performance Analysis.................................................................................................................................52 10.2.1.0 General.................................................................................................................................................. 52 10.2.1.1 Grade of Service.................................................................................................................................... 52 10.2.1.2 Channel Hold Time...............................................................................................................................52 10.2.1.3 Performance Results..............................................................................................................................52 10.2.2 Traffic Estimate ..........................................................................................................................................53 10.2.3 Network Radio Environment ...................................................................................................................... 54 10.3 Network Management ...................................................................................................................................... 54 10.4 Features ............................................................................................................................................................54 10.5 General Recommendations (for all DMR Tiers) ..............................................................................................55 
+10.6 Using Network Management as a Tool (all DMR Tiers) .................................................................................55 
+10.7 Network Management Functions (all DMR Tiers)........................................................................................... 56 
+Annex A: Power Save for DMR Tier III Systems ............................................................................... 57 
+A.0 General ................................................................................................................................................... 57 
+A.1 Wake up Based Power Save................................................................................................................... 57 A.1.1 Introduction ...................................................................................................................................................... 57 A.1.2 Expected Improvement from Power Save ........................................................................................................ 59 A.1.2.0 General........................................................................................................................................................59 A.1.2.1 Analysis of Voice and Packet Data ............................................................................................................. 60 A.1.2.2 Analysis of UDT Short Data....................................................................................................................... 60 
+A.2 Synchronized Power Save Operation..................................................................................................... 61 
+A.2.0 General .............................................................................................................................................................61 
+A.2.1 Use of the Timers .............................................................................................................................................62 
+A.2.2 Power save for a single Talkgroup ................................................................................................................... 63 
+A.2.3 Power Save for Multiple Talkgroups................................................................................................................ 63 
+Annex B: DMR tier III Channel Access............................................................................................... 64 
+B.0 General ................................................................................................................................................... 64 
+B.1 Withdrawing slots .................................................................................................................................. 64 
+B.2 Maintaining Optimum Throughput ........................................................................................................ 65 
+B.2.0 General ............................................................................................................................................................. 65 
+B.2.1 Mask and service function ................................................................................................................................ 65 
+B.2.2 Random Backoff ..............................................................................................................................................65 
+B.3 Characteristics of DMR tier III random access ...................................................................................... 66 
+Annex C: DMR Protocol Architecture................................................................................................. 69 
+C.1 Introduction ............................................................................................................................................ 69 
+C.1.0 General .............................................................................................................................................................69 
+C.1.1 Air Interface Physical Layer (layer 1) .............................................................................................................. 69 
+C.1.2 Air Interface Data Link Layer (layer 2) ............................................................................................................ 70 
+C.1.3 Air Interface Call Control Layer (layer 3) ........................................................................................................ 70 
+Annex D: Power Control ....................................................................................................................... 71 
+D.1 Introduction ............................................................................................................................................ 71 
+D.2 Closed Loop Power Control................................................................................................................... 71 
+Annex E: Bibliography.......................................................................................................................... 72 
+History .............................................................................................................................................................. 73 
+Intellectual Property Rights 
+Essential patents 
+IPRs essential or potentially essential to normative deliverables may have been declared to ETSI. The declarations pertaining to these essential IPRs, if any, are publicly available for ETSI members and non-members, and can be found in ETSI SR 000 314: "Intellectual Property Rights (IPRs); Essential, or potentially Essential, IPRs notified to ETSI in respect of ETSI standards", which is available from the ETSI Secretariat. Latest updates are available on the ETSI Web server (https://ipr.etsi.org/). 
+Pursuant to the ETSI Directives including the ETSI IPR Policy, no investigation regarding the essentiality of IPRs, including IPR searches, has been carried out by ETSI. No guarantee can be given as to the existence of other IPRs not referenced in ETSI SR 000 314 (or the updates on the ETSI Web server) which are, or may be, or may become, essential to the present document. 
+Trademarks 
+The present document may include trademarks and/or tradenames which are asserted and/or registered by their owners. ETSI claims no ownership of these except for any which are indicated as being the property of ETSI, and conveys no right to use or reproduce any trademark and/or tradename. Mention of those trademarks in the present document does not constitute an endorsement by ETSI of products, services or organizations associated with those trademarks. 
+DECT™, PLUGTESTS™, UMTS™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPP™ and LTE™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2M™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSM® and the GSM logo are trademarks registered and owned by the GSM Association. 
+Foreword 
+This Technical Report (TR) has been produced by ETSI Technical Committee Electromagnetic compatibility and Radio spectrum Matters (ERM). 
+Modal verbs terminology 
+In the present document "should", "should not", "may", "need not", "will", "will not", "can" and "cannot" are to be interpreted as described in clause 3.2 of the ETSI Drafting Rules (Verbal forms for the expression of provisions). 
+"must" and "must not" are NOT allowed in ETSI deliverables except when used in direct citation. 
+Introduction 
+The present document has been produced to provide an introduction to DMR for potential system purchasers, network operators and service users. 
+It is in relation to multi-part ETSI TS 102 361 [i.1] to [i.4] covering the technical requirements for Digital Mobile Radio (DMR), as identified below: 
+Part 1:  "DMR Air Interface (AI) protocol";  
+Part 2:  "DMR voice and generic services and facilities";  
+Part 3:  "DMR Data protocol";  
+Part 4:  "DMR trunking protocol".  
+
+It provides an overview, a description on the DMR services and facilities, technical background and radio aspects, protocol and service performance, and guidance on numbering and addressing.  
+It should be understood that, as in all standard setting activities, there is an inherent conflict between the wish to have as broad a standard as possible and at the same time wanting to have as much of that broad standard available and implemented right from the beginning. Potential system purchasers, network operators and service users should make sure they influence the suppliers to have their required functionality available when they need it. 
+Equipment manufacturers will use the broad flexibility provided within the standard to develop and implement systems in various ways, and still be conforming according to the standard. This broad availability of systems, each optimized around certain features and functionalities, needs to be carefully analysed by a network operator and system user to find the supplier with a system suited best for their needs. 
+Clause 5 provides an overview of the DMR over-the-air protocol. 
+Information about DMR services is given in clause 6. In addition, clause 7 contains a summary of the DMR data services. 
+Information on DMR trunking is in clause 8 as well as annex A (power save) and annex B (channel access and throughput). 
+A short introduction to numbering and addressing is in clause 9. 
+Information on network design and management is in clause 10. 
+Scope 
+The present document is written as a "Read-me-first" manual or "Getting started with DMR". It is not intended to be a complete guide to the DMR technical specifications. If any conflict is found between the present document and the clauses in the DMR specifications then the technical specifications in ETSI TS 102 361 (all parts) [i.1] to [i.4] take precedence. 
+The aims of the present document are many, for example: 
+1) to provide the reader with sufficient knowledge to engage in qualified discussions with the equipment and service suppliers; 
+2) to expose the reader to the specific language and technical terminology used in the DMR specifications; 
+3) to enable the reader to understand the flexibility in system design, system network topography, system availability and various modes of operation; 
+4) information on radio aspects and network design and management is given. 
+2 References 
+2.1 Normative references 
+Normative references are not applicable in the present document. 
+
+2.2 Informative references 
+References are either specific (identified by date of publication and/or edition number or version number) or non-specific. For specific references, only the cited version applies. For non-specific references, the latest version of the referenced document (including any amendments) applies. 
+NOTE: While any hyperlinks included in this clause were valid at the time of publication, ETSI cannot guarantee their long term validity. 
+The following referenced documents are not necessary for the application of the present document but they assist the user with regard to a particular subject area. 
+[i.1] ETSI TS 102 361-1: "Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) Systems; Part 1: DMR Air Interface (AI) protocol". 
+[i.2] ETSI TS 102 361-2: "Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) Systems; Part 2: DMR voice and generic services and facilities". 
+[i.3] ETSI TS 102 361-3: "Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) Systems; Part 3: DMR Data protocol". 
+[i.4] ETSI TS 102 361-4: "Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) Systems; Part 4: DMR trunking protocol". 
+[i.5] ETSI EN 300 113 (V2.2.1) (12-2016): "Land Mobile Service; Radio equipment intended for the transmission of data (and/or speech) using constant or non-constant envelope modulation and having an antenna connector; Harmonised Standard covering the essential requirements of article 3.2 of the Directive 2014/53/EU". 
+[i.6] Void. 
+[i.7] ETSI EN 300 390 (V2.1.1) (03-2016): "Land Mobile Service; Radio equipment intended for the transmission of data (and speech) and using an integral antenna; Harmonised Standard covering the essential requirements of article 3.2 of the Directive 2014/53/EU". 
+[i.8]  CEPT Recommendation T/R 25-08: "Planning criteria and coordination of frequencies of land mobile systems in the range 29.7-470 MHz".  
+[i.9]  Void.  
+[i.10]  MPT1318: "Engineering Memorandum, Trunked Systems in the Land Mobile Service". February 1986, United Kingdom Department of Trade and Industry.  
+[i.11]  CEPT ECC Decision (15)05 (3 July 2015): "The harmonised frequency range 446.0-446.2 MHz, technical characteristics, exemption from individual licensing and free carriage and use of analogue and digital PMR 446 applications, amended on 02 March 2018".  
+[i.12]  CEPT ECC Decision (19)02 (8 March 2018): "Land mobile systems in the frequency ranges 68-87.5 MHz, 146-174 MHz, 406.1-410 MHz, 410-430 MHz, 440-450 MHz and 450-470 MHz".  
+[i.13]  IEC 61162-1: "Maritime navigation and radiocommunications equipment and systems --Digital Interfaces -- Part 1: Single talker and multiple listeners".  
+[i.14]  IETF RFC 2529: "Transmission of IPv6 over IPv4 Domains without Explicit Tunnels".  
+[i.15]  IETF RFC 3056: "Connection of IPv6 Domains via IPv4 Clouds".  
+[i.16]  IETF RFC 3142: "An IPv6-to-IPv4 Transport Relay Translator".  
+[i.17]  IETF RFC 4213: "Basic Transition Mechanisms for IPv6 Hosts and Routers".  
+[i.18]  Unicode: technical standards.  
+[i.19]  ISO 8859 (parts 1 to 16): "Information technology -- 8-bit single-byte coded graphic character sets".  
+[i.20]  IETF RFC 791: "Internet Protocol".  
+[i.21]  ETSI EN 303 405 (V1.1.1) (05-2017): "Land Mobile Service; Analogue and Digital PMR446 Equipment; Harmonised Standard covering the essential requirements of article 3.2 of Directive 2014/53/EU".  
+[i.22]  ETSI TS 100 392-18-1: "Terrestrial Trunked Radio (TETRA); Voice plus Data (V+D) and Direct Mode Operation (DMO); Part 18: Air interface optimized applications; Sub-part 1: Location Information Protocol (LIP)".  
+
+3 Definition of terms, symbols and abbreviations 
+3.1 Terms 
+For the purposes of the present document, the following terms apply: 1:1-mode: 1 payload channel mode NOTE: 1:1-mode supports one "MS to fixed end" duplex call or one simplex call with an optional inbound Reverse Channel using a two frequency BS. 2:1-mode: 2 payload channel mode NOTE: 2:1-mode supports two independent calls which may be either "MS to fixed end" duplex calls or simplex 
+calls using a two frequency BS. ALLMSID: MS ID to address all MS in a system ambient listening: optional form of voice call where the called MS answers then may enters a proprietary listening 
+operation such as transmitting with the microphone mute open assigned channel: channel that has been allocated by the infrastructure to certain MSs using channel allocation command(s) addressed to those MSs 
+NOTE: An assigned channel may be allocated for secondary control purposes or for a circuit mode call. asynchronous access: mode of operation whereby MS are permitted access to TS by employing the polite protocol defined in ETSI TS 102 361-2 [i.2] 
+NOTE: In this mode MS are not required to listen to a TSCC to first determine their access rights. Base Station (BS): fixed end equipment that is used to obtain DMR services bearer service: telecommunication service providing the capability for information transfer between access points burst: elementary amount of bits within the physical channel 
+NOTE 1: The burst may include a guard time at the beginning and end of the burst used for power ramp-up and ramp-down. NOTE 2: Two bursts with different length are defined for DMR. A TDMA bursts which has a length of 30 ms and a reverse channel burst which has a length of 10 ms. NOTE 3: For detailed burst definition see ETSI TS 102 361-1 [i.1], clause 4.2.1. NOTE 4: A burst represents the physical content (channel) of a timeslot. call: complete sequence of related transactions between MSs NOTE: Transactions may be one or more bursts containing specific call related information. 
+Caller Line Identity (CLI): ability to see who is calling before answering the telephone channel: pair of same numbered slots on the inbound and outbound duplex frequencies (in the Time Division Multiple Access (TDMA) slot structure arrangement) 
+composite control channel: TSCC that may temporarily revert to a payload channel (if for instance the instantaneous traffic exceeds that which may be accommodated by the available payload channels) 
+Control plane (C-plane): part of the DMR protocol stack dedicated to control and data services coverage area: geographical area within which the received signal strength from a radiating BS exceeds a specified threshold value 
+dedicated control channel: TSCC that is continuously transmitted by a TS and never reverts to a payload channel 
+Digital Mobile Radio (DMR): physical grouping that contains all of the mobile and/or fixed end equipment that is used to obtain DMR services direct mode: mode of operation where MSs may communicate outside the control of a network 
+NOTE: This is communication technique where any MS (MS) may communicate with one or more other MSs (MSs) without the need for any additional equipment (e.g. BS). 
+downlink: process of transferring information in the outbound direction (TS to MS) duplex: mode of operation by which information can be transferred in both directions and where the two directions are independent 
+NOTE: Duplex is also known as full duplex. 
+extended address: source or destination that is not an MS address (such as a PABX extension, PSTN number or IP address) First In First Out (FIFO): storage type that retrieves information in the order in which it was stored fixed non-volatile storage: storage facility within an MS, the contents of which cannot be modified or added to by the 
+operation of the MS or its user high-rate: packet data transmission that uses dual slot data timing inbound: MS to BS transmission information element: subset (field) within a PDU intrinsic service: service which is inherent within a voice or data service 
+NOTE: It forms an integral part of the signalling associated with that voice or data service. item: MS payload transmission from the point at which the PTT is pressed to the PTT released key: information that determines the functional output of an authentication algorithm line connected: call whereby one end of the call is connected to the radio system that does not use the DMR Air 
+Interface 
+NOTE: Examples may be connection to the PSTN or a PABX. logical channel: distinct data path between logical endpoints message trunking: mode of operation that a payload channel is permanently allocated for the complete duration of the 
+call, which may include several separate PTT items (several PTT activations by separate terminals) NOTE: The channel is only de-allocated if the call is (explicitly) released or if a time-out expires. 
+Mobile Station (MS): physical grouping that contains all of the mobile equipment that is used to obtain DMR mobile services multi-item data: data session on a payload channel that consists of two or more single item data sessions between 
+entities multi-part call set-up: call set-up procedure whereby the full source and destination address cannot be accommodated in a single CSBK signalling block NOTE: The UDT procedure is invoked to transfer the address information using UDT signalling. UDT is also invoked to transport supplementary_user data, user data and extended addressing between DMR entities. 
+network personalization: configuration parameters appropriate to network configuration programmed into an MS that may be set by an external agency but not by the user of an MS non-volatile storage: read/Write storage that stores information during operation of an MS that is protected from the 
+effects of switching off the MS outbound: BS to MS transmission packet data: method for the transmission of information by which the information is transmitted as packets each 
+containing a fragment of the total information to be transmitted PARtition (PAR): information element used to partition MSs on a TS that implements two control channels (TSCCs) payload: bits in the information field personalization: configuration parameters that may be set by an external agency but not by the user of an MS physical channel: TDMA burst 
+NOTE: The DMR radio frequency channel contains two physical channels. polite protocol: "Listen Before Transmit" (LBT) protocol NOTE: This is a medium access protocol that implements a LBT function in order to ensure that the channel is free before transmitting. power-save-frame: sixteen timeslots (480 ms) defining a period for sleeping MS to wake 
+privacy: secret transformation NOTE: Any transformation of transmitted information that is derived from a shared secret between the sender and receiver. 
+Protocol Data Unit (PDU): unit of information consisting of protocol control information (signalling) and possibly user data exchanged between peer protocol layer entities radio frequency channel: radio frequency carrier (RF carrier) 
+NOTE: This is a specified portion of the RF spectrum. In DMR, the RF carrier separation is 12,5 kHz. The 
+physical channel may be a single frequency or a duplex spaced pair of frequencies. random access attempt: period from the initiation of the random access procedure until the MS receives a response from the BS or abandons the procedure (e.g. after sending the maximum permitted number of retries) 
+Ready For Communications (RFC): MS state where the user has specifically indicated the readiness to communicate, 
+e.g. the MS equivalent of a telephone off hook read write storage: storage facility within the MS the contents of which may be modified by the operation of the MS NOTE: The stored data is lost when the MS is switched off. 
+Received Signal Strength Indication (RSSI): root mean squared (rms) value of the signal received at the receiver antenna registration (MS view): MS informs the statem whenever it enters a new registration area. revive: mechanism whereby DMR facilities available to an MS that has been stunned may be restored Service Data Unit (SDU): all the data encapsulated within a PDU serving site: radio site that is currently proving service to the MS signalling: exchange of information specifically concerned with the establishment and control of connections, and with 
+management, in a telecommunication network simplex: mode of working by which information can be transferred in both directions but not at the same time NOTE: Simplex is also known as half duplex. 
+single item data: data session on a payload channel that consists of a single data item being sent from one entity to another entity single-part call set-up: call set-up procedure whereby the full source and destination address is accommodated in a 
+single CSBK signalling block site: totality of BSs and trunk site control equipment that processes calls in one location slot: See time-slot. stun: mechanism whereby DMR facilities available to an MS user may be denied superframe: 6 continuous TDMA bursts labelled "A" to "F" 
+NOTE: A superframe has a length of 360 ms and is used for voice payload only. 
+Supplementary Data Transfer Service: service to transfer supplementary data between DMR MS and MS/TS entities that is additional to the primary call being set-up TDMA-frame: two continuous time-slots time-slot: elementary time unit for allocation of a burst 
+NOTE: A timeslot has a length of 30 ms. 
+transmission: transfer period of bursts containing information or signalling NOTE: The transmission may be continuous, i.e. multiple bursts transmission without ramp-up, ramp-down, or discontinuous, i.e. single burst transmission with ramp-up and ramp-down period. transmission trunking: mode of operation that a payload channel is individually allocated for each call transaction (for each activation of the PTT) NOTE: The channel is immediately de-allocated at the end of the call transaction (subject to unavoidable protocol delays). 
+Trunked Station (TS): physical grouping that contains all of the fixed end equipment in one location that is used to obtain DMR Tier III services Trunk Station Control Channel (TSCC): control channel transmitted by the infrastructure to control the MS 
+population 
+TS Authorization: complete procedure whereby an MS tests the System Identity code and an optional step of authentication to ascertain if it is permitted to gain access Unified Data Transport (UDT): universal methodology used to transport data in DMR systems uplink: process of transferring information in the inbound direction (MS to TS) user plane (U-plane): part of the DMR protocol stack dedicated to user voice services vocoder socket: 216 bits vocoder payload 
+
+3.2 Symbols 
+For the purposes of the present document, the following symbols apply: 
+dBm  absolute power level relative to 1 mW, expressed in dB  
+dBp  Power relative to the average power transmitted over a burst in decibel  
+e  Natural logarithm  
+Eb  Energy per bit  
+Hz  absolute frequency  
+Nibble  4 bits grouped together  
+ms  millisecond  
+No  Noise per Hz  
+Octet  8 bits grouped together, also called a byte  
+
+
+3.3 Abbreviations 
+For the purposes of the present document, the following abbreviations apply: 
+4FSK Four-level Frequency Shift Keying AI Air Interface ARP Address Resolution Procedure AT Access Type BCD Binary Coded Decimal BCV Broadcast Call Voice BS Base Station 
+NOTE: A reference designating a fixed end device. 
+CACH Common Announcement CHannel CC Colour Code CCITT Comité Consultatif International Téléphonique et Télégraphique CCL Call Control Layer CLI Call Line Information C-plane Control plane CRC Cyclic Redundancy Checksum for data error detection TSCCAS Trunk Station Control Channel Alternate Slot UDP User Datagram Protocol UDT Unified Data Transport Unicode 16 bit character UTF-16BE encoding U-plane User plane USBD Unified Single Block Data UTF 8 bit Unicode Transmission Format VOX Voice Operated transmit/receive switch 
+CSBK  Control Signalling BlocK  
+DGNA  Dynamic Group Numbering Assignment  
+DLL  Data Link Layer  
+DMR  Digital Mobile Radio  
+FDD  Frequency Division Duplex  
+FDMA  Frequency Domain Multiple Access  
+FEC  Forward Error Correction  
+FID  Feature set ID  
+FIFO  First In First Out  
+FLCO  Full Link Control Opcode  
+FM  Frequency Modulation  
+GPS  Global Positioning System  
+ICMP  Internet Control Management Protocol  
+ID  IDentifier  
+IEC  International Electrical Committee  
+IP  Internet Protocol  
+IPV4  Internet Protocol Addressing (32 bit)  
+LBT  Listen Before Transmit  
+LC  Link Control  
+LCD  Liquid Crystal Display  
+LIP  Location Information Protocol  
+MBC  Multiple Block Control packets  
+MFID  Manufacturer's FID  
+MS  Mobile Station  
+NOTE:  It is a reference designating a mobile or portable radio.  
+NiMH  Nickel Metal Hydride  
+NMEA  National Maritime Electronic Association  
+OACSU  Off Air Call Set-Up  
+PA  Power Amplifier  
+PABX  Private Automatic Branch eXchange  
+PATCS  Press And Talk Call Setup  
+PDP  Packet Data Protocol  
+PDU  Protocol Data Unit  
+PL  Physical Layer  
+PMR  Private Mobile Radio  
+PSN  Physical Serial Number  
+PSTN  Public Switched Telephone Network  
+PTT  Press To Talk  
+RC  Reverse Channel  
+RC4  Encryption Algoritm  
+RF  Radio Frequency  
+RFC  Ready For Communications  
+RSSI  Received Signal Strength Indication  
+SDU  Service Data Unit  
+SFID  Standards FID  
+SLCO  Short Link Control Opcode  
+TDD  Time Division Duplex  
+TDMA  Time Division Multiple Access  
+TS  Trunked Station  
+
+Overview of DMR 
+There are three tiers of DMR equipment: 
+• 
+tier I equipment is for the lowest-cost "digital PMR446" application; 
+
+• 
+tier II is for professional market offering peer-to-peer mode and repeater mode; and 
+
+• 
+tier III is for trunked operation. 
+
+
+DMR tier II and tier III products encompass both simulcast and non-simulcast systems. 
+The present document describes a Digital Mobile Radio (DMR) system for tier II and tier III products which employs a Time Division Multiple Access (TDMA) technology with a 2-slot TDMA solution and RF carrier bandwidth of 12,5 kHz. Additionally, a DMR system for tier I products is described which employs a continuous transmission variation (FDMA) of the above mentioned technology. 
+More recently, the professional environment has undergone a change whereby old operational models are no longer applicable in many cases. This has meant that the operational requirements placed on communication equipment have evolved, and the traditional analogue service is no longer able to meet the users' needs completely. It is therefore appropriate that more sophisticated services are made available which will meet this need. This raises the need for a technology enhancement that allows the PMR model (which remains very attractive in many regards) to support the basic and enhanced features and facilities existing and future users will require. 
+Industry research has indicated that in the event that certain key facilities can be provided, it may be expected that a significant improvement in the current market performance of this service can be expected. There are only a relatively small number of such features and facilities that are needed. However, these will dramatically change the value that the users can derive from the equipment and services. 
+The main user required features are: 
+Basic Features: 
+1) Improved audio quality. 
+2) Improved battery performance. 
+3) Better range performance (this is taken to mean a good quality of service out to the range boundary rather than much greater absolute range). 
+Enhanced Features are: 
+1) Hands-free operation. 
+2) Duplex (on the same channel), which also provides an appropriate means to communicate over the PSTN. 
+3) Security of communication. 
+4) A range of data features including: -Point to point data addressed between MS and between MS and Gateways. -Data addressed to groups. -Fast data polling using an alternate control channel (TSCCAS). 
+5) The possibility of integrating the radio scheme into the specific operational methods of the undertaking. 
+DMR is recognized as having specific advantages when used in applications relating to public services and similar environments. These are rarely quantified in economic terms due to the complexity of making such an analysis. However, due to the importance of these uses, it is important to recognize how the introduction will improve the operational efficiency of the service achieved. Here are a small number of examples by way of illustration: 
+1)  Security Services:  
+- The introduction of digital signalling greatly facilitates the inclusion of location and status services such as GPS. This could easily be integrated with automatic units providing details of status at particular locations under this security umbrella. The end impact to the security organization is greatly improved awareness of the location of all the security personnel and much faster response to incidents or other unusual situations. This in turn leads to improved levels of security and also improves the safety of the individuals involved.  
+2)  Site Safety:  
+- The introduction of significantly improved emergency facilities through reverse channel signalling means that an immediate notification can be sent to site personnel that an incident is in progress. This can be accompanied by data giving further details. It is equally possible to interrupt the current communication to pass the information by voice if so desired.  
+- This can have extremely important safety implications in very high noise or low-visibility environments because having a hands-free possibility may encourage the use of headsets and similar accessories.  
+3)  Local Government and Social Services:  
+- Location information, coupled with status information can more easily be accumulated and sent back to other officers. This allows them a better ability to respond to incidents or perhaps aid co-workers who are in dangerous situations.  
+- The superior signalling allows a very large degree of automation at the application level to be employed. This therefore offers the potential of having much improved operation with only small headcount implications.  
+4)  Utilities:  
+- Maintenance workers in the field can be supported with much improved information through the signalling capability while maintaining the important closed user group structure. This information cannot currently be reliably provided through the analogue systems. In addition the location of workers may be derived while other services are being accessed.  
+5)  Specific Public Safety Applications:  
+- Whilst many public safety organizations are moving to sophisticated schemes, there remain some organizations whose needs are not so complex.  
+- Typically, these users already have an analogue scheme and are seeking to upgrade to a scheme that meets their current and future needs. It may be that DMR with this level of signalling may provide a suitable platform for their use.  
+
+In technical terms these requirements can be all met by using a low-latency, DMR protocol employing a suitable quality vocoder. The coding gain is used to recover good quality audio at the coverage boundary rather than to extend the range to distances not achievable by analogue schemes at the same transmit power. 
+As this is intended to be an enhancement that existing analogue users will most likely wish to take advantage of in the near term, it is assumed that the preferred approach will be to locate these new schemes on their existing frequency assignments wherever possible and in any event to be within the allocated land mobile service bands. Therefore, in preparation for this, every effort has been undertaken to ensure that the digital protocol complies with the harmonized spectrum regulation, the adjacent channel performance, and be carefully adjusted to not disturb with the existing spectrum planning by excessive ranges being achieved in the field. Thus, the proposed protocol is to be designed to fit into the existing regulatory environment and spectrum planning assumptions with an absolute minimum of disruption. 
+The DMR protocol is able to support a very wide variety of applications. Many users will continue to require customized solutions. However, it is recognized that in some instances, users will require units from a variety of suppliers, perhaps fulfilling different needs within the same overall operational environment. To assist this, the technical specifications on DMR in ETSI TS 102 361 (all parts) [i.1] to [i.4] for applications and interoperability have been created that defines an agreed list of specific features and facilities that are to be implemented and give sufficient detail to allow them to be implemented in a consistent way. This would ensure the necessary interoperability is achieved. To confirm the correct implementation of these features a conformity testing document would also be beneficial. 
+The extent to which interoperability can be applied is limited because the existing market has many different operational procedures that these units should comply to and not disrupt. For example, unlike some other communications schemes, it is not the case that a standardized numbering and dialling system can be universally employed. This is because some important customers already have methods of operating that include absolute requirements that have implications on dialling sequences. It would therefore not be possible to create a single dialling plan that would be acceptable to all users. For users such as these it will be necessary to address their requirements, perhaps on a case-by-case basis. An introduction to numbering and addressing is illustrated in clause 9. 
+5 Over-the-Air Protocol Summary 
+5.0 General 
+The DMR over-the-air protocol from ETSI provides professional users in both the conventional (both single-site and multi-site) and systems (trunking or multi-site operation as examples) markets with the DMR protocol that has the following key characteristics over and above the existing feature and facility set the users are familiar with: 
+1)  Low signalling latency.  
+2)  Duplex speech where required, also enabling access to the PSTN or other gateways where desired.  
+3)  Reverse channel signalling to support the operation of applications during speech sessions.  
+4)  Selectable "politeness" channel access algorithms to avoid interference with currently established  
+communications.  
+5)  Flexible arrangements for supplier choice of vocoder.  
+6)  Compatibility with the existing harmonized regulation for PMR licensed spectrum bands with no requirement  
+to change them. Thus the spectrum planning may be continued unchanged.  
+7)  Possibility to apply improved battery saving techniques.  
+8)  Capability for data transfers (consistent with narrow-band operation).  
+
+DMR is designed to meet all these requirements. A summary of the over the air protocol is given in table 5.1. 
+Table 5.1: Over the Air Protocol Summary 
+Basic structure  50/50 duty cycle slot structure allowing forward and reverse transmission on a time division basis. Transmission can be used either for voice or data or generic signalling. Whilst active, the transmissions are maintained to establish synchronization, thus enabling peer-to-peer operation if so desired.  
+Duplex operation  Forward and reverse signalling and voice is sufficiently rapid to permit communications in both directions to be maintained thus giving the opportunity to sustain a duplex conversation on a time division basis. The rapidity of the signalling interchange is sufficient to permit an accurate VOX to be implemented.  
+Battery save  Slotted structure provides the opportunity for a variety of battery-save options to be taken. These can be optimized to meet the particular needs of users as desired.  
+Call interruption  Slotted structure permits units to receive signals even while user is talking. This may prove attractive in public safety schemes where it is necessary to interrupt the talkers' transmission.  
+6,25 kHz equivalence  Slotted structure supports two calls being sustained on the same 12,5 kHz radio channel frequency in either repeater mode or direct mode. Thus this structure provides the advantage of 6,25 kHz channel equivalence without the need to split the channel in the frequency domain. Thus the channel centre frequency remains unchanged. This may prove attractive in some markets.  
+Frequency range and modulation  The protocol is intended for PMR equipment operating in the existing PMR bands. The modulation technique is 4FSK.  
+Vocoder  The protocol has been designed to be independent of choice of Vocoder. However, suppliers may choose to adopt a common vocoder in the future as part of arrangements for interoperability. This decision is outside the protocol.  
+Radiated power and range resulting  The protocol has been carefully balanced such that the range achieved is the same as is achieved by current analogue technology. The coding gain achieved is utilized to establish better reliability of the call up to the range boundary. This normalization of the range achieved is essential in order to preserve the current spectrum planning assumptions and so permit the digital equipment to be introduced into the existing PMR bands without modification of the current rules.  
+Channel access  The protocol has a selectable option to disable the polite channel access that is assumed to be needed in order to share with other users. This is essential in order to support specific users have applications whereby the likelihood of the success of certain calls should be maximized. Otherwise the protocol is polite.  
+Rise and fall of the transmission  Compliant with current Harmonised Standard ETSI EN 300 113 [i.5].  
+Unit identification and numbering  Included in the Protocol.  
+
+More information on the general DMR protocol structure is given in annex C. 
+
+5.1 Over-the-Air Protocol Description 
+5.1.0 General 
+The DMR protocol is built around a 30 ms slot structure with a 50 % duty cycle. In the spaces between the transmitted blocks the protocol calls for the unit to be receiving. This therefore allows signalling and/or voice in the reverse direction even during a conversation. The perception of the user will be that this unit is providing a full duplex conversation. This protocol therefore supports duplex in either the repeater, simulcast, trunked or peer-to-peer modes. Specific requirements on system delays needed for simulcast architectures are taken into account. 
+Figure 5.1 provides the general organization. The protocol calls for means to synchronize the transmitter and the receiver states at each end of the conversation such that one always receives at time when the other is permitted to transmit. 
+The DMR solution is a 2-slot TDMA channel for both the inbound and outbound channels. A generalized timing diagram of exchanges between subscribers and the fixed end equipment is illustrated in figure 5.1 where the slots for the two TDMA channels are labelled channel "1" and "2". Inbound signalling is labelled "MS TX" and outbound signalling is labelled "Repeater TX". This diagram is intended to illustrate a number of signalling features and timing relationships and does not represent a particular scenario. Key points illustrated by figure 5.1 include: 
+• 
+While active, the outbound channel is continuously transmitted (see note), even if there is no information to send. Each of the inbound channels is unused if there is no information to transmit. 
+
+NOTE: The protocol allows that the transmissions may cease under some circumstances such as after a determined period of inactivity. 
+
+• 
+The inbound channel has an unused guard band between bursts to allow for synthesizer lock and PA settling. 
+
+• 
+The outbound channel has a Common Announcement CHannel (CACH) between bursts for channel management (framing and access) as well as low speed signalling. 
+
+• 
+The channel 1 and 2 bursts in the inbound channel are offset in time from the channel 1 and 2 bursts in the outbound channel. This number scheme allows a single channel identifier field in the outbound CACH to refer to the same channel number on the inbound (channel usage) and outbound (channel number). 
+
+• 
+Bursts have either a synchronization pattern or an embedded signalling field located in the centre of the burst. Placing the embedded signalling in the middle of a burst allows time for a transmitting subscriber to transition to the outbound channel and recover Reverse Channel information. 
+
+• 
+Different sync patterns are used in voice bursts and data bursts to allow the receiver to differentiate between them. Different sync patterns are used for inbound and outbound channels to help the receiver reject co-channel interference. 
+
+• 
+A Colour Code (CC) is present in the embedded signalling field and data/control burst to provide a simple means of addressing radio networks or a specific repeater, so that co-channel interference can be rejected. 
+
+• 
+The location of the sync bursts in channel 1 is independent from the location of the sync bursts in channel 2. The location of sync bursts in the inbound channels is independent from the location of the sync bursts in the outbound channels. 
+
+
+Guard Time Sync/LC 
+
+1  A 2  1  B 2  1  C 2  Voice Superframe D 1 2  1  E 2  1  F 2  1  2  
+MS TX  
+ 
+
+
+TDMA burst TDMA frame Guard Time (30 msec) (60 msec) 
+
+Figure 5.1: Timing Overview 
+
+5.1.1 Signalling Advantages 
+Because of the rapid forward and reverse nature of the protocol, duplex operation in the time domain is possible and also signalling interchanges with an interchange latency of 60 ms (cycle-time). In addition to this, the ability to test voice at either end in this rapid manner gives the possibility for an excellent VOX scheme to be implemented. This can therefore be used to provide the extremely important hands-free operation. 
+Because the duty cycle in transmit is 50 % (even while transmitting) this scheme offers significant potential battery efficiency. In cases where only signalling is being passed the duty cycle could be even less than 50 %. 
+However, the protocol also provides the opportunity to have both forward slots used for transmission if desired. This allows a very wide range of applications to be supported. Figure 5.2 shows some variations on the basic block organization and how the reverse channel timing can be accommodated. 
+Both Channels Utilized for Traffic Guard 
+1212 1212121 2121 21 
+
+One Channel Utilized for Traffic, One Utilized for Reverse Channel Traffic RC 
+
+1212121212 121 
+Figure 5.2: Traffic Channel Arrangements and Guard Times 
+There are many uses to which these facilities can be put. Clearly a popular use amongst some market segments will be to interrupt transmissions while users are still talking to support advanced emergency call features. Perhaps even complete the entire procedure without stopping the call currently in progress if the operational procedures allow for that. 
+
+5.1.2 6,25 kHz Equivalence 
+As there is no restriction on what happens in neither each slot nor any interrelation between them (other than the need to maintain time synchronicity), it is therefore possible to have two entirely separate conversations at the same time from two different units. By this means it is possible that two simplex calls can be independently supported in a single 12,5 kHz channel. Secondly, this means that DMR units fitted with this protocol will also comply with the North American requirements for 6,25 kHz channel equivalence. 
+
+5.1.3 The Vocoder 
+In order to achieve interoperability between units from different suppliers, the same vocoder or a completely compatible vocoder will have to be used. In order to avoid undue restrictions being placed on suppliers and thus limiting the markets that they may choose to address, it has been agreed not to specify any particular vocoder in the standard. There is a vocoder socket specified in the standard and any chosen vocoder should be compatible with the present document. 
+
+5.1.4 Radiated Power and Range 
+Digital coding allows significantly improved recovery of the wanted signal in the presence of noise. This coding gain is often used to provide better absolute range. However, to apply this in this case would have severe impact on the frequency re-use and interference potential in the land mobile radio bands. Therefore, this proposal considers similar transmit powers being used but the coding gain being employed to provide a good quality service to the edge of the planned coverage but thereafter a fairly rapid roll-off. By this means it is believed that the spectrum planning assumptions used for the analogue service will remain valid for the digital upgraded service. 
+This is a careful balance to achieve. Figure 5.3 shows the coder performance at walking pace. 
+Voice Success Rate, 6.3 Hz Doppler Fading 
+100 
+Sync Pattern 
+CACH 
+EMB 
+Voice Header 
+Reverse Channel 
+Embedded LC 
+50 5 10 15 20 25 
+Eb/No (dB) 
+Figure 5.3: The Roll-off of Performance at Coverage Boundaries (walking speed) 
+Simulations have additionally been conducted to show high velocity performance. 
+
+
+5.2 Frequency Considerations 
+DMR tier I is a digital PMR radio that is designed to operate within the channel rasters or spacing (compliant with ETSI EN 300 113 [i.5] and ETSI EN 300 390[i.7] operating on 12,5 kHz channels) used in land mobile frequency bands in worldwide in accordance with national regulations. 
+DMR can be used under CEPT ECC Decision(15)05 [i.11] on the harmonised frequency range 446,0 to 446,2 MHz, technical characteristics, exemption from individual licensing and free carriage and use of analogue and digital PMR 446 applications In this case t will operate with a limited functionality that offers only simplex, peer-to-peer voice and data communications and is proposed as suitable for low cost and for license-exempt operation, ETSI EN 303 405 [i.21] applies. 
+The ECC Decision (19)02 [i.12] addresses use of the bands 68 to 87,5 MHz, 146 to 174 MHz, 406,1 to 430 MHz and 440-470 MHz by land mobile systems. This is intended to cover digital systems such as DMR tier II and DMR tier III systems. 
+Thus the present document assumes: 
+1)  A 12,5 kHz channel raster in accordance with the existing plan even in cases where 6,25 kHz equivalence is employed.  
+2)  CEPT Recommendation T/R 25-08 band planning [i.8]. However, it is stressed that this is not the only [i.12] possibility that the protocol can support. This recognizes that not all national PMR band plans are arranged in accordance with CEPT Recommendation T/R 25-08 [i.8].  
+3)  TDD and FDD usage.  
+
+The DMR protocol provides considerable flexibility in the available modes of operation. This flexibility is achieved by dividing the communications into blocks of signalling. The block structure allows systems implementers to split the capacity of the channel in the time domain into two separate logical streams that can be used to different purposes. 
+Success Rate (%) 
+90 
+80 
+70 
+60 
+For example, the DMR protocol can support simplex communication on a single frequency, duplex communication on a single frequency, simplex communication using two-frequencies (facilitating simple repeater operation) or duplex operation on two frequencies superimposing additional communications on top of the primary stream (again by capacity splitting of the channel). This flexibility can even extend to peer-to-peer duplex operation on a single frequency if synchronization of the channel can be achieved. Many other combinations are possible. 
+Table 5.2 summarizes the possibilities. 
+Table 5.2: Voice Call Operation 
+Through a repeater  Peer-to-peer  
+Single frequency  Dual frequency  Single frequency  Dual frequency  
+Simplex individual call  Y  Y  Y  Y (Allows two communications streams between same source and destination)  
+Simplex group call  Y  Y  Y  Y (Allows two communications streams)  
+Duplex individual call  N  Y  Y  Y (Two streams possible with the use of RF duplexer)  
+Duplex group call  One or two frequencies are insufficient to support conferencing  
+NOTE: Duplex group call is not applicable to systems having only up to two frequencies, and so this line is only added to the table for completeness.  
+
+Because of this flexibility, this protocol is considered to be suitable for deployment in all current frequency bands of CEPT Recommendation T/R 25-08 [i.8] subject to spectrum management planning conditions and any applicable terms of the licence. 
+This flexibility enables applications whereby customers may use voice communications together with the transmission of images or perhaps even multiple language supports. 
+
+5.3 DMR Burst and Frame Structure 
+The generic burst structure consists of two 108-bit payload fields and a 48-bit synchronization or signalling field as illustrated in figure 5.4. Each burst has a total length of 30 ms but 27,5 ms are used for the 264 bits content, which is sufficient to carry 60 ms of compressed speech, using 216 bits payload. 
+264 bits 
+108 bits 
+
+48 bits 108 bits 
+SYNC or  
+Payload  embedded  Payload  
+signalling  
+
+5,0 ms 
+27,5 ms 
+30,0 ms 
+
+Figure 5.4: Generic Burst Structure 
+EXAMPLE: For a vocoder that uses 20 ms vocoder frames, the burst will carry three 72-bit vocoder frames (including FEC) plus a 48-bit synchronization word in a voice burst, that is 264 bits (27,5 ms) used for the burst contents. 
+NOTE: For data and control information the payload is reduced to two 98-bit payload which left a 20-bit field for an additional Data Type field definition. 
+The centre of each burst has a field that carries either synchronization or embedded signalling. This field is placed in the middle of a burst to support Reverse Channel signalling. 
+On the inbound channel, the remaining 2,5 ms is used for guard time to allow for PA ramping and propagation delay, as illustrated in figure 5.5 for an inbound frame. 
+TDMA TDMA 
+burst burst 
+center center 
+
+2,5 ms 
+
+Figure 5.5: MS Sourced TDMA Frame 
+On the outbound channel, this 2,5 ms is used for a Common Announcement CHannel (CACH) that carries TDMA frame numbering, channel access indicators, and low speed signalling as illustrated in figure 5.6 for an outbound frame. 
+TDMA CACH TDMA burst burst burst 
+
+Figure 5.6: BS Sourced TDMA Frame 
+
+5.4 Frame Synchronization 
+Frame SYNChronization (SYNC) is provided by a special sequence of bits that mark the location of the centre of a TDMA burst. Receivers may use a matched filter to achieve initial synchronization, using the output of a matched correlator to initialize the symbol recovery parameters to compensate for frequency and deviation errors as well as determine the centre of the burst. Once the receiver is synchronized to a channel, it may use pattern matching to detect the presence of SYNC to verify that the channel is still present and determine the type of SYNC to identify the contents of the burst. Multiple SYNC patterns are used to: 
+• 
+differentiate voice bursts from data/control bursts and from Reverse Channel bursts; and 
+
+• 
+differentiate inbound channels from outbound channels; 
+
+• 
+differentiate repeater channels from TDMA direct mode timeslots; 
+
+
+• differentiate TDMA direct mode timeslot 1 from TDMA direct mode timeslot 2. To accomplish this, the following SYNC patterns have been defined: 
+• 
+BS sourced voice; 
+
+• 
+BS sourced data; 
+
+• 
+MS sourced voice; 
+
+• 
+MS sourced data; 
+
+• 
+MS sourced standalone Reverse Channel; 
+
+• 
+TDMA direct mode timeslot 1 voice; 
+
+• 
+TDMA direct mode timeslot 1 data; 
+
+• 
+TDMA direct mode timeslot 2 voice; 
+
+• 
+TDMA direct mode timeslot 2 data. 
+
+
+For all two frequency BS channel inbound transmissions and all single frequency channel transmissions, the first burst contains a synchronization pattern to allow the target receiver to detect the presence of the signal, achieve bit synchronization, and determine the centre of the burst. Follow-on bursts contain either SYNC or embedded signalling depending on the burst type and the context. 
+For all two frequency BS channel outbound transmissions, it is assumed that the MS is already synchronized to the outbound channel well before the start of any transmissions directed towards it. Therefore, there is no requirement that the voice header contains a synchronization pattern. 
+NOTE 1: Not having to place the SYNC pattern in the voice header removes the need for the voice outbound transmission to be delayed for the case where a voice header coincides with the embedded outbound Reverse Channel position which is fixed. 
+NOTE 2: A SYNC pattern is present in the data header and voice burst A, therefore the outbound transmission has to be delayed by a burst where either a data header or voice burst A would otherwise coincide with the embedded outbound Reverse Channel position. 
+For data and control messages, the embedded field is a data SYNC pattern except for special cases such as Reverse Channel signalling. For voice calls, the voice SYNC pattern occurs in the first burst of every voice superframe. In addition to marking the superframe boundaries, periodically inserting these periodic syncs allow late entry receivers to pick up voice messages after the transmission has started. 
+Figure 5.7 illustrates the best case and worst-case synchronization period for an inbound (MS to BS) TDMA channel. Since data and control messages contain a frame synchronization field in each burst, SYNC opportunities can occur as frequently as every 60 ms. During a voice call, SYNC opportunities occur every 360 ms, the length of a voice superframe. The first burst of every inbound transmission contains a SYNC pattern in order to allow the target to detect and synchronize to the transmission. 
+60 ms 360 ms 
+
+Time 
+Figure 5.7: Inbound Synchronization Timing 
+Figure 5.8 illustrates the best case and worst-case synchronization period for an outbound (BS to MS) TDMA channel. Because an outbound channel is continuously keyed, both TDMA channels always contain some type of signalling. In addition, since the target MS can receive both TDMA slots, the target MS can detect SYNC in either slot. Because data and control messages will typically contain a frame synchronization field in each burst, SYNC opportunities can occur as frequently as every 30 ms. During a voice call, SYNC opportunities occur every 360 ms, the length of a voice superframe, on each channel. 
+Figure 5.10 illustrates the worst-case SYNC timing for voice, 330 ms, which occurs when two voice calls are active and their superframes are offset by 30 ms. 
+Based on these assumptions, the time between SYNC opportunities can be as short as 30 ms and as long as 330 ms. 
+30 ms 330 ms 30 ms 
+
+Data Data Voice Voice Voice Voice SYNC SYNC SYNC SYNC SYNC SYNC 
+Time 
+Figure 5.8: Outbound Synchronization Timing 
+
+5.5 Basic Channel Types 
+5.5.1 Traffic Channel with CACH 
+The traffic channel with CACH is illustrated in figure 5.9. This channel type is used for outbound transmissions from a two frequency BS to a MS. The channel consists of two TDMA traffic channels (channels 1 and 2) as well as a CACH for channel numbering, channel access, and low speed data. This channel is transmitted continuously without gaps as long as the BS is activated. If there is no information to transmit, the BS transmits Idle messages to fill out the bursts. 
+NOTE: This channel type should also be used for continuous transmission mode between MS units. 
+
+Figure 5.9: Traffic Channel with CACH 
+
+5.5.2 Traffic Channel with Guard Time 
+The traffic channel with guard time is illustrated in figure 5.10. This channel type is used for inbound transmissions from a MS to a two frequency BS (see note) and for TDMA direct mode transmissions. The channel consists of two TDMA traffic channels (channels 1 and 2) separated by a guard time to allow PA ramping and propagation delay. Three use cases are illustrated for this channel type: 
+• 
+Use Case 1: Both channels utilized for traffic (see note). 
+
+• 
+Use Case 2: A single channel (channel 1) utilized for traffic. 
+
+• 
+Use Case 3: One channel utilized for traffic (channel 2) while the other is used for short standalone Reverse Channel bursts (channel 1). 
+
+
+NOTE: The first use case should also be used for communication via a single frequency BS where the Forward channel is MS to BS and the Backward channel is BS to MS. 
+
+Single channel utilized for traffic Traffic Unused 
+
+One channel utilized for traffic, one utilized for Reverse Channel Traffic RC 
+
+Figure 5.10: Traffic Channel with Guard Time 
+
+5.5.3 Bi-directional Channel 
+The bi-directional channel is illustrated in figure 5.11. This channel type is used for direct mode communication between MS units. The channel consists of a Forward and a Backward TDMA traffic channels on the same frequency separated by guard times. Three use cases are illustrated for this channel type: 
+• 
+Use Case 1: Both physical channels utilized for duplex traffic (Forward and Backward). 
+
+• 
+Use Case 2: A single physical channel (Forward) utilized for traffic. 
+
+• 
+Use Case 3: One channel utilized for traffic (Forward) while the other is used for short Reverse Channel signalling (Reverse). 
+
+
+Both channels utilized for traffic 
+
+Single channel utilized for traffic 
+Forward Forward Forward Forward Forward Forward Forward Forward Forward 
+
+One channel utilized for traffic, one utilized for Reverse Channel 
+Forward Forward Forward Forward Forward Forward Forward Forward Forward 
+
+Figure 5.11: Bi-directional Channel 
+
+5.5.4 Direct Mode with Continuous Transmission 
+An example of continuous transmission for voice is illustrated in figure 5.12. This example shows a call initiated on the RF channel using a Link Control (LC) header. 
+H LC dr  LH C dr  Voi ce  Voi ce  Vo ice  Vo ice  Vo ice  Vo ice  Vo ice  Vo ice  Vo ice  Vo ice  Vo ice  Vo ice  Te rm  Te rm  
+
+1 2 1  2  1  2  1  2  1  2  1  2  1  2 1 2  
+A  A  B  B  C  C  D  D  E  E  F  F  
+Figure 5.12: Continuous Transmission Mode for Voice  
+
+An example of continuous transmission for data is illustrated in figure 5.13. This example shows a data transaction on the RF channel initiated using the Enhanced Addressing Data Headers, lasting five data blocks, and ending with a Last Data Block. 
+H dr 1  Hdr 1  Hdr 2  Hdr 2  Data Block  Data Block  Data Block  Data Block  Data Block  Data Block  Data Block  Data Block  Data Block  Data Block  Last Block  LaBl st ock  
+
+1212121212121212 
+Figure 5.13: Continuous Transmission Mode for Data 
+Direct mode with continuous transmission is the only mode used by DMR tier 1 MS. 
+
+5.5.5 TDMA Direct Mode Timing 
+Figure 5.14 illustrates an example timing diagram for TDMA direct mode traffic. In this example, the MS transmits on timeslot 2, which is one of the two TDMA logical channels. 
+
+Figure 5.14: TDMA Direct Mode Timing 
+
+
+5.6 Channel access 
+DMR tier II and tier III products use channel access rules and procedures that MS units use to conform to when transmitting both on two frequency BS and single frequency (bi-directional) channels. These channel access accommodate different levels of MS "politeness" (e.g. Listen Before Transmit (LBT)) and take account of co-existence with analogue activity and other digital protocols on the same RF carrier. 
+DMR tier I products channel access may use LBT channel access rules. 
+BSs are able to restrict channel access while activity is present (or expected) on their inbound channels and during call hang time periods. However, it should be noted that there is a wide degree of flexibility for the way in which BSs may regulate channel access, thereby allowing different BS implementations to restrict channel access according to their particular system requirements. 
+Figure 5.15 illustrates the following three use cases for a two frequency BS channel consisting of an outbound channel and an inbound channel: 
+• 
+Use Case 1: Either for two independent "repeated" simplex calls, two independent "MS to fixed end" duplex calls or a single "repeated" duplex call. 
+
+• 
+Use Case 2: Either for a single "repeated" simplex call or a single "MS to fixed end" duplex call. 
+
+• 
+Use Case 3: For a single "repeated" simplex call with reverse channel. 
+
+
+CACH 
+
+BS TX Outbound channel 
+MS TX Inbound channel 
+Use Case 1 
+2 traffic channels 
+Use Case 2 
+1 traffic channels 
+Use Case 3 
+1 traffic + 1 Reverse Channel 
+Use Case 1 
+2 traffic channels 
+Use Case 2 
+1 traffic channels 
+Use Case 3 
+1 traffic + 1 Reverse Channel 
+Use Case 4 
+1 traffic channels 
+Use Case 5 
+2 traffic channels 
+1 
+2 
+
+2 
+
+2 
+
+212 212121212 
+CACH indicates outbound channel number CACH indicates inbound channel number 
+121212121212 
+1 
+
+
+121212121212 
+1 
+
+1212121212121 
+
+
+Figure 5.15: Two Frequency BS Channel 
+Figure 5.16 illustrates the following three use cases for a single frequency bi-directional channel: 
+• 
+Use Case 1: Either for a "direct" duplex call or a single frequency "repeated" simplex call. 
+
+• 
+Use Case 2: For a "direct" simplex call. 
+
+• 
+Use Case 3: For a "direct" simplex call with reverse channel. 
+
+• 
+Use Case 4: For a TDMA "direct" simplex call. 
+
+• 
+Use Case 5: For two independent TDMA "direct" simplex calls. 
+
+
+Forward Forward Forward Forward Forward Forward Forward 
+
+Backward Backward Backward Backward Backward Backward Backward Forward Forward Forward Forward Forward Forward Forward 
+
+Backward Backward Backward Backward Backward Backward Backward Forward Forward Forward Forward Forward Forward Forward 
+
+Reverse Reverse Reverse Reverse Reverse Reverse Reverse 
+
+12121212121 212 
+
+12121212121 212 
+
+Figure 5.16: Single Frequency (bi-directional) Channel 
+6 DMR Services 
+6.0 General 
+The purpose of this clause is to provide the list of the services, network procedures and features implemented by the DMR specification. 
+The presentation of DMR services for different tiers follows the division of the telecommunication services into bearer services, tele-services and supplementary services as widely used in telecommunication systems, whereas these definitions apply: 
+• 
+Bearer service: a type of telecommunication service that provides the capability for the information transfer between user network interfaces, involving only low layer functions (layers 1 to 3 of the OSI model). Individual voice call and Confirmed Packet Data Protocol are examples of bearer services. 
+
+• 
+Supplementary service: a supplementary service modifies or supplements a tele-service or bearer service. Consequently, it cannot be offered to a user as a standalone service. It should be offered together with or in association with a tele-service or bearer service. The same supplementary service may be common to a number of telecommunication services. Late entry is an example of supplementary service. 
+
+• 
+Tele-service: a type of telecommunication service that provides the complete capability, including terminal equipment functions, for communication between users. 
+
+
+Besides this division, two other groups have been identified: the Network Procedures and the Features: 
+• 
+Network Procedure: it is a telecommunication service offered by a DMR system to provide an efficient network working. 
+
+• 
+Feature: attribute intrinsic to a station, both MS and BS, e.g. MS has an address. 
+
+
+The services, network procedures and features defined in the present clause may be used for tier I and tier II products and is called the "default feature set" which is allocated to the "Standards Feature ID (SFID)". There is a possibility in the DMR specification which allows manufacturers to define and implement "private" feature sets which contain additional "private" services and facilities, which may possibly not be understood by products not supporting this "private" feature set. 
+The FID identifies one of several different feature sets. 
+The FLCO identifies the "over-air" feature within the given feature set. 
+To ensure interoperability at the air interface, features that are ETSI standardized and available in the DMR equipment are accessible only via the combination of default SFID and corresponding FLCO. 
+Features that are not standardized in DMR are only available via an alternative MFID. 
+
+6.1 DMR Services Overview 
+Table 6.1 contains the services that are defined by the DMR specifications for tiers I and II. Clause 8.2 contains a similar table (table 8.1) for DMR tier III services. 
+Table 6.1: DMR Tier I and II Services Overview 
+Services  Supplementary services  
+Voice  Individual Call  Late Entry  
+Talking Party Identification  
+
+Group Call  Late Entry  
+Unaddressed Call  
+Talking Party Identification  
+
+All Call  Late Entry  
+Talking Party Identification  
+Broadcast Call  Late Entry  
+Talking Party Identification  
+Confirmed PDP  IP over PDP  - 
+Short Data over PDP - Status/Pre-coded  - 
+Short Data over PDP - Raw Data  - 
+Short Data over PDP - Defined Data  - 
+Unconfirmed PDP  IP over PDP  - 
+Short Data over PDP - Raw Data  
+Short Data over PDP - Defined Data  
+
+
+6.2 Description of Voice Services 
+6.2.1 Individual Call Service 
+The Individual Call service provides voice service between one individual user and another individual user. The Individual Call facility is initiated at the user level by selecting the desired individual via a predefined selection procedure (see note) and then activating a mechanism, such as pressing the PTT button. 
+NOTE: The selection procedure is implementation specific and is not part of the DMR specification. 
+Individual Call initiation may occur in one of two defined call setup methods: 
+• 
+the first method is a Press And Talk Call Setup (PATCS); and 
+
+• 
+the second method is an Off Air Call Set-Up (OACSU). 
+
+
+Individual Call supports late entry into a call by embedding the LC information into the voice bursts. This helps support scanning and radios being powered on during a transmission addressed to that particular unit when the PATCS method is used. It also supports units that do not correctly decode the voice header when either the PATCS or the OACSU method is used. 
+
+6.2.2 Group Call Service 
+The Group Call service provides voice call service between one individual user and a predetermined group of users. All parties in the group can hear each other. The Group Call is initiated at the user level by selecting the desired group via a predefined selection procedure (see note) and then activating a mechanism to talk, such as pressing the PTT button. 
+NOTE: The selection procedure is implementation specific and is not part of the DMR specification. 
+Group Call supports late entry into a call by embedding the LC information into the voice bursts. This helps support scanning, radios being powered on during a transmission addressed to that particular unit and units that do not correctly decode the voice header. 
+
+6.2.3 Unaddressed Voice Call Service 
+The Unaddressed Voice Call is a group voice call that uses one of a set of defined destination addresses as defined in annex A of ETSI TS 102 361-1 [i.1]. One of these addresses is the default Unaddressed Voice Call address. Usage of the other Unaddressed Voice Call addresses is not part of the DMR specification. 
+NOTE:  Using an Unaddressed Voice Call gives the users the possibility to define an MS behaviour which may be different to a normal group call. For example special alert tones. This also provides basic out-of-the box MS configuration possibilities and could be used for communications between different user organizations, each of which has its own group definitions.  
+6.2.4  All Call Voice Service  
+
+The All Call Voice (ACV) service provides a one-way voice call from any user to all users within the same system. Due to the large target audience, there is no call hangtime associated with this call in repeater mode. This effectively ends the call at the end of the transmission. Ending the call at the end of transmission minimizes collisions from multiple MSs attempting to respond to the call. 
+The All Call may be placed by the user by simply pressing the PTT button. It starts with the transmission of a voice header, which is followed by voice and ends with the transmission of a Terminator with LC. Late entry is provided for in this service. 
+The All Call is made in the same manner as a Group Voice Call using one of a set of reserved destination addresses as defined in annex A of ETSI TS 102 361-1 [i.1]. One of these reserved addresses is the default All Unit ID address while the others are alternative All Unit ID addresses. 
+
+6.2.5 Broadcast Call Voice Service 
+The Broadcast Call Voice (BCV) service provides a one-way voice call from any user to a predetermined large group of users. Due to the large target audience, there is no call hangtime associated with this call in repeater mode. This effectively ends the call at the end of the transmission. Ending the call at the end of transmission minimizes collisions from multiple MSs attempting to respond to the call. 
+The Broadcast Call is made in the same manner as a Group Voice Call. The Broadcast Call may be placed by the user by simply pressing the PTT button. It starts with the transmission of a voice header, which is followed by voice and ends with the transmission of a Terminator with LC. Late entry is provided for in this service. 
+
+
+6.3 Description of Data Services 
+6.3.1 IP over PDP 
+The DMR specification supports the following network layer protocol: 
+• Internet Protocol version 4 (IPv4). 
+IPv4 provides a connectionless, best-effort datagram delivery between two service access points. IPv4 protocol is called on by host-to-host protocols (e.g. TCP, UDP) in an internet environment. IPv4 calls on Air Interface protocol to carry the IP datagram over the air. 
+The DMR IP bearer service is built on top of the DLL bearer services (unconfirmed data and confirmed data). 
+DMR PDP extends DMR to act as an IP subnet. This enables application programmers to build their applications in a well standardized environment. 
+The implementation of BS IP routing and relaying as well as the connection to external networks is outside the scope of the DMR specification. 
+
+6.3.2 Short Data Services over PDP 
+6.3.2.0 General 
+The Short Data Service (SDS) over PDP is a mechanism to transmit Short Data messages from a DMR entity to other DMR entity(ies). The transmission may be confirmed or unconfirmed. Depending on the FEC (rate ½ or rate ¾) and unconfirmed/confirmed DLL bearer service, the mechanism is able to transmit up to 1 130 bytes (18 bytes/block x 63 blocks - 4 bytes). 
+Each message is composed of a Data Header and in most cases Data Continuation (rate ½ coded or rate ¾ coded) bursts. The last block of the data continuation bursts contains a 32 bit message CRC. 
+The short data header contains the parameters that specify the bearer service and in particular the quantity of data transported by the message and their format. 
+
+6.3.2.1 Short Data over PDP - Status/Precoded 
+Short Data over PDP - Status/Precoded service is the transmission of a status/precoded message from a DMR entity to other DMR entity(ies). This service permits a code to be sent over the air whose meaning is known by all the other parties. Usually there is a lookup table stored in each DMR entity that contains the mapping between code and meaning 
+(i.e. code = 00000000012 meaning = "Arrived"). 
+The status/precoded message contains all information within the data header. 
+1 024 different status/precoded message are available. 
+
+6.3.2.2 Short Data over PDP - Raw Data 
+Raw Data is the transmission of a small quantity of data among applications running on DMR entities that leaves the management of the format of the transmitted data to the applications themselves. The DMR DLL provides the transmission of data between a Source Port and a Destination Port of the DMR entities as specified in the Source and Destination Port fields respectively. 
+
+6.3.2.3 Short Data over PDP - Defined Data 
+Defined Data is the transmission of a small quantity of data among DMR entities with a predefined data format as illustrated in clause 7. 
+
+
+6.3.3 Data Services using the Alternate Control Channel Slot (TSCCAS) 
+The TSCCAS provides a polling and data transfer facility using the alternate control channel slot. A MS is able to listen to this alternate slot while active on the control channel used for individual call facilities. 
+7 DMR Data Services 
+
+
+
+
+
+7.0 General 
+The purpose of this clause is to provide an overview of the DMR framework that supports data capabilities for the DMR standard. 
+DMR tier I and tier II use the PDP for unconfirmed and confirmed data, and short data. 
+DMR tier III is also able to use PDP for unconfirmed and confirmed data on the payload channel but, trunking has its own short data services using the control channel. 
+
+7.1 The Packet Data Protocol (PDP) 
+The Packet Data Protocol defined in the present document is called the "default Packet Data Protocol". There is a possibility in the DMR standard which allows manufacturers to define and implement "private" feature sets which contains additional "private" signalling, which may possibly not be understood by products not supporting this "private" feature set. 
+The Packet Data Protocol contains the following types of data transmissions: 
+• 
+unconfirmed data transmission. 
+
+• 
+confirmed data: -data transmission; -response transmission. 
+
+
+The PDP supports the following data services: 
+• 
+Internet Protocol. 
+
+• 
+Short Data Services: -raw data; -status/precoded data; -defined data. 
+
+
+If the layer 3 protocol requests the PDP to transport a message whose length is bigger than a maximum length, the message is first split into fragments. Each fragment is then mapped into a single packet consisting of a sequence of data blocks 1 to m preceded by one or two header blocks. Each block is protected by its own FEC code. The decomposition of an IP datagram is illustrated in figure 7.1 where each data packet has one header block. 
+The transmission may use single slot or dual slot data capability. 
+Break into fragments 
+
+Figure 7.1: Decomposition of Datagram into Packets 
+In order to carry out these tasks the layer 2 PDP uses the building blocks defined in ETSI TS 102 361-1 [i.1], clause 8. 
+The rules to offer to layer 3 protocols an unconfirmed or a confirmed service are described in ETSI TS 102 361-3 [i.3], clauses 5.3 and 5.4 respectively. 
+The layer 2 PDP offers to the layer 3 protocols Service Access Points (SAP) to differentiate the addressed upper layer protocol in movement of information from layer 2 to the higher layers, and to request the PDP some features in the reverse direction. In particular when a layer 3 protocol asks the service to the DMR PDP, it may be able to select the behaviour of the PDP to transport the message to its layer 3 peer. Room is left to implementations to select between the two standardized available channel coding schemes. 
+
+7.2 Internet Protocol over PDP 
+7.2.0 General 
+The DMR standard supports the following network layer protocol: 
+• Internet Protocol version 4 (IPv4). 
+NOTE: For detailed description refer to IETF RFC 791 [i.20]. 
+IPv4 provides a connectionless, best-effort datagram delivery between two service access points. IPv4 protocol is called on by host-to-host protocols (e.g. TCP, UDP) in an Internet environment. IPv4 calls on Air Interface PDP protocol to carry the IP datagram over the air. 
+The DMR IP bearer service is built on top of the PDP DLL bearer services (unconfirmed data and confirmed data) that are defined in clauses 5.3 and 5.4 of ETSI TS 102 361-3 [i.3]. 
+DMR PDP extends DMR to act as an IP subnet. This enables application programmers to build their applications in a well standardized environment. 
+The implementation of BS IP routing and relaying as well as the connection to external networks is outside the scope of the present document. 
+The maximum Transfer Unit supported by the DMR PDP is 1 500 bytes. The IP layer 3 protocol requests the layer 2 PDP protocol its service using SAP value 5. 
+In order to fully support IP communications the PDP protocol is able to also support the ICMP and ARP protocols. Availability of these two protocols is implementation dependent. 
+The description of ICMP support is given in ETSI TS 102 361-3 [i.3], clause 5.2. 
+The description of ARP support is given in ETSI TS 102 361-3 [i.3], clause 5.1.2. 
+The PDP supports IP Addressing in two different ways: DLL derived and natural IP. 
+The DLL derived IP addressing method uses the 24 bits DMR AI Address as the least significant part of the IP address of the DMR entity. The remaining 8 most significant bits are used to diversify among the DMR entity and IP capable devices directly connected to the DMR entity. A detailed description of this mechanism is given in ETSI TS 102 361-3 [i.3], clause 5.1.1. 
+The natural IP addressing uses a table to map the 24 bits DMR address with a 32 bits IP address. Each DMR entity has a table in which the matching between the DMR address of a DMR entity and the IP address of that DMR entity is stored. This table may be static or dynamically updated via the ARP mechanism. In this case the IP DMR entity is also capable to route packets arriving from the DMR Air Interface for IP capable devices directly connected to it. The ARP table will be updated also with the matching between the IP address of an IP capable device and the DMR address of the DMR entity to which it is directly connected. A detailed description of this mechanism is given in ETSI TS 102 361-3 [i.3], clause 5.1.2. 
+
+7.2.1 IPv6 Transport over PDP 
+This clause shows some strategies and gives some references on how IPv6 packets can be transported on the DMR Packet Data Protocol that is tailored to transport IPv4 packets. 
+In order to have the possibility to transport IPv6 packets over the DMR Packet Data Protocol two strategies are possible: 
+• 
+map the IPv6 packet directly into one bearer service (confirmed or unconfirmed data); 
+
+• 
+transport the IPv6 packet using one of the IPv6 over IPv4 tunnelling techniques. 
+
+
+The direct mapping of IPv6 packets onto one of the two data bearer services might be possible using a specific SAP value in the Data Fragment Header. This possibility is, at the moment, out of the scope of the present document. 
+Various tunnelling techniques of IPv6 over IPv4 are described. Detailed description will be found in the following documents: 
+• 
+IETF RFC 2529 [i.14]: "Transmission of IPv6 over IPv4 Domains without Explicit Tunnels"; 
+
+• 
+IETF RFC 3056 [i.15]: "Connection of IPv6 Domains via IPv4 Clouds"; 
+
+• 
+IETF RFC 3142 [i.16]: "An IPv6-to-IPv4 Transport Relay Translator"; 
+
+
+• IETF RFC 4213 [i.17]: "Transition Mechanisms for IPv6 Hosts and Routers". A more detailed description of this technique is illustrated in ETSI TS 102 361-3 [i.3], annex C. 
+
+
+7.3 Short Data Services over PDP 
+This clause describes the mechanism to transmit Short Data messages from a DMR entity to other DMR entity(ies). The transmission may be confirmed or unconfirmed. Depending on the service requested to the layer 2 DMR PDP, the mechanism is able to transmit up to 1 130 bytes. 
+The SDS over PDP layer 3 protocol requests the layer 2 PDP protocol its service using SAP value 9. 
+The Short Data Services over PDP protocol handles only one message at a time. Fragmentation of messages whose length is bigger than the maximum allowed value is left to upper layers. 
+For confirmed Short Data Services the re-transmission mechanism is managed on a message-by-message basis. 
+The amount of user data carried by a single Short Data message is a function of the combination of the mode (Confirmed vs. Unconfirmed) and protection rate (½ vs. ¾) selected. Table 7.1 summarizes the possibilities: 
+Table 7.1: Data Transfer Bytes 
+Confirmed  Unconfirmed  
+Rate ½  626 bytes  752 bytes  
+Rate ¾  1 004 bytes  1 130 bytes  
+
+The Packet Data Protocol supports the following types of layer 3 Short Data Services: Raw Data, Status/Precoded data and Defined Data. They are divided into two main categories: 
+• 
+Raw and Status/Precoded. 
+
+• 
+Defined Data. 
+
+• 
+These two categories differ in the mechanism of defining the transported user data. Raw data and Status/Precoded data do not define the format of the transported user data leaving this task to an upper layer and use the mechanism of ports to allow multiple different data flows among different user applications running on the DMR entities involved in the communication. Defined Data defines the format of the transported user data from/to upper layers. The mechanism of ports is not available for Defined Data. 
+
+
+Hereafter a short description of each possibility is given. 
+Raw Data is the transmission of a small quantity of data among applications running on DMR entities that leaves the management of the format of the transmitted data to the applications themselves. The DMR DLL provides the transmission of data between a Source Port and a Destination Port of the DMR entities as specified in the Source and Destination Port fields respectively. Status/Precoded is the transmission of precoded and status messages from a DMR entity to other DMR entity(ies). A precoded/status message is a service that permits a code to be sent over the air whose meaning is known by all the other parties. Usually there is a lookup table stored in each DMR entity that contains the mapping between code and meaning (i.e. code = 00000000012 meaning = "Arrived"). The precoded and status 
+messages contain all information within the data header. 
+The status/precoded message contains all information within the data header. 
+1 024 different status/precoded message are available. 
+Defined Data is the transmission of a small quantity of data among DMR entities with a predefined data format as defined by the "DD Format" information element in the Short Data Header block. The DD Format information element is the same as defined in ETSI TS 102 361-1 [i.1]. The available "DD Formats" are: 
+• 
+Binary; 
+
+• 
+BCD; 
+
+• 
+7 bit character; • 8 bit ISO 8859 [i.19]; 
+
+• 
+Unicode UTF-8, -16, -16BE, -16LE, -32, -32BE, -32LE [i.18]. 
+
+
+8 Trunking (DMR tier III) 
+8.0 General 
+The tier III DMR standard has been developed to provide low complexity trunking for voice and data traffic at a cost that encourages wide adoption in traditional PMR markets. The DMR specification is able to support trunked radio networks that range from a simple system using only one 12,5 kHz physical radio channel to wide area systems incorporating multiple physical radio channels spread over many radio sites. 
+As a further example of scalability, a network operator may, choose initially to install an "entry level" system with only simple half duplex single channel terminals supported (i.e. one slot at a time inbound and outbound). At a later date further system options can be added and full duplex or integrated radio terminals added alongside the basic radio terminals. Thus the integrated radio approach outlined above supports a rational and economic upgrade path. 
+There are of course many drawbacks to the integrated radio approach. The major difficulty arises from the inherent complexity of the system and the need for the customer to be fully literate in the technical aspects so that informed decisions can be taken to gain maximum benefit when planning, procuring and using a DMR tier III system. It is this audience to which this clause of the ETR is primarily aimed, providing an introductory text that explains the intricacies of the tier III specifications in sufficient detail such that the many trade-offs between performance (transmit power, coverage technique, cell size, etc.) and cost can be understood. Some quantitative design figures that can be used in deciding system parameters are given for informative purposes. However, it should be realized that the present document does not purport to provide sufficient information for a detailed system design. 
+
+8.1 Introduction 
+One primary objective of the tier III standard is to provide for interoperability (at the Air Interface) between equipment of different origin. The protocol offers a broad range of system and user facilities. However, it is not necessary to implement all of the facilities available; an appropriate subset of the protocol could be implemented according to the particular implementation. Also, there is scope for customization for special requirements, and provision has been made for further standardized facilities to be added to the protocol in the future. The tier III standard defines only the over-air signalling and imposes only minimum constraints on system design. 
+Since the number of available channels is much smaller than the total number of potential users, system resources such as traffic(payload) channels are only assigned as the need arises. Payload channels are allocated and released on a call-by-call basis. 
+Channel access is regulated. A logical channel is assigned as a control channel (TSCC). MSs listen to Control channel packets generated by a TSCC on the outbound path when not involved in a call. MS access to tier III Services is by random access using a random access protocol defined in the standard. System resources are then granted by the TSCC. The TSCC may allocate a payload channel from a pool of logical channels for calls such as voice and packet data although there are a number of tier III services (such as UDT short data messaging and USBD) that only utilize only the TSCC. In the case where there is a large utilization of the control channel resource the protocol permits up to two control channels to be put into service on each radio site. 
+A notable feature of tier III trunking is that channel acquisition is performed automatically when the radio is powered up. The user does not need to manually select channels. The relevant channel is contained in the MS memory or a search is performed to find an appropriate channel. 
+DMR tier III Trunked radio systems may be configured with a Dedicated Control Channel that is transmitted continuously yielding the highest performance and throughput. For systems that employ a small number of payload channels a Composite Control Channel may revert to a payload channel if a payload service is requested and no other payload channels are available. When the payload call is completed, the channel returns to its control channel function. Further, in some radio spectrum, radio channels are shared and repeaters should de-key when idle. tier III supports an Asynchronous Control Channel where the TSCC remains de-keyed until activated by a short burst from an MS. This in turn activates the TSCC to regulate and invite access. Dedicated and Composite Control Channels are termed Fully Regulated systems. 
+A tier III system is able to support either a wide range or narrow range of Services and Facilities. However MS may request a service that is not supported by the TSCC. In that case the TSCC is able to refuse the service specified by sending a refusal of service response to the MS request. 
+
+8.2 Feature set 
+Table 8.1 contains the services that are defined by the specifications for DMR tier III. 
+Table 8.1: DMR Tier III Services Overview 
+Services  Supplementary Services  
+Voice  Initiate Random Access Group Call  Late Entry  
+All Call  
+Broadcast Call  
+Unaddressed Call  
+Call to line PABX/PSTN  
+Caller Alert  
+Priority Call  
+Emergency Call  
+
+Initiate Random Access Individual Call  Late Entry  
+OACSU  
+Call to line PABX/PSTN  
+Priority Clall  
+Emergency Cal  
+
+Initiate Press and Talk Individual and group call  By Random Access  
+Control  (CSBK or MBC)  Broadcast System Parameters  
+UDT Short Data  Status Message  Paging (one-way comm. service)  
+Individual UDT Short Data Message  Paging (one-way comm. service)  
+Group UDT Short Data Message  Paging (one-way comm. service)  
+UDT Polling Service  
+USBD Polling Service  Polling Service for LIP Protocol  - 
+Confirmed Data (Rate ¾)  Individual Packet Data Call - Connection Oriented  - 
+Individual Packet Data Call - Connectionless  - 
+Individual Circuit Data Call - Reliable  - 
+Unconfirmed Data (Rate ½)  Individual Packet Data Call - Connectionless  - 
+Group Packet Data Call - Connectionless  - 
+Individual Circuit Data Call - Unreliable  - 
+Group Circuit Data Call - Unreliable  
+Unconfirmed Data (Rate ¾)  Individual Packet Data Call - Connectionless  - 
+Group Packet Data Call - Connectionless  - 
+Individual Circuit Data Call - Unreliable  - 
+Group Circuit Data Call - Unreliable  
+Group Circuit Data Call - Unreliable  - 
+Services  Supplementary Services  
+Voice  Group Call  Increase priority to Emergency  
+Individual Call  Increase priority to Emergency  
+Data  Increase priority/emergency  
+
+The "standard feature set" contains the following services and facilities: 
+a) 
+Generic services: 
+
+1) MS Access control and management using a control channel and a random access protocol. 
+2) MS Location within the system radio coverage by radio site identification and registration. 
+3) Control Channel hunting. 
+4) System acquisition authorization. 
+5) A Unified Data Transport mechanism to support the UDT short data service, the supplementary_user data service and extended_addresses through gateways. 
+6) Broadcast of system parameters to MS. 
+7) MS Authentication. 
+8) Feature Not Supported. 
+9) MS dynamic power control. 
+10) MS Pre-emption control. 
+
+b) 
+Primary voice services: 
+
+1) Talkgroup call service. 
+2) Individual call service. 
+
+c) 
+Secondary voice services: 
+
+1) all_MS call service. 
+2) Broadcast voice call service. 
+
+d) 
+Primary Data Services: 
+
+1) UDT Short Data Service. 
+2) Packet Data Service. 
+3) USBD Fast Polling Service for LIP. 
+
+e) 
+Status Service: 
+
+1) Status Delivery Service. 
+2) Status Polling Service. 
+
+f) 
+Supplementary Service: 
+
+
+1) Supplementary_user data transfer service; (additional data sent as part of the primary call set-up). 
+2) MS stun and revive. 
+3) MS Kill. 
+4) Answer Call Service. 
+5) Cancel Call Service. 
+6) Talkgroup Subscription/Attachment. 
+
+8.3 Single Site/Wide Area 
+Many of the conventional operations such as selection of the physical radio channel are automated by this protocol: 
+a) 
+A single radio site trunked network is characterized by multiple MS communicating with a single Trunked Station (TS). 
+
+b) 
+A wide area trunked network is characterized by multiple MS communicating with a multiplicity of Trunked Stations (TS). 
+
+
+A TS is equipped with one or more physical radio channels. Each TS may be configured with one or two control channels (TSCCs). Where two TSCCs are configured, the TSCCs may be arranged in one physical channel or separate physical channels. The tier III protocol is able to separate the population of MS fleets between multiple TSCCs so that there is effective load sharing: 
+• 
+For a fully regulated system, at least one channel is configured as a Trunk System Control Channel (TSCC) for MS management, signalling, and broadcast of system parameters. MS access is strictly controlled by the TSCC. 
+
+• 
+An unregulated asynchronous system permits MS access subject to polite rules. 
+
+
+
+8.4 MS Location and Registration 
+A wide area tier III network uses multiple interconnected radio sites. MS are configured with a list of physical radio channels that are transmitting control channel information (TSCCs). The system is able to assist MSs by broadcasting information about adjacent radio sites and permitting MSs to sample their signal quality. If, as the result of such a sample the MS detects an improvement in signal quality, it may switch to the sampled radio site. If MS move around the radio site to which they are registered and the signal quality is considered to be below that for reliable communication, the MS hunts for a replacement TSCC within its list of candidates. Each TSCC within the network transmits a unique System Identity Code in order to identify differing radio sites to MS. If an MS is hunting and acquires a new TSCC, the MS sends a registration request to the new TSCC to inform the network that it is wishes to become active on that new radio site. 
+
+Figure 8.1: Example of a Wide Area Network 
+Thus, registration enables the system to determine which radio site or group of radio sites MSs are located within a wide area network. This information avoids searching for MSs throughout the whole network, consequently reducing call set-up time and control channel loading. 
+Registration may also be employed by a Single Site system to determine when MSs are active and able to receive calls. 
+A secondary application of the registration process is that: 
+a) 
+it enables MS power save parameters to be passed between MS and the system; 
+
+b) 
+MS may be prevented access to certain radio sites by Registration Denied; 
+
+c) 
+MS may be authenticated as part of the registration procedure. The authentication procedure may include an optional step using an additional 3-byte key which is factory coded into the MS, referred to as PSN (Physical Serial Number); 
+
+d) 
+Talkgroup Subscription and Talkgroup Attachment allow an MS to inform the TSCC of a particular talkgroup of interest. 
+
+
+If an MS is switched off or is subjected to a user selected change of network, the MS may attempt to de-register. The MS makes a de-registration attempt to the TSCC on a "best endeavours" basis. (If the procedure is not completed within a short time window the process is abandoned). 
+A network may also rely on implicit registration to determine where MS are located. Implicit registration is the network functionality that registers the location of the MS without need for an explicit registration message. Implicit registration can realized from any system message on the inbound path that conveys the identity of the MS, e.g. call request, acknowledgement response. 
+
+8.5 Power Save 
+MS using power save typically consume much less energy. The technique employed in tier III systems allows MS to turn off most of its receiver functions at recurring intervals. 
+While the MS is sleeping it can significantly reduce its energy consumption. However the trade-off is that when a MS is sleeps, it cannot detect any outbound PDUs from the TSCC that may be trying to address it. The MS has periodic wake periods that are synchronized with the TSCC. The TSCC may need to delay the call set-up until it knows the MS is awake so increasing average call set-up time. 
+A detailed analysis of power save is given in annex A. 
+
+8.6 Security Features 
+The DMR air interface security services enable a TSCC to authenticate an MS using the standard RC4 algorithm. If the TSCC wishes to authenticate a MS, the TSCC sends a random number in a PDU (the challenge). The MS calculates the response to the challenge, using a 56 bit authentication key programmed into each MS during manufacture. Similarly a MS may authenticate a TS using the TSCCs key. 
+
+8.7 MS Management from the System 
+MS may be temporarily or permanently denied access to tier III services using the stun or the kill mechanism. 
+If a MS has been disabled by a stun procedure, the MS may not request nor receive any user initiated services on the network that performed the procedure. However hunting and registration, authentication, stun/unstun and registration services remain active. In addition, while an MS is stunned, it may also retain the IEC 61162-1 [i.13] polling service. 
+If a MS has been disabled by a kill procedure, all air interface services are disabled. MS that have been killed cannot be revived by any air interface mechanism. Such revival is a technician procedure. 
+
+8.8 Physical Link Organization 
+8.8.0 General 
+This protocol makes use of the physical layer 1 prescribed in ETSI TS 102 361-1 [i.1] DMR Air Interface. 
+
+8.8.1 Radio Frequency Allocation 
+The tier III protocol supports a number of different physical channel strategies to accommodate operation in radio channels that may be dedicated, in blocks or allocated arbitrarily. 
+Physical radio channels may be specified by either: 
+a) 
+a logical channel plan whereby a transmitter and receiver frequency is mapped to a logical channel number. The tier III protocol permits up to 4 094 such logical/physical relationships; and/or 
+
+b) 
+a mechanism whereby the absolute transmitter and receiver frequencies are specified in the PDUs that are passed between BS and MS at the air interface. 
+
+
+The DMR tier III protocol is able to support: 
+• 
+a number of fixed channel plans where the MS transmit frequency, the split between transmit and receive, the channel separation and if the receiver is high or low relative to the transmitter; 
+
+• 
+a flexible channel plan whereby each logical channel may represent a transmitter and receiver frequency pair; 
+
+• 
+a broadcast PDU that enables the TSCC to announce a logical/physical transmitter and receiver relationship; 
+
+• 
+PDUs (such as Channel Grant) that specifies the physical transmitter and receiver frequencies. 
+
+
+
+8.8.2 Colour Code 
+A Colour Code (CC) is present in the supplementary signalling field and general data burst to provide a simple means of distinguishing overlapping radio sites, in order to detect co-channel interference. Tier III systems assign the physical channels automatically therefore the MS and TS should know and be in agreement which colour code is allocated for each physical channel. If a colour code has been assigned to a tier III system, MS are polite to the colour code. 
+
+
+8.9 Data Transport 
+8.9.0 Introduction to Data Transport 
+A Tier III network supports a wide range of services. To support these services, the transporting of data between network entities (MS/TS) is a very common necessity. A TierIII network supporta the Unified Data Transport (UDT) mechanism  and a Unified Single Block Data Polling Service (USBD). 
+
+8.9.1 Unified Data Transport mechanism (UDT) 
+Although the tier III protocol supports data as a primary service, a network may need to transport supplementary data to support other services such as voices services, registration and authentication. (For example when a MS dials a PABX or PSTN destination, the dialled digits are uploaded to the TSCC). Whether the data remains within the network or is used to support other services, the supplementary data transfer service may be invoked. To reduce the tier III complexity, ALL data transport using the TSCC share a common method - the Unified Data Transport mechanism. The supplementary data services that may be transported by UDT include: 
+a) 
+Supplementary Data Transfer Service: 
+
+1) inbound transport of destination addresses that are connected through system gateways; 
+2) inbound transport of PSTN and PABX dialling digits from MS; 
+3) inbound transport of IPV4/IPV6 addresses; 
+4) inbound transport of MS NMEA (IEC 61162-1 [i.13]) location information; 
+5) outbound channel transport of remote addresses that are connected through system gateways; 
+6) outbound channel transport of CLI information from PABX/PSTN networks; 
+7) outbound channel transport of IPV4/IPV6 address information from IP networks; 
+8) outbound channel transport of NMEA (IEC 61162-1 [i.13]) MS location; 
+9) transport of supplementary_user data as part of another service; 
+10) transport of addresses/digits for the Call Diversion service; 
+11) inbound transport of talkgroup addresses for the Talkgroup Subscription/Attachment service. 
+
+b) 
+UDT Short Data Transfer Delivery Service: 
+
+1) transport of MS NMEA (IEC 61162-1 [i.13]) location information; 
+2) transport of LIP [i.22] MS location; 
+3) transport of UDT messaging; 
+4) transport of talkgroup addresses for the DGNA service. 
+
+c) 
+UDT Short Data Polling Service. 
+
+
+
+8.9.2 USBD Data Polling Service 
+The Unified Single Block Data Polling Service enables data to be polled from an MS on either the TSCC or the TSCCAS. Up to 68 bits of data may be transported from an MS in the Poll Response PDU. The Poll Request PDU is capable of sending the polled MS up to 48 bits of data. 
+
+MS(A) Inbound 
+MS(B) Inbound 
+MS(C) Inbound 
+MS(x) Inbound 
+
+D 
+
+Aloha 
+Recipient of message 
+AL 
+
+TSCC 
+
+Alternate TSCC 
+
+Unified Single Block Data 
+Figure 8.2: Example of a Number of MSs being polled 
+A notable feature of USBD is the speed at which MS may be polled. If the polled response is LIP formatted, as an example using a TSCCAS, GPS location data may be polled at a rate exceeding 1 200 polls/minute. 
+
+
+8.10 Tier III Frame Structure 
+8.10.0 General 
+The tier III protocol is based on the 2-slot TDMA structure described in ETSI TS 102 361-1 [i.1], clause 4.2. The logical channels are separated into two categories: 
+• 
+a control channel carrying signalling (TSCC); and 
+
+• 
+payload channels carrying speech or data information. 
+
+
+Generally MSs operate in half duplex mode using aligned channel timing (see ETSI TS 102 361-1 [i.1], clause 5.1.1) but full duplex is possible for calls to line connected terminals using Offset TDMA timing (see ETSI TS 102 361-1 [i.1], clause 5.1.1.2) by allowing a MS to transmit in one timeslot and receive the fixed end transmission on the alternate timeslot. MS that are directed to a physical channel using offset timing is notified by an identifier transmitted to the MS(s) during the call set-up. 
+
+8.10.1 TSCC Structure 
+A generalized diagram of exchanges between the TSCC and MS is illustrated in figure 8.3 where the slots for the two TDMA physical channels are illustrated. 
+
+AD 
+Figure 8.3: Key Points for a Tier III TSCC 
+While the TSCC is keyed up, the two outbound logical channels are continuously transmitted, even if there is no information to send. If either of the logical channels are configured as a control channel, and that control channel is idle, information is constantly transmitted to manage MS access and broadcast parameters to MSs. 
+MS request service by means of random access. Referring to figure 8.3, a random access burst on the inbound channel labelled "A" is transmitted and is acknowledged by a PDU on the outbound channel. This acknowledgement may be transmitted in slot "B", although the protocol is able to postpone the acknowledgement to allow for computational or network delays. 
+For a MS response to a PDU received from the TSCC, the MS transmits its response PDU in the timeslot but one following the end of the TSCC PDU, i.e. A PDU from the TSCC in slot "C" that is acknowledged by the TSCC in slot "D". 
+The MS response at "D" cannot collide with another random access burst because the slot is protected by setting the AT bit is the CACH to busy. MS should test this bit before making a random access attempt. Random access is not permitted if AT=1. (The CACH is a low speed channel between the outbound TDMA bursts). 
+
+8.10.2 Payload Channel Structure 
+The payload channel structure is described in ETSI TS 102 361-1 [i.1] and illustrated in figure 8.4. This channel type is used for outbound transmissions from a two frequency payload channel to a MS. The channel consists of two TDMA traffic channels (channels 1 and 2) as well as a CACH for channel numbering, channel access, and low speed data. This channel is transmitted continuously without gaps as long as the BS is activated. If there is no information to transmit, the BS transmits idle messages to fill out the bursts. 
+CACH embedded signalling 
+1 21 21 21 2 
+1 21 212 
+1 
+
+Figure 8.4: Payload (Traffic) Channel with CACH 
+
+8.10.3 Random Access 
+Random access is the only access method permitted for MS on a fully regulated TSCC. This is a system where a control channel is continuously transmitted. 
+For a tier III system employing asynchronous access (the TSCC may de-key if not accessed), and when the TSCC is de-keyed, the first random access attempt activates the physical TSCC channel whereupon the outbound burst regulates further signalling. 
+The random access protocol, is used to: 
+• 
+control the collision of simultaneous access attempts from different MSs; 
+
+• 
+manage the network to minimize access delays; yet maintain optimum throughput under varying traffic loads; 
+
+
+• ensure system stability. Additional analysis of the random access protocol is given in annex B. 
+
+
+8.11 Tier III User Services 
+8.11.0 General 
+A DMR tier III network can allocate resources for a range of services including individual call, talkgroup call, line connected call, and a selection of data services. 
+Calls to talkgroups may be restricted by the Network to a single radio site or connected to a multiplicity of radio sites. The particular sites involved in the call may be defined by the Network using manual configuration or automatic selection. 
+Supplementary data may be sent between MS and the network during the call set-up phase using the Supplementary Data Transfer Service to poll for, or deliver additional information using a Unified Data Transport (UDT) mechanism. Examples include: 
+a) 
+the inbound transport of dialling digits for calls to the PSTN, PABX extensions, or dotted addresses for IP gateways; 
+
+b) 
+the transport of MS location information using data collected from IEC 61162-1 [i.13] compatible devices. A common application of IEC 61162-1 [i.13] is location from GPS satellites; 
+
+c) 
+the transport of any supplementary user data; 
+
+d) 
+the outbound transport of CLI information for calls from PSTN and PABX gateways to the called MS(s); 
+
+e) 
+the transport of an IP address to and from MS. 
+
+
+The physical channel configured as the Trunk Station Control Channel (TSCC) may be configured to manage the other logical channel as the Trunk Station Control Channel Alternate Slot (TSCCAS) to support high capacity polling. 
+
+8.11.1 MS Initiating Calls 
+A MS may initiate a call to any of the following called parties: 
+a) 
+an individual MS; 
+
+b) 
+a line-connected terminal device including a PABX extension, PSTN destination or IP destination; 
+
+c) 
+a talkgroup, or all MSs in the system. 
+
+
+The system is able to reject (by sending a response that refuses the service) any calls that request inappropriate Services and Facilities for a particular destination address. 
+During the call set-up phase, the TSCC may pass information back to the caller, to indicate the progress of the call. For example, it indicates the reason for any delays in call set-up or the reason for a call failure. 
+
+8.11.2 MS Receiving Calls 
+8.11.2.0 General 
+Incoming calls may be addressed to the MS individually or to one of its talkgroups. 
+A MS may receive calls from a MS or line connected terminal device (Such a device may be a PABX extension, the PSTN, or an IP device). 
+For a call from an MS, the calling address is supplied to the called unit. For a call from certain line connected gateways such as a PABX extension or from the PSTN, the protocol enables Source Address information to be carried to the MS. (An example is CLI information from a PABX extension or the PSTN). 
+
+8.11.2.1 MS Receiving Individual Calls 
+A MS may refuse to accept all incoming calls, or incoming calls could be refused selectively, depending on the source of the call. If an MS user does not wish to proceed with an incoming call immediately, the user can indicate that the call will be returned (for example by means of a "will call-back" control). 
+
+8.11.2.2 MS Receiving Calls to Talkgroups 
+A MS may be a member of an arbitrary number of talkgroups. 
+An MS may be configured such that it may selectively accept or ignore a call to one if its talkgroup memberships. An MS may also be configured to ignore a call to one of its talkgroup memberships if it is waiting for an individual call. 
+
+
+8.11.3 Some Examples of Tier III Calls 
+8.11.3.0 General 
+The following four clauses illustrate the exchange of PDUs between MS and TS for a selection of call types from the standard. 
+8.11.3.1 An individual MS/MS Voice Call Example 
+
+NOTE: Two MS, MS(A) and MS(B) are active listening to the TSCC. MS(A) requests a voice service to MS(B). Before a payload channel is assigned on the TSCC, the system checks that the MS(B) is in radio contact and wishes to accept the call. If MS(B) sends a positive acknowledgement response (indicating that MS(B) will accept the call), the system allocates a payload channel for the call. 
+Figure 8.5: Individual Call Set-up Example 
+Referring to figure 8.5, some key aspects are described: 
+a) 
+TDMA Channel 2 is assigned as a TSCC. TDMA Channel 1 is idle. 
+
+b) 
+When a TSCC has no calls in progress, it will transmit system management or system broadcast PDUs to all MSs listening to the TSCC. MSs may listen to TDMA Channel 1 for the purposes of error rate measurement but they should not make use of any information from those PDUs. 
+
+c) 
+MS(A) makes a Service Request at point "A" using aligned timing (see ETSI TS 102 361-1 [i.1], clause 5.1.1.1). 
+
+d) 
+The TSCC sends an AHOY PDU (point "B") addressed to MS(B). 
+
+e) 
+MS(B) responds with an acknowledgement at point "C". 
+
+f) 
+At point "D", the TSCC sends a Channel Grant PDU addressed to MS(A) and MS(B). A logical channel information element in the Channel Grant PDU directs the MSs to a particular physical and logical channel. The Channel Grant PDU is not acknowledged so the PDU is repeated for reliability at "E". A TSCC may transmit the repeated Channel Grant PDUs consecutively, or wait for a few slots before repeating the Channel Grant. 
+
+g) 
+In this particular example the TSCC has chosen to allocate the logical Channel 1 of this physical channel for the call. Logical Channel 1 therefore changes from idle to payload immediately after the TSCC transmits the first Channel Grant PDU. 
+
+h) 
+Since each TDMA burst takes 30 ms, the best case performance for a tier III individual call set-up is 210 ms. 
+
+
+
+8.11.3.2 An MS Calls a Talkgroup Example 
+8.11.3.2.0 General 
+For a talkgroup call, the intermediate step of checking if MS(B) is in radio contact is not required so the best case performance for a tier III talkgroup call is 90 ms. 
+
+-Idle Messages 
+
+-TSCC Messages 
+
+- Payload Channel
+ TDMA Ch 1 
+TDMA Ch 2 
+TDMA Ch 1 
+
+2 1 21 21 212121 
+
+21 2 1 21 2 212 
+1 Payload Channel 
+
+
+Figure 8.6: Talkgroup Call Set-up Example 
+Figure 8.6 illustrates a call set-up for a talkgroup. MS(B) is a party to that talkgroup. For a talkgroup call, the intermediate step of checking if MS(B) is in radio contact is not required so the best case performance for a tier III talkgroup call set-up is 90 ms. 
+In this particular example the TSCC chooses a separate physical radio channel for the call. The particular physical and logical TDMA channel information elements are carried in the Channel Grant PDUs. The Channel Grant PDUs are repeated for reliability. 
+Key protocol aspects are: 
+a) 
+When both payload channels are idle, no radio transmission from the physical payload channel is necessary. 
+
+b) 
+When at least one payload channel is assigned the transmitter is activated and one logical channel carries the payload for the call. The other logical channel remains idle. 
+
+
+
+8.11.3.2.1 Talkgroup Subscription and Attachment 
+8.11.3.2.1.0 General 
+Talkgroup Subscription and Talkgroup Attachment allow an MS to inform the TSCC of a particular talkgroup of interest. These facilities may be requested by MS during the registration process. 
+
+8.11.3.2.1.1 Talkgroup Subscription 
+Talkgroup Subscription allows an MS to inform the TSCC of a particular talkgroup of interest. The TSCC only includes radio sites that contain subscribed MS units. This results in optimized system frequency usage, as the call is not set-up on radio sites that do not contain subscribed MS units. Therefore an MS who have acquired a TSCC but not successfully subscribed to a talkgroup is only able to receive and take part in a call to that talkgroup if another MS is currently subscribed to that talkgroup at that site. 
+
+8.11.3.2.1.2 Talkgroup Attachment 
+Talkgroup attachment is a process to ensure that when an MS selects a talkgroup to use, the MS is authorized to use it and the network knows the MS individual address that is affiliated to that group. When the MS user selects a talkgroup to use, the talkgroup ID attachment procedure enables MS and the TSCC to exchange information about the currently attached talkgroup identities in the MS i.e. the addresses that the MS will regard as the valid talkgroup addresses when it is checking if outbound Channel Grant PDUs are addressed to a particular talkgroup. 
+
+
+
+8.11.3.3 A Call to the PSTN (PABX) Example 
+In order for the MS to make a call to the PSTN (or PABX) the destination address (i.e. the dialling digits) cannot be accommodated in the random access call request. The tier III protocol uses a multi-part call set-up that has an extra step whereby the TSCC asks the calling MS for the dialled digits. The MS uses the UDT to transport the digits. The UDT segment is highlighted in figure 8.7 to show the inbound phase. 
+
+Channel Grant 
+Recipient of message 
+Figure 8.7: MS to PABX/PSTN call using the UDT mechanism 
+
+8.11.3.4 A UDT Short Data Call Example 
+The UDT short data message service enables data to be transmitted between DMR entities using only the control channel (TSCC) in a number of formats including binary, BCD, 7 bit text, 8 bit characters, IEC 61162-1 [i.13], Unicode [i.18], IP, and manufacturer specific proprietary formats. 
+The UDT short data message procedure uses the multi-part call set-up. A MS may send a UDT short data message to an MS, a talkgroup, the PSTN or PABX, a line connected gateway, a dispatcher gateway, or all MS (if the TSCC permits it). The TSCC may also transmit a UDT short data message from a gateway addressed to an individual MS or talkgroup. 
+
+Aloha M=24 Address=NULL 
+Figure 8.8: Example of a UDT Short Data Message Transfer 
+Figure 8.8 shows an example of a UDT short data message transfer from MS to MS. 
+The UDT consists of a header MBC and between one and four appended blocks. MS(A) calculates the number of appended UDT blocks needed to transmit the UDT short data. In this example, two appended blocks are sufficient. In this example the data is first transmitted to the TSCC on the inbound path and then sent to the recipient on the outbound path. ETSI TS 102 361-4 [i.4] provides many other examples. 
+
+
+
+8.12 The Use of the CACH 
+8.12.0 General 
+The Short LC contains 3 octets of data that is able to transmit SYStem parameters in the CACH (see ETSI TS 102 361-1 [i.1], clause 7.1.4). Tier III systems that have any one of the logical channels configured as a TSCC continuously or periodically transmit system information to broadcast three parameters particular to a tier III TSCC. All information carried by the Short Link Control is common to both logical channels: 
+a)  a sub-set of the system identity code;  
+b)  the Reg information element; and  
+c)  a Common Slot Counter (SLCO). Since the entire Short LC payload can be delivered in 4 CACH bursts, one  
+
+SLCO can be sent by the CACH every 4 × 30 ms = 120 ms. 
+NOTE: The tier III protocol makes use of the AT bit transmitted in the CACH as key elements in the random access protocol. 
+
+8.12.1 System Identity Code Subset 
+Tier III radio sites are identified by the SYScode. Within a particular network each radio site is allocated a different SYScode. MS use this information when moving between radio sites to determine if they need to register. 
+
+8.12.2 Reg Bit 
+The Reg information element carries a flag that specifies if this particular system is a registering system. The Reg is also carried in the Aloha CSBK PDU. 
+
+8.12.3 Common Slot Counter 
+
+120 ms 120 ms 120 ms 120 ms 
+1212 
+12121212 
+12 1 
+
+
+Counter Counter+1 Counter+2 Counter+3 …………………... 
+NOTE: The Common Slot Counter is broadcast by the SYStem parameter and represents a positive integer in the range 0 to 511. The counter is incremented in each successive SYStem parameter Short Link Control PDU. When the counter is incremented from 511 it rolls over to 0. The Common Slot Counter therefore increments every 120 ms. 
+Figure 8.9: Common Slot Counter 
+Figure 8.9 shows how the Common Slot Counter is broadcast in the CACH. MS read the Common Slot Counter and can use this information to synchronize power save periodic sleep cycles. 
+Numbering and Dialling Plan 
+It is recognized that manufacturers of MSs will wish to exercise design independence in their products and, accordingly, numbering and dialling plans are optional. 
+However, to ensure interoperability between different manufacturers MS, each MS is capable of calling all valid IDs within the DMR addressing range. 
+The full requirement is: 
+1)  the ability to personalize an MS terminal with MS addresses that may be anywhere within the addressable range 000 001 to 16 776 415;  
+2)  the ability to address a called party (individual or talkgroup) for all call services supported by the MS within the addressable range 00 000 001 to 16 776 415; and  
+3)  if supported by the MS, the ability to address ALLMSIDL (16 777 213), ALLMSIDZ (16 777 214), ALLMSID (16 777 215).  
+
+A numbering and dialling plan may be applied to both peer to peer, and repeater operation including trunking. A complete description of a numbering plan is specified in ETSI TS 102 361-2 [i.2], annex C. An alternative is also specified in ETSI TS 102 361-4 [i.4], annex E. 
+The numbering plan that manufacturers may wish to employ uses the keys to be found on a CCITT keypad as illustrated in figure 9.1 representing the decimal numbers "0" to "9" and the keys "*" and "#". MSs may also employ a display capable of displaying the same characters. 
+1  2  3  
+4  5  6  
+7  8  9  
+*  0  #  
+
+Figure 9.1: CCITT Keypad Layout 
+The intention of the plan is to: 
+a) 
+Interpret the dialled string to resolve the destination address, the service requested and any supplementary information that needs to be sent to the destination: 
+
+1) the destination address may be a MS individual address, a talkgroup, a PABX/PSTN number or an IP address; 
+2) the service requested may be a voice call, or any of the data services that are supported, or a supplementary service such as call diversion request. 
+
+b) 
+Enable short dialled strings to be used for the more regularly used destination numbers. 
+
+c) 
+Enable the MS to modify the priority of the call request (call modifier). 
+
+d) 
+Instruct the MS to change its behaviour. As an example, a particular dialled string enables an MS to indicate to the network that it does not wish to accept incoming calls. 
+
+
+e) Enable the MS to display its own address and talkgroups. The user input in case of establishing a call is two sequential steps: 
+• 
+user dials digits; and 
+
+• 
+user initiates call by pressing the '#' key. 
+
+
+The MS may contain predefined parameters prescribing the minimum and maximum length of the user dial string. By limiting the length of the dialled string, the address range the MS is able to dial is restricted. 
+Dialled digits that represent a destination address are translated to the Air Interface by algorithms illustrated in figure 9.2. 
+
+Bi-directional User Interface Air Interface (AI) 
+Dialled Digits Signalling Bits 
+= Variable Length Strings = Fixed Length Strings = Decimal Representation = Binary Representation = CCITT Keypad = CCITT Keypad
+ - Digits 0-9 - 24 bits -* and # - call modifier flags 
+Figure 9.2: Number Translation 
+It is beneficial if the algorithm is reversible so the recipient is able to translate the Air Interface address back to digits and enable the recipient to determine the User Interface number of the source of the message. 
+10 Network Design and Management 
+
+
+
+10.0 General 
+MS may be used in a peer-to-peer environment without any service provision. However, a PMR two-way radio type of service may be provided through a repeater either self-provided or by a third-party Network Operator. Clauses 10.1 to 10.4 are only applicable to DMR tier III networks. Clauses 10.5 to 10.7 are applicable to all DMR tiers. 
+
+10.1 General Issues for DMR Tier III Networks 
+The costs of building and maintaining a wide area DMR tier III network is a significant factor because it is the basis of the operator's business case. It is not possible to fabricate efficient cost effective and reliable networks without careful advance planning. The design of a mobile radio network is a complex process where many parameters interact. 
+General issues in DMR tier III network planning are: 
+• 
+Planning means not only to meet current needs, but also comply with the future requirements of possible subscriber/network/service expansion. Furthermore, the network management processes should indicate not only areas where coverage/capacity is a bottleneck, but identify areas where new services could be introduced within the existing infrastructure. The way in which subscribers use a service can have a huge impact on the actual network traffic. 
+
+• 
+Uncertain estimation of the traffic growth. There is not only the question about the total amount of traffic growth, but also the question about the future service distribution and demands. 
+
+• 
+Furthermore, there are real constraints network planning has to face. If the operator has already a network, then either due to economical or technical reasons site collocation will be used. In the case of green-field operator, there are more and more practical limitations set by radio site acquisition process. 
+
+
+
+10.2 Network Design Process 
+10.2.1 Performance Analysis 
+10.2.1.0 General 
+When designing a DMR tier III system the number of logical payload channels and the desired mean holding time and the behaviour of MS, affect the grade of service that will be experienced by users during the busy period (sometimes known as the busy hour). 
+
+10.2.1.1 Grade of Service 
+Grade of Service is a measure of system congestion, which is where immediate establishment of the call service requested is impossible due to temporary unavailability of a communication channel. 
+A blocking type system is typical of telephony. If users place calls when all channels are occupied, the call is refused and the user should try again later. In a DMR tier III system however, calls may be queued and the user will experience a delay before being connected to a payload channel. Users having sole access to a channel will obtain a very good grade of service, the delay experienced only being the signalling speed for call set-up. If however payload channels are shared between independent users, the payload channels should be shared. That results in better utilization of the channels but causes a lower grade of service because users sometimes have to wait for a channel to become free. The delay increase as the system becomes more heavily loaded. The system may be deemed as saturated if the grade of service has reached a point that is unacceptable to the user. 
+
+10.2.1.2 Channel Hold Time 
+When a call (for which a payload channel is assigned) is set up, the payload channel remains engaged by the users for the duration of the call. In lightly loaded systems the channel hold time has little effect, but as a system becomes more heavily loaded, holding times affect the grade of service. DMR tier III systems have timers that may be broadcast to limit MS to a maximum channel hold time. Different timers may be specified for emergency priority calls, normal priority calls and call that are connected between MS and line connected services. 
+
+10.2.1.3 Performance Results 
+A rigorous analysis and simulations is given in MPT1318 [i.10]. Table 10.1 shows the traffic loads, number of MS and mean queuing times for 5, 10 and 20 logical payload channel systems. 
+NOTE 1: It should be remembered that one physical 12,5 kHz radio channel supports two DMR logical channels. The table is calculated for payload channels (i.e. the logical TSCC (control channel) is not included). 
+NOTE 2: It should be noted that a call between two physical radio sites will require two payload channels. Networks may also have the capability to connect talkgroups over many physical radio sites. This needs to be taken into account when calculating the expected performance of the system. 
+NOTE 3: The simulation assumes that there is no latency between one call being cleared from a payload channel and a new call being pulled off the queue and connected to the payload channel. 
+The table has been calculated for: 
+• 
+Waiting time in the busy hour = 20 seconds Probability of W being exceeded = 5 %. 
+
+• 
+Mean Channel Holding Time = 20 seconds. 
+
+• 
+Number of payload calls per MS in the busy hour = 1. 
+
+
+Table 10.1: System Performance 
+Number of logical payload channels  Grade of service (%)  Traffic(erlangs)  Number of MS  Mean waiting time(s) 
+Per channel  Total  Per channel  Total  
+1 (for comparison)  5  0,12  0,12  22  22  2,7  
+10  0,22  0,22  40  40  5,6  
+30  0,50  0,50  90  90  20  
+5  5  0,64  3,22  116  580  3,3  
+10  0,72  3,59  129  645  5,8  
+30  0,84  4,23  152  760  16,8  
+10  5  0,80  8,00  143  1 430  3,8  
+10  0,84  8,40  151  1 510  6,2  
+30  0,91  9,10  165  1 645  16,5  
+15  5  0,85  12,8  153  2 300  4,1  
+10  0,87  13,2  159  2 390  6,5  
+30  0,94  14,09  169  2 535  16,4  
+20  5  0,88  17,70  159  3 185  4,3  
+10  0,91  18,22  164  3 280  6,7  
+30  0,95  19,06  172  3 430  16,4  
+
+
+
+10.2.2 Traffic Estimate 
+The starting point of any design process is the estimate of the MS traffic that is offered to the network. The range of services (voice/data, etc.), the frequency of requests, the duration of calls and the minimum grade of service are the common variables that should be considered. Additionally, the number of subscribers and their distribution inside the network are critical to the grade of service that will be attained. Both the TSCC and traffic channels resource should be carefully considered if a DMR tier III network is to deliver a full range of services. The services demanded by MS can have a drastic effect on the grade of service attained and the TS resource necessary to provide the services: 
+a) 
+Resource to support the registration service (identifies which radio site MS are listening to). Systems will experience a higher level of registration traffic (on the TSCC) if: 
+
+1) the number of registering MS supported by the network is high; and/or 
+2) radio sites have a small radius; and/or 
+3) MS are travelling around the radio sites at high speed. 
+
+b) 
+TSCC resource to support MS services for which a single TSCC is present (such as the UDT short data service). 
+
+c) 
+Payload channel resource to connect voice and data services. Since voice and payload-data calls use the TSCC to set up the call, TSCC resource is also used: 
+
+1) An MS to MS individual payload channel call connected where the two MS are situated on the same radio site uses one logical traffic channel for the call. If the MS are situated on different radio sites two logical traffic channels (and radio site interconnecting links equipment) is used. 
+2) An MS talkgroup payload call connected where the calling MS and talkgroup are situated on the same radio site uses one logical traffic channel for the call. If the talkgroups are located on different radio sites, a logical traffic channel (and radio site interconnecting links equipment) is used for each of the radio sites if that radio site is to be included in the talkgroup. 
+
+d) 
+TSCC resource to support authentication. This is most likely to require a small resource. 
+
+e) 
+Resource for broadcast PDUs on the TSCC outbound path. 
+
+
+
+10.2.3 Network Radio Environment 
+A parallel operation is the investigation of the radio propagation environment in the region where the network will be placed. Fortunately the propagation of DMR radio signals is very similar to that of FM 12,5 kHz conventional channels, therefore any project that reuses these channels will most likely enjoy a similar coverage profile. 
+The network planning itself is not only based on propagation estimation but also on the interference situation in the network. Ideally, site selection consideration will be done based on the network analysis with planned load and traffic/service portfolio. 
+To reach the stage where a wide area DMR tier III network can be installed and brought into service, several steps should be successfully completed. These steps are briefly: 
+• 
+Determine design objectives, that is: -Availability target for network. -Availability target for radio path. -Required capacity (current and future). 
+
+• 
+Determine and produce (preliminary) network design. A preliminary network design establish all of the nodes within the network which is having transmission links between them. This can then be developed to become the main reference document for network planning and implementation. 
+
+• 
+Determine local frequency availability and regulatory restrictions. 
+
+• 
+Select and survey radio sites. 
+
+
+
+
+10.3 Network Management 
+Network management provides a distributed application enabling monitoring and control of network resources, in order to control and monitor the system. DMR does not specify system implementation that include but are not limited to network management, vocoder, security, data, subsystems interfaces and data between private and public switched telephone networks. It describes only the appropriate access requirements compatible with the Air Interface. Hence this clause is informative. 
+
+10.4 Features 
+It is important to be able to monitor and control all elements in a network to maximize its effectiveness. 
+Network management covers all activities concerned with monitoring and controlling a network e.g. planning, building, expanding, operating and making the most efficient use of the available resources. The typical features of a network planning and management are: 
+a) 
+planning: 
+
+1) business case; 
+2) radio spectrum and radio system coverage; 
+3) grade of service to be offered; 
+4) features offered; 
+5) required resilience and redundancy; 
+
+b)
+ service provision; 
+
+c)
+ network monitoring: 
+
+1) network traffic management; 
+2) resource management; 
+
+d)
+ fault management; 
+
+e) 
+configuration (including MS management). 
+
+
+
+10.5 General Recommendations (for all DMR Tiers) 
+Manufacturers who develop management systems need to be flexible to provide system that will satisfy the myriad of differing environments that DMR may be required to support. Given the sophistication and growth of services, an adaptable system environment has to be established in order to: 
+• 
+enable rapid service deployment; 
+
+• 
+permit efficient service activation; 
+
+• 
+manage growth; 
+
+• 
+efficiently manage and distribute information throughout the network. 
+
+
+Network management systems should also aid the minimization of costs and the provisioning of services in a competitive and timely manner, this can be addressed by: 
+• 
+management of the communication links; 
+
+• 
+effective service responsiveness; 
+
+• 
+tuning the performance and capacity of the network. 
+
+
+Flexibility of management systems can be achieved by incorporating more of the intelligence into the network elements, this re-distribution of functionality will enable management systems to maintain a high level end-to-end view of the services and resources being managed. 
+
+10.6 Using Network Management as a Tool (all DMR Tiers) 
+Management tools provide the ability to take raw information from a managed system and convert that information into an understandable form suitable for the person using it. 
+A network management terminal is capable of representing operation of the network in a form which reflects differing user functions and their particular needs: 
+• 
+The network administrator may need to view and manage the various network resources to maximize the grade of service offered to users. 
+
+• 
+The activity and call logging may be required in a form suitable for billing purposes. 
+
+• 
+The fault reporting will be required for maintenance purposes. 
+
+• 
+The administrative controller will wish to add or remove MS users on the system and also define the feature set they will be permitted to access. 
+
+
+
+10.7 Network Management Functions (all DMR Tiers) 
+Table 10.2 provides an overview of each of the network management functions. 
+Table 10.2: Overview of Network Management Functions 
+Functional area  Description  
+Performance  This provides functions to evaluate and report on the behaviour of equipment and the effectiveness of the operation of the network. The functions generally supported are: • performance monitoring; • performance control; • performance analysis.  
+Fault  This is a set of functions which allow the detection, isolation and correction of abnormal operation and fault conditions within a telecommunications network. Typical functions provided are: • alarm management; • fault localization; • testing; • fault analysis.  
+Configuration  Provides functions to exercise control, collect and provide information to network components. Typical uses of this function are: • provisioning and configuration of components; • database management; • status and control; • MS management.  
+Financial  Provides functions to allow the use of the network or service to be measured and the costs for the usage to be determined. The main functions in this area are: • billing; • tariffing; • asset management.  
+Security  This function is concerned with the overall security of network management information. The areas it should address are: • audit trail; • intrusion; • access rights.  
+
+Annex A: Power Save for DMR Tier III Systems 
+
+A.0 General 
+Fundamentally, power save protocols relies on MS being able to sleep. The motivation for power save is that sleep mode typically consumes much less power than listening to the radio channel Thus allowing the MS to sleep for extended periods can significantly reduce its energy consumption. However the trade-off is that when a MS is sleeping it cannot detect any outbound PDUs from the TSCC that are addressed to it. The MS has periodic wake periods but the TSCC should delay the call set-up until it knows the MS is awake so increasing average call set-up time. 
+Although the sleeping MS cannot be contacted from the TSCC during its sleep period, it can be locally woken to initiate a call or data transaction. 
+Manufacturers of portable MS commonly indicate the battery endurance as: 
+• 
+Battery type and capacity (e.g. NiMH, mAh). 
+
+• 
+Transmitter power output setting (e.g. 2 Watts). 
+
+• 
+Duty Cycle (5-5-90) Tx-Rx-Idle. 
+
+
+• Endurance (e.g. 10 hours). The duty cycle represents the percentage of time that the MS is: 
+a)
+ Transmitting. 
+
+b) 
+Receiving with the audio mute open. 
+
+c) 
+Idle listening to the channel but with the mute closed. 
+
+
+The endurance of portable MS may be extended by employing power save. Power save is a feature that manufacturers can usefully employ to reduce the average current drain and thus extend the battery endurance. Extended power save also makes possible applications such as remote telemetry powered purely by solar cells. 
+One practical power save technique adjusts the output power of the transmitter based upon some previous knowledge of the radio path. 
+Another power save technique that is described in ETSI TS 102 361-4 [i.4] reduces the average current by managing wake and sleep cycles. 
+
+A.1 Wake up Based Power Save 
+A.1.1 Introduction 
+Before the problem of energy demands in an MS may be addressed, the MS operational states should be understood. Typically a MS has four different modes that it can take up: 
+a) 
+Transmit: This is the state where the MS is sending PDUs to the TS. This state consumes the highest amount of energy of the four states. 
+
+b) 
+Receive: The MS is in an active call receiving voice in this state. The audio circuits are active. 
+
+c) 
+Idle: In this state the MS is simply waiting to make or receive a call. Surprisingly the power consumption of the MS in this state is only slightly less than that of the receive mode. This can be attributed to the fact that in this state, the interface should constantly be listening to the channel to determine whether or not there are applicable PDUs. The MS should also waste power processing PDUs it overhears, even if they were not intended for this MS. 
+
+d) 
+Sleep: In this state the majority of the components are completely powered down allowing the MS to achieve very low power consumption. However in this state the MS is incapable of sending or receiving PDUs over the network. 
+
+
+In DMR tier III networks, unless MS are engaged in a call they are listening to the TSCC. The basis of wake power save is that an MS may sleep if it is certain that no PDUs are addressed to that MS while it is sleeping. The TSCC should not address an MS unless it is certain the MS is awake. DMR tier III networks specify wake up periods called power save frames that provide a 480 ms window for sleeping MS to wake. 
+Figure A.1 shows an example. Two MSs, MS(A) and MS(B) are listening to the TSCC. MS(B) is operating with a power save of 4:1. This means that this MS is awake for 1 power save frame and asleep for the remaining 3 power save frames. MS(B) is therefore only listening to outbound PDUs for 1 power save frame out of four. The power saving is achieved because MS(B) has turned off most of its functions. 
+Timeslot #2 
+Timeslot #1 
+Power Save Frames 
+
+Figure A.1: Power Save Example 
+MS(A) makes an individual voice call set-up to MS(B) coincidentally at the point when the TSCC knows that MS(B) is awake (this is the same as no power save). 
+Referring to figure A.1 some key aspects are described. (This is identical to that described in ETSI TS 102 361-4 [i.4], clause 4.9.1): 
+a)  At point "A" MS(A) makes a random access Voice Call Service Request.  
+b)  The TSCC sends an AHOY PDU (point "B") addressed to MS(B). The TSCC knows that MS(B) is awake.  
+c)  MS(B) responds with an acknowledgement at point "C".  
+d)  At point "D", the TSCC sends a Channel Grant PDU addressed to MS(A) and MS(B). A logical channel  
+information element in the Channel Grant PDU directs the MSs to a particular physical and logical channel.  
+
+
+Power Save Frames 
+Timeslot #2 
+Timeslot #1 
+
+EF 
+
+Delay caused by Power Save 
+NOTE: From the point at which MS(A) makes the service request, the MSs will have received the first Channel Grant PDU in 210 ms. 
+Figure A.2: Power Save Example # 2 
+In the second example illustrated in figure A.2, MS(A) makes an individual voice call set-up to MS(B) coincidentally at the point when the TSCC knows that MS(B) is asleep and is not listening to the outbound TSCC. 
+Referring to figure A.2: 
+a) 
+At point "E" MS(A) makes a random access Voice Call Service Request. The TSCC knows that MS(B) has ended its power save wake frame and it is therefore pointless to send the AHOY PDU. The TSCC cannot however do nothing or MS(A) will repeat the random access attempts according to DMR tier III random access procedures. The TSCC therefore send C_WACKD to MS(A) to queue the call. 
+
+b) 
+The TSCC waits for the power save frame that the TSCC knows MS(B) will be awake. The TSCC then sends an AHOY PDU to MS(B) at point "G". 
+
+c) 
+MS(B) responds with an acknowledgement at point "H". 
+
+d) 
+At point "I", the TSCC sends the Channel Grant PDUs addressed to MS(A) and MS(B). 
+
+
+It can be seen that the power save has caused a delay in call set-up. Also there was an additional PDU to queue the call. From the point at which MS(A) makes the service request, the MSs will have received the first Channel Grant PDU in 1,63 seconds. MS(A) is aware of the delay but MS(B) is not. It is clear that the greater the power save, the greater the delay to the completion of the call set-up. 
+
+A.1.2 Expected Improvement from Power Save 
+A.1.2.0 General 
+The improvement on energy saving from power save depends on many factors: 
+a) 
+For voice and packet data: 
+
+1) The duty cycle, e.g. 5-5-90 or 1-1-98. 
+2) The current drain for each of the modes of Transmit Receive, Idle, and sleeping. 
+
+b) 
+For UDT Short Data on the TSCC: 
+
+
+1) For polled UDT Short Data (MS(A) asks MS(B) for a pre-arranged message). 
+2) For the receipt of UDT Short Data (MS(B) is receiving Short Data messages). 
+3) The current drain for each of the modes of Transmit Receive, Idle, and sleeping. 
+
+A.1.2.1 Analysis of Voice and Packet Data 
+An example of energy usage is given. A portable MS is assumed to draw 1 000 mA on transmit, 100 mA on receive, 50 mA on idle and 2 mA sleeping. 
+The analysis for a 1-1-98 duty cycle is illustrated in table A.1. 
+Table A.1: Energy analysis for 1-1-98 duty cycle 
+[A] Contribution of Tx  [A] Contribution of Rx  [A] Contribution of idle  [A] Contribution of power save  [A] Total average current  Approximate battery endurance factor  Worst case extra delay in call set-up (seconds)  
+No PS  10  1  49,00  0,00  60,00  1,0  
+2:1  10  1  24,50  0,98  36,48  1,6  0,54 s  
+4:1  10  1  12,25  1,47  24,72  2,4  1,50 s  
+8:1  10  1  6,13  1,72  18,84  3,2  3,42 s  
+16:1  10  1  3,06  1,84  15,90  3,8  7,26 s  
+32:1  10  1  1,53  1,90  14,43  4,1  14,94 s  
+64:1  10  1  0,77  1,93  13,70  4,4  30,30 s  
+128:1  10  1  0,38  1,94  13,33  4,5  61,02 s  
+
+Table A.1 shows the average contribution in mA (in [A] columns) for each of the modes of Tx, Rx, Idle and sleep using a 1-1-98 duty cycle. It can be seen that there is a significant improvement if a 2:1 power save is used in relation to no power save. The extra delay in call set-up is modest. Further improvements by changing to 4:1, 8:1, etc., provide decreasing returns because the contribution from Tx and Rx is constant. It is only the idle mode that benefits from power save. 
+Table A.2: Energy Analysis for 5-5-90 Duty Cycle 
+[A] Contribution of Tx  [A] Contribution of Rx  [A] Contribution of idle  [A] Contribution of power save  [A] Total average current  Approximate battery endurance factor  Worst case extra delay in call set-up (seconds)  
+No PS  50  5  45,00  0,00  100,00  1,00  
+2:1  50  5  22,50  0,90  78,40  1,3  0,54  
+4:1  50  5  11,25  1,35  67,60  1,5  1,50  
+8:1  50  5  5,63  1,58  62,20  1,6  3,42  
+16:1  50  5  2,81  1,69  59,50  1,7  7,26  
+32:1  50  5  1,41  1,74  58,15  1,72  14,94  
+64:1  50  5  0,70  1,77  57,48  1,74  30,30  
+128:1  50  5  0,35  1,79  57,14  1,75  61,02  
+
+Table A.2 shows the average contribution in mA (in [A] columns) for each of the modes of Idle, Rx, Tx Idle and sleep using a 5-5-90 duty cycle. It can be seen that again there is a significant improvement if a 2:1 power save is used in relation to no power save. The improvement in energy use is less than for the 1-1-98 case (table A.2) because the contribution from the Tx and Rx is much greater. 
+The analysis for 1-1-98 and 5-5-90 show that there is little point in using any of the extended power save values in the range 8:1 for a 1-1-98 duty cycle and 4:1 for a 5-5-90 duty cycle. 
+
+A.1.2.2 Analysis of UDT Short Data 
+The analysis of UDT short data is not so straightforward. The length of the UDT short data DMR will find applications that can specifically make use of extended power save. As an example consider a maximal length UDT short data message. If a MS in power save receives such a message the Tx contribution is two acknowledgement PDUs. If an MS in power save is polled for UDT Short Data, the message length is only five slots. 
+Case study 
+Road transport passenger information systems are a possible application for DMR. In particular bus stop signs are becoming more prevalent. However such sign systems are expensive to erect and install because they use mains power and a communications link. This case study shows how a "time to next bus" could be developed using power save to remove the requirement for mains connected power. The sign element does not have a power issue through the use of LCD displays, but using a conventional PMR radio for the communications link, the possibility of a small solar panel for power is not possible. 
+A DMR bus stop "time to next bus" indication system uses a DMR portable MS to update a bus stop sign by transmitting a maximal length UDT Short Data message (197 bits). MS(B) with characteristics as clause A.1.2.1 and a power save of 64:1. 
+Table A.3: Energy analysis for case study duty cycle 
+[A] Contribution of Tx  [A] Contribution of Rx  [A] Contribution of idle  [A] Contribution of power save  [A] Total average current  Approximate battery endurance factor  Worst case extra delay in call set-up (seconds)  
+64:1  0,2  1,5  0,77  1,94  4,41  11,56  30,30  
+
+Table A.3 shows the energy analysis. The average current requirement is 4,41 mA, which is within the capability of a very small solar cell. 
+
+
+A.2 Synchronized Power Save Operation 
+A.2.0 General 
+The power save feature is specified in ETSI TS 102 361-4 [i.4], clause 6.4.7. 
+
+Figure A.3: Power Save Fframe Structure 
+The power save counter, PS_Counter uses the most significant 7 bits of the Common Slot Counter. The PS_Counter therefore increments every 480 ms. When an MS receives just one Common Slot Counter value it can determine the power save frame boundary and be in synchronism with the TSCC for power save. 
+To simplify the protocol an MS may activate (or cancel) power save during MS registration. In the registration service request the MS may ask for power save it wishes to employ, by sending a non-zero three bit PowerSave_RQ information element with a number between 1 and 7. A registration service request with a zero PowerSave_RQ indicates that no power save is required or a previous power save is cancelled. 
+Table A.4: Information Elements Exchanged During Registration 
+Power save  PowerSave_RQ  PowerSave_Offset  
+OFF  0  0  
+1:2  1  0 to 1  
+1:4  2  0 to 3  
+1:8  3  0 to 7  
+1:16  4  0 to 15  
+1:32  5  0 to 31  
+1:64  6  0 to 63  
+1:128  7  0 to 127  
+
+Table A.4 shows the setting in the PowerSave_RQ for the desired power save value. 
+The TSCC responds with an acknowledgement containing a PowerSave_Offset information element (the Response_Info information element in the acknowledgement PDU) that indicates the power save frame number that the TSCC will send signalling to that particular MS. The TSCC may therefore average out signalling across all power save frames for differing fleets. 
+Each power save frame provides 8 slots in which PDUs may be transmitted to power save MS during a wake period. 
+
+A.2.1 Use of the Timers 
+It is essential that all wake slots are available to MS in the wake period. If the TSCC sends a PDU addressed to a MS where a response is expected a response or a further exchange of PDUs, the MS should not enter sleep mode mid-way through. 
+
+480 ms 480 ms 
+TSCC 
+MS Awake 
+MS(B) 
+BA 
+A 
+T_Awake 
+Figure A.4: Use of T_Awake (or T_Pending) Timer 
+Figure A.4 shows an example of extending the wake period: 
+a) 
+The TSCC sends a PDU addressed to MS(B) in the last available slot before MS(B) would enter sleep ("A" in figure A.4). 
+
+b) 
+MS(B) extends its wake period for a time equal to T_Awake to point "B". 
+
+c) 
+Each time either the MS or TSCC sends a further PDU that started during the wake period, timer T_Awake is restarted and the wake period extended. 
+
+d) 
+If timer T_Awake expires the MS enters sleep mode. 
+
+e) 
+If the exchange of PDUs would result in the allocation of a traffic channel, the timer T_Awake is replaced by timer T_Pending. 
+
+
+
+A.2.2 Power save for a single Talkgroup 
+An MS may activate power save by registration. The address specified in the registration service is the MS individual address. A MS may also be assigned a talkgroup address. In order to support a talkgroup and power save it is essential that a DMR tier III network can cross reference an MS individual address and its assigned talkgroup address. Since it follows that within a fleet of MSs it is likely that two or more MSs will have the talkgroup address assigned, the conclusion is that all MSs sharing a talkgroup also share the same power save offset. If by some complex arrangement a MS was allocated a differing power save offset for its individual address and a talkgroup address then the benefit of power save would be lost since the MS would wake twice during its sleep period. 
+A.2.3 Power Save for Multiple Talkgroups 
+
+Figure A.5: Multiple Talkgroups 
+An MS may be allocated multiple talkgroups. Figure A.5 shows how multiple talkgroups may be interleaved within a fleet. At first sight it may be thought that multiple talkgroups will add acute complexity to the allocation of the power save offset to ensure that all MS within a particular talkgroup share the same power save offset value. In fact, managing power save for multiple talkgroups is no more complex than the case for a single talkgroup. The approach is for the DMR tier III networks to allocate the identical power save offset for ALL MS within a closed fleet. 
+
+Figure A.6: MS with Multiple Talkgroups Example 
+Figure A.6 shows an MS configured with and individual address, four talkgroup addresses and a power save of 4:1. It is clear that the MS power save will only be effective if it wakes for one power save frame and sleeps for three. It is then obvious that all talkgroups should share the same power save frame. 
+Annex B: DMR tier III Channel Access 
+
+B.0 General 
+Random access is the only access method permitted for MS on a fully regulated TSCC. For a DMR tier III system employing asynchronous access, and when the TSCC is de-keyed, the first random access attempt activates the physical TSCC channel whereupon the outbound burst regulates further signalling. 
+The random access protocol, is based on slotted aloha with a managed backoff that is used to: 
+• 
+control the collision of simultaneous random access attempts from different MSs; 
+
+• 
+manage the TSCC to minimize access delays; 
+
+• 
+ensure system stability; and 
+
+• 
+maintain optimum throughput under heavy traffic loads. 
+
+
+MS make a random access service requests subject to the restrictions of withdraw slots, Mask and Service Function described below. If the random access is successful the TSCC will respond to the service request. If the MS determines that the random access was not successful, the MS may repeat the service request a number of times until either its access has been acknowledged or the number of attempts permitted has been exceeded. 
+
+B.1 Withdrawing slots 
+
+
+
+CACH AT bit=busy
+B 
+TSCC Outbound 
+MS Inbound 
+
+
+Slot available for random access 
+Message that requires a response 
+PDU inviting random access 
+Slot withdrawn, random access not 
+from an individually addressed MS 
+NOTE: The TSCC may transmit a packet for which a response is expected from an MS. If MS were permitted to transmit random access service requests without any controls, such a random access request may collide. To overcome this problem the TSCC is able to withdraw slots from random access. 
+Figure B.1: Withdrawn Slots Example 
+Referring to figure B.1, the TSCC transmits PDUs inviting random access: 
+A: Aloha PDUs invite random access. Therefore an MS is permitted to transmit a random access PDU. The 
+CACH following each of the Aloha PDUs sets the AT bit to 02. Aloha PDUs never withdraw slots but an Ahoha PDU with Mask=24, MS address=NULL, specifically prohibit random access even though the slot is not withdrawn. 
+B: The TSCC transmits a PDU that demands a response followed by the CACH with the AT bit set. The result is that the following slot but one at "C" is withdrawn - i.e. not available for random access. The TSCC withdraws that slot because the PDU "B" for which a response is expected from a specific MS(B). 
+C: MS(B) transmits its acknowledgment PDU. 
+D: If the slot chosen for the random access attempt is not available because the slot is withdrawn, the MS picks another slot for a subsequent random access attempt. 
+
+B.2 Maintaining Optimum Throughput 
+B.2.0 General 
+The TSCC is able to maintain the throughput of service requests and control possible blocking under heavy load by broadcasting the Mask, Service Function and Random Backoff parameters. 
+
+B.2.1 Mask and service function 
+The Mask and Service Function parameters are regularly broadcast by the TSCC. 
+The Mask function permits random access only by a sub-set of the MS population that can be specified from all MS to just one MS. Thus priority may be offered to this sub-set. 
+The Service Function allows the TSCC to restrict random access to certain types of service requests (such as registration only). 
+By continually altering these parameters the TSCC is able to control and manage congestion for differing service requests and differing MS fleets. 
+
+B.2.2 Random Backoff 
+A DMR tier III system periodically broadcasts a random back-off timer (specified in TDMA frames).  
+When a MS initiates a call, the MS may send its first random access PDU in the next slot (subject to Mask, Service Function and withdrawn slot specified in clauses B.1 and B.2.1. The MS invokes the random backoff procedures specified in this clause if: 
+a) 
+The MS could not make its random access attempt because access was inhibited by Mask. 
+
+b) 
+The MS could not make its random access attempt because access was inhibited by the Service Function. 
+
+c) 
+The MS could not make its random access attempt because the slot was withdrawn. 
+
+d) 
+The MS did make a random access attempt but that attempt was unsuccessful (the TSCC did not respond before the expiry of Nrand_Wait). 
+
+
+If the MS makes a random access attempt and is unsuccessful, the MS picks a slot for its next random access attempt by waiting a random number of slots between the limits of one and the backoff parameter. 
+Figure B.2 shows a TSCC. The most recent value of back-off received=4. 
+
+A 
+Figure B.2: Random Backoff Example #1 
+a) 
+At "A" the MS makes a random access attempt. NRand_Wait=0 indicates that the TSCC will respond in the next TDMA frame at "B"; 
+
+b) 
+After TDMA frame "B" a response has not been received, therefore the MS chooses one of the slots 1, 2, 3, 4 randomly for its next access attempt. 
+
+
+A number of outbound channel PDUs including an Aloha PDU contain the backoff parameter. The backoff may be altered by the TSCC and broadcast to MS to respond to varying load conditions presented to the system throughout the course of operation. If the system has a light traffic load, the backoff may be small, so decreasing random access latency and increasing throughput. If the traffic load increases a longer backoff may be warranted to spread competing of random access attempts from different MSs by the TSCC transmitting a larger backoff number. This traffic load may be estimated from historical usage or may be calculated from the burst traffic being received at that time. 
+
+B.3 Characteristics of DMR tier III random access 
+The DMR tier III protocol controls the way in which MS access the TSCC by requiring that MS conform to the random access rules. The random access protocol employed: 
+a) 
+Channel capacity is allocated such that the inbound and outbound path is used efficiently. The efficiency is measured in terms of throughput and delay of access. 
+
+b) 
+The allocation of system resource is equal to each MS, (although emergency calls are able to break some rules). 
+
+c) 
+The protocol is stable and is able to adjust itself to increase in load. (in an unstable protocol, an increase in load causes the system to drift towards a further increase in load and therefore a lower throughput). 
+
+
+The fundamental elements used to evaluate the access performance are offered traffic G, throughput S and access delay 
+D. In an ideal system the throughput is given by: 
+
+G G<1) 
+S= 
+1 G>1) 
+If the ideal and actual practical throughput is plotted in figure B.3. 
+1 
+eristic 
+
+Figure B.3: Traffic and Throughput Characteristics 
+When the traffic is low there are very few collisions and virtually all random access attempts are successful and S closely follows G. At higher values of traffic the number of collisions increase, which increases the number of repeat transmissions causing still more collisions. This condition is unstable and S begins to fall. 
+DMR tier III systems are able to modify the MS behaviour to ensure stability under high load conditions by broadcasting the Random Backoff parameter. Increasing the value of random backoff increases the time that MS should wait before attempting a repeat random access attempt. Figure B.4 shows the throughput for increasing value of random backoff. The penalty for increasing the random backoff is an additional delay in call set-up if MS need to repeat a random access service request. 
+1 
+
+
+Traffic(G) 
+Figure B.4: Throughput Characteristics as Random Backoff is Increased 
+Slotted Aloha standard references derive the normalized throughput of slotted aloha as: S = 1/e = 0,368 
+max However in a DMR environment, reception of BS transmissions by TS are affected by: 
+a)  Propagation loss. The received signal quality will be different on the distance of MS from the TS.  
+b)  Fading. The fluctuation of the received signal due to multi-path and fading.  
+c)  Capture effect. FM receivers discriminate in favour of the strongest signal.  
+
+A simulation is an effective way in which a practical DMR tier III system random access performance may be derived. The DMR tier III system that has been simulated considered the following in the modelling: 
+d) 
+An MS population randomly distributed within the radio coverage area of a TS requesting service by random access. 
+
+e) 
+Capture affect = 10 dB. 
+
+f) 
+A Raleigh fading characteristic on a subset of the MS population. 
+
+
+Figure B.5 illustrates the result of the simulation of a real DMR tier III system. It can be seen that the throughput exceeds the theoretical maximum traffic (0,368) by a considerable margin. 
+
+Figure B.5: Throughput Characteristics of a Simulated Practical DMR Tier III System 
+The simulation demonstrates that: 
+• 
+A practical DMR tier III system is able suffer severe blocking yet still maintain traffic throughput. Compare G=4 in the simulation. In a non-faded environment and without capture (such as a wired system rather than a radio system) the throughput is 0,07 whereas in a DMR tier III environment the throughput is still 0,25. 
+
+• 
+This throughput also reduces the severe delay that is normally encountered in wired networks in blocking conditions. 
+
+• 
+A DMR tier III system has many mechanisms to keep a network out of a blocking condition (see ETSI TS 102 361-4 [i.4], clause 6.2) including: 
+
+
+-Increasing the Random Backoff parameter. 
+-Restricting MS access using the Mask and Service-Function parameters. 
+The way in which a TSCC measures the traffic loading and hence adjusts the MS random access behaviour is not prescribed in the DMR tier III standard. Suitable mechanisms include adjusting the random access parameters broadcast by the TSCC based on traffic at the time, or based on historical information of expected traffic. 
+Annex C: DMR Protocol Architecture 
+
+C.1 Introduction 
+C.1.0 General 
+The DMR protocol architecture follows the generic layered structure, which is accepted for reference description and specification of layered communication architectures. 
+The DMR specification defines the protocols for the following 3 layered model as illustrated in figure C.1. 
+
+Figure C.1: DMR Protocol Stack 
+The Physical Layer (PL), which is the layer 1, deals with the physical burst, composed of bits, which is to be sent and/or received. 
+The PL is described in ETSI TS 102 361-1 [i.1]. 
+The Data Link Layer (DLL), which is the layer 2, handles sharing of the medium by a number of users. At the DLL, the protocol stack is divided vertically into two parts, the User plane (U-plane), for transporting information without addressing capability (e.g. voice or data stream), and the Control plane (C-plane) for signalling with addressing capability, as illustrated by figure C.1. 
+The DLL is described in ETSI TS 102 361-1 [i.1]. 
+The Call Control Layer (CCL), which is layer 3, lies in the C-plane and is responsible for control of the call (addressing, facilities, etc.), provides the services supported by DMR. U-plane access at layer 2 (DLL) supports the voice and data service which are available in DMR. 
+The CCL is described in ETSI TS 102 361-2 [i.2] for the voice services, in ETSI TS 102 361-3 [i.3] for the data services. 
+All user related signalling or presentation above layer 3 are not part of the DMR specification and are implementation specific. 
+
+C.1.1 Air Interface Physical Layer (layer 1) 
+The Air Interface layer 1 is the physical interface. It deals with the physical burst, composed of bits, which is to be sent and/or received. 
+The Air Interface layer 1 (PL) contains the following functions: 
+• 
+modulation and demodulation; 
+
+• 
+transmitter and receiver switching; 
+
+• 
+RF characteristics; 
+
+• 
+bits and symbol definition; 
+
+• 
+frequency and symbol synchronization; 
+
+• 
+burst building. 
+
+
+
+C.1.2 Air Interface Data Link Layer (layer 2) 
+The Air Interface layer 2 (DLL) handles logical connections and hides the physical medium from the upper layers. The main functions are as follows: 
+• 
+channel coding (FEC, CRC); 
+
+• 
+interleaving, de-interleaving and bit ordering; 
+
+• 
+acknowledgement and retry mechanism; 
+
+• 
+media access control and channel management; 
+
+• 
+framing, superframe building and synchronization; 
+
+• 
+burst and parameter definition; 
+
+• 
+link addressing (source and/or destination); 
+
+• 
+interfacing of voice applications (vocoder data) with the PL; 
+
+• 
+data bearer services; 
+
+• 
+exchanging signalling and/or user data with the CCL. 
+
+
+
+C.1.3 Air Interface Call Control Layer (layer 3) 
+Air Interface layer 3 (CCL) is applicable only to the C-plane, and is an entity for the services, procedures and features supported by DMR on top of the layer 2 functionality. 
+The CCL provides the following functions: 
+• 
+BS activation/deactivation; 
+
+• 
+establishing, maintaining and terminating of calls; 
+
+• 
+individual or group call transmission and reception; 
+
+• 
+destination addressing (DMR IDs or gateway as appropriate); 
+
+• 
+data call control; 
+
+• 
+announcement signalling. 
+
+
+Annex D: Power Control 
+
+D.1 Introduction 
+A MS may use the received signal level to determine if its transmit power may be reduced. This is a common power saving technique in PMR systems. A more advanced power control technique is specified for DMR systems however ­closed loop power control. 
+
+D.2 Closed Loop Power Control 
+Closed loop power control is a method by which a TS is able to dynamically control the transmitter output power of an MS. If a Tier III TS or MS supports this feature, the feature is fully described in ETSI TS 102 361-4 [i.4]. 
+A trunked network may employ a combination of MS that do and do not support this feature. In addition, it should be noted that this feature uses the Reverse Channel (RC) [i.1] and the RC may not always be available. 
+The principle of power control is: 
+• The TS measures the received signal strength of a transmitting MS, and compares the received value with two programmable thresholds. The thresholds are an upper and a lower limit for the received signal strength. If the received signal strength exceeds the higher power limit threshold, the TS sends a decrease power PDU to the MS. If the signal strength is below the lower limit, the TS sends an increase power control PDU to the MS. 
+Annex E: Bibliography 
+• 
+ETSI EN 300 113 (V3.1.1) (06-2020): "Land Mobile Service; Radio equipment intended for the transmission of data (and/or speech) using constant or non-constant envelope modulation and having an antenna connector". 
+
+• 
+CEPT ERC Report 25: "The European table of frequency allocations and applications in the frequency range 8,3 kHz to 3 000 GHz". 
+
+
+History 
+Document history  
+V1.1.1  May 2006  Publication  
+V1.1.2  May 2008  Publication  
+V1.2.1  February 2011  Publication  
+V1.3.1  January 2013  Publication  
+V1.4.1  November 2018  Publication  
+V1.5.1  November 2023  Publication  
+
+
+
