@@ -80,6 +80,7 @@ public:
 #if defined(DUPLEX)
   void      SLE2_pin(bool on);
   bool      RXD2_pin(void);
+  bool      CLK2_pin(void);
 #endif
   void      CE_pin(bool on);
   bool      RXD_pin(void);
@@ -188,7 +189,7 @@ private:
   volatile uint32_t  m_watchdog;
   volatile uint16_t  m_int1counter;
   volatile uint16_t  m_int2counter;
-
+  uint8_t            m_last_clk2;
 };
 
 #endif

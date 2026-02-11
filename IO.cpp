@@ -39,7 +39,8 @@ m_scanPos(0U),
 m_ledValue(true),
 m_watchdog(0U),
 m_int1counter(0U),
-m_int2counter(0U)
+m_int2counter(0U),
+m_last_clk2(0U)
 {
   Init();
 

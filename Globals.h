@@ -82,6 +82,13 @@ const uint8_t  MARK_NONE  = 0x00U;
 #include "DMRIdleRX.h"
 #include "DMRRX.h"
 #include "DMRTX.h"
+
+#ifndef HIGH
+#define HIGH 1U
+#endif
+#ifndef LOW
+#define LOW 0U
+#endif
 #endif
 
 #include "DStarRX.h"
