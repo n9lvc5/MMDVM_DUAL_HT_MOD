@@ -29,4 +29,7 @@
 #define MODE_DMR
 #define MODE_YSF
 
+// Mobile Station Mode
+#define MS_MODE
+
 #endif

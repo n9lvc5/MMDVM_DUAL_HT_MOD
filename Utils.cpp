@@ -66,6 +66,16 @@ uint8_t countBits64(uint64_t bits)
   return n;
 }
 
+#if !defined(ARDUINO)
+extern uint32_t get_watchdog_count();
+uint32_t mmdvm_millis() {
+  return get_watchdog_count() / 10;
+}
+long mmdvm_random(long min, long max) {
+  return min + (get_watchdog_count() % (max - min));
+}
+#endif
+
 #if defined(ENABLE_DEBUG)
 // Simple functions to convert from int to string
 // Example from: https://stackoverflow.com/questions/8257714/how-to-convert-an-int-to-string-in-c
