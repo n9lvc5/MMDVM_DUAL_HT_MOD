@@ -61,11 +61,17 @@ void CDMRIdleRX::databit(bool bit)
   if (bit)
     m_patternBuffer |= 0x01U;
 
-  if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+  bool msSync = countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS;
+  bool bsSync = countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS ||
+                countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS;
+
+  if (msSync || bsSync) {
+    if (bsSync && dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
     m_endPtr = m_dataPtr + DMR_SLOT_TYPE_LENGTH_BITS / 2U + DMR_INFO_LENGTH_BITS / 2U;
     if (m_endPtr >= DMR_IDLE_LENGTH_BITS)
       m_endPtr -= DMR_IDLE_LENGTH_BITS;
-    // DEBUG3("SYNC MS Data found pos/end:", m_dataPtr, m_endPtr);
   }
 
   if (m_dataPtr == m_endPtr) {
@@ -81,9 +87,10 @@ void CDMRIdleRX::databit(bool bit)
     CDMRSlotType slotType;
     slotType.decode(frame + 1U, colorCode, dataType);
 
-    if (colorCode == m_colorCode && dataType == DT_CSBK) {
-      frame[0U] = CONTROL_IDLE | CONTROL_DATA | DT_CSBK;
+    if (colorCode == m_colorCode) {
+      frame[0U] = CONTROL_IDLE | CONTROL_DATA | dataType;
       serial.writeDMRData(false, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+      io.setDecode(true);
     }
 
     m_endPtr  = NOENDPTR;
