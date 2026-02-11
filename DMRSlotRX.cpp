@@ -88,7 +88,7 @@ bool CDMRSlotRX::databit(bool bit)
 
   m_delayPtr++;
   if (m_delayPtr < m_delay)
-    return (m_state != DMRRXS_NONE);
+    return (m_state != DMRRXS_NONE || m_control != CONTROL_NONE);
 
   WRITE_BIT1(m_buffer, m_dataPtr, bit);
 
@@ -123,7 +123,7 @@ bool CDMRSlotRX::databit(bool bit)
   if (m_dataPtr >= DMR_BUFFER_LENGTH_BITS)
     m_dataPtr = 0U;
 
-  return (m_state != DMRRXS_NONE);
+  return (m_state != DMRRXS_NONE || m_control != CONTROL_NONE);
 }
 
 void CDMRSlotRX::procSlot2()
@@ -140,7 +140,11 @@ void CDMRSlotRX::procSlot2()
       CDMRSlotType slotType;
       slotType.decode(frame + 1U, colorCode, dataType);
 
+#if defined(MS_MODE)
+      if (true) {
+#else
       if (colorCode == m_colorCode) {
+#endif
         m_syncCount = 0U;
         m_n         = 0U;
 
@@ -191,8 +195,7 @@ void CDMRSlotRX::procSlot2()
         }
       }
     } else if (m_control == CONTROL_VOICE) {
-      // Voice sync
-      DEBUG2("DMRSlot2RX: voice sync found pos", m_syncPtr);
+      // Voice sync found
       writeRSSIData();
       m_state     = DMRRXS_VOICE;
       m_syncCount = 0U;
@@ -240,17 +243,19 @@ void CDMRSlotRX::correlateSync()
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_VOICE;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
     }
+#endif
     control = CONTROL_DATA;
-    DEBUG2("DMRSlotRX: BS data sync found", 2);
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
     }
+#endif
     control = CONTROL_VOICE;
-    DEBUG2("DMRSlotRX: BS voice sync found", 2);
   }
 
   if (control != CONTROL_NONE) {
@@ -269,6 +274,7 @@ void CDMRSlotRX::correlateSync()
     m_startPtr = startPtr;
     m_endPtr = endPtr;
     m_control = control;
+    m_modeTimerCnt = 0U;
   }
 }
 
