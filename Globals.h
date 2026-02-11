@@ -24,6 +24,16 @@
 #if defined(STM32F10X_MD)
 #include <stm32f10x.h>
 #include "string.h"
+#ifndef HIGH
+#define HIGH 0x01U
+#endif
+#ifndef LOW
+#define LOW  0x00U
+#endif
+#if !defined(ARDUINO)
+uint32_t millis();
+long random(long min, long max);
+#endif
 #elif defined(STM32F4XX)
 #include "stm32f4xx.h"
 #include "string.h"

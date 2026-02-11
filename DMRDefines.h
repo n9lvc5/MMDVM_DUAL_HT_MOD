@@ -19,6 +19,8 @@
 #if !defined(DMRDEFINES_H)
 #define  DMRDEFINES_H
 
+#include <stdint.h>
+
 const unsigned int DMR_FRAME_LENGTH_BYTES   = 33U;
 const unsigned int DMR_FRAME_LENGTH_BITS    = DMR_FRAME_LENGTH_BYTES * 8U;
 const unsigned int DMR_FRAME_LENGTH_SYMBOLS = DMR_FRAME_LENGTH_BYTES * 4U;
