@@ -84,11 +84,6 @@ void CDMRSlotRX::reset()
 
 bool CDMRSlotRX::databit(bool bit)
 {
-  // Only process TS2
-  if (!m_slot) {
-      return (m_state != DMRRXS_NONE);
-  }
-
   uint16_t min, max;
 
   m_delayPtr++;
@@ -235,9 +230,6 @@ void CDMRSlotRX::procSlot2()
 
 void CDMRSlotRX::correlateSync()
 {
-  if (!m_slot) // Only process TS2
-    return;
-
   uint16_t syncPtr;
   uint16_t startPtr;
   uint16_t endPtr;
@@ -251,16 +243,14 @@ void CDMRSlotRX::correlateSync()
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
     }
-    reset(); // Always ignore BS frames
-    DEBUG2("DMRSlotRX: ignored BS data sync on slot", 2);
-    return;
+    control = CONTROL_DATA;
+    DEBUG2("DMRSlotRX: BS data sync found", 2);
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
     }
-    reset(); // Always ignore BS frames
-    DEBUG2("DMRSlotRX: ignored BS voice sync on slot", 2);
-    return;
+    control = CONTROL_VOICE;
+    DEBUG2("DMRSlotRX: BS voice sync found", 2);
   }
 
   if (control != CONTROL_NONE) {
