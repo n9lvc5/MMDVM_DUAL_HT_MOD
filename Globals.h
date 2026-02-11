@@ -31,8 +31,10 @@
 #define LOW  0x00U
 #endif
 #if !defined(ARDUINO)
-uint32_t millis();
-long random(long min, long max);
+uint32_t mmdvm_millis();
+long mmdvm_random(long min, long max);
+#define millis mmdvm_millis
+#define random mmdvm_random
 #endif
 #elif defined(STM32F4XX)
 #include "stm32f4xx.h"

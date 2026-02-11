@@ -111,25 +111,37 @@ void CDMRTX::process()
     break;
 
   case DMRTXSTATE_REQUEST_CHANNEL:
-    m_wait_timestamp = millis();
-    m_bs_sync_confirmed = false;
-    m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
-    // Potentially send a preamble/request here if needed
+    io.setTX();
+    m_frameCount = 0U;
+    m_state = DMRTXSTATE_PREAMBLE;
+    break;
+
+  case DMRTXSTATE_PREAMBLE:
+    // Send 10 bursts of preamble (MS sync + Idle)
+    createData(1, true);
+    m_frameCount++;
+    if (m_frameCount >= 10U) {
+      m_wait_timestamp = millis();
+      m_bs_sync_confirmed = false;
+      m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
+    }
     break;
 
   case DMRTXSTATE_WAIT_BS_CONFIRM:
     if (m_bs_sync_confirmed) {
       m_state = DMRTXSTATE_SLOT1;
       m_frameCount = 0U;
-      io.setTX();
+      // Stay in TX
     } else if (millis() - m_wait_timestamp > REQUEST_TIMEOUT) {
       if (m_request_retries < MAX_RETRIES) {
         m_request_retries++;
         m_backoff_timer = millis() + random(BACKOFF_MIN, BACKOFF_MAX);
         m_state = DMRTXSTATE_BACKOFF;
+        io.setRX();
       } else {
         m_fifo[1].reset();
         m_state = DMRTXSTATE_IDLE;
+        io.setRX();
       }
     }
     break;

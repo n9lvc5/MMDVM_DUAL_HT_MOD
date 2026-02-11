@@ -206,10 +206,14 @@ void CIO::process()
       case STATE_DMR:
 #if defined(DUPLEX)
         if (m_duplex) {
+#if defined(MS_MODE)
+          dmrRX.databit(bit, control);
+#else
           if (m_tx)
             dmrRX.databit(bit, control);
           else
             dmrIdleRX.databit(bit);
+#endif
         } else
           dmrDMORX.databit(bit);
 #else
@@ -486,3 +490,10 @@ void CIO::getIntCounter(uint16_t &int1, uint16_t &int2)
   m_int1counter = 0U;
   m_int2counter = 0U;
 }
+
+#if !defined(ARDUINO)
+extern CIO io;
+uint32_t get_watchdog_count() {
+  return io.getWatchdog();
+}
+#endif

@@ -123,7 +123,7 @@ bool CDMRSlotRX::databit(bool bit)
   if (m_dataPtr >= DMR_BUFFER_LENGTH_BITS)
     m_dataPtr = 0U;
 
-  return (m_state != DMRRXS_NONE);;
+  return (m_state != DMRRXS_NONE);
 }
 
 void CDMRSlotRX::procSlot2()
@@ -254,6 +254,7 @@ void CDMRSlotRX::correlateSync()
   }
 
   if (control != CONTROL_NONE) {
+    io.setDecode(true);
     syncPtr = m_dataPtr;
 
     startPtr = m_dataPtr + DMR_BUFFER_LENGTH_BITS - DMR_SLOT_TYPE_LENGTH_BITS / 2U - DMR_INFO_LENGTH_BITS / 2U - DMR_SYNC_LENGTH_BITS + 1;
@@ -268,12 +269,6 @@ void CDMRSlotRX::correlateSync()
     m_startPtr = startPtr;
     m_endPtr = endPtr;
     m_control = control;
-
-    if (control == CONTROL_DATA) {
-        DEBUG5("SYNC corr MS Data found slot/pos/start/end:", 2U, m_dataPtr, startPtr, endPtr);
-    } else {
-        DEBUG5("SYNC corr MS Voice found slot/pos/start/end: ", 2U, m_dataPtr, startPtr, endPtr);
-    }
   }
 }
 
