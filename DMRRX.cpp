@@ -40,6 +40,10 @@ void CDMRRX::databit(bool bit, const uint8_t control)
   }
 
   io.setDecode(m_slotRX.databit(bit));
+  
+#if defined(MS_MODE)
+  io.resetWatchdog();
+#endif
 }
 
 void CDMRRX::setColorCode(uint8_t colorCode)

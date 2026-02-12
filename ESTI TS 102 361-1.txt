@@ -9,7 +9,7 @@ digital, PMR
 ETSI 
 650 Route des Lucioles F-06921 Sophia Antipolis Cedex - FRANCE 
 Tel.: +33 4 92 94 42 00   Fax: +33 4 93 65 47 16 
-Siret N° 348 623 562 00017 -APE 7112B Association à but non lucratif enregistrée à la Sous-Préfecture de Grasse (06) N° w061004871 
+Siret NÂ° 348 623 562 00017 -APE 7112B Association Ã  but non lucratif enregistrÃ©e Ã  la Sous-PrÃ©fecture de Grasse (06) NÂ° w061004871 
 Important notice 
 The present document can be downloaded from: 
 https://www.etsi.org/standards-search 
@@ -25,7 +25,7 @@ The information provided in the present deliverable is directed solely to profes
 Any software contained in this deliverable is provided "AS IS" with no warranties, express or implied, including but not limited to, the warranties of merchantability, fitness for a particular purpose and non-infringement of intellectual property rights and ETSI shall not be held liable in any event for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, or any other pecuniary loss) arising out of or related to the use of or inability to use the software. 
 Copyright Notification 
 No part may be reproduced or utilized in any form or by any means, electronic or mechanical, including photocopying and microfilm except as authorized by written permission of ETSI. The content of the PDF version shall not be modified without the written authorization of ETSI. The copyright and the foregoing restriction extend to reproduction in all media. 
-© ETSI 2023. All rights reserved. 
+Â© ETSI 2023. All rights reserved. 
 Contents 
 Intellectual Property Rights................................................................................................................................ 9 
 Foreword ............................................................................................................................................................. 9 
@@ -190,13 +190,13 @@ Modal verbs terminology ........................................................
 9.2 Data related PDU description...........................................................................................................................94 
 9.2.0 Data related PDU description - Introduction ..............................................................................................94 
 9.2.1 Confirmed packet Header (C_HEAD) PDU...............................................................................................94 
-9.2.2 Rate ¾ coded packet Data (R_3_4_DATA) PDU ......................................................................................94 
-9.2.3 Rate ¾ coded Last Data block (R_3_4_LDATA) PDU .............................................................................. 94 
+9.2.2 Rate Â¾ coded packet Data (R_3_4_DATA) PDU ......................................................................................94 
+9.2.3 Rate Â¾ coded Last Data block (R_3_4_LDATA) PDU .............................................................................. 94 
 9.2.4 Confirmed Response packet Header (C_RHEAD) PDU ............................................................................ 95 
 9.2.5 Confirmed Response packet Data (C_RDATA) PDU ................................................................................ 95 
 9.2.6 Unconfirmed data packet Header (U_HEAD) PDU ................................................................................... 96 
-9.2.7 Rate ½ coded packet Data (R_1_2_DATA) PDU ......................................................................................96 
-9.2.8 Rate ½ coded Last Data block (R_1_2_LDATA) PDU .............................................................................. 96 
+9.2.7 Rate Â½ coded packet Data (R_1_2_DATA) PDU ......................................................................................96 
+9.2.8 Rate Â½ coded Last Data block (R_1_2_LDATA) PDU .............................................................................. 96 
 9.2.9 Proprietary Header (P_HEAD) PDU .......................................................................................................... 97 
 9.2.10 Status/Precoded short data packet Header (SP_HEAD) PDU ....................................................................97 
 9.2.11 Raw short data packet Header (R_HEAD) PDU ........................................................................................97 
@@ -262,7 +262,7 @@ B.2.2 Single Burst Variable length BPTC.........................................
 B.2.2.1 Non-Reverse Channel Single Burst BPTC ...............................................................................................126 
 B.2.2.2 Reverse Channel Single Burst BPTC........................................................................................................ 128 
 B.2.3 Variable length BPTC for CACH signalling.................................................................................................. 129 
-B.2.4 Rate ¾ Trellis code .........................................................................................................................................131 
+B.2.4 Rate Â¾ Trellis code .........................................................................................................................................131 
 B.2.5 Rate 1 coded data ...........................................................................................................................................135 
 B.3 Generator matrices and polynomials.................................................................................................... 136 B.3.1 Golay (20,8) ...................................................................................................................................................136 B.3.2 Quadratic residue (16,7,6)..............................................................................................................................137 B.3.3 Hamming (17,12,3) ........................................................................................................................................ 137 
 B.3.4 Hamming (13,9,3), Hamming (15,11,3), and Hamming (16,11,4)................................................................. 138 B.3.5 Hamming (7,4,3) ............................................................................................................................................138 B.3.6 Reed-Solomon (12,9) .....................................................................................................................................139 
@@ -310,7 +310,7 @@ IPRs essential or potentially essential to normative deliverables may have been 
 Pursuant to the ETSI Directives including the ETSI IPR Policy, no investigation regarding the essentiality of IPRs, including IPR searches, has been carried out by ETSI. No guarantee can be given as to the existence of other IPRs not referenced in ETSI SR 000 314 (or the updates on the ETSI Web server) which are, or may be, or may become, essential to the present document. 
 Trademarks 
 The present document may include trademarks and/or tradenames which are asserted and/or registered by their owners. ETSI claims no ownership of these except for any which are indicated as being the property of ETSI, and conveys no right to use or reproduce any trademark and/or tradename. Mention of those trademarks in the present document does not constitute an endorsement by ETSI of products, services or organizations associated with those trademarks. 
-DECT™, PLUGTESTS™, UMTS™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPP™ and LTE™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2M™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSM® and the GSM logo are trademarks registered and owned by the GSM Association. 
+DECTÂ™, PLUGTESTSÂ™, UMTSÂ™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPPÂ™ and LTEÂ™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2MÂ™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSMÂ® and the GSM logo are trademarks registered and owned by the GSM Association. 
 Foreword 
 This Technical Specification (TS) has been produced by ETSI Technical Committee Electromagnetic compatibility and Radio spectrum Matters (ERM). 
 The present document is part 1 of a multi-part deliverable covering the Technical Requirements for Digital Mobile Radio (DMR), as identified below: 
@@ -325,13 +325,13 @@ In the present document "shall", "shall not", "should", "should not", "may", "ne
 Scope 
 The present document contains technical requirements for Digital Mobile Radio (DMR) operating in the existing licensed land mobile service frequency bands, as identified in CEPT/ERC/T/R 25-08 [i.3]. 
 The present document describes the Air Interface of a scalable Digital Mobile Radio system which covers three tiers of possible products: 
-• 
+Â• 
 Tier I: DMR equipment having an integral antenna and working in direct mode (communication without infrastructure) under a general authorization with no individual rights operation. 
 
-• 
+Â• 
 Tier II: DMR systems operating under individual licences working in direct mode or using a Base Station (BS) for repeating. 
 
-• 
+Â• 
 Tier III: DMR trunking systems under individual licences operating with a controller function that automatically regulates the communications. 
 
 
@@ -497,22 +497,22 @@ Physical Layer
 4.1.1 Air Interface Physical Layer (layer 1) 
 The Air Interface layer 1 shall be the physical interface. It shall deal with the physical burst, composed of bits, which is to be sent and/or received. The Physical Layer is described in clause 10. 
 The Air Interface layer 1 shall contain the following functions: 
-• 
+Â• 
 modulation and demodulation; 
 
-• 
+Â• 
 transmitter and receiver switching; 
 
-• 
+Â• 
 RF characteristics; 
 
-• 
+Â• 
 bits and symbol definition; 
 
-• 
+Â• 
 frequency and symbol synchronization; 
 
-• 
+Â• 
 burst building. 
 
 
@@ -520,34 +520,34 @@ burst building.
 4.1.2 Air Interface Data Link Layer (layer 2) 
 The Air Interface layer 2 shall handle logical connections and shall hide the physical medium from the upper layers. The Data Link Layer is described in clauses 5 to 9. 
 The main functions are as follows: 
-• 
+Â• 
 channel coding (FEC, CRC); 
 
-• 
+Â• 
 interleaving, de-interleaving and bit ordering; 
 
-• 
+Â• 
 acknowledgement and retry mechanism; 
 
-• 
+Â• 
 media access control and channel management; 
 
-• 
+Â• 
 framing, superframe building and synchronization; 
 
-• 
+Â• 
 burst and parameter definition; 
 
-• 
+Â• 
 link addressing (source and/or destination); 
 
-• 
+Â• 
 interfacing of voice applications (vocoder data) with the PL; 
 
-• 
+Â• 
 data bearer services; 
 
-• 
+Â• 
 exchanging signalling and/or user data with the CCL. 
 
 
@@ -555,25 +555,25 @@ exchanging signalling and/or user data with the CCL.
 4.1.3 Air Interface Call Control Layer (CCL) (layer 3) 
 Air Interface layer 3 (CCL) is applicable only to the C-plane, and shall be an entity for the services and facilities supported by DMR on top of the layer 2 functionality. The Call Control Layer (CCL) is described in ETSI TS 102 361-2 [5] and may have embedded intrinsic services associated to it. 
 The CCL provides the following functions: 
-• 
+Â• 
 BS activation/deactivation; 
 
-• 
+Â• 
 establishing, maintaining and terminating of calls; 
 
-• 
+Â• 
 individual or group call transmission and reception; 
 
-• 
+Â• 
 destination addressing (DMR IDs or gateway as appropriate); 
 
-• 
+Â• 
 support of intrinsic services (emergency signalling, pre-emption, late entry, etc.); 
 
-• 
+Â• 
 data call control; 
 
-• 
+Â• 
 announcement signalling. 
 
 
@@ -585,10 +585,10 @@ The described solution is based on a 2-slot TDMA structure.
 The physical resource available to the radio system is an allocation of the radio spectrum. The radio spectrum allocation shall be partitioned into Radio Frequency (RF) carriers with each RF carrier partitioned in time into frames and timeslots. 
 A DMR burst is a period of RF carrier that is modulated by a data stream. A burst therefore represents the physical channel of a timeslot. The physical channel of a DMR subsystem is required to support the logical channels. 
 A logical channel is defined as a logical communication pathway between two or more parties. The logical channels represent the interface between the protocol and the radio subsystem. The logical channels may be separated into two categories: 
-• 
+Â• 
 the traffic channels carrying speech or data information; and 
 
-• 
+Â• 
 control channels carrying signalling. 
 
 
@@ -603,41 +603,41 @@ TDMA burst TDMA frame Guard time (30 ms) (60 ms)
 NOTE: The example timing in figure 4.2 applies to a two frequency BS. 
 Figure 4.2: TDMA timing overview 
 Key points illustrated by the figure 4.2 include: 
-• 
+Â• 
 While the BS is actively transmitting, the outbound channel is continuously transmitted, even if there is no information to send. Transmission on the inbound channel is stopped when an MS has no information to transmit. 
 
-• 
+Â• 
 The inbound channel has an unused guard time between bursts to allow Power Amplifier (PA) ramping and propagation delay. 
 
-• 
+Â• 
 The outbound channel has a Common Announcement Channel (CACH) between bursts for traffic channel management (framing and access) as well as low speed signalling. 
 
-• 
+Â• 
 Bursts have either a synchronization pattern or an embedded signalling field located in the centre of the burst. Placing the embedded signalling in the middle of a burst allows time for a transmitting MS to optionally transition to the outbound channel and recover Reverse Channel (RC) information. 
 
 
 Other key points, summarized below but not limited to, are as follows: 
-• 
+Â• 
 The centre of the inbound and outbound bursts shall be time aligned. 
 
-• 
+Â• 
 The channel 1 and 2 bursts in the inbound channel are offset 30 ms in time from the channel 1 and 2 bursts in the outbound channel. This number scheme allows a single channel identifier field in the outbound CACH to use the same channel number when referring to the inbound and outbound channels. 
 
-• 
+Â• 
 Different SYNC patterns are used in voice bursts and data bursts to allow the receiver to differentiate between them. Different SYNC patterns are used for inbound and outbound channels to help the receiver reject co-channel interference. 
 
-• 
+Â• 
 A Colour Code (CC) is present in the embedded signalling field and general data burst to provide a simple means of distinguishing overlapping sites, in order to detect co-channel interference. 
 
 NOTE: The CC is not used for addressing (individual or group). 
 
-• 
+Â• 
 The location of the SYNC bursts in channel 1 is independent from the location of the SYNC bursts in channel 2. The location of SYNC bursts in the inbound channels is independent from the location of the SYNC bursts in the outbound channels. 
 
-• 
+Â• 
 Voice transmissions use a superframe that is 6 bursts (360 ms) long with bursts labelled "A" to "F". Each superframe starts with a voice synchronization pattern in burst A. 
 
-• 
+Â• 
 Data and control do not have a superframe structure. These bursts may contain a synchronization pattern and may also carry embedded signalling, such as RC, when required. 
 
 
@@ -678,45 +678,45 @@ Figure 4.5: BS sourced TDMA frame
 
 4.3 Frame synchronization 
 Frame SYNChronization (SYNC) is provided by a special sequence of bits that mark the location of the centre of a TDMA burst. Receivers may use a matched filter to achieve initial synchronization, using the output of a matched correlator to initialize the symbol recovery parameters to compensate for frequency and deviation errors as well as determine the centre of the burst. Once the receiver is synchronized to a channel, it may use pattern matching to detect the presence of SYNC to verify that the channel is still present and determine the type of SYNC to identify the contents of the burst. Multiple SYNC patterns are used to: 
-• 
+Â• 
 differentiate voice bursts from data/control bursts and from RC bursts; 
 
-• 
+Â• 
 differentiate inbound channels from outbound channels; 
 
-• 
+Â• 
 differentiate repeater channels from TDMA direct mode time slots; 
 
-• 
+Â• 
 differentiate TDMA direct mode time slot 1 from TDMA direct mode time slot 2. 
 
 
 To accomplish this, the following SYNC patterns have been defined (see clause 9.1.1 for details and bit patterns for the frame SYNC): 
-• 
+Â• 
 BS sourced voice; 
 
-• 
+Â• 
 BS sourced data; 
 
-• 
+Â• 
 MS sourced voice; 
 
-• 
+Â• 
 MS sourced data; 
 
-• 
+Â• 
 MS sourced standalone RC. 
 
-• 
+Â• 
 TDMA direct mode time slot 1 voice; 
 
-• 
+Â• 
 TDMA direct mode time slot 1 data; 
 
-• 
+Â• 
 TDMA direct mode time slot 2 voice; 
 
-• 
+Â• 
 TDMA direct mode time slot 2 data. 
 
 
@@ -977,19 +977,19 @@ Figure 5.10 illustrates a single slot inbound data transmission exchange between
 
 Figure 5.10: Dual header data timing 
 The single slot data transmission mode is applicable to: 
-• 
+Â• 
 direct channels; or 
 
-• 
+Â• 
 single frequency repeater; or 
 
-• 
+Â• 
 1:1 repeater systems with RC; or 
 
-• 
+Â• 
 1:1 repeater systems with no RC; or 
 
-• 
+Â• 
 2:1 repeater systems. 
 
 
@@ -1004,10 +1004,10 @@ NOTE: A complete description of the data transmission possibilities will be pres
 1212121212121 
 Figure 5.11: Dual slot data timing 
 The dual slot data transmission mode is applicable to: 
-• 
+Â• 
 direct channels; or 
 
-• 
+Â• 
 1:1 repeater systems with no RC. 
 
 
@@ -1116,13 +1116,13 @@ MS TX
 5.1.5 Reverse Channel (RC) timing 
 5.1.5.0 Reverse Channel (RC) timing -Introduction 
 In order to support certain facilities, both the BS and MS units may send RC signalling back to a source while it is transmitting. The following RCs signalling are defined: 
-• 
+Â• 
 Embedded RC signalling; 
 
-• 
+Â• 
 Dedicated RC signalling; and 
 
-• 
+Â• 
 Standalone RC signalling. 
 
 
@@ -1133,16 +1133,16 @@ Embedded RC signalling has the benefit of using only small amounts of bandwidth 
 Embedded RC signalling utilizes the 48-bit field defined for the centre of the burst in order to provide RC information. This type of channel may be available both in 1:1-mode and 2:1-mode of operation. 
 On the outbound path, embedded RC information is carried on the alternate channel of the intended target MS. For example, calls using outbound channel 2 for traffic will use outbound channel 1 for RC information. 
 The following rules apply to sending outbound RC information: 
-• 
+Â• 
 An RC is sent in place of outbound voice burst F embedded LC during voice packets. 
 
-• 
+Â• 
 An RC in not sent in a voice header or data header, but can be sent in a UDT data header. 
 
-• 
+Â• 
 An RC is not sent in the first burst following a voice transmission (typically a voice terminator burst). 
 
-• 
+Â• 
 Subsequent/repeated RC messages shall occur no sooner than 360 ms after the previous RC message. (Example would be during data continuation bursts.) 
 
 
@@ -1274,12 +1274,12 @@ Figure 5.26: Single frequency (bi-directional) channel
 5.2.1 Basic channel access rules 
 5.2.1.1 Types of channel activity 
 When accessing a channel to transmit, a DMR entity (MS or BS) shall take account of the following types of activity which may already be present on the channel: 
-• 
+Â• 
 DMR activity; 
 
-• other digital protocol activity (see notes 1 and 2); 
+Â• other digital protocol activity (see notes 1 and 2); 
 
-• 
+Â• 
 analogue activity (see note 1). 
 
 
@@ -1312,13 +1312,13 @@ In all other cases of a system is configured for 1:1-mode of operation, then inb
 
 5.2.1.6 Transmit admit criteria 
 Where a MS has been solicited to transmit a response, it may transmit the response in the expected time slot irrespective of whether the channel is CS_Idle or CS_Busy. Additionally, while a MS is partied to a voice call, it may transmit irrespective of whether the channel is CS_Idle or CS_Busy with DMR activity pertaining to the same voice call. However, for all other situations, subscribers shall be configurable to employ the following levels of "politeness" on a channel: 
-• 
+Â• 
 Polite to all: The MS shall refrain from transmitting on a channel while the channel state is CS_Busy with other activity (either DMR or otherwise). 
 
-• 
+Â• 
 Polite to own Colour Code: The MS shall refrain from transmitting on the logical channel while the channel state is CS_Busy with other DMR activity containing the MS's own (see note) Colour Code. For all other types of activity (including DMR activity containing a different Colour Code) already present on the channel, the MS shall transmit regardless. 
 
-• 
+Â• 
 Impolite: The MS shall transmit on a channel regardless of any other activity (either DMR or otherwise) already present on the channel. 
 
 
@@ -1339,10 +1339,10 @@ NOTE 3: Where unexpected DMR activity is detected, certain facilities (e.g. data
 5.2.2.0 Channel access procedure - Introduction 
 The basic channel access rules are given in clause 5.2.1 of the present document. This clause expands upon these rules and uses informative SDL diagrams where necessary to illustrate and highlight specific points in direct mode, TDMA direct mode and repeater mode. Direct, TDMA direct and repeater modes support impolite, polite to own colour code and polite to all channel access mechanisms. Repeater mode also supports a BS outbound activation mechanism that is initiated by the MS. 
 The different MS high level states as defined in annex G are used as the starting MS states when a transmission is requested. Channel access can also be requested from the Out_of_Sync_Channel_Monitored state (PS_OutOfSyncChMon), which is a substate of the Out_of_Sync state (PS_OutOfSync). For non-time critical applications the MS may also transition to the Holdoff state (PS_Holdoff) while waiting for the channel to become CS_Idle. These states are defined below: 
-• 
+Â• 
 Out_of_Sync_Channel_Monitored (PS_OutOfSyncChMon): An MS transitions to this state from PS_OutOfSync after it has been monitoring the RF level and has not found SYNC for a duration of time long enough to establish knowledge of the channel. This time limit is established by the Monitor timer T_Monitor. After the expiration of this timer the MS has determined the channel is idle with respect to DMR activity. In this state the MS continues to monitor the RF level and search for SYNC. 
 
-• 
+Â• 
 Holdoff (PS_Holdoff): An MS transitions to this state when a non-time critical transmission is requested and the channel is busy. Here the transmission request is queued by the MS. If a random holdoff is required the MS starts a random holdoff timer T_Holdoff. The services that allow a transmission to enter this state are defined in ETSI TS 102 361-2 [5]. 
 
 
@@ -1354,10 +1354,10 @@ In direct mode it is possible to initiate channel access from any of the high le
 
 5.2.2.1.1 MS Out_of_Sync Channel Access 
 The three access mechanisms from the High Level MS Out_of_Sync state are illustrated in figure 5.27. This is an informative SDL diagram that generically shows transmission request from the Out_of_Sync state. In the Out_of_Sync state the MS has not resided on the channel long enough to immediately know the status of the channel. Therefore it shall attempt to qualify the channel status. Additionally for completeness, figure 5.27 shows how transitions from Out_of_Sync state to either Out_of_Sync_Channel_Monitored or In_Sync_Unknown_System states occur. States not defined in the MS High Level SDL sections are Out_of_Sync_Find_Sync and In_Sync_Unknown_System_Find_CC. These are defined below: 
-• 
+Â• 
 Out_of_Sync_Find_Sync: After a MS has determined RF is present on the channel it transitions to this state and attempts to synchronize to the signal. Expiration of the Monitor Timer T_Monitor while in this state implies the channel activity is non-DMR. For simplicity, this is illustrated as Find_Sync in figure 5.27. 
 
-• 
+Â• 
 In_Sync_Unknown_System_Find_CC: After a MS has synchronized to the channel it transitions to this state and attempts to decode the Colour Code present on the channel. Expiration of the TX_CC_Timer (T_TxCC) while in this state implies the channel activity is for a different system. For simplicity, this is illustrated as Find_CC in figure 5.27. 
 
 
@@ -1399,10 +1399,10 @@ In repeater mode it is possible to initiate channel access from any of the high 
 
 5.2.2.2.1 MS Out_of_Sync Channel Access 
 In repeater mode channel activity is not sufficient to grant a MS transmission from the High Level Out_of_Sync state. The MS shall first sync to the outbound, match the Colour Code and determine the slotting structure. The three access mechanisms from the Out_of_Sync state are illustrated in figure 5.30. This is an informative SDL diagram that generically shows transmission requests from the Out_of_Sync state. In the Out_of_Sync state the MS has not resided on the channel long enough to immediately know the status of the channel. Therefore it shall attempt to qualify the channel status. Additionally for completeness, figure 5.30 shows how transitions from Out_of_Sync state to either Out_of_Sync_Channel_Monitored or In_Sync_Unknown_System states occur. States not defined in the MS High Level SDL sections or the direct mode channel access section are TX_Wakeup_Message and In_Sync_Unknown_System_Find_CC_Slot. These are defined below: 
-• 
+Â• 
 TX_Wakeup_Message: After a MS has determined that the correct BS outbound is not present, it transitions to this state and transmits a burst to activate the BS outbound. 
 
-• 
+Â• 
 In_Sync_Unknown_System_Find_CC_Slot: After a MS has synchronized to the channel it transitions to this state and attempts to decode the Colour Code present on the channel and the slotting structure of the channel. Expiration of the TX_CC_Slot_Timer (T_TxCCSlot) while in this state implies the channel activity is for a different system. 
 
 
@@ -1503,13 +1503,13 @@ LC/RC payload
 Figure 6.1: Colour legends 
 
 6.1 Vocoder socket 
-The vocoder bits are carried in a voice burst over the air as shown in figure 6.2. Each voice burst provides a "vocoder socket" for 2 × 108 bits vocoder payload (VS) to carry 60 ms of compressed speech. The vocoder bits are labelled VS(0) -VS(215) and are placed in the burst as shown in figure 6.2. 
+The vocoder bits are carried in a voice burst over the air as shown in figure 6.2. Each voice burst provides a "vocoder socket" for 2 Ã— 108 bits vocoder payload (VS) to carry 60 ms of compressed speech. The vocoder bits are labelled VS(0) -VS(215) and are placed in the burst as shown in figure 6.2. 
 VS(215) VS(108) VS(107) VS(0) 
 
 27,5 ms 
 
 Figure 6.2: Generic voice burst 
-Usually more than one vocoder frame is transmitted in the same burst. Each Voice burst is capable of transferring M vocoder frames called VF(1), VF(2), … VF(M) where the vocoder outputs VF(1) before VF(2) and so on, giving them in this order to the transmission path. If this is the case the order of the vocoder frames contained in the same burst shall be such that the MSB of VF(1) is transmitted as VS(215) and the LSB of VF(M) is transmitted as VS(0). All the bits of a given voice frame should be placed contiguously in the burst. 
+Usually more than one vocoder frame is transmitted in the same burst. Each Voice burst is capable of transferring M vocoder frames called VF(1), VF(2), Â… VF(M) where the vocoder outputs VF(1) before VF(2) and so on, giving them in this order to the transmission path. If this is the case the order of the vocoder frames contained in the same burst shall be such that the MSB of VF(1) is transmitted as VS(215) and the LSB of VF(M) is transmitted as VS(0). All the bits of a given voice frame should be placed contiguously in the burst. 
 In addition to vocoder bits, these voice bursts carry either embedded signalling (EMB field + embedded signalling) or frame synchronization (SYNC) in the centre of the burst. This same format is used for both inbound and outbound bursts. 
 Figure 6.3 illustrates a voice burst containing frame synchronization. The SYNC pattern is described in clause 9.1.1. 
 Voice (108)  SYNC (48)  Voice (108)  
@@ -1542,8 +1542,8 @@ CSBK  Carries a control block  BPTC(196,96)
 MBC Header,  Header for multi-block control  BPTC(196,96)  
 MBC Continuation  Follow-on blocks for multi-block control  BPTC(196,96)  
 Data Header  Carries addressing and numbering of packet data blocks  BPTC(196,96)  
-Rate ½ Data Continuation  Payload for rate ½ packet data  BPTC(196,96)  
-Rate ¾ Data Continuation  Payload for rate ¾ packet data  Rate ¾ Trellis  
+Rate Â½ Data Continuation  Payload for rate Â½ packet data  BPTC(196,96)  
+Rate Â¾ Data Continuation  Payload for rate Â¾ packet data  Rate Â¾ Trellis  
 Idle  Fills channel when no info to transmit  BPTC(196,96)  
 Unified Single Block Data  Carries control and/or data payload in a single block  BPTC(196,96)  
 NOTE: This information element is not defined in the present document and is reserved for future use.  
@@ -1586,14 +1586,14 @@ NOTE: The payload, as seen in figure 6.8, may be either vocoder bits for voice b
 7.1 Link Control message structure 
 7.1.0 Link Control message structure -Introduction 
 For Link Control signalling a Full LC message and a Short LC message is defined. The Full Link Control message contains a 72-bit information field and is carried by: 
-• 
+Â• 
 voice and data (embedded); 
 
-• 
+Â• 
 headers; 
 
 
-• terminators. The general structure of the Full Link Control message is shown in figure 7.1. 
+Â• terminators. The general structure of the Full Link Control message is shown in figure 7.1. 
 Bit 7 6 5 4 32 1 0 
 0 1 2 3 4 5Octet 6 7 8 
 PF  R  FLCO  
@@ -1644,7 +1644,7 @@ The inbound voice superframe shall not contain a RC, therefore in order to maint
 A Short LC message has been specifically defined to be carried by the CACH as shown in figure 7.7. The LC PDU has a length of 36 bits and is protected using a block product turbo code as described in clause B.2.3. 
 
 ETSI 
-The resulting FEC matrix is interleaved over multiple CACH bursts for resistance to errors. Each LC fragment is further interleaved with the CACH TACT bits as it is placed into the CACH field. Since the entire payload can be delivered in 4 CACH bursts, one message can be sent every 4 × 30 ms = 120 ms. 
+The resulting FEC matrix is interleaved over multiple CACH bursts for resistance to errors. Each LC fragment is further interleaved with the CACH TACT bits as it is placed into the CACH field. Since the entire payload can be delivered in 4 CACH bursts, one message can be sent every 4 Ã— 30 ms = 120 ms. 
 
 
 7.2 Control Signalling BlocK (CSBK) message structure 
@@ -1720,13 +1720,13 @@ MBC Continuation  02  Intermediate Blocks
 
 8.0 DMR Packet Data Protocol (PDP) - Introduction 
 This clause defines DMR Packet Data Protocol (PDP) for packet data operation. Data messages of arbitrary length are transferred over the DMR Air Interface using a packet technique. The present document supports the following layer 3 protocols: 
-• 
+Â• 
 Internet Protocol. 
 
-• 
+Â• 
 Short Data Protocol. 
 
-• 
+Â• 
 Single Block Data Protocol. 
 
 
@@ -1747,23 +1747,23 @@ The maximum number of fragments of a single datagram is not bounded. Each fragme
 Table 8.1: Octets per data block 
 
 Confirmed/Unconfirmed  FEC coding rate  Data octets per block  
-Confirmed  Rate ½  10  
-Confirmed  Rate ¾  16  
+Confirmed  Rate Â½  10  
+Confirmed  Rate Â¾  16  
 Confirmed  Rate 1  22  
-Unconfirmed  Rate ½  12  
-Unconfirmed  Rate ¾  18  
+Unconfirmed  Rate Â½  12  
+Unconfirmed  Rate Â¾  18  
 Unconfirmed  Rate 1  24  
 
 There is a special block called a header block. One or two header block(s) are sent at the beginning of a data packet. 
 ETSI 
 The maximum number of blocks in a packet, including the header block(s), N_BlockMax is either: 
-a) for rate ½ coded confirmed data: . N _ DFragMax- 6.
+a) for rate Â½ coded confirmed data: . N _ DFragMax- 6.
  (1)
 N _ BlockMax=+1+ N _ HeaderBlocks 
 ..
 10
 .. 
-b) for rate ¾ coded confirmed data: . N _ DFragMax-12
+b) for rate Â¾ coded confirmed data: . N _ DFragMax-12
 .
  (2)
 N _ BlockMax =+1+ N _ HeaderBlocks 
@@ -1777,14 +1777,14 @@ N _ BlockMax=+1+ N _ HeaderBlocks
 ..
 22
 .. 
-d) for rate ½ coded unconfirmed data: N _ DFragMax- 8
+d) for rate Â½ coded unconfirmed data: N _ DFragMax- 8
 ..
  (4)
 N _ BlockMax=+1+ N _ HeaderBlocks 
 ..
 12
 .. 
-e) for rate ¾ coded unconfirmed data: . N _ DFragMax-14
+e) for rate Â¾ coded unconfirmed data: . N _ DFragMax-14
 .
  (5)
 N _ BlockMax=+1+ N _ HeaderBlocks 
@@ -1921,9 +1921,9 @@ The number of blocks in the packet excluding the first header block is indicated
 Data may be sent with either confirmed delivery or unconfirmed delivery. Confirmed delivery is used to require the recipient of the packet to send an acknowledgment of receipt. Unconfirmed delivery is used if the originator of the packet does not require an acknowledgment. The distinction between confirmed and unconfirmed packet is indicated in the Data Packet Format (DPF) field of the header block. 
 
 8.2.2.1 Unconfirmed data block structure 
-The unconfirmed data blocks follow an unconfirmed data header. The data type information element of the SLOT PDU may be either "rate ½ coded", or "rate ¾ rate coded" or "rate 1 coded". During a data transmission the data type information element in the SLOT PDU of the data blocks and therefore the coding rate of the data blocks shall not change. Unconfirmed data blocks using rate ½ coding are packets with 12 octets in each block, where each block is protected with a BPTC(196, 96) code. The last block shall contain a data CRC in the last four octets. The formula for the number of octets of user data is as follows: 
-Number Data Octets = 12 × (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (7) 
-The Unconfirmed data block format when using rate ½ coding is shown in figure 8.11. 
+The unconfirmed data blocks follow an unconfirmed data header. The data type information element of the SLOT PDU may be either "rate Â½ coded", or "rate Â¾ rate coded" or "rate 1 coded". During a data transmission the data type information element in the SLOT PDU of the data blocks and therefore the coding rate of the data blocks shall not change. Unconfirmed data blocks using rate Â½ coding are packets with 12 octets in each block, where each block is protected with a BPTC(196, 96) code. The last block shall contain a data CRC in the last four octets. The formula for the number of octets of user data is as follows: 
+Number Data Octets = 12 Ã— (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (7) 
+The Unconfirmed data block format when using rate Â½ coding is shown in figure 8.11. 
 Non-last data block OR Last data block 
 7 6 5 43 2 1 0 7 6 5 4 3 2 1 0 
 Octet 0
@@ -1956,9 +1956,9 @@ If pad octets > 8)
 11 
 
 
-Unconfirmed data blocks using rate ¾ coding are packets with 18 octets in each block, where each block is protected with a rate ¾ Trellis code. The Last Block shall contain a data CRC in the last four octets. The formula for the number of octets of user data is as follows: 
-Number Data Octets = 18 × (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (8) 
-The Unconfirmed data block format when using rate ¾ coding is shown in figure 8.12. 
+Unconfirmed data blocks using rate Â¾ coding are packets with 18 octets in each block, where each block is protected with a rate Â¾ Trellis code. The Last Block shall contain a data CRC in the last four octets. The formula for the number of octets of user data is as follows: 
+Number Data Octets = 18 Ã— (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (8) 
+The Unconfirmed data block format when using rate Â¾ coding is shown in figure 8.12. 
 
 Non-last data block OR Last data block 
 7 6 5 43 2 10 76 5 43 21 0 
@@ -1993,7 +1993,7 @@ etc.
 
 
 Unconfirmed data blocks using rate 1 coding are packets with 24 octets in each block, where each block is uncoded. The Last Block shall contain a data CRC in the last four octets. The formula for the number of octets of user data is as follows: 
-Number Data Octets = 24 × (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (9) 
+Number Data Octets = 24 Ã— (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (9) 
 The Unconfirmed data block format when using rate 1 coding is shown in figure 8.13. 
 Non-last data block OR Last data block 
 7 6 5 43 2 10 76 5 43 21 0 
@@ -2008,23 +2008,23 @@ etc. 19
 
 
 8.2.2.2 Confirmed data block structure 
-The Confirmed data blocks follow a Confirmed Data Header. The Data Type information element of the SLOT PDU may be either "rate ½ coded", or "rate ¾ rate coded" or "rate 1 coded". During a data transmission the Data Type information element of the SLOT PDU of the data blocks and therefore the coding rate of the data blocks shall not change. In the case of confirmed delivery using rate ¾ coding, a data block contains 16 octets of data, and two octets of control data (a 7-bit block serial number and a 9 bit CRC). The 9 bit CRC is calculated over 7-bit data block serial number concatenated with user data in the block. Each block in the packet, when using rate ¾ coding, is protected with a rate ¾ Trellis code. The formula for the number of octets of user data is as follows: 
-Number Data Octets = 16 × (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (10) 
-The Confirmed data block format when using rate ¾ coding is shown in figure 8.14. 
+The Confirmed data blocks follow a Confirmed Data Header. The Data Type information element of the SLOT PDU may be either "rate Â½ coded", or "rate Â¾ rate coded" or "rate 1 coded". During a data transmission the Data Type information element of the SLOT PDU of the data blocks and therefore the coding rate of the data blocks shall not change. In the case of confirmed delivery using rate Â¾ coding, a data block contains 16 octets of data, and two octets of control data (a 7-bit block serial number and a 9 bit CRC). The 9 bit CRC is calculated over 7-bit data block serial number concatenated with user data in the block. Each block in the packet, when using rate Â¾ coding, is protected with a rate Â¾ Trellis code. The formula for the number of octets of user data is as follows: 
+Number Data Octets = 16 Ã— (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count (10) 
+The Confirmed data block format when using rate Â¾ coding is shown in figure 8.14. 
 Non-last data block OR Last data block 
 7 6 5 4 32 10 76 5 43 21 0 
 
-In the case of confirmed delivery using rate ½ coding, a data block contains 10 octets of data, and two octets of control data (a 7-bit block serial number and a 9 bit CRC). The 9 bit CRC is calculated over 7-bit data block serial number concatenated with user data in the block. 
-Before the FEC encoder, the appropriate Data Type CRC Mask as defined in clause B.3.12 of the present document shall be applied to the 9 bit CRC. Each block in the packet, when using rate ½ coding, is protected with a BPTC(196, 96) code. The formula for the number of octets of user data is as follows: 
-Number Data Octets = 10 × (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count. (11) 
-The Confirmed data block format when using rate ½ coding is shown in figure 8.15. 
+In the case of confirmed delivery using rate Â½ coding, a data block contains 10 octets of data, and two octets of control data (a 7-bit block serial number and a 9 bit CRC). The 9 bit CRC is calculated over 7-bit data block serial number concatenated with user data in the block. 
+Before the FEC encoder, the appropriate Data Type CRC Mask as defined in clause B.3.12 of the present document shall be applied to the 9 bit CRC. Each block in the packet, when using rate Â½ coding, is protected with a BPTC(196, 96) code. The formula for the number of octets of user data is as follows: 
+Number Data Octets = 10 Ã— (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count. (11) 
+The Confirmed data block format when using rate Â½ coding is shown in figure 8.15. 
 
 Non-last data block OR Last data block 
 7 6 5 43 210 7 6 5 4 32 10 
 
 In the case of confirmed delivery using rate 1 coding, a data block contains 22 octets of data, and two octets of control data (a 7-bit block serial number and a 9 bit CRC). The 9 bit CRC is calculated over 7-bit data block serial number concatenated with user data in the block. 
 Before the FEC encoder, the appropriate Data Type CRC Mask as defined in clause B.3.12 of the present document shall be applied to the 9 bit CRC. Each block in the packet, when using rate 1 coding, is unprotected. The formula for the number of octets of user data is as follows: 
-Number Data Octets = 22 × (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count. (12) 
+Number Data Octets = 22 Ã— (Blocks To Follow -no. of additional headers) -4 -Pad Octet Count. (12) 
 The Confirmed data block format when using rate 1 coding is shown in figure 8.16. 
 Non-last data block OR Last data block 
 7 6 5 43 210 7 6 5 4 32 10 
@@ -2111,8 +2111,8 @@ Figure 8.18: Data Terminator Link Control
 
 
 8.2.2.5 Unified Data Transport (UDT) last data block structure 
-The UDT data blocks follow an UDT Data Header. The data type information element of the SLOT PDU shall be "rate ½ coded". Unconfirmed data blocks using rate ½ coding are packets with 12 octets in each block, where each block is protected with a BPTC (196, 96) code. The last block shall contain a data CRC in the last two octets. 
-The UDT last data block format when using rate ½ coding is shown in figure 8.19. 
+The UDT data blocks follow an UDT Data Header. The data type information element of the SLOT PDU shall be "rate Â½ coded". Unconfirmed data blocks using rate Â½ coding are packets with 12 octets in each block, where each block is protected with a BPTC (196, 96) code. The last block shall contain a data CRC in the last two octets. 
+The UDT last data block format when using rate Â½ coding is shown in figure 8.19. 
 7 6 5 4 32 10 
 Octet 0 
 1 
@@ -2159,13 +2159,13 @@ The PAYLOAD information element contains service specific control and/or data in
 9.0 Layer 2 PDU description - Introduction 
 This clause describes the PDUs which apply to the DMR Air Interface layer 2. 
 The following clauses contain descriptions of the PDUs and the information elements contained within them. The structure of the PDU definition represented by the tables is as follows: 
-• 
+Â• 
 the information element column gives the name of the contained element(s); 
 
-• 
+Â• 
 the element length column defines the length of the element in bits; 
 
-• 
+Â• 
 the remarks column contains other information on the information element. 
 
 
@@ -2322,7 +2322,7 @@ Fragment Sequence Number (FSN)  4
 Header CRC  16  The CRC-CCITT shall be used as described in clause B.3.8  
 
 
-9.2.2 Rate ¾ coded packet Data (R_3_4_DATA) PDU 
+9.2.2 Rate Â¾ coded packet Data (R_3_4_DATA) PDU 
 The R_3_4_DATA PDU is used to carry user data for confirmed data delivery as described in clause 8.2.2.2. The R_3_4_DATA PDU, when used for confirmed data, has a length of 144 bits as shown in table 9.11. 
 Table 9.11: R_3_4_DATA PDU content for confirmed data 
 
@@ -2337,7 +2337,7 @@ Information element  Length  Remark
 User Data  144  The user data field may contain pad octets  
 
 
-9.2.3 Rate ¾ coded Last Data block (R_3_4_LDATA) PDU 
+9.2.3 Rate Â¾ coded Last Data block (R_3_4_LDATA) PDU 
 The R_3_4_LDATA PDU is used as the last data block carrying user data for confirmed data delivery as described in clause 8.2.2.2. The R_3_4_LDATA PDU, when used for confirmed data, has a length of 144 bits as shown in table 9.12. 
 Table 9.12: R_3_4_LDATA PDU content for confirmed data 
 
@@ -2405,7 +2405,7 @@ Fragment Sequence Number (FSN)  4
 Header CRC  16  The CRC-CCITT shall be used as described in clause B.3.8  
 
 
-9.2.7 Rate ½ coded packet Data (R_1_2_DATA) PDU 
+9.2.7 Rate Â½ coded packet Data (R_1_2_DATA) PDU 
 The R_1_2_DATA PDU is used to carry user data for confirmed data delivery as described in clause 8.2.2.2. The R_1_2_DATA PDU, when used for confirmed data, has a length of 96 bits as shown in table 9.15A. 
 Table 9.15A: R_1_2_DATA PDU content for confirmed data 
 Information element  Length  Remark  
@@ -2419,7 +2419,7 @@ Information element  Length  Remark
 User Data  96  The user data field may contain pad octets  
 
 
-9.2.8 Rate ½ coded Last Data block (R_1_2_LDATA) PDU 
+9.2.8 Rate Â½ coded Last Data block (R_1_2_LDATA) PDU 
 The R_1_2_LDATA PDU is used as the last data block carrying user data for confirmed data delivery as described in clause 8.2.2.2. The R_1_2_LDATA PDU, when used for confirmed data, has a length of 96 bits as shown in table 9.15B. 
 Table 9.15B: R_1_2_LDATA PDU content for confirmed data 
 Information element  Length  Remark  
@@ -2572,14 +2572,14 @@ NOTE: The user data field may contain up to 20 pad octets.
 9.3 Layer 2 information element coding 
 9.3.0 Layer 2 information element coding - Introduction 
 The following clauses contain descriptions of the information elements contained within layer 2 PDUs, and provide a description of what the elements represent in relation to their bit representation. The structure of the tables is as follows: 
-• 
+Â• 
 the information element column gives the name of the element; 
 
-• 
+Â• 
 the element length column defines the length of the element in bits; 
 
 
-• the value column denotes fixed values or a range of values; the remarks column defines the meaning of the information element against each of its bit represented values. 
+Â• the value column denotes fixed values or a range of values; the remarks column defines the meaning of the information element against each of its bit represented values. 
 
 9.3.1 Colour Code (CC) 
 The CC information element differentiates signalling that originates at another site as shown in table 9.18D. 
@@ -2644,8 +2644,8 @@ Data Type  4  00002  PI Header
 01002  MBC Header  
 01012  MBC Continuation  
 01102  Data Header  
-01112  Rate ½ Data  
-10002  Rate ¾ Data  
+01112  Rate Â½ Data  
+10002  Rate Â¾ Data  
 10012  Idle  
 10102  Rate 1 Data  
 10112  Unified Single Block Data  
@@ -2777,22 +2777,22 @@ Blocks to Follow  7  any  Number of blocks to follow
 The POC information element specifies the number of pad octets which have been appended to the user data octets to form an integer number of blocks as described in table 9.35. 
 The actual number of data octets is: 
 a) 
-for rate ¾ confirmed data type: 16 × (BF - no. of additional headers) - 4 - POC; 
+for rate Â¾ confirmed data type: 16 Ã— (BF - no. of additional headers) - 4 - POC; 
 
 b) 
-for rate ½ confirmed data type: 10 × (BF - no. of additional headers) - 4 - POC; 
+for rate Â½ confirmed data type: 10 Ã— (BF - no. of additional headers) - 4 - POC; 
 
 c) 
-for rate 1 confirmed data type: 22 × (BF - no. of additional headers) -4 - POC; 
+for rate 1 confirmed data type: 22 Ã— (BF - no. of additional headers) -4 - POC; 
 
 d) 
-for rate ¾ unconfirmed data type: 18 × (BF - no. of additional headers) - 4 - POC; 
+for rate Â¾ unconfirmed data type: 18 Ã— (BF - no. of additional headers) - 4 - POC; 
 
 e) 
-for rate ½ unconfirmed data type: 12 × (BF - no. of additional headers) - 4 - POC; 
+for rate Â½ unconfirmed data type: 12 Ã— (BF - no. of additional headers) - 4 - POC; 
 
 f) 
-for rate 1 unconfirmed data type: 24 × (BF - no. of additional headers) - 4 - POC. 
+for rate 1 unconfirmed data type: 24 Ã— (BF - no. of additional headers) - 4 - POC. 
 
 
 Table 9.35: Pad Octet Count information element content 
@@ -3035,25 +3035,25 @@ The maximum BS transmit frequency error from the assigned RF carrier centre shal
 Table 10.1: BS transmit frequency error 
 
 Frequency range  BS maximum frequency error  
-50 MHz to 300 MHz  ±2 ppm  
-300 MHz to 600 MHz  ±1 ppm  
-600 MHz to 800 MHz  ±0,75 ppm  
-800 MHz to 1 GHz  ±0,3 ppm  
+50 MHz to 300 MHz  Â±2 ppm  
+300 MHz to 600 MHz  Â±1 ppm  
+600 MHz to 800 MHz  Â±0,75 ppm  
+800 MHz to 1 GHz  Â±0,3 ppm  
 
 The maximum MS transmit frequency error from the assigned RF carrier centre shall be as defined in table 10.2. 
 Table 10.2: MS transmit frequency error 
 Frequency range  MS maximum frequency error  
-50 MHz to 600 MHz  ±2 ppm  
-600 MHz to 1 GHz  ±1,5 ppm  
+50 MHz to 600 MHz  Â±2 ppm  
+600 MHz to 1 GHz  Â±1,5 ppm  
 
 The method of measurement is defined in ETSI EN 300 113-1 [1] or ETSI EN 300 390-1 [3]. 
 NOTE: In the 600 MHz to 1 GHz range, it is recommended that the MS is frequency locked to the BS to improve system performance. 
 
 10.1.4 Time base clock drift error 
-The maximum time base clock drift error for a MS not supporting TDMA direct mode shall be ±2 ppm. This error is the amount of clock drift that is acceptable during a MS transmission. Before transmission, the MS synchronizes in time with the BS. During transmission, this MS is allowed to deviate in time by the maximum time base clock drift error. 
+The maximum time base clock drift error for a MS not supporting TDMA direct mode shall be Â±2 ppm. This error is the amount of clock drift that is acceptable during a MS transmission. Before transmission, the MS synchronizes in time with the BS. During transmission, this MS is allowed to deviate in time by the maximum time base clock drift error. 
 NOTE 1: This parameter limits operating distance and transmission time in 2:1-mode TDMA operation modes as defined in clause 10.2.3.1.3. 
 For a MS supporting TDMA direct mode the clock drift error shall not exceed the limits of -1,0 to +1,0 ppm.  
-NOTE 2: This is the amount of clock drift that is acceptable for an MS to keep valid channel slot timing for 10 minutes at the clock drift error extremes. Manufacturers need to be aware that this clock drift error includes both temperature stability and aging. As an example, if temperature stability is ±0,5 ppm from -30 °C to +60 °C and aging stability is ±0,5 ppm over 4 years then the part meets the clock drift error specification over a 4 year time period when operated within the -30 °C to +60 °C temperature range. 
+NOTE 2: This is the amount of clock drift that is acceptable for an MS to keep valid channel slot timing for 10 minutes at the clock drift error extremes. Manufacturers need to be aware that this clock drift error includes both temperature stability and aging. As an example, if temperature stability is Â±0,5 ppm from -30 Â°C to +60 Â°C and aging stability is Â±0,5 ppm over 4 years then the part meets the clock drift error specification over a 4 year time period when operated within the -30 Â°C to +60 Â°C temperature range. 
 
 
 10.2 Modulation 
@@ -3090,16 +3090,16 @@ Input  Filter
 
 4FSK Output 
 Figure 10.1: 4FSK modulator 
-The 4FSK modulator shall have the deviation set to provide the proper carrier phase shift for each modulated symbol. The deviation is set with a test signal consisting of the following symbol stream: ...+3 +3 -3 -3 +3 +3 -3 -3… (15) This test signal is processed by the modulator to create a 4FSK signal equivalent to a 1,2 kHz sine wave modulating an FM signal with a peak deviation equal to: 
-2 × 1 944 Hz = 2 749 Hz. (16) The method of measurement employs an FM demodulator to measure both the peak positive and peak negative deviation. The audio bandwidth of the FM demodulator is set with a high pass filter corner frequency = 15 Hz and a low pass filter corner frequency = 3 kHz. 
-NOTE: The de-emphasis function is disabled on the FM demodulator. The peak positive and peak negative deviation specification limits are 2 749 Hz ± 10 %, or 2 474 Hz to 3 024 Hz. 
+The 4FSK modulator shall have the deviation set to provide the proper carrier phase shift for each modulated symbol. The deviation is set with a test signal consisting of the following symbol stream: ...+3 +3 -3 -3 +3 +3 -3 -3Â… (15) This test signal is processed by the modulator to create a 4FSK signal equivalent to a 1,2 kHz sine wave modulating an FM signal with a peak deviation equal to: 
+2 Ã— 1 944 Hz = 2 749 Hz. (16) The method of measurement employs an FM demodulator to measure both the peak positive and peak negative deviation. The audio bandwidth of the FM demodulator is set with a high pass filter corner frequency = 15 Hz and a low pass filter corner frequency = 3 kHz. 
+NOTE: The de-emphasis function is disabled on the FM demodulator. The peak positive and peak negative deviation specification limits are 2 749 Hz Â± 10 %, or 2 474 Hz to 3 024 Hz. 
 
 
 10.2.3 Burst timing 
 10.2.3.0 Burst timing -Introduction 
 The transmissions in a TDMA system consist of short bursts at regular intervals. The timing of these bursts is critical to the performance of a TDMA system. There are two types of bursts defined for the protocol: 
-• Normal Bursts; and 
-• RC Bursts. Both utilize the TDMA frame and slot structure shown in figure 10.2. For some timing examples see also annex C. 
+Â• Normal Bursts; and 
+Â• RC Bursts. Both utilize the TDMA frame and slot structure shown in figure 10.2. For some timing examples see also annex C. 
 Slot 1 Slot 2 
 time 
 Slot 1 Center Slot 2 Center 
@@ -3132,10 +3132,10 @@ The power levels given in the mask during the 27,5 ms symbol transmission period
 0dB p = TxP(t)dt
 27,5 . -13,75 
 where: 
-•
+Â•
  TxP(t) is the instantaneous transmitter power; and 
 
-•
+Â•
  the timing is relative to the slot centre. 
 
 
@@ -3167,24 +3167,24 @@ Each MS shall time synchronize with the BS before transmitting. Therefore actual
 The total timing deviationfrom propagation delay and clock drift error combined bounds howfar an MS transmitting on the second time slot can be from the BS before inter-slot interference may occurwith an MS transmitting on the first time slot in close proximityto the BS. The MSsmay, however, resynchronize timing during transmission negating the impact of clock drift error. 
 In the case where one MS (MS 1) is transmitting on slot 1 in very close proximity to the BS, the 1 ms propagation delay allowance enables another MS (MS 2) to transmit on slot 2 up to 150 km from the BS without inter-slot interference if there is no additional impact of clock drift error. If, however, MS 2 transmits without re-synchronizing during the transmission, time base clock drift error may cause further time deviation from "true" time synchronization and reduce the theoretical range limit below 150 km. Therefore when there is no ongoing clock synchronization it is necessary to make a calculation for both propagation delay and maximum possible clock drift deviation to establish the theoretical distance of the second MS from the base station before inter-slot interference may occur. The amount of time in such a calculation for propagation delay is determined by the intended maximum distance of MS 2 from the BS. The amount of variation from clock drift error is determined by call length. 
 Maximum round trip propagation time is defined by: 
-Maximum Round Trip Propagation Time = 2 × (Maximum Distance Delta/c) (18) 
+Maximum Round Trip Propagation Time = 2 Ã— (Maximum Distance Delta/c) (18) 
 where: 
-• c is the speed of light. 
+Â• c is the speed of light. 
 NOTE 1: The factor of two is included for round trip propagation delay. 
-Taking as an example a 135 km maximum distance of MS2 from the base station, 0,9 ms of the 1 ms allowance will needs to be dedicated to propagation delay. This leaves 0,1 ms for time base clock drift during transmission. The maximum time base clock drift error as specified in clause 10.1.4 is ±2 ppm and worse case occurs when one MS clock drifts fast and one MS clock drifts slow. Under this situation, the MS maximum transmission time is defined by: 
-Maximum Transmission Time = 0,5 × ((Clock Drift Error Allowance) / (Drift per Symbol)) × Symbol Time (19) 
+Taking as an example a 135 km maximum distance of MS2 from the base station, 0,9 ms of the 1 ms allowance will needs to be dedicated to propagation delay. This leaves 0,1 ms for time base clock drift during transmission. The maximum time base clock drift error as specified in clause 10.1.4 is Â±2 ppm and worse case occurs when one MS clock drifts fast and one MS clock drifts slow. Under this situation, the MS maximum transmission time is defined by: 
+Maximum Transmission Time = 0,5 Ã— ((Clock Drift Error Allowance) / (Drift per Symbol)) Ã— Symbol Time (19) 
 where: 
-• 
+Â• 
 clock drift error allowance is 1 ms - Maximum Round Trip Propagation Time; and 
 
-• 
+Â• 
 Drift per Symbol = 0-4 167 ns for 2 ppm clock stability. 
 
 
 NOTE 2: The factor 0,5 is included to take into account drift from two independent MS units drifting in opposite directions in time. 
 For this 135 km case, where Clock Drift Error Allowance = 0,1 ms, the Maximum Transmission Time is 25 s before inter-slot interference will start to occur in a worst case of clock drift error. 
 The same calculation can be made for transmitters with better clock drift performance. 
-For example if the maximum time based error is ±0,5 ppm, MS 2 can be a distance of 146,3 km from the BS and the call will have to exceed 25 s before interference will be experienced in the worst case of clock drift error. 
+For example if the maximum time based error is Â±0,5 ppm, MS 2 can be a distance of 146,3 km from the BS and the call will have to exceed 25 s before interference will be experienced in the worst case of clock drift error. 
 In the case where the MS 1 is also some distance from the BS, the propagation calculations need to take account of the differences in distance between MS 1 and MS 2, not the distance of MS 2 from the BS. The maximum distance in such a case will be limited by a BS unit's sync acquisition window, which is manufacturer specific. For example, where a suitable synch acquisition window exists MS 1 transmitting on slot 1 at a distance of 30 km from the BS enables MS 2 to transmit on slot 2 up to 180 km (150 km + 30 km) km from the BS without inter-slot interference where there is no clock drift error to account for. This may be applicable in deployments when a BS is on a mountain top away from the intended area where radios will be in operational use. 
 
 
@@ -3202,10 +3202,10 @@ The power levels given in the mask are given during the 10 ms symbol transmissio
 . 
 5,0 
 where: 
-• 
+Â• 
 TxP(t) is the instantaneous transmitter power; and 
 
-• 
+Â• 
 the timing is relative to slot centre. 
 
 
@@ -3232,7 +3232,7 @@ Because the RC Burst is so short, there is no danger of inter-slot interference 
 There are different synthesizer lock-time scenarios depending on the type of bursts being sent and received. The synthesizer lock-time specificationwill be determined by the most restrictive case for which the radio is designed. Directmode only radios supporting RC signalling shall require a synthesizer lock-time of 11,25 ms. BSmode radios supporting RC signalling shall require a synthesizer lock time of 6,25 ms. In all cases, lock time is defined to be the time required to lockwithin 100 Hz of the average frequency over the symbol transmission time as defined in clause 10.1.3. 
 
 10.2.3.4 Transient frequency constraints during symbol transmission time 
-To ensure adequate BER performance during the 27,5 ms symbol transmission time, the maximum unmodulated frequency deviation shall be ±100 Hz from the average frequency over the symbol transmission time. The average frequency over the symbol transmission time is defined in clause 10.1.3. 
+To ensure adequate BER performance during the 27,5 ms symbol transmission time, the maximum unmodulated frequency deviation shall be Â±100 Hz from the average frequency over the symbol transmission time. The average frequency over the symbol transmission time is defined in clause 10.1.3. 
 Annex A (normative): Numbering and addressing 
 All Full Link Control messages shall be used to convey a Source Identifier (ID) which shall identify the individual address of the transmitting entity and a Destination ID which shall identify the address of the receiving entity (or entities). The Source and Destination IDs shall always be 24 bits in length. The DMR addressing scheme is shown in table A.1. 
 Table A.1: DMR addressing scheme 
@@ -3273,13 +3273,13 @@ Terminator with LC  BPTC(196,96)  (12,9) Reed-Solomon
 CSBK  BPTC(196,96)  CRC-CCITT  
 Idle message  BPTC(196,96)  none  
 Data header  BPTC(196,96)  CRC-CCITT  
-Rate ½ data continuation  BPTC(196,96)  Unconfirmed: none  
+Rate Â½ data continuation  BPTC(196,96)  Unconfirmed: none  
 Confirmed: CRC-9  
-Rate ½ last data block  BPTC(196,96)  Unconfirmed: 32-bit CRC  
+Rate Â½ last data block  BPTC(196,96)  Unconfirmed: 32-bit CRC  
 Confirmed: 32-bit CRC and CRC-9  
-Rate ¾ data continuation  Rate ¾ Trellis  Unconfirmed: none  
+Rate Â¾ data continuation  Rate Â¾ Trellis  Unconfirmed: none  
 Confirmed: CRC-9  
-Rate ¾ last data block  Rate ¾ Trellis  Unconfirmed: 32-bit CRC  
+Rate Â¾ last data block  Rate Â¾ Trellis  Unconfirmed: 32-bit CRC  
 Confirmed: 32-bit CRC and CRC-9  
 Rate 1 non-last data block  Rate 1 coded  Unconfirmed: none  
 Confirmed: CRC-9  
@@ -3321,7 +3321,7 @@ TX  Transmitted bit
 
 B.1 Block Product Turbo Codes 
 B.1.1 BPTC (196,96) 
-Control signalling, Unconfirmed and Confirmed data is protected using a (196,96) Block Product Turbo Code illustrated in figure B.1. The 96 bits of information, I(0) -I(95) are placed in a 9 row × 11 column matrix as shown. Three reserved bits, R(0) -R(2), are set to zero and added to round out the payload to 99 bits. Each row is protected using a Hamming (15,11,3) code as indicated with the H_Rx bits. Each column is protected using a Hamming (13,9,3) code as indicated with the H_Cx bits. 
+Control signalling, Unconfirmed and Confirmed data is protected using a (196,96) Block Product Turbo Code illustrated in figure B.1. The 96 bits of information, I(0) -I(95) are placed in a 9 row Ã— 11 column matrix as shown. Three reserved bits, R(0) -R(2), are set to zero and added to round out the payload to 99 bits. Each row is protected using a Hamming (15,11,3) code as indicated with the H_Rx bits. Each column is protected using a Hamming (13,9,3) code as indicated with the H_Cx bits. 
 
 
 R(2)  R(1)  R(0)  I(95)  I(94)  I(93)  I(92)  I(91)  I(90)  I(89)  I(88)  H_R1(3)  H_R1(2)  H_R1(1)  H_R1(0)  
@@ -3341,7 +3341,7 @@ Figure B.1: BPTC (196,96)
 
 
 The first step in interleaving the bits for the transmission is to sequentially number the bits of the FEC encoded matrix first from left-to-right and then from top to bottom. Table B.2 lists the bits of the Encoder Matrix along with their corresponding indices. In order to pad out the total number of bits to 196, one additional reserved bit, R(3), is set to zero and added to the matrix and assigned index 0. Each bit is then assigned a new index in the interleaved array where: 
-Interleave Index = Index × 181 modulo 196 (B.1) 
+Interleave Index = Index Ã— 181 modulo 196 (B.1) 
 The value of the Interleave Index determines the location of each bit in the transmission array, which is placed in the payload of the general data burst. 
 Table B.3 lists the bit ordering after interleaving. The Index values 0 to 195 correspond to the Interleave Index from the previous table. The resulting array contains 195 bits, numbered from TX(195) down to TX(0) for placement in the payload of the general data burst. 
 Table B.2: Interleaving indices for BPTC (196,96) 
@@ -3774,7 +3774,7 @@ The non-RC Single Burst FEC is a special case of the embedded signalling code. T
 ETSI 
 
 The first step in interleaving the bits for the transmission is to sequentially number the bits of the FEC encoded matrix from top-to-bottom, left-to-right. Table B.4 lists the bits of the Encoder Matrix along with their corresponding indices. Each bit is then assigned a new index in the interleaved array where: 
-Interleave Index = Index × 17 modulo 32. (B.2) 
+Interleave Index = Index Ã— 17 modulo 32. (B.2) 
 The value of the Interleave Index determines the location of each bit in the transmission array, which is placed in the embedded field. 
 Table B.4: Interleaving indices for non-Reverse Channel Single Burst 
 Bit  Index  Interleave Index 
@@ -3866,7 +3866,7 @@ RC_1
 BPTC Encode Matrix 
 Figure B.4A: Format for Reverse Channel 
 The first step in interleaving the bits for the transmission is to sequentially number the bits of the FEC encoded matrix from top-to-bottom, left-to-right. Table B.5A lists the bits of the Encoder Matrix along with their corresponding indices. Each bit is then assigned a new index in the interleaved array where: 
-Interleave Index = Index × 17 modulo 32. (B.3) 
+Interleave Index = Index Ã— 17 modulo 32. (B.3) 
 The value of the Interleave Index determines the location of each bit in the transmission array, which is placed in the embedded field. 
 Table B.5A: Interleaving indices for Reverse Channel 
 Bit  Index  Interleave Index 
@@ -3952,14 +3952,14 @@ Index  Bit  TX Bit
 B.2.3 Variable length BPTC for CACH signalling 
 The CACH signalling is protected using a BPTC consisting of Hamming (17,12,3) row codes and simple parity checks for the column codes as illustrated in figure B.5. As the message size increases, additional rows are added to the code. If required, pad bits or error detecting checksums are added to the information in order to round out the length to a multiple of 12 bits. 
 
-MSB’s of Encode Matrix Placed Sequentially Into Transmit Matrix 
+MSBÂ’s of Encode Matrix Placed Sequentially Into Transmit Matrix 
 
 
 BPTC Encode Matrix: N Rows, 17 Columns 
 
 Transmit Matrix N Rows, 17 Columns Figure B.5: Format for CACH BPTC 
 The interleaving schedule for the CACH signalling is also shown in figure B.5. The signalling information, Hamming parity bits, and simple parity check bits are represented in their FEC encoded form as the BPTC Encode Matrix. The bits are interleaved for transition by reading the columns of the encoded matrix top-to-bottom and left-to-right and writing the bits into the Transmit Matrix rows left-to-right. Each row of the resulting Transmit Matrix has a length of 17 bits and is placed in the payload field of sequential CACH bursts. 
-Figure B.6 illustrates the specifics of encoding Short LC messages for transmission in the CACH. The 3 ½ octets of LC information, LC(27) -LC(0), are placed in the matrix as shown. A 1-byte CRC, CR(7) -CR(0), is also added. This CRC is defined in clause B.3.7. 
+Figure B.6 illustrates the specifics of encoding Short LC messages for transmission in the CACH. The 3 Â½ octets of LC information, LC(27) -LC(0), are placed in the matrix as shown. A 1-byte CRC, CR(7) -CR(0), is also added. This CRC is defined in clause B.3.7. 
 CACH 1 CACH 2 CACH 3 CACH 4 
 
 P(16) P(15) P(14) P(13) P(12) P(11) P(10) P(9) P(8) P(7) P(6) P(5) P(4) P(3) P(2) P(1) P(0) 
@@ -3967,18 +3967,18 @@ Transmit Matrix Figure B.6: Format for Short LC in CACH
 The interleaving schedule for the 4-burst CACH message is also shown in figure B.6. The signalling information (LC), Hamming parity bits (Hx), and parity check bits (PC) are represented in their FEC encoded form as the BPTC Encode Matrix. The parity check bits (PC) shall be chosen such that each column of the BPTC matrix has an even number of "one" bits. Each of the four rows of the Transmit Matrix is placed in sequential CACH bursts. 
 For the Short LC messages an 8-bit CRC shall be used as described in clause B.3.7. 
 
-B.2.4 Rate ¾ Trellis code 
-The data blocks for Unconfirmed and Confirmed data packets use a rate ¾ trellis code. The encoding process of the rate ¾ code is diagrammed in figure B.7. 
+B.2.4 Rate Â¾ Trellis code 
+The data blocks for Unconfirmed and Confirmed data packets use a rate Â¾ trellis code. The encoding process of the rate Â¾ code is diagrammed in figure B.7. 
 
 The encoding process begins by serializing a sequence of octets as shown, from left to right, and then separating the result into a serial stream of tribits. Each tribit contains three bits with the most significant bit to the left and the least significant bit to the right. Consequently, each tribit is represented by an octal number in the range 0 to 7. The tribit stream is applied to the trellis encoder, starting with tribit 0 and ending with tribit m-1. 
 Table B.6: Trellis code word sizes 
-Rate ¾  
+Rate Â¾  
 Input Size  48 tribits  
 Output Size  98 dibits  
 (n,k)  (196,144)  
 
-The Trellis encoder is implemented as a finite state machine, or FSM. It appends a 0002 tribit at the end of the stream to flush out the final state. The dibits on the output are mapped to ±1, ±3 amplitudes and then interleaved before being modulated. 
-The Trellis encoder receives m tribits as input, and outputs 2m dibits. The encoding process is diagrammed below in figure B.8. The encoder is an 8-state Finite State Machine (FSM) for the code rate ¾, with an initial state of zero. The FSM used in this particular implementation has the special property of having the current input as the next state. For each tribit input, there is a corresponding output constellation point which is represented as a dibit pair. 
+The Trellis encoder is implemented as a finite state machine, or FSM. It appends a 0002 tribit at the end of the stream to flush out the final state. The dibits on the output are mapped to Â±1, Â±3 amplitudes and then interleaved before being modulated. 
+The Trellis encoder receives m tribits as input, and outputs 2m dibits. The encoding process is diagrammed below in figure B.8. The encoder is an 8-state Finite State Machine (FSM) for the code rate Â¾, with an initial state of zero. The FSM used in this particular implementation has the special property of having the current input as the next state. For each tribit input, there is a corresponding output constellation point which is represented as a dibit pair. 
 
 Figure B.8: Trellis encoder block diagram 
 The state transition is shown in table B.7. The output of the state transition table is one of 16 constellation points. The constellation to dibit pair mapping is shown in table B.8. 
@@ -4006,8 +4006,8 @@ Constellation Point  Dibit 0  Dibit 1  Constellation Point  Dibit 0  Dibit 1
 6  -1  -3  14  +3  +1  
 7  +1  -3  15  -3  +1  
 
-Interleaving is done for data blocks for the code rate ¾. The purpose of the interleaver is to spread burst errors due to Rayleigh fading over the 98 dibit block. In the interleaver, the dibit array is rearranged to form another dibit array according to the interleave table shown in table B.9. 
-Table B.9: Interleaving schedule for rate ¾ Trellis code 
+Interleaving is done for data blocks for the code rate Â¾. The purpose of the interleaver is to spread burst errors due to Rayleigh fading over the 98 dibit block. In the interleaver, the dibit array is rearranged to form another dibit array according to the interleave table shown in table B.9. 
+Table B.9: Interleaving schedule for rate Â¾ Trellis code 
 Interleave Table  
 Enc Index  Input Index  Enc Index  Input Index  Enc Index  Input Index  Enc Index  Input Index  
 0  0  26  2  50  4  74  6  
@@ -4038,7 +4038,7 @@ Enc Index  Input Index  Enc Index  Input Index  Enc Index  Input Index  Enc Inde
 25  97  
 
 Table B.10 provides the transmit bit order based on the interleaving schedule. The 98 Trellis Dibits that are placed in the general data burst for transmission are listed out along with the corresponding dibits that are output from the encoder. 
-Table B.10: Transmit bit ordering for rate ¾ Trellis code 
+Table B.10: Transmit bit ordering for rate Â¾ Trellis code 
 
 Index  TX Dibit  Dibit  
 0  Trellis_Dibit(97)  Enc_Dibit(0)  
@@ -4483,17 +4483,17 @@ Table B.18: Reed-Solomon (12,9) generator matrix
 00  00  00  00  00  00  00  01  00  6C  0D  A7  
 00  00  00  00  00  00  00  00  01  0E  38  40  
 
-Calculation of the three parity bytes using the generator matrix method is summarized in the following formulas: c = m × G (B.11) 
+Calculation of the three parity bytes using the generator matrix method is summarized in the following formulas: c = m Ã— G (B.11) 
 where the arithmetic is done in GF(28), with: m = (mK-1, mK-2, ... m0) (B.12) 
 c = (mK-1, mK-2, ... m0, p2, p1, p0) (B.13) 
 where: 
-• 
+Â• 
 m = message vector of K octets where K = 9; 
 
-• 
+Â• 
 G = generator matrix, K rows by N columns; 
 
-• 
+Â• 
 c = code word vector of N octets where N = 12. 
 
 
@@ -4503,10 +4503,10 @@ Arithmetic in GF(28) consists of addition and multiplication. Addition is easy f
 a8 + a4 + a3 + a2 + 1 (B.14) with
  ae = b7 a7 + b6 a6 + ... b1 a + b0 (B.15) 
 where: 
-• 
+Â• 
 e = exponent expressed in decimal radix; 
 
-• 
+Â• 
 b = hexadecimal representation of bits (b7, b6, ... b1, b0). 
 
 
@@ -4559,22 +4559,22 @@ The 8-bit parity field for both the 4-burst CACH Short LC message and the Hash A
  G8(x) = x8 + x2 + x + 1 (B.16) 
 of the product of x8 multiplied by the content of the data polynomial M(x). For the 8-bit CRC calculation there is no inversion polynomial and the initial remainder shall be 000000002. 
 For the Short LC, consider the 28 bits (SLCO and Data information elements as defined in clause 7.1 of the present document) as the message polynomial, M(x), of degree 27, with: 
-• 
+Â• 
 bit 3 of octet 0 corresponding to the x27 term; 
 
-• 
+Â• 
 bit 2 of octet 0 corresponding to the x26 term, etc.; 
 
-• 
+Â• 
 bit 1 of octet 3 corresponding to the x1 term; 
 
-• 
+Â• 
 bit 0 of octet 3 corresponding to the x0 term. 
 
 
 For the Hash ID information element consider the 24 bits of the destination address as the message polynomial, M(x), of degree 23, with: 
-• MSB of destination address corresponding to the x23 term, etc.; 
-• LSB of destination address corresponding to the x0 term. NOTE: Hash ID information element is defined in ETSI TS 102 361-2 [5]. The 8-bit CRC polynomial, F8(x), shall be computed from the formula:
+Â• MSB of destination address corresponding to the x23 term, etc.; 
+Â• LSB of destination address corresponding to the x0 term. NOTE: Hash ID information element is defined in ETSI TS 102 361-2 [5]. The 8-bit CRC polynomial, F8(x), shall be computed from the formula:
  F8(x) = x8 M(x) mod G8(x)  (B.17) modulo 2, i.e. in GF(2). For the Short LC the coefficients of F8(x) are placed in the CRC field with the MSB of the CRC corresponding to x7 
 and the LSB of the CRC corresponding x0. For the Hash ID information element the MSB of the CRC corresponds to the MSB of the Hash ID and the LSB of the CRC corresponds to the LSB of the Hash ID. 
 
@@ -4593,7 +4593,7 @@ The message CRC is a 4-octet cyclic redundancy check coded over all of the user 
 The user data and pad bits begin as an arrangement of 16-bit words as illustrated in figure B.8AA. Each 16-bit word comprises a Most Significant Octet (MSO) and a Least Significant Octet (LSO). 
 Most Significant Octet Least Significant Octet (MSO) (LSO) 
 Word0 Word1 Word2 
-Word(k/16 – 2) Word(k/16 – 1) 
+Word(k/16 Â– 2) Word(k/16 Â– 1) 
 
 MSB
 LSBMSB
@@ -4602,7 +4602,7 @@ Figure B.8AA: User data and pad octets arranged as 16-bit words
 The first octet of user data (8-bit character) shall be loaded into the MSO of Word 0, then the second octet of user data shall be loaded into the LSO of Word 0. The third octet of user data shall be loaded into the MSO of Word 1 and this continues until the LSO of Word k/16 -1 is loaded last. 
 Let k be the total number of user data and pad bits over which the message CRC is to be calculated. To compute the 32-bit CRC, the 16-bit words are arranged linearly using the following format, where the least significant octet of a word appears before the most significant octet of the same word. This is illustrated in figure B.8B. 
 Octet 0 Octet 1 Octet 2 Octet 3 Octet 4 Octet 5 
-Octet (k/8 – 6) Octet (k/8 – 5) Octet (k/8 – 4) Octet (k/8 – 3) Octet (k/8 – 2) Octet (k/8 – 1) 
+Octet (k/8 Â– 6) Octet (k/8 Â– 5) Octet (k/8 Â– 4) Octet (k/8 Â– 3) Octet (k/8 Â– 2) Octet (k/8 Â– 1) 
 bk-1  Word 0 LSO  bk-8  
 bk-9  Word 0 MSO  bk-16  
 bk-17  Word 1 LSO  bk-24  
@@ -4643,46 +4643,46 @@ Figure B.8C: Ordering of CRC octets
 ETSI 
 B.3.10 CRC-9 calculation 
 For confirmed data blocks the transmitter computes the CRC-9 as follows. First, the block data and the seven bits of the serial number are arranged as a sequence of bits, with the serial number being the last seven bits. For a non-last data block the block data is the user data. For a last data block the block data is the user data and the message CRC. The CRC-9 calculation applies to the following block data sizes: 
-• 
-Rate ½ coded confirmed (10 data octets): 80 bit sequence. 
+Â• 
+Rate Â½ coded confirmed (10 data octets): 80 bit sequence. 
 
-• 
-Rate ¾ coded confirmed (16 data octets): 128 bit sequence. 
+Â• 
+Rate Â¾ coded confirmed (16 data octets): 128 bit sequence. 
 
 
-• Rate 1 coded confirmed (22 data octets): 176 bit sequence. The naming convention of the block data bits for a Rate ¾ coded confirmed data block is illustrated in figure B.8D. 
+Â• Rate 1 coded confirmed (22 data octets): 176 bit sequence. The naming convention of the block data bits for a Rate Â¾ coded confirmed data block is illustrated in figure B.8D. 
 
-Figure B.8D: Rate ¾ coded confirmed user data bit numbering 
-The sequence of bits is then considered to be the coefficients of a message polynomial, M(x). M(x) will be of degree 134 for rate ¾ coded confirmed data blocks and M(x) will be of degree 86 for rate ½ coded confirmed data blocks and M(x) will be of degree 182 for rate 1 coded confirmed data blocks. For example M(x) for the rate ¾ coded confirmed data block case is: 
-• 
+Figure B.8D: Rate Â¾ coded confirmed user data bit numbering 
+The sequence of bits is then considered to be the coefficients of a message polynomial, M(x). M(x) will be of degree 134 for rate Â¾ coded confirmed data blocks and M(x) will be of degree 86 for rate Â½ coded confirmed data blocks and M(x) will be of degree 182 for rate 1 coded confirmed data blocks. For example M(x) for the rate Â¾ coded confirmed data block case is: 
+Â• 
 bit 7 of block data octet 0 corresponding to a coefficient of the x134 term; 
 
-• 
+Â• 
 bit 6 of block data octet 0 corresponding to the x133 term; 
 
-• 
+Â• 
 etc.; 
 
-• 
+Â• 
 bit 1 of block data octet 15 corresponding to the x8 term; 
 
-• 
+Â• 
 bit 0 of block data octet 15 corresponding to the x7 term; 
 
-• 
+Â• 
 bit 6 of the Serial Number corresponding to the x6 term; 
 
-• 
+Â• 
 bit 5 of the Serial Number corresponding to the x5 term; 
 
-• 
+Â• 
 etc.; 
 
-• 
+Â• 
 bit 1 of the Serial Number corresponding to the x1 term; 
 
 
-• bit 0 of the Serial Number corresponding to the x0 term. Define the generator polynomial, G9(x), and the inversion polynomial, I9(x):
+Â• bit 0 of the Serial Number corresponding to the x0 term. Define the generator polynomial, G9(x), and the inversion polynomial, I9(x):
  G9(x) = x9 + x6 + x4 + x3 + 1 (B.23) I9(x) = x8 + x7 + x6 + ...+ x + 1 (B.24) 
 The CRC-9 polynomial, F9(x), shall be computed from the formula:
  F9(x) = (x9 M(x) mod G9(x)) + I9(x)  (B.25) 
@@ -4690,7 +4690,7 @@ modulo 2, i.e. in GF(2).
 The coefficients of F9(x) are placed in the CRC-9 field as illustrated in figure 8.12 of the present document with the MSB corresponding to bit 0 of octet 0, the next most significant bit corresponding to bit 7 of octet 1, and the LSB corresponding to bit 0 of octet 1. For the CRC-9 calculation the initial remainder shall be 0000000002. 
 
 B.3.11 5-bit Checksum (CS) calculation 
-The calculation for the 5-bit CS is given by formula (B.26), where the summation is done with unsigned arithmetic in a 16-bit accumulator (maximum value is 9 × 255 = 2 295) where the values for LC_x are the octets of the 72-bit LC as shown in figure B.3. The calculation yields a 5-bit CS in the range 0 to 30. 
+The calculation for the 5-bit CS is given by formula (B.26), where the summation is done with unsigned arithmetic in a 16-bit accumulator (maximum value is 9 Ã— 255 = 2 295) where the values for LC_x are the octets of the 72-bit LC as shown in figure B.3. The calculation yields a 5-bit CS in the range 0 to 30. 
 CS = [LC_0 + LC_1 + ... + LC_8] mod 31 (B.26) 
 
 B.3.12 Data Type CRC Mask 
@@ -4706,8 +4706,8 @@ MBC Header  AAAA16
 MBC Continuation, see note 1  - 
 Data Header  CCCC16  
 Unified Single Block Data  333316  
-Rate ½ Data Continuation, see note 2  0F016  
-Rate ¾ Data Continuation, see note 2  1FF16  
+Rate Â½ Data Continuation, see note 2  0F016  
+Rate Â¾ Data Continuation, see note 2  1FF16  
 Rate 1 Data Continuation, see note 2  10F16  
 Idle, see note 1  - 
 Reverse Channel, see note 3  7A16  
@@ -4741,17 +4741,17 @@ The 7-bit parity field for the RC Info shall be a 7-bit CRC. It shall be the rem
  G7(x) = x7 + x5 + x2 + x + 1 (B.27) 
 of the product of x7 multiplied by the content of the data polynomial M(x). For the 7-bit CRC calculation there is no inversion polynomial and the initial remainder shall be 00000002. 
 For the Reverse channel, consider the 4 bits (RC info payload information elements as defined in table 9.6 of the present document) as the message polynomial, M(x), of degree 3, with: 
-• 
+Â• 
 bit 3 of RC info corresponding to the x3 term; 
 
-• 
+Â• 
 bit 2 of RC info corresponding to the x2 term; 
 
-• 
+Â• 
 bit 1 of RC info corresponding to the x1 term; 
 
 
-• bit 0 of RC info corresponding to the x0 term. NOTE: RC info information element is defined in ETSI TS 102 361-4 [11]. The 7-bit CRC polynomial, F7(x), shall be computed from the formula:
+Â• bit 0 of RC info corresponding to the x0 term. NOTE: RC info information element is defined in ETSI TS 102 361-4 [11]. The 7-bit CRC polynomial, F7(x), shall be computed from the formula:
  F7(x) = x7 M(x) mod G7(x)  (B.28) modulo 2, i.e. in GF(2). For the RC Info the coefficients of F7(x) are placed in the CRC field with the MSB of the CRC corresponding to x6 and 
 the LSB of the CRC corresponding x0. 
 
@@ -4947,7 +4947,7 @@ Table E.1: Transmit bit order for BPTC general data burst with SYNC
 
 Table E.2: Transmit bit order for BPTC general data burst with RC 
 
-Table E.3: Transmit bit order for rate ¾ data burst with SYNC 
+Table E.3: Transmit bit order for rate Â¾ data burst with SYNC 
 
 Symbol  Bit 1  Bit 0  Symbol  Bit 1  Bit 0  Symbol  Bit 1  Bit 0  
 L66  R(3)  H_R1(2)  L22  H_C14(2)  H_C12(1)  R23  I(75)  H_R3(0)  
@@ -5085,7 +5085,7 @@ L25  Trellis_Dibit(56)  R20  Trellis_Dibit(46)  R64  Trellis_Dibit(2)
 L24  Trellis_Dibit(55)  R21  Trellis_Dibit(45)  R  Trellis_Dibit(1)  
 L23  Trellis_Dibit(54)  R22  Trellis_Dibit(44)  R66  Trellis_Dibit(0)  
 
-Table E.4: Transmit bit order for rate ¾ data burst with Reverse Channel 
+Table E.4: Transmit bit order for rate Â¾ data burst with Reverse Channel 
 
 Table E.5: Transmit bit order for voice burst with SYNC (burst A) 
 
@@ -5462,7 +5462,7 @@ NOTE 6: The Random_Holdoff_Timer is a MS mode timer. It is used when a non-time 
 NOTE 7: A use case example is data messages that are queued while the MS is waiting for the channel to become idle. This will reduce collisions at the BS. 
 
 F.2 Layer 2 constants 
-N_RssiLo RSSI threshold value for monitoring channel activity. Recommended default values for Polite to All channel access policy are shown in table F.1. Recommended default value for Polite to Own Colour Code channel access policy is -122 dBm. The absolute accuracy shall not exceed ±4 dB. 
+N_RssiLo RSSI threshold value for monitoring channel activity. Recommended default values for Polite to All channel access policy are shown in table F.1. Recommended default value for Polite to Own Colour Code channel access policy is -122 dBm. The absolute accuracy shall not exceed Â±4 dB. 
 Table F.1: Recommended default Polite to All N_RssiLo threshold levels 
 Frequency band  Default threshold level (dBm)  
 50 MHz to 137 MHz  -101  
@@ -5487,18 +5487,18 @@ NOTE: These levels will be referenced for various facilities in ETSI TS 102 361-
 
 G.1.1 MS Level 1 SDL 
 The MS Level 1 SDLs are shown in figure G.1 for direct mode, figure G.2 for repeater mode and figure G.3 for TDMA direct mode respectively. The Level 1 states are Out_of_Sync and In_Sync. These are defined below: 
-• 
+Â• 
 Out_of_Sync: This state occurs when the MS has not acquired or has lost sync on the channel. This can occur due to numerous reasons, stemming from lack of signal or co-channel interference from analogue or digital radios to travelling through a deep fade. 
 
-• 
+Â• 
 In_Sync: This state occurs after a MS has successfully detected DMR voice or data sync. In this state the MS searches for matching Colour Code in direct mode and matching Colour Code and outbound slotting structure in repeater mode. 
 
 
 The In_Sync state is further divided into 2 levels. These are Unknown_System and My_System. Descriptions of these states are listed below. 
-• 
+Â• 
 Unknown_System: This state occurs when the Colour Code in direct mode or both the Colour Code and slot number identifier in repeater mode or TDMA direct mode are unknown to the receiver MS. If the Colour Code does not match or sync is lost, the MS transitions to the Out_of_Sync state. If the Colour Code matches and the slotting structure is determined (repeater mode only) the MS transitions to the My_System state. 
 
-• 
+Â• 
 My_System: This state occurs when the Colour Code in direct mode or both the Colour Code and slot number identifier in repeater mode are known to the receiver MS. If sync is lost or the Colour Code can no longer be decoded, the MS transitions to the Out_of_Sync state. It will also transition to the Out_of_Sync state when it loses confidence in the Colour Code. 
 
 
@@ -5509,21 +5509,21 @@ My_System: This state occurs when the Colour Code in direct mode or both the Col
 G.1.2 MS Level 2 SDL 
 The MS Level 2 SDL occurs in the Level 1 In_Sync_My_System state. These are the same for direct mode, repeater mode and TDMA direct mode and are illustrated in figure G.4. The Level 2 states are Not_in_Call, My_Call, Others_Call, In_Session and Transmit. These are defined below: 
 NOTE 1: Group Call HMSC and MSCs reference these states. 
-• 
+Â• 
 Not_in_Call: An MS resides in this state when it is unable to determine a destination ID. In repeater mode this can occur during channel hangtime. Determination of a destination ID transitions the MS to either My_Call, Others_Call or In_Session state. 
 
-• 
+Â• 
 My_Call: In this state the MS talk group(s) or individual ID is decoded during voice traffic via a Voice_LC_Header or an Embedded_LC. Here the MS is party to the call. 
 
-• 
+Â• 
 Others_Call: An MS transitions to this state when the received talk group(s) or individual ID does not match the talk group(s) or individual ID of the MS. While in this state if a new ID matches, then it will transition to either My_Call if received via a Voice_LC_Header or an Embedded_LC or In_Session if received via a Voice_Terminator_with_LC. 
 
 NOTE 2: This state includes the reception of both voice and call hangtime for the other call. 
 
-• 
+Â• 
 In_Session: An MS transitions to this state when the MS talk group(s) or individual ID is decoded via a Voice_Terminator_with_LC. This is call hangtimeHere the MS is party to the call. 
 
-• 
+Â• 
 Transmit: In this state the MS transmits voice, data or CSBKs in the appropriate slot. 
 
 
@@ -5537,21 +5537,21 @@ G.5 and G.6, BOR and EOR are events that cause High Level BS transitions. These 
 
 G.2.1 BS Both Slots SDL 
 The BS Both Slots SDL describes the overall control of both slots and is illustrated in figure G.5. The states are BR_Hibernating, Hangtime, Repeating_Slot_1, Repeating_Slot_2 and Repeating_Both_Slots. These states are defined below: 
-• 
+Â• 
 BS_Hibernating: In this state the BS is attempting to decode a valid wakeup message from an MS. The outbound is inactive during this state. Upon reception of a valid wakeup message the BS starts a Mobile Station Inactivity Timer (T_MSInactiv) and transitions to the Hangtime state. 
 
 NOTE: The T_MSInactiv is a timer that starts when no valid activity is detected on the inbound channel or upon the reception of a valid wakeup message. Reception of valid activity with the exception of the wakeup message cancels the T_MSInactiv. 
 
-• 
+Â• 
 Hangtime: In this state the BS is transmitting channel hangtime (Idle) messages on both slots. The reception of bursts will transition the BS to the appropriate repeating state; Repeating_Slot_1 or Repeating_Slot_2. Also, the expiration of the T_MSInactiv will transition the BS back to the BR_Hibernating state. 
 
-• 
+Â• 
 Repeating_Slot_1: In this state the BS is actively repeating bursts on slot 1 and transmitting Idle messages on slot 2. An EOR_Slot_1 will transition the BS to the Hangtime state. A BOR_Slot_2 will transition the BS to the Repeating_Both_Slots state. 
 
-• 
+Â• 
 Repeating_Slot_2: In this state the BS is actively repeating bursts on slot 2 and transmitting Idle messages on slot 1. An EOR_Slot_2 will transition the BS to the Hangtime state. A BOR_Slot_1 will transition the BS to the Repeating_Both_Slots state. 
 
-• 
+Â• 
 Repeating_Both_Slots: In this state the BS is repeating activity on both slots. An EOR_Slot_1 or EOR_Slot_2 will transition the BS to the respective Repeating_Slot_1 or Repeating_Slot_2 states. 
 
 
@@ -5559,13 +5559,13 @@ Repeating_Both_Slots: In this state the BS is repeating activity on both slots. 
 
 G.2.2 BS Single Slot SDL 
 The BS Single Slot SDL describes the overall control of one of the two TDMA slots and is illustrated in figure G.6. The states are Channel_Hangtime, Call_Hangtime, and Repeating_Slot. These states are defined below: 
-• 
+Â• 
 Channel_Hangtime: In this state the BS is transmitting channel hangtime (Idle) messages on the slot. The reception of bursts will transition the BS to the Repeating_Slot state. 
 
-• 
+Â• 
 Call_Hangtime: In this state the BS is transmitting call hangtime (Voice_Terminator_with_LC) messages on the slot. The reception of bursts will transition the BS to the Repeating_Slot state. Also, the expiration of call hangtime transitions the BS slot to the Channel_Hangtime state. 
 
-• 
+Â• 
 Repeating_Slot: In this state the BS is actively repeating bursts on the slot. An EOR will transition the BS to the Call_Hangtime state. 
 
 
@@ -5605,7 +5605,7 @@ Table J.1: Change requests
 No  Standard Version  Clauses affected or description  Title  
 001  1.1.1  B.2.1, B.2.3  Clarification for BPTC parity calculation  
 002  1.1.1  7.2, 9.1.8, 9.3.31and addition of 7.4  Add MBC message structure to Part 1 of standard for document consistency  
-003  1.1.1  8.2.2.1, 8.2.2.2, 9.2.1, 9.2.2, 9.2.3, 9.2.4, 9.2.5, 9.2.6, 9.2.7, 9.2.8, 9.3.6, 9.3.22  Change data slot types of confirmed and unconfirmed data to ½ rate and ¾ rate coding  
+003  1.1.1  8.2.2.1, 8.2.2.2, 9.2.1, 9.2.2, 9.2.3, 9.2.4, 9.2.5, 9.2.6, 9.2.7, 9.2.8, 9.3.6, 9.3.22  Change data slot types of confirmed and unconfirmed data to Â½ rate and Â¾ rate coding  
 004  1.1.1  New clauses 8.2.1.5, 8.2.1.6, 8.2.1.7, 9.2.10, 9.2.11, 9.2.12, 9.3.33, 9.3.34, 9.3.35, 9.3.36, 9.3.37, 9.3.38  Add short data header block structure to Part 1 of standard for document consistency  
 005  1.1.1  6.2 table 6.1  Table 6.1 has to be updated according the changes of CR002 and CR003  
 006  1.1.1  Annex B table B.1  Table B.1 has to be updated according the changes of CR002 and CR003  
@@ -5630,7 +5630,7 @@ No  Standard Version  Clauses affected or description  Title
 025  1.4.1  Annex E table E.4  Table E.4 Correction  
 026  1.4.1  8.2.1.3, 9.2.1, 9.2.4, 9.2.5, 9.2.6, 9.2.11, 9.2.12 and 9.3.20  Response Data header correction  
 027  1.4.1  Annex B table B.1  Table B.1 correction  
-028  1.4.1  B.1.1, B.2.4  Rate ½ and Rate ¾ editorial changes  
+028  1.4.1  B.1.1, B.2.4  Rate Â½ and Rate Â¾ editorial changes  
 029  1.4.1  6.1  Vocoder Socket Voice Frame order  
 030  1.4.1  8.2.2.1, 8.2.2.2, 9.2.2, 9.2.7  Confirmed and Unconfirmed Data  
 031  1.4.1  9.2.8, 9.2.14  Clause 8.3 reference removal  
@@ -5641,7 +5641,7 @@ No  Standard Version  Clauses affected or description  Title
 034  1.4.1  6.2, 8.2, 8.2.2.1, 8.2.2.2, 9.2, 9.3.22, 9.3.6, B, B.2, B.3.12  Rate 1 Data transmission  
 035  1.4.1  8.2.1.3, 8.2.1.4, 8.2.1.5, 8.2.1.6, 8.2.1.7, 8.2.1.8, 9.2.1, 9.2.4, 9.2.6, 9.2.10, 9.2.11, 9.2.12, 9.2.13  DPF and Format alignment  
 036  1.4.1  F.1 and F.2  Layer 2 Timer and Constant Changes  
-037  1.4.1  9.2.8  Rate ½ Last Data Block Corrections  
+037  1.4.1  9.2.8  Rate Â½ Last Data Block Corrections  
 038  1.4.1  5.2.1.4, 5.2.2.1.1, 5.2.2.2.1, 5.2.2.2.4 and 7.3  Typo Changes  
 039  1.4.1  5.1.1.1 and 5.1.1.2  Slot Numbering Clarification  
 040  1.4.1  9.3.33  Appended Blocks Clarification Note  

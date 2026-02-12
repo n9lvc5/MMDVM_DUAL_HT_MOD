@@ -958,9 +958,6 @@ void CIO::interrupt2()
     m_last_clk2 = clk;
 
   if (m_duplex) {
-    // Standard DMR sampling on rising edge if clock is 9600Hz
-    // If it's 4800Hz symbol clock, we might need both edges.
-    // We sample on high level for now to mimic RISING interrupt behavior but with state check.
     if (clk == 1U) {
       if (RXD2_pin())
         bit = 1U;
