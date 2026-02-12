@@ -376,6 +376,15 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
       io.ifConf(STATE_POCSAG, true);
   }
 
+#if defined(DUPLEX) && defined(MS_MODE)
+  // Force DMR mode and ensure second ADF7021 is configured for RX in MS_MODE
+  if (m_dmrEnable && m_duplex) {
+    m_modemState = STATE_DMR;
+    m_modemState_prev = STATE_DMR;
+    io.ifConf(STATE_DMR, true);
+  }
+#endif
+
   io.start();
 #if defined(ENABLE_DEBUG)
   io.printConf();

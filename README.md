@@ -1,6 +1,9 @@
 # Introduction 
 # DO NOT TRY THIS VERSION, I"M STILL WORKING ON, IT DOES NOT WORK YET
 
+Adrino - Generic STM32F103C Series, 20k Ram, 64k Flash, smallest, upload Serial.
+Additonal Board Manager URL http://dan.drown.org/stm32duino/package_STM32duino_index.json
+
 Using a board similar to https://github.com/phl0/MMDVM_HS_Dual_Hat and instructions
 It has two ADF7021. 
 Using a 14.74 oscillator. 
@@ -49,4 +52,5 @@ HS = Hotspot MMDVM
 
 
     
+
 

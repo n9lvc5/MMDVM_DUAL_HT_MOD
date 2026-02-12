@@ -39,7 +39,8 @@ m_scanPos(0U),
 m_ledValue(true),
 m_watchdog(0U),
 m_int1counter(0U),
-m_int2counter(0U)
+m_int2counter(0U),
+m_last_clk2(0U)
 {
   Init();
 
@@ -113,10 +114,21 @@ void CIO::process()
   if (m_started) {
     // Two seconds timeout
     if (m_watchdog >= 19200U) {
+#if defined(MS_MODE)
+      // In MS_MODE (wireless bridge), keep DMR mode active for continuous RX
+      // Only timeout if we're not in DMR mode with duplex enabled
+      if (!(m_modemState == STATE_DMR && m_duplex)) {
+        if (m_modemState == STATE_DSTAR || m_modemState == STATE_DMR || m_modemState == STATE_YSF || m_modemState == STATE_P25 || m_modemState == STATE_NXDN || m_modemState == STATE_M17) {
+          m_modemState = STATE_IDLE;
+          setMode(m_modemState);
+        }
+      }
+#else
       if (m_modemState == STATE_DSTAR || m_modemState == STATE_DMR || m_modemState == STATE_YSF || m_modemState == STATE_P25 || m_modemState == STATE_NXDN || m_modemState == STATE_M17) {
         m_modemState = STATE_IDLE;
         setMode(m_modemState);
       }
+#endif
 
       m_watchdog = 0U;
     }
@@ -187,6 +199,7 @@ void CIO::process()
 
   if(m_modeTimerCnt >= scantime) {
     m_modeTimerCnt = 0U;
+#if !defined(MS_MODE)
     if( (m_modemState == STATE_IDLE) && (m_scanPauseCnt == 0U) && m_scanEnable && !m_cwid_state && !m_pocsag_state) {
       m_scanPos = (m_scanPos + 1U) % m_TotalModes;
       #if !defined(QUIET_MODE_LEDS)
@@ -194,6 +207,7 @@ void CIO::process()
       #endif
       io.ifConf(m_Modes[m_scanPos], true);
     }
+#endif
   }
 
   if (m_rxBuffer.getData() >= 1U) {
@@ -206,10 +220,14 @@ void CIO::process()
       case STATE_DMR:
 #if defined(DUPLEX)
         if (m_duplex) {
+#if defined(MS_MODE)
+          dmrRX.databit(bit, control);
+#else
           if (m_tx)
             dmrRX.databit(bit, control);
           else
             dmrIdleRX.databit(bit);
+#endif
         } else
           dmrDMORX.databit(bit);
 #else
@@ -486,3 +504,10 @@ void CIO::getIntCounter(uint16_t &int1, uint16_t &int2)
   m_int1counter = 0U;
   m_int2counter = 0U;
 }
+
+#if !defined(ARDUINO)
+extern CIO io;
+uint32_t get_watchdog_count() {
+  return io.getWatchdog();
+}
+#endif

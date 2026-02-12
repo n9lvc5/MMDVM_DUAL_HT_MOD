@@ -84,16 +84,11 @@ void CDMRSlotRX::reset()
 
 bool CDMRSlotRX::databit(bool bit)
 {
-  // Only process TS2
-  if (!m_slot) {
-      return (m_state != DMRRXS_NONE);
-  }
-
   uint16_t min, max;
 
   m_delayPtr++;
   if (m_delayPtr < m_delay)
-    return (m_state != DMRRXS_NONE);
+    return (m_state != DMRRXS_NONE || m_control != CONTROL_NONE);
 
   WRITE_BIT1(m_buffer, m_dataPtr, bit);
 
@@ -128,7 +123,7 @@ bool CDMRSlotRX::databit(bool bit)
   if (m_dataPtr >= DMR_BUFFER_LENGTH_BITS)
     m_dataPtr = 0U;
 
-  return (m_state != DMRRXS_NONE);;
+  return (m_state != DMRRXS_NONE || m_control != CONTROL_NONE);
 }
 
 void CDMRSlotRX::procSlot2()
@@ -145,7 +140,11 @@ void CDMRSlotRX::procSlot2()
       CDMRSlotType slotType;
       slotType.decode(frame + 1U, colorCode, dataType);
 
+#if defined(MS_MODE)
+      if (true) {
+#else
       if (colorCode == m_colorCode) {
+#endif
         m_syncCount = 0U;
         m_n         = 0U;
 
@@ -196,8 +195,7 @@ void CDMRSlotRX::procSlot2()
         }
       }
     } else if (m_control == CONTROL_VOICE) {
-      // Voice sync
-      DEBUG2("DMRSlot2RX: voice sync found pos", m_syncPtr);
+      // Voice sync found
       writeRSSIData();
       m_state     = DMRRXS_VOICE;
       m_syncCount = 0U;
@@ -219,6 +217,9 @@ void CDMRSlotRX::procSlot2()
           frame[0U] = ++m_n;
         }
 
+#if defined(MS_MODE)
+        serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+#endif
         serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
       } else if (m_state == DMRRXS_DATA) {
         if (m_type != 0x00U) {
@@ -235,9 +236,6 @@ void CDMRSlotRX::procSlot2()
 
 void CDMRSlotRX::correlateSync()
 {
-  if (!m_slot) // Only process TS2
-    return;
-
   uint16_t syncPtr;
   uint16_t startPtr;
   uint16_t endPtr;
@@ -247,23 +245,42 @@ void CDMRSlotRX::correlateSync()
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_VOICE;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+    control = CONTROL_DATA;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+    control = CONTROL_VOICE;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
     }
-    reset(); // Always ignore BS frames
-    DEBUG2("DMRSlotRX: ignored BS data sync on slot", 2);
-    return;
+#endif
+    control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
     }
-    reset(); // Always ignore BS frames
-    DEBUG2("DMRSlotRX: ignored BS voice sync on slot", 2);
-    return;
+#endif
+    control = CONTROL_VOICE;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+#endif
+    control = CONTROL_DATA;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+#endif
+    control = CONTROL_VOICE;
   }
 
   if (control != CONTROL_NONE) {
+    io.setDecode(true);
     syncPtr = m_dataPtr;
 
     startPtr = m_dataPtr + DMR_BUFFER_LENGTH_BITS - DMR_SLOT_TYPE_LENGTH_BITS / 2U - DMR_INFO_LENGTH_BITS / 2U - DMR_SYNC_LENGTH_BITS + 1;
@@ -278,12 +295,7 @@ void CDMRSlotRX::correlateSync()
     m_startPtr = startPtr;
     m_endPtr = endPtr;
     m_control = control;
-
-    if (control == CONTROL_DATA) {
-        DEBUG5("SYNC corr MS Data found slot/pos/start/end:", 2U, m_dataPtr, startPtr, endPtr);
-    } else {
-        DEBUG5("SYNC corr MS Voice found slot/pos/start/end: ", 2U, m_dataPtr, startPtr, endPtr);
-    }
+    m_modeTimerCnt = 0U;
   }
 }
 
@@ -344,8 +356,14 @@ void CDMRSlotRX::writeRSSIData()
   frame[34U] = (rssi >> 8) & 0xFFU;
   frame[35U] = (rssi >> 0) & 0xFFU;
 
+#if defined(MS_MODE)
+  serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 3U);
+#endif
   serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #else
+#if defined(MS_MODE)
+  serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+#endif
   serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
 }

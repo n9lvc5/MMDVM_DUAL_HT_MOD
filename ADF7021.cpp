@@ -946,14 +946,26 @@ void CIO::interrupt()
 void CIO::interrupt2()
 {
   uint8_t bit = 0U;
+  uint8_t clk = 0U;
+  if (CLK2_pin())
+    clk = 1U;
+  else
+    clk = 0U;
+
+  if (clk == m_last_clk2)
+    return;
+  else
+    m_last_clk2 = clk;
 
   if (m_duplex) {
-    if (RXD2_pin())
-      bit = 1U;
-    else
-      bit = 0U;
+    if (clk == 1U) {
+      if (RXD2_pin())
+        bit = 1U;
+      else
+        bit = 0U;
 
-    m_rxBuffer.put(bit, m_control);
+      m_rxBuffer.put(bit, m_control);
+    }
   }
 
   m_int2counter++;

@@ -24,6 +24,18 @@
 #if defined(STM32F10X_MD)
 #include <stm32f10x.h>
 #include "string.h"
+#ifndef HIGH
+#define HIGH 0x01U
+#endif
+#ifndef LOW
+#define LOW  0x00U
+#endif
+#if !defined(ARDUINO)
+uint32_t mmdvm_millis();
+long mmdvm_random(long min, long max);
+#define millis mmdvm_millis
+#define random mmdvm_random
+#endif
 #elif defined(STM32F4XX)
 #include "stm32f4xx.h"
 #include "string.h"
@@ -70,6 +82,13 @@ const uint8_t  MARK_NONE  = 0x00U;
 #include "DMRIdleRX.h"
 #include "DMRRX.h"
 #include "DMRTX.h"
+
+#ifndef HIGH
+#define HIGH 1U
+#endif
+#ifndef LOW
+#define LOW 0U
+#endif
 #endif
 
 #include "DStarRX.h"

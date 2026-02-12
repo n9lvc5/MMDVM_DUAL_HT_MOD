@@ -105,7 +105,11 @@ void CDMRDMORX::databit(bool bit)
       CDMRSlotType slotType;
       slotType.decode(frame + 1U, colorCode, dataType);
 
+#if defined(MS_MODE)
+      if (true) {
+#else
       if (colorCode == m_colorCode) {
+#endif
         m_syncCount = 0U;
         m_n         = 0U;
 
@@ -177,6 +181,9 @@ void CDMRDMORX::databit(bool bit)
         } else {
           frame[0U] = ++m_n;
         }
+#if defined(MS_MODE)
+        serial.writeDMRData(false, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+#endif
         serial.writeDMRData(true, frame, DMR_FRAME_LENGTH_BYTES + 1U);
       } else if (m_state == DMORXS_DATA) {
         if (m_type != 0x00U) {
@@ -200,9 +207,48 @@ void CDMRDMORX::databit(bool bit)
 
 void CDMRDMORX::correlateSync()
 {
+  uint8_t control = CONTROL_NONE;
+
   if ( (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) || \
-    (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_S2_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) ) {
-    m_control = CONTROL_DATA;
+    (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_S2_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) || \
+    (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) ) {
+    control = CONTROL_DATA;
+  } else if ( (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) || \
+    (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_S2_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) || \
+    (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) ) {
+    control = CONTROL_VOICE;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+#endif
+    control = CONTROL_DATA;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+#endif
+    control = CONTROL_VOICE;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+#endif
+    control = CONTROL_DATA;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(DUPLEX)
+    if (dmrTX.isWaitingForBSSync()) {
+      dmrTX.confirmBSSync();
+    }
+#endif
+    control = CONTROL_VOICE;
+  }
+
+  if (control != CONTROL_NONE) {
+    m_control = control;
     m_syncPtr = m_dataPtr;
 
     m_startPtr = m_dataPtr + DMO_BUFFER_LENGTH_BITS - DMR_SLOT_TYPE_LENGTH_BITS / 2U - DMR_INFO_LENGTH_BITS / 2U - DMR_SYNC_LENGTH_BITS + 1;
@@ -214,22 +260,7 @@ void CDMRDMORX::correlateSync()
       m_endPtr -= DMO_BUFFER_LENGTH_BITS;
 
     m_modeTimerCnt = 0;
-    //DEBUG4("SYNC MS Data found pos/start/end:", m_dataPtr, m_startPtr, m_endPtr);
-  } else if ( (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) || \
-    (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_S2_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) ) {
-    m_control  = CONTROL_VOICE;
-    m_syncPtr  = m_dataPtr;
-
-    m_startPtr = m_dataPtr + DMO_BUFFER_LENGTH_BITS - DMR_SLOT_TYPE_LENGTH_BITS / 2U - DMR_INFO_LENGTH_BITS / 2U - DMR_SYNC_LENGTH_BITS + 1;
-    if (m_startPtr >= DMO_BUFFER_LENGTH_BITS)
-      m_startPtr -= DMO_BUFFER_LENGTH_BITS;
-
-    m_endPtr   = m_dataPtr + DMR_SLOT_TYPE_LENGTH_BITS / 2U + DMR_INFO_LENGTH_BITS / 2U;
-    if (m_endPtr >= DMO_BUFFER_LENGTH_BITS)
-      m_endPtr -= DMO_BUFFER_LENGTH_BITS;
-
-    m_modeTimerCnt = 0;
-    //DEBUG4("SYNC MS Voice found pos/start/end: ", m_dataPtr, m_startPtr, m_endPtr);
+    io.setDecode(true);
   }
 }
 
@@ -286,8 +317,14 @@ void CDMRDMORX::writeRSSIData(uint8_t* frame)
   frame[34U] = (rssi >> 8) & 0xFFU;
   frame[35U] = (rssi >> 0) & 0xFFU;
   
+#if defined(MS_MODE)
+  serial.writeDMRData(false, frame, DMR_FRAME_LENGTH_BYTES + 3U);
+#endif
   serial.writeDMRData(true, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #else
+#if defined(MS_MODE)
+  serial.writeDMRData(false, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+#endif
   serial.writeDMRData(true, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
 }

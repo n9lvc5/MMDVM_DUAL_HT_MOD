@@ -215,7 +215,7 @@ void CIO::startInt()
 #endif
 
 #if defined(DUPLEX)
-  attachInterrupt(PIN_TXD2, EXT_IRQHandler2, RISING);
+  attachInterrupt(PIN_TXD2, EXT_IRQHandler2, CHANGE);
 #endif
 }
 
@@ -259,6 +259,11 @@ void CIO::SLE2_pin(bool on)
 bool CIO::RXD2_pin()
 {
   return digitalRead(PIN_RXD2) == HIGH;
+}
+
+bool CIO::CLK2_pin()
+{
+  return digitalRead(PIN_TXD2) == HIGH;
 }
 #endif
 
