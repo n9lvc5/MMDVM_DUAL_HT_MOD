@@ -8,7 +8,7 @@ air interface, digital, PMR, protocol, radio
 ETSI 
 650 Route des Lucioles F-06921 Sophia Antipolis Cedex - FRANCE 
 Tel.: +33 4 92 94 42 00   Fax: +33 4 93 65 47 16 
-Siret N° 348 623 562 00017 -APE 7112B Association à but non lucratif enregistrée à la Sous-Préfecture de Grasse (06) N° w061004871 
+Siret NÂ° 348 623 562 00017 -APE 7112B Association Ã  but non lucratif enregistrÃ©e Ã  la Sous-PrÃ©fecture de Grasse (06) NÂ° w061004871 
 Important notice 
 The present document can be downloaded from: 
 https://www.etsi.org/standards-search 
@@ -24,7 +24,7 @@ The information provided in the present deliverable is directed solely to profes
 Any software contained in this deliverable is provided "AS IS" with no warranties, express or implied, including but not limited to, the warranties of merchantability, fitness for a particular purpose and non-infringement of intellectual property rights and ETSI shall not be held liable in any event for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, or any other pecuniary loss) arising out of or related to the use of or inability to use the software. 
 Copyright Notification 
 No part may be reproduced or utilized in any form or by any means, electronic or mechanical, including photocopying and microfilm except as authorized by written permission of ETSI. The content of the PDF version shall not be modified without the written authorization of ETSI. The copyright and the foregoing restriction extend to reproduction in all media. 
-© ETSI 2023. All rights reserved. 
+Â© ETSI 2023. All rights reserved. 
 
 Contents 
 Intellectual Property Rights................................................................................................................................ 8 
@@ -238,7 +238,7 @@ IPRs essential or potentially essential to normative deliverables may have been 
 Pursuant to the ETSI Directives including the ETSI IPR Policy, no investigation regarding the essentiality of IPRs, including IPR searches, has been carried out by ETSI. No guarantee can be given as to the existence of other IPRs not referenced in ETSI SR 000 314 (or the updates on the ETSI Web server) which are, or may be, or may become, essential to the present document. 
 Trademarks 
 The present document may include trademarks and/or tradenames which are asserted and/or registered by their owners. ETSI claims no ownership of these except for any which are indicated as being the property of ETSI, and conveys no right to use or reproduce any trademark and/or tradename. Mention of those trademarks in the present document does not constitute an endorsement by ETSI of products, services or organizations associated with those trademarks. 
-DECT™, PLUGTESTS™, UMTS™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPP™ and LTE™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2M™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSM® and the GSM logo are trademarks registered and owned by the GSM Association. 
+DECTÂ™, PLUGTESTSÂ™, UMTSÂ™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPPÂ™ and LTEÂ™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2MÂ™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSMÂ® and the GSM logo are trademarks registered and owned by the GSM Association. 
 
 Foreword 
 This Technical Specification (TS) has been produced by ETSI Technical Committee Electromagnetic compatibility and Radio spectrum Matters (ERM). 
@@ -397,22 +397,22 @@ Physical Layer
 4.1.1 Air Interface Physical Layer (layer 1) 
 The Air Interface layer 1 shall be the physical interface. It shall deal with the physical burst, composed of bits, which is to be sent and/or received. The Physical Layer is described in ETSI TS 102 361-1 [1]. 
 The Air Interface layer 1 contains the following functions: 
-• 
+Â• 
 modulation and demodulation; 
 
-• 
+Â• 
 transmitter and receiver switching; 
 
-• 
+Â• 
 RF characteristics; 
 
-• 
+Â• 
 bits and symbol definition; 
 
-• 
+Â• 
 frequency and symbol synchronization; 
 
-• 
+Â• 
 burst building. 
 
 
@@ -420,34 +420,34 @@ burst building.
 4.1.2 Air Interface Data Link Layer (layer 2) 
 The Air Interface layer 2 shall handle logical connections and shall hide the physical medium from the upper layers. The Data Link Layer is described in ETSI TS 102 361-1 [1]. 
 The main functions are as follows: 
-• 
+Â• 
 channel coding (FEC, CRC); 
 
-• 
+Â• 
 interleaving, de-interleaving and bit ordering; 
 
-• 
+Â• 
 acknowledgement and retry mechanism; 
 
-• 
+Â• 
 media access control and channel management; 
 
-• 
+Â• 
 framing, superframe building and synchronization; 
 
-• 
+Â• 
 burst and parameter definition; 
 
-• 
+Â• 
 link addressing (source and/or destination); 
 
-• 
+Â• 
 interfacing of voice applications (vocoder data) with the PL; 
 
-• 
+Â• 
 data bearer services; 
 
-• 
+Â• 
 exchanging signalling and/or user data with the CCL. 
 
 
@@ -455,22 +455,22 @@ exchanging signalling and/or user data with the CCL.
 4.1.3 Air Interface layer 3 (CCL) 
 Air Interface layer 3 (CCL) is applicable only to the C-plane, and shall be an entity for the services and features supported by DMR on top of the layer 2 functionality. The Call Control Layer is described in the present document and may have embedded intrinsic services associated to it. 
 The CCL provides the following functions: 
-• 
+Â• 
 BS activation; 
 
-• 
+Â• 
 establishing, maintaining and terminating of calls; 
 
-• 
+Â• 
 individual or group call transmission and reception; 
 
-• 
+Â• 
 destination addressing (DMR IDs or gateway as appropriate); 
 
-• 
+Â• 
 support of intrinsic services (emergency signalling, pre-emption, late entry, etc.); 
 
-• 
+Â• 
 announcement signalling. 
 
 
@@ -535,13 +535,13 @@ If "Repeater Mode MS established timing" is used, the BS may activate its outbou
 Figure 5.3 illustrates the BS decision process when its receiver synchronizes to an MS sourced sync pattern while in the BS_Hibernating state. This figure is informative with respect to the order of qualification. 
 If either the Colour Code does not match or the slot type is not CSBK the BS shall stay in the BS_Hibernating state. If both the Colour Code matches and the slot type is CSBK the BS shall start Mobile Station Inactivity timer T_MSInactive, which is defined in clause F.1 of ETSI TS 102 361-1 [1], and shall transition to the Hangtime state. 
 Figure 5.3 illustrates the minimum requirement for BS activation. Additionally, manufacturers may also validate any and or all of the following: 
-• 
+Â• 
 CSBKO; 
 
-• 
+Â• 
 SFID; 
 
-• 
+Â• 
 Destination (BS) Address and Source Address. 
 
 
@@ -573,13 +573,13 @@ Figure 5.8: BS_Outbound_Deactivation
 5.1.1.6.0 General 
 Channel Authorization requires the BS to select one MS unit from one or more MS units attempting to transmit during hangtime, where hangtime can be either channel hangtime or call hangtime. It applies to Polite channel access during channel hangtime for voice, data and CSBK call types and applies to In Call access during call hangtime for voice. It does not apply to Impolite channel access. Therefore the channel authorization process is applicable to both channel hangtime and call hangtime for a voice call. It is only applicable to channel hangtime for a data or CSBK transmission. 
 During Hangtime a MS initiates a transmission by sending a single burst on the payload channel. This is titled the ChanAuth PDU and is dependent upon the call type: 
-• 
+Â• 
 Voice: ChanAuth PDU = Voice header. 
 
-• 
+Â• 
 Data: ChanAuth PDU = CSBK Preamble. 
 
-• 
+Â• 
 CSBK: ChanAuth PDU = CSBK Preamble. 
 
 
@@ -670,16 +670,16 @@ The following MSCs attempt to show a decomposition of the MS functional layers a
 
 5.2.1.3.3.1 MS MSC PTT 
 Figure 5.12 illustrates the MS CCL receiving a PTT_Request primitive. Though the action boxes in figure 5.12 indicate this is a BOC, the MSC with respect to the primitives is the same if the MS is in one of the following states: 
-• 
+Â• 
 My_Call; 
 
-• 
+Â• 
 Not_in_Call; 
 
-• 
+Â• 
 In_Session; or 
 
-• 
+Â• 
 Other_Call. 
 
 
@@ -770,10 +770,10 @@ The Individual Call service provides voice service between one individual user a
 NOTE: The selection procedure is implementation specific and is not part of the present document. 
 5.2.2.1 Service description 
 Individual Call initiation or Beginning Of Call (BOC) may occur in one of two defined call setup methods: 
-• 
+Â• 
 the first method is a Press And Talk Call Setup (PATCS); and 
 
-• 
+Â• 
 the second method is an Off Air Call SetUp (OACSU). 
 
 
@@ -878,10 +878,10 @@ The all call is made in the same manner as a group voice call using one of a set
 The all call requires the same bursts as group call service, which is defined in clause 5.2.1. For an all call the group address of Grp_V_Ch_Usr PDU shall be set to one of the reserved All Unit IDs values, as defined in annex A (DMR addressing scheme) of ETSI TS 102 361-1 [1]. Additionally the Service Options Broadcast Field of the Grp_V_Ch_Usr PDU shall be set to 12. This indicates to the BS that this is a one way voice call and no call hangtime is to be generated. 
 5.3.2.2 MS All call control 
 The all call control follows the SDL, HMSC and MSC schemes of Group Call, shown in clause 5.2.1 with the following exceptions: 
-• 
+Â• 
 the absence of call hangtime will move the MS from the My_Call state to the Not_in_Call state in repeater mode; and 
 
-• 
+Â• 
 the In_Session state is not relevant to all call in repeater mode as there is no call hangtime. 
 
 
@@ -911,27 +911,27 @@ The open voice channel mode service allows users to monitor and participate to t
 From the voice activity originator's point of view the OVCM gives the opportunity to place group and individual calls that are listened from third party users that are not the targeted users of the call. In addition these third party users are part of the conversation in progress and they can also talk. 
 Third party users are those that have radios configured to take part to calls set as OVCM and not addressed explicitly to them. 
 Both in direct mode and repeater mode, OVCM call modifier applies to the following half duplex voice calls: 
-• 
+Â• 
 Group Calls (see clause 5.2.1); 
 
-• 
+Â• 
 Individual Calls (see clause 5.2.2). 
 
 
 OVCM service does not apply to the following calls: 
-• 
+Â• 
 unaddressed Voice calls; 
 
-• 
+Â• 
 all talkgroup ID calls; 
 
-• 
-all unit ID calls; • other "system gateway" calls such as PABX, PSTN; 
+Â• 
+all unit ID calls; Â• other "system gateway" calls such as PABX, PSTN; 
 
-• 
+Â• 
 full duplex voice calls; 
 
-• 
+Â• 
 data calls. 
 
 
@@ -950,16 +950,16 @@ In table 5.7, user's permission to participate in an OVCM service as a third par
 5.4 Voice associated inband data services 
 5.4.1 Voice associated inband data services - Introduction 
 The voice associated inband data services provide inband data of a transmitting MS during a voice call. It can be transported by single packet or multi-packet data according to the length of inband data. The general transport mechanism and rule of voice associated inband data services are as follows: 
-• 
+Â• 
 The inband data may be inserted in a private call, group call, broadcast call and all call. 
 
-• 
+Â• 
 The inband data may be transported by embedded LC in voice super frame. The maximum frequency of occurrence of embedded LC inband data different from embedded LC with source and destination addresses for Late Entry purposes is 1:1. It means that the max occurrence frequency of inband data during a voice call is 1 every 2 superframes. 
 
-• 
+Â• 
 The inband data may be made up of a maximum of 4 packets and the MS may use this inband data when it has received the complete packet. 
 
-• 
+Â• 
 The inband data belong to the same transmitting MS and can be recovered from different speech items during the call. 
 
 
@@ -967,17 +967,17 @@ The inband data belong to the same transmitting MS and can be recovered from dif
 This is a single packet inband data service and provides positioning data of a transmitting MS during a voice call. Such positioning data are derived from LIP. 
 5.4.3 Inband talker alias data service 
 This is a single or multi packet inband data service and can provide alias information of a transmitting MS to a receiving radio during a voice call. The full talker alias can be made up of a maximum of 4 packets and this will allow a maximum of 31 Code Units of alias data. The first LC PDU of talker alias carries control information of whole alias and at most 7 Code Units of alias data. Every following LC PDU can carry at most 8 Code Units of alias data. The MS may decode and update the talker alias information when it has received the complete packet. The number of talker alias LC PDUs and exact length of talker alias Code Units during a voice call can be calculated by "Talker Alias data length" element in talker alias header LC PDU as follows. 
-• 7-bit ASCII coded format: 
+Â• 7-bit ASCII coded format: 
 -One talker alias LC header PDU (Data Length = 7 Code Units); 
 -One talker alias LC header PDU plus one talker alias LC Block PDU (15 Code Units = Data Length > 7 Code Units); 
 -One talker alias LC header PDU plus two talker alias LC Block PDUs (23 Code Units = Data Length > 15 Code Units); 
 -One talker alias LC header PDU plus three talker alias LC Block PDUs (31 Code Units = Data Length > 23 Code Units); 
-• UTF 8 or ISO 8 [i.2] bit coded format: 
+Â• UTF 8 or ISO 8 [i.2] bit coded format: 
 -One talker alias LC header PDU (Data Length = 6 Code Units); 
 -One talker alias LC header PDU plus one talker alias LC Block PDU (13 Code Units = Data Length > 6 Code Units); 
 -One talker alias LC header PDU plus two talker alias LC Block PDUs (20 Code Units = Data Length > 13 Code Units); 
 -One talker alias LC header PDU plus three talker alias LC Block PDUs (27 Code Units = Data Length > 20 Code Units); 
-• UTF 16-bit coded format: 
+Â• UTF 16-bit coded format: 
 -One talker alias LC header PDU (Data Length = 3 Code Units); 
 -One talker alias LC header PDU plus one talker alias LC Block PDU (6 Code Units = Data Length > 3 Code Units); 
 -One talker alias LC header PDU plus two talker alias LC Block PDUs (10 Code Units = Data Length > 6 Code Units); 
@@ -1027,41 +1027,41 @@ The CT_CSBK_Resp is transmitted as a response to requests for current leader and
 6.2.3 TDMA direct mode SDL 
 6.2.3.0 TDMA direct mode SDL - Introduction 
 The following SDL figures are informative and serve as a guide, because there are a number of ways to arrive at the same results. However, the text preceding each diagram includes normative points. When receiving a CT_CSBK in the diagrams, there are two sets of information elements that are used in the decision process: 
-• 
+Â• 
 Information elements that are preceded by MS_ (e.g. MS_LWATID) are the channel timing information elements of the receiving MS. 
 
-• 
+Â• 
 Information elements that are not preceded by MS_ (e.g. LWATID) are the channel timing information elements received by the MS in the CT_CSBK. 
 
 
 6.2.3.1 Power up and channel change SDL 
 Figure 6.2 illustrates MS actions when it arrives on a TDMA direct mode channel, which includes power up and channel change. However, it does not include changing to the other slot on the same frequency as the leader MS sets the timing for both slots. The SDL in figure 6.2 defines the following requirements: 
-• The MS shall initialize its own Wide Area Timing IDentifier (MS_WATID), which is composed of the MS Dynamic Identifier (MS_DI) and the MS Identifier (MS_ID) as well as its Generation (MS_Gen), Sync Age (MS_SA) and its Leader WATID (MS_LWATID). 
+Â• The MS shall initialize its own Wide Area Timing IDentifier (MS_WATID), which is composed of the MS Dynamic Identifier (MS_DI) and the MS Identifier (MS_ID) as well as its Generation (MS_Gen), Sync Age (MS_SA) and its Leader WATID (MS_LWATID). 
 NOTE: An individual MS unit's MS_DI may be provisionable in order to support a particular MS unit being elected or excluded from being elected as the leader. 
 
 6.2.3.2 Leader and timing unknown SDL 
 Figure 6.3 illustrates MS actions from the Leader_and_Timing_Unknown state when the NoLeaderTimer expires or the MS is requested to transmit voice, data or CSBKs other than a CT_CSBK. The SDL in figure 6.3 defines the following requirements: 
-• 
+Â• 
 When MS requested to transmit, the MS shall set Source DI (SDI) bits to 002 in the transmitted CT_CSBK_Term. 
 
-• 
+Â• 
 When NoLeaderTimer expires MS shall use its MS_DI bits for SDI in the CT_CSBK transmission. 
 
-• 
+Â• 
 After NoLeaderTimer expiration and the MS is waiting to transmit a CT_CSBK_Req, if the MS receives a CT_CSBK then: 
 
 
 -If received CT_CSBK contains a leader with a lower DI than the receiver's MS_DI, then the receiving MS shall accept the channel slot timing and continue to attempt to send the CT_CSBK_Req. 
 -If received CT_CSBK does not contain a leader or contains a leader with a greater than or equal to DI than receiver's MS_DI, then the receiving MS shall cancel the request to TX and evaluate the received CT_CSBK. 
-• When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK_Req: 
+Â• When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK_Req: 
 -The MS may attempt to send for up to 2 minutes (Not shown in SDL) before cancelling. NOTE: CT_CSBK Evaluation (CCE) and Transmit procedure are defined in clauses 6.2.3.8 and 6.2.3.12. 
 
 6.2.3.3 Leader unknown SDL 
 Figure 6.4 illustrates MS actions from the Leader_and_Timing_Known state when the NoLeaderTimer expires or the MS is requested to transmit voice, data or CSBKs other than a CT_CSBK. The SDL in figure 6.4 defines the following requirements: 
-• After NoLeaderTimer expiration and the MS is waiting to transmit a CT_CSBK_Req, if the MS receives a CT_CSBK then: 
+Â• After NoLeaderTimer expiration and the MS is waiting to transmit a CT_CSBK_Req, if the MS receives a CT_CSBK then: 
 -If received CT_CSBK contains a leader with a lower DI than the receiver's MS_DI, then the receiving MS shall accept the channel slot timing and continue to attempt to send the CT_CSBK_Req. 
 -If received CT_CSBK does not contain a leader or contains a leader with a greater than or equal to DI then the receiver's MS_DI, then the receiving MS shall cancel the request to TX and evaluate the received CT_CSBK. 
-• When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK_Req: 
+Â• When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK_Req: 
 -The MS may attempt to send for up to 2 minutes (not shown in SDL) before cancelling. NOTE: CT_CSBK Evaluation (CCE) and Transmit procedure are defined in clauses 6.2.3.8 and 6.2.3.12. 
 process TDMA_Direct_Mode_Leader_Unknown 1(1) 
 
@@ -1096,15 +1096,15 @@ CT_CSBK_Req
 Figure 6.4: Leader unknown SDL 
 6.2.3.4 Leader and timing known SDL 
 Figure 6.5 illustrates MS actions from the Leader_and_Timing_Known state when either the SyncAge or SyncAgeWarning timers expire or the MS is requested to transmit voice, data or CSBKs other than a CT_CSBK. The SDL in figure 6.5 defines the following requirements: 
-• After SyncAgeWarning expiration and MS is waiting to transmit a CT_CSBK_Req, if the MS receives a CT_CSBK then: 
+Â• After SyncAgeWarning expiration and MS is waiting to transmit a CT_CSBK_Req, if the MS receives a CT_CSBK then: 
 -If the CTO is 00 or 01, the received leader has a lower LWATID than the receiver's leader MS_WATID, or the received leader is equal to the MS_LWATID of the receiver and the SA is higher, then the MS shall continue to attempt to send the CT_CSBK_Req. 
 -Otherwise the attempt to send the CT_CSBK_Req is cancelled. 
-• 
+Â• 
 When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK_Req: 
 
 -The MS may attempt to send for up to 2 minutes (not shown in SDL) before cancelling. 
 
-• 
+Â• 
 When the SyncAge Timer expires, the MS shall re-initialize timing parameters and start the NoLeaderTimer. NOTE: CT_CSBK Evaluation (CCE) and Transmit procedure are defined in clauses 6.2.3.8 and 6.2.3.12. 
 
 
@@ -1114,29 +1114,29 @@ process TDMA_Direct_Mode_Leader_and_Timing_Known 1(1)
 
 6.2.3.5 Leader SDL 
 Figure 6.6 illustrates MS actions when the MS is the Leader and the BeaconInterval timer expires or it receives a CT_CSBK. The SDL in figure 6.6 defines the following requirements: 
-• 
+Â• 
 The MS shall attempt to send a CT_CSBK_Beacon when the BeaconInterval timer expires or it receives a message to TX a beacon when it was appointed the leader. 
 
-• 
+Â• 
 When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK_Beacon: 
 
 -The MS may attempt to send for up to 2 minutes (not shown in SDL) before cancelling. 
 
-• 
+Â• 
 The MS shall attempt to Send a Correction (SC) when a received CT_CSBK: -Identifies a leader with a lower LWATID than the receiver's MS_LWATID. -Does not identify a leader and the received SDI is less than or equal to the receiver's MS_LDI. 
 
-• 
+Â• 
 The MS shall attempt to Appoint a New Leader (ANL) when a received CT_CSBK: 
 
 
 -Identifies a leader with a larger LWATID than the receiver's MS_LWATID and the received SDI is greater than the received LDI in the CT_CSBK. 
 -Does not identify a leader and the received SDI is greater than the receiver's MS_LDI. 
-• 
+Â• 
 The MS shall attempt to resolve a leader identifier conflict (ID) when a received CT_CSBK: 
 
 -Identifies a leader with the same LWATID than the receiver's MS_LWATID and the received SA is not equal to the MS_SA. 
 
-• 
+Â• 
 The MS shall attempt to accept a leader when a received CT_CSBK: 
 
 
@@ -1170,13 +1170,13 @@ Leader
 Figure 6.6: Leader SDL 
 6.2.3.6 Leader identifier conflict SDL 
 Figure 6.7 illustrates MS actions while it is the leader and has received a CT_CSBK with the same leader Dynamic Identifier (DI) and leader Identifier (ID) as its MS DI and MS ID. The SDL in figure 6.7 defines the following requirements: 
-• 
-If the received SyncAge (SA) is within ±10 SAIncr of the MS unit's SyncAge (MS_SA), the leader shall assume it is still the leader. 
+Â• 
+If the received SyncAge (SA) is within Â±10 SAIncr of the MS unit's SyncAge (MS_SA), the leader shall assume it is still the leader. 
 
-• 
-If the received SyncAge (SA) is a multiple of the MS unit's SyncAge (MS_SA) to within ±10 SAIncr, the leader shall assume it is still the leader and proceeds to send out a channel timing correction (SC). 
+Â• 
+If the received SyncAge (SA) is a multiple of the MS unit's SyncAge (MS_SA) to within Â±10 SAIncr, the leader shall assume it is still the leader and proceeds to send out a channel timing correction (SC). 
 
-• 
+Â• 
 If the received SyncAge is different than either of the two previous conditions, then the MS assumes there is another leader in the system using the same LWATID and this conflict needs to be resolved: 
 
 
@@ -1186,38 +1186,38 @@ NOTE: Send Correction (SC) is described in clause 6.2.3.8 and Accept Leader (AL)
 
 6.2.3.7 CT_CSBK evaluation SDL 
 Figure 6.8 illustrates MS actions while a non-leader MS evaluates a received CT_CSBK. The SDL in figure 6.8 defines the following requirements: 
-• 
+Â• 
 If the MS receives a CT_CSBK appointing it as the leader (LWATID = MS_WATID and NL = 1) the MS sets its Generation to 0, assumes the SyncAge in the CT_CSBK, sets the BeaconInterval timer and transitions to the Leader state to immediately transmit a beacon. 
 
-• 
+Â• 
 If the received LWATID equals the receiver's MS_WATID and it is not appointed leader (NL=0) or the received SID in the CT_CSBK matches the receiver's MS ID, then the MS generates a new MS ID. 
 
-• 
+Â• 
 If the receiving MS does not have a leader it shall accept the channel slot timing and: -If received LWATID = 0 and received SDI > MS_SDI then MS shall attempt to Appoint New Leader 
 
 (ANL). -If received LWATID = 0 and received SDI = MS_DI then MS shall attempt to send a CT_CSBK_Req. -If received LWATID . 0 then MS shall attempt to Accept Leader (AL). 
 
-• 
+Â• 
 If the receiving MS has a leader and an unaligned terminator is received (CTO=01), the MS shall not accept the timing or update the leader information: 
 
 -If the received LWATID is less than the receiver' MS_LWATID, the MS shall attempt to Send a Correction (SC). 
 
-• 
+Â• 
 If the received LWATID is less than the receiver's MS_LWATID or they are equal and the received SA is greater than the receiver's MS_SA then the MS shall: 
 
 
 -attempt to send a timing correction (SC) when the received SDI = MS_LDI; 
 -attempt to appoint new leader when received SDI > MS_LDI. 
-• 
+Â• 
 If the received LWATID is greater than the receiver's MS_LWATID and the received CTO = 11 then the MS shall accept the channel slot timing and attempt to send a Timing Push (TP). 
 
-• 
+Â• 
 If the received LWATID is greater than the receiver's MS_LWATID and the received CTO = 01 then the MS shall accept the channel slot timing and Accept the Leader (AL). 
 
-• 
+Â• 
 If the received LWATID equals the receiver's MS_LWATID, the received SA equals the receiver's MS_SA and the received Gen is < the receiver's MS_Gen and CTO is not equal to 1, then the MS shall accept the channel slot timing and set MS_Gen to one more than the received Gen. 
 
-• 
+Â• 
 If the received LWATID equals the receiver's MS_LWATID, the received SA equals the receiver's MS_SA, the received Gen is < the receiver's MS_Gen and the CTO is equal to 11 (beacon or timing push), then the MS shall accept the channel timing, set the MS_Gen to one more than the received Gen and send a Timing Push (TP). 
 
 
@@ -1225,13 +1225,13 @@ NOTE: Send Correction (SC) is described in clause 6.2.3.8, Accept Leader (AL) is
 
 6.2.3.8 Send correction SDL 
 Figure 6.9 illustrates MS actions for sending a channel timing correction. The SDL in figure 6.9 defines the following requirements: 
-• 
+Â• 
 The MS shall attempt to send a CT_CSBK when CT_RHOT expires. 
 
-• 
+Â• 
 When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK: -The MS may attempt to send for up to 2 minutes (not shown in SDL) before cancelling. 
 
-• 
+Â• 
 When attempting to transmit a CT_CSBK and the MS receives a CT_CSBK with CTO of 00 or 01 or the LWATID is less than the receiver's MS_LWATID then the MS shall continue to send the CT_CSBK. 
 
 
@@ -1239,10 +1239,10 @@ NOTE: CT_CSBK Evaluation (CCE) is described in clause 6.2.3.7, and LDR is the Le
 
 6.2.3.9 Accept leader SDL 
 Figure 6.10 illustrates MS actions when accepting a new leader. The SDL in figure 6.10 defines the following requirements: 
-• 
+Â• 
 If the CTO is 00 or 01 the receiving MS does not accept the leader. 
 
-• 
+Â• 
 If the CTO is 10 or 11 the receiving MS accepts the channel slot timing and the channel timing parameters, sets both SyncAgeWarning and SyncAge timers initialized with the received SA value. 
 
 
@@ -1250,13 +1250,13 @@ NOTE: CT_CSBK Evaluation (CCE) is described in clause 6.2.3.7.
 
 6.2.3.10 Appoint new leader SDL 
 Figure 6.11 illustrates MS actions when appointing a new leader. The SDL in figure 6.11 defines the following requirements: 
-• 
+Â• 
 The MS shall attempt to send a CT_CSBK when CT_RHOT expires. 
 
-• 
+Â• 
 When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK: -The MS may attempt to send for up to 2 minutes (not shown in SDL) before cancelling. 
 
-• 
+Â• 
 While attempting to send the CT_CSBK and the MS receives a CT_CSBK: -The MS shall cancel sending the CT_CSBK if the received CT_CSBK has a LWATID greater than the 
 
 
@@ -1264,16 +1264,16 @@ receiver's MS_LWATID or the received SWATID is greater than the receiver's MS_LW
 
 6.2.3.11 Timing push SDL 
 Figure 6.12 illustrates MS actions when pushing out the channel timing information. Important points are: 
-• 
+Â• 
 The MS accepts the timing parameters in the received CT_CSBK. 
 
-• 
+Â• 
 The MS shall attempt to send a CT_CSBK when CT_RHOT expires. 
 
-• 
+Â• 
 When CT_RHOT expires and the channel is busy, the MS shall continue to attempt to send the CT_CSBK: -The MS may attempt to send for up to 2 minutes (not shown in SDL) before cancelling. 
 
-• 
+Â• 
 While attempting to send the CT_CSBK and the MS receives a CT_CSBK: 
 
 
@@ -1283,13 +1283,13 @@ NOTE: CT_CSBK Evaluation (CCE) is described in clause 6.2.3.6.
 
 6.2.3.12 Transmit procedure SDL 
 Figure 6.13 illustrates how the MS sets the CTO information element in the CT_CSBK_Term at the end of a transmission. The SDL in figure 6.13 defines the following requirements: 
-• 
+Â• 
 If the MS does not have a leader it shall use CTO = 00 in the CT_CSBK_Term. 
 
-• 
+Â• 
 If the MS has a leader and there is no DMR TDMA direct mode activity on the frequency the MS shall use CTO = 10 in the CT_CSBK_Term. 
 
-• 
+Â• 
 If the MS has a leader and there is DMR TDMA direct mode activity on the channel the MS shall use CTO = 01 in the CT_CSBK_Term. 
 
 
@@ -1312,20 +1312,20 @@ The MS wishing to interrupt a voice call shall transmit a Standalone RC burst as
 7.0 PDU description - Introduction 
 This clause describes the PDUs which apply to the DMR layer 3, the voice and generic services and facilities protocol. 
 The following clauses contain descriptions of the PDUs and the information elements contained within them. The structure of the PDU definition represented by the tables is as follows: 
-• 
+Â• 
 the information element column gives the name of the contained element(s); 
 
-• 
+Â• 
 the element length column defines the length of the element in bits; 
 
 
-• the remarks column contains other information on the information element. The elements shall be transmitted in the order specified by ETSI TS 102 361-1 [1]. 
+Â• the remarks column contains other information on the information element. The elements shall be transmitted in the order specified by ETSI TS 102 361-1 [1]. 
 7.1 Layer 3 PDUs 
 7.1.0 Layer 3 PDUs -Introduction 
 Due to the nature of DMR, with close interaction between layers 2 and 3, and with a high degree of information about the state of the channel being needed, the layer 3 PDUs detailed in the following clauses may include two element types: 
-• Message dependent elements: 
+Â• Message dependent elements: 
 -These elements are visible to layer 2 and may be used by any MS (that is able to decode them), irrespective of addressing. These elements depend on the message type element. Some are generated by layer 2 when it constructs the complete message whereas others are generated by layer 3. 
-• Feature elements: 
+Â• Feature elements: 
 -These are "true" layer 3 elements. They are only processed by the MSs to which they are addressed. 
 Where both types exist in the PDU they are shown separately. 
 7.1.1 Full Link Control PDUs 
@@ -1571,16 +1571,16 @@ NOTE 1: Hashed algorithm uses the 8-bit CRC calculation algorithm as defined in 
 7.2 Layer 3 information element coding 
 7.2.0 Layer 3 information element coding - Introduction 
 The following clauses contain descriptions of the information elements contained within layer 3 PDUs, and provide a description of what the elements represent in relation to their bit representation. The structure of the tables is as follows: 
-• 
+Â• 
 the information element column gives the name of the element; 
 
-• 
+Â• 
 the element length column defines the length of the element in bits; 
 
-• 
+Â• 
 the value column denotes fixed values or a range of values; 
 
-• 
+Â• 
 the remarks column defines the meaning of the information element against each of its bit represented values. 
 
 
@@ -1822,26 +1822,26 @@ Annex C (informative): Numbering and dialling plan
 C.1 Introduction to the numbering and dialling plan 
 It is recognized that manufacturers of MSs will wish to exercise design independence in their products and, accordingly, the requirements of this annex are informative only. 
 This annex is intended to: 
-• 
+Â• 
 define the user visible numbering (User Interface domain); and 
 
-• 
+Â• 
 dialling in a MS for accessing other MS(s) or other entity(ies) over the AI; and 
 
-• 
+Â• 
 to describe how the visible user numbering and dial strings may be mapped on to the AI. 
 
 
 The Man Machine Interface (MMI) issues have been addressed in this annex only to the extent of those strictly related to numbering and dialling. 
 It should be ensured in the MS implementation, that no non-deterministic user input results in an ambiguous call set-up attempt over the Air Interface. For example, if a user inputs a dialled string of digits that is not assigned to any of the presented dialling algorithms, then the MS should not try to establish the call and appropriate feedback or alert should be given to the user. 
 As not to restrict manufacturer's independence, it is envisaged that dialling selection may be initiated in many ways. Some methods are: 
-• 
+Â• 
 direct number entry via a keypad; 
 
-• 
+Â• 
 mode selection buttons; and 
 
-• 
+Â• 
 soft key menu selection. 
 
 
@@ -1878,16 +1878,16 @@ Dialled Digits Signalling Bits
 Figure C.2: Number conversion 
 
 Address fields in the Air-Interface domain structure has a length of 24 bits. The content of a 24-bit AI MS address field may represent: 
-• 
+Â• 
 an MS individual address; 
 
-• 
+Â• 
 an MS group address; 
 
-• 
+Â• 
 a gateway address; or 
 
-• 
+Â• 
 a special identifier. 
 
 
@@ -1906,7 +1906,7 @@ Character  B1  Air Interface ID
 K1  K2  K3  K4  K5  K6  K7  24 bits  
 
 If the dialled string is considered as a string array K1 to K7: 65 43 2
-B = 10 × K ,10 × K ,10 × K ,10 × K ,10 × K ,10× K , K
+B = 10 Ã— K ,10 Ã— K ,10 Ã— K ,10 Ã— K ,10 Ã— K ,10Ã— K , K
 1 1234567
 . 
 The seven user dialled digits K1 to K7 in the range "0000001" to "9999999" are converted to the 24 bits of the AI ID using true decimal to binary conversion. 
@@ -1917,7 +1917,7 @@ Character  B3  Air Interface ID
 K1  K2  K3=0  K4=0  K5  K6  K7  24 bits  
 
 The B3 algorithm provides a numeric User Interface for the non-diallable individual address space. Each prefix has the capacity for 10 000 individual addresses. If the MS individual address is represented by 8 digits K1 to K8 (K3 and K4 are always 0). 54 32
-B = 9 900 000,10 × K ,10 × K ,10 × K ,10 × K ,10× K , K
+B = 9 900 000,10 Ã— K ,10 Ã— K ,10 Ã— K ,10 Ã— K ,10Ã— K , K
 3 125678 The following steps are needed to convert the dialled digits to an ID in the AI domain using the B3 algorithm: 
 . 
 1)  start with the number 9 900 000;  
@@ -1986,7 +1986,7 @@ K1  K2  K3  K4  K5  K6  K7  24 bits
 
 K1, K2, K3 represent decimal symbols in the range 0 to 9. K4, K5, K6, K7 represent symbols to base 11 using the digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, *. The "*" is a symbol that has the value of 10. 
 The six least significant user dialled digits K2 to K7 in the range "000001" to "999999" are converted to the 20 least significant 20 bits of the AI ID using true decimal to binary conversion. The most significant user dialled digit K1 is converted to the most significant 4 bits of the AI ID using a true decimal to binary conversion. 
-B = K ×1 464 100, K ×146 410, K ×14 641, K ×1 331, K ×121, K ×11, K
+B = K Ã—1 464 100, K Ã—146 410, K Ã—14 641, K Ã—1 331, K Ã—121, K Ã—11, K
 21 2 34567
 . 
 To following steps are needed to convert the dialled digits to an ID in the AI domain: Examples are shown in table C.6. 
@@ -2020,7 +2020,7 @@ K1  K2  K3=0  K4=0  K5  K6  K7  24 bits
 The B4 algorithm provides a numeric User Interface for the non-diallable individual address space. Each prefix has the capacity for 10 000 individual addresses. 
 If the MS talkgroup address is represented by 8 digits K1 to K8 (K3 and K4 are always 0). 
 54 3 2
-B = 14 541 000, 10 × K , 10 × K , 10 × K , 10 × K , 10 × K , K
+B = 14 541 000, 10 Ã— K , 10 Ã— K , 10 Ã— K , 10 Ã— K , 10 Ã— K , K
 4 125678
 . 
 The algorithms result in unique unambiguous translation between the User Interface domain and the Air Interface, are reversible and result in no lost codes. 
@@ -2047,8 +2047,8 @@ A Colour Code (CC) is defined in the AI to provide a simple means of distinguish
 The Colour Code may be combined with the prefix to separate differing system operators using shared channels. The prefix separates the total address space into non-overlapping bands. This may be specified using the syntax: 
 cc.pp, 
 where: 
-• "cc" is the decimal value of the Colour Code; and 
-• "pp" is the decimal value of the prefix. The prefix bands illustrated in figure C.5 show how the total DMR address space is split into bands. 
+Â• "cc" is the decimal value of the Colour Code; and 
+Â• "pp" is the decimal value of the prefix. The prefix bands illustrated in figure C.5 show how the total DMR address space is split into bands. 
 
 NOTE: The prefix exists in the User Domain although the effect is to split up the address space in the AI domain. 
 In the user domain a full MS address is defined using 7 digits, K1, K2, K3, K4, K5, K6, and K7 for the diallable addresses. 
@@ -2056,12 +2056,12 @@ The non-diallable addresses use a two digit prefix so the full MS address is def
 The prefix is selected by the most significant digit in the full 7 digit string (K1). 
 NOTE: Only prefixes 0 to 9 may be dialled by a user. Prefixes 10 to 14 provide a sub-set of the address space just as prefixes 0 to 9, but those addresses are not diallable by users. 
 If a system uses the prefix to separate autonomous operators, special arrangements need to be made for certain Air Interface Addresses. These are: 
-• 
+Â• 
 for the MS talkgroup service: -unaddressed talkgroup IDs; -special talkgroups containing all MSs; -gateways to system (e.g. repeater) and system interfaced devices not addressable via the ID (e.g. PABX, 
 
 PSTN, SMS router); 
 
-• 
+Â• 
 for the MS individual call service: 
 
 
@@ -2112,22 +2112,22 @@ C.3.1.2 Call Type determination
 Underlying signalling and system functionality is hidden from the user. MSs determine the call type and function from the length and content of the dialled string. 
 C.3.1.3 Call modifier strings 
 Dialled strings that commence with a hash "#" provide secondary uses for the keypad. Secondary dialling functions may be as follows: 
-• 
+Â• 
 Telephone hash modifier format, see clause C.3.4.2.1.2; 
 
-• 
+Â• 
 PABX hash modifier format, see clause C.3.4.2.2.2; 
 
-• 
+Â• 
 Call priority setting, see clause C.3.4.3.2; 
 
-• 
+Â• 
 Call Diversion, see clause C.3.4.3.5; 
 
-• 
+Â• 
 Broadcast Call, see clause C.3.4.3.1; 
 
-• 
+Â• 
 Emergency Call, see clause C.3.4.3.3. 
 
 
@@ -2182,12 +2182,12 @@ NOTE: Destination address after processing.
 
 C.3.3.5.3 MS receives a talkgroup call 
 The recipient MS applies the reverse B2 to recover the dialled digits K1 to K7. 
-• 
+Â• 
 If the received digits contain a "*" in the digits K4 to K7 then: 
 
 -each digit is compared in turn with the corresponding digit of the MS individual identity looking for a match. If an "*" is encountered then a match for that digit is assumed. 
 
-• 
+Â• 
 If the received digits are all numeric then: 
 
 
@@ -2201,20 +2201,20 @@ C.3.4.1.2 Abbreviated dialling
 Where abbreviated keypad dialling is used in the MS, the MS should insert the more significant characters from the MS individual address to complete the dialled string prior to transmission. 
 If all digits are not dialled the more significant digits from the MS individual address are copied to the dialled string to build a seven digit address so: 
 For the MS individual address "2112345": 
-• 
+Â• 
 if the user dials 6#, the destination address should be 2112346; 
 
-• 
+Â• 
 if the user dials 56#, the destination address should be 2112356; 
 
-• 
+Â• 
 if the user dials 958#, the destination address should be 2112958; 
 
-• 
+Â• 
 if the user dials 1385#, the destination address should be 2111385; 
 
 
-• if the user dials 13*5#, the destination address should be 21113*5 (talkgroup). (The double underlined characters represent those that have been copied from the MS individual address.) At the Air Interface the calling party address is transferred to the called party. The abbreviated dialling may be applied 
+Â• if the user dials 13*5#, the destination address should be 21113*5 (talkgroup). (The double underlined characters represent those that have been copied from the MS individual address.) At the Air Interface the calling party address is transferred to the called party. The abbreviated dialling may be applied 
 to display only an abbreviated calling party address on the display of the called party. Figure C.6 shows abbreviated dialling applied to the calling party and shows how the recipient may display the abbreviated calling party address: 
 1) The calling party dials a single digit "2". 
 2) The MS inserts the more significant digits from its individual address to complete the dialled string prior to transmission - i.e. the destination address becomes "1234562". 
@@ -2231,10 +2231,10 @@ C.3.4.1.4 Talkgroup Call
 Talkgroup calls can be initiated by another MS user entering the full seven digit number, with any of the only four least significant characters contains a "*", followed by the "#" character to indicate that dialling is complete and that the call is to be initiated. Abbreviated dialling should be allowed. 
 C.3.4.1.5 All Call 
 All units respond to All MSs address "*******#". All units within a prefix respond to All MSs address "n******#": 
-• 
+Â• 
 in direct mode if permitted during MS personalization; 
 
-• 
+Â• 
 in a networked system, if permitted by personalization and if permitted by the system. 
 
 
@@ -2275,12 +2275,12 @@ Functions such as the modification of call requests to change to priority or typ
 Table C.11: Summary of call modifiers 
 
 Dialled Digits  Call Modifier  
-#1*nn…#  Broadcast call, clause C.3.4.3.1  
-#8*nn…#  Priority call, clause C.3.4.3.2  
-#9*nn…#  Emergency call, clause C.3.4.3.3  
-#0ss*nn…#  Status call, clause C.3.4.3.4  
-#41*nn…#  Divert Own call, clause C.3.4.3.5  
-#5*nn…#  Open Voice Channel Mode call, clause C.3.4.3.6  
+#1*nnÂ…#  Broadcast call, clause C.3.4.3.1  
+#8*nnÂ…#  Priority call, clause C.3.4.3.2  
+#9*nnÂ…#  Emergency call, clause C.3.4.3.3  
+#0ss*nnÂ…#  Status call, clause C.3.4.3.4  
+#41*nnÂ…#  Divert Own call, clause C.3.4.3.5  
+#5*nnÂ…#  Open Voice Channel Mode call, clause C.3.4.3.6  
 #6*nnn..#  Force talkgroup service, clause C.3.4.3.7  
 
 C.3.4.3.1 Broadcast call 
@@ -2302,17 +2302,17 @@ C.3.4.3.5 Divert own call
 The string "#41*nn#" instructs a repeater BS to offer the number "nn..n" back to any caller who is attempting to make a call to the originating MS as an alternative destination for the call. The number to which calls are to be diverted, and which follows the code, should be any number which the user is able to dial between 0 and 99. 
 The MS should instruct the repeater BS to cancel the diverted state dialling "#41#" or "#41*#". 
 C.3.4.3.6 Open voice channel mode call 
-The string "#5*nnn……#" causes the MS to set up a call using OVCM to the destination address nnn. The OVCM allows all MSs to be involved in the voice traffic, even if not explicitly addressed to them. The string "#51#" or "#51*#" instructs the MS to set-up all voice calls using Open Voice Channel Mode working. The MS should cancel the OVCM state dialling "#52#" or "#52*#". 
+The string "#5*nnnÂ…Â…#" causes the MS to set up a call using OVCM to the destination address nnn. The OVCM allows all MSs to be involved in the voice traffic, even if not explicitly addressed to them. The string "#51#" or "#51*#" instructs the MS to set-up all voice calls using Open Voice Channel Mode working. The MS should cancel the OVCM state dialling "#52#" or "#52*#". 
 C.3.4.3.7 Force talkgroup service 
 The string "#6*nnn..#" causes the MS to set up a talkgroup call to destination talkgroup nnn. where nnn. is a numeric string of length from 1 to 7 digits. 
 EXAMPLE: To make a talkgroup call from MS 1122345 to talkgroup MSs 1122356 dial "#6*1122356#". In this case dialling "#6*56#" would achieve the same result. 
 C.3.4.3.8 Multiple call modifiers 
 The call modifier strings "1", "5", "6", "8" and "9" may be combined as follows: 
-• 
+Â• 
 "#81*nnn,,,,," should set up a high priority broadcast call; 
 
-• 
-"#915*nnn…." should set up an emergency broadcast call in OVCM mode. NOTE: Call modifiers 8 and 9 are mutually exclusive. 
+Â• 
+"#915*nnnÂ…." should set up an emergency broadcast call in OVCM mode. NOTE: Call modifiers 8 and 9 are mutually exclusive. 
 
 
 C.3.4.4 MS behaviour commands 
@@ -2367,10 +2367,10 @@ No  Standard Version  Clauses affected or description  Title
 017  1.2.5  7.1.2.4, 7.2.6  Negative Acknowledge Response CSBK PDU content  
 
 Annex E (informative): Bibliography 
-• 
+Â• 
 ETSI TR 102 335-1: "Electromagnetic compatibility and Radio spectrum Matters (ERM); System reference document for harmonized use of Digital Mobile Radio (DMR); Part 1: Tier 1 DMR#, expected to be for general authorization with no individual rights operation". 
 
-• 
+Â• 
 ETSI TR 102 335-2: "Electromagnetic compatibility and Radio spectrum Matters (ERM); System reference document for harmonized use of Digital Mobile Radio (DMR); Part 2: Systems operating under individual licences in the existing land mobile service spectrum bands". 
 
 

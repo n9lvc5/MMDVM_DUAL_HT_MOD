@@ -9,7 +9,7 @@ air interface, data, digital, PMR, protocol, radio
 ETSI 
 650 Route des Lucioles F-06921 Sophia Antipolis Cedex - FRANCE 
 Tel.: +33 4 92 94 42 00   Fax: +33 4 93 65 47 16 
-Siret N° 348 623 562 00017 - NAF 742 C Association à but non lucratif enregistrée à la Sous-Préfecture de Grasse (06) N° 7803/88 
+Siret NÂ° 348 623 562 00017 - NAF 742 C Association Ã  but non lucratif enregistrÃ©e Ã  la Sous-PrÃ©fecture de Grasse (06) NÂ° 7803/88 
 
 Important notice 
 The present document can be downloaded from: 
@@ -22,8 +22,8 @@ https://portal.etsi.org/People/CommiteeSupportStaff.aspx
 
 Copyright Notification 
 No part may be reproduced or utilized in any form or by any means, electronic or mechanical, including photocopying and microfilm except as authorized by written permission of ETSI. The content of the PDF version shall not be modified without the written authorization of ETSI. The copyright and the foregoing restriction extend to reproduction in all media. 
-© ETSI 2017. All rights reserved. 
-DECTTM, PLUGTESTSTM, UMTSTM and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPPTM and LTE™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2M logo is protected for the benefit of its Members. GSM® and the GSM logo are trademarks registered and owned by the GSM Association. 
+Â© ETSI 2017. All rights reserved. 
+DECTTM, PLUGTESTSTM, UMTSTM and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPPTM and LTEâ„¢ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2M logo is protected for the benefit of its Members. GSMÂ® and the GSM logo are trademarks registered and owned by the GSM Association. 
 
 
 Contents 
@@ -44,7 +44,7 @@ Modal verbs terminology ........................................................
 4.1.3 Air Interface Call Control Layer (layer 3) ..................................................................................................13 
 4.2 Overview of the DMR Packet Data Protocol (PDP) ........................................................................................14 
 4.3 Feature interoperability ....................................................................................................................................14 
-5 Internet Protocol (IP) bearer service....................................................................................................... 15 5.0 Internet Protocol (IP) bearer service introduction ............................................................................................15 5.1 IP addressing ....................................................................................................................................................15 5.1.1 DLL derived IP addressing ......................................................................................................................... 15 5.1.2 DLL neutral IP addressing.......................................................................................................................... 16 5.2 IP error messages.............................................................................................................................................. 17 5.3 Unconfirmed data DLL bearer service ............................................................................................................. 18 5.3.0 Unconfirmed data DLL bearer service introduction ................................................................................... 18 5.3.1 Unconfirmed IP Data Types/PDUs............................................................................................................. 18 5.3.1.1 Rate ½ coded unconfirmed IP Data Types/PDUs .................................................................................18 5.3.1.2 Rate ¾ coded unconfirmed IP Data Types/PDUs .................................................................................18 5.3.1.3 Rate 1 coded unconfirmed IP Data Types/PDUs ..................................................................................19 5.3.2 Unconfirmed IP data SDL ..........................................................................................................................19 5.3.3 Unconfirmed IP Data MSCs ....................................................................................................................... 21 5.3.3.0 Unconfirmed IP Data MSCs introduction ............................................................................................. 21 5.3.3.1 TX unconfirmed IP data MSC ..............................................................................................................21 5.3.3.2 Form and send DLL data message MSC ............................................................................................... 22 5.3.3.3 Unconfirmed Data Repeat.....................................................................................................................23 5.4 Confirmed data DLL bearer service ................................................................................................................. 24 5.4.0 Confirmed data DLL bearer service introduction ....................................................................................... 24 5.4.1 Confirmed IP Data Types/PDUs................................................................................................................. 25 5.4.1.1 Rate ½ coded confirmed IP Data Types/PDUs .....................................................................................25 5.4.1.2 Rate ¾ coded confirmed IP Data Types/PDUs .....................................................................................25 5.4.1.2A Rate 1 coded confirmed IP Data Types/PDUs ......................................................................................25 5.4.1.3 Confirmed response Data Types/PDUs ................................................................................................. 26 5.4.2 Confirmed IP Data SDL .............................................................................................................................26 5.4.2.0 Confirmed IP Data SDL introduction ...................................................................................................26 5.4.2.1 Confirmed data source SDL .................................................................................................................. 26 5.4.2.2 Confirmed data target SDL ................................................................................................................... 29 5.4.3 Confirmed data MSCs ................................................................................................................................30 5.4.3.0 Confirmed data MSCs introduction ......................................................................................................30 5.4.3.1 Confirmed data source MSCs ...............................................................................................................30 5.4.3.1.1 TX confirmed IP data MSC............................................................................................................. 30 5.4.3.1.2 Form and send DLL data message MSC ......................................................................................... 31 
+5 Internet Protocol (IP) bearer service....................................................................................................... 15 5.0 Internet Protocol (IP) bearer service introduction ............................................................................................15 5.1 IP addressing ....................................................................................................................................................15 5.1.1 DLL derived IP addressing ......................................................................................................................... 15 5.1.2 DLL neutral IP addressing.......................................................................................................................... 16 5.2 IP error messages.............................................................................................................................................. 17 5.3 Unconfirmed data DLL bearer service ............................................................................................................. 18 5.3.0 Unconfirmed data DLL bearer service introduction ................................................................................... 18 5.3.1 Unconfirmed IP Data Types/PDUs............................................................................................................. 18 5.3.1.1 Rate Â½ coded unconfirmed IP Data Types/PDUs .................................................................................18 5.3.1.2 Rate Â¾ coded unconfirmed IP Data Types/PDUs .................................................................................18 5.3.1.3 Rate 1 coded unconfirmed IP Data Types/PDUs ..................................................................................19 5.3.2 Unconfirmed IP data SDL ..........................................................................................................................19 5.3.3 Unconfirmed IP Data MSCs ....................................................................................................................... 21 5.3.3.0 Unconfirmed IP Data MSCs introduction ............................................................................................. 21 5.3.3.1 TX unconfirmed IP data MSC ..............................................................................................................21 5.3.3.2 Form and send DLL data message MSC ............................................................................................... 22 5.3.3.3 Unconfirmed Data Repeat.....................................................................................................................23 5.4 Confirmed data DLL bearer service ................................................................................................................. 24 5.4.0 Confirmed data DLL bearer service introduction ....................................................................................... 24 5.4.1 Confirmed IP Data Types/PDUs................................................................................................................. 25 5.4.1.1 Rate Â½ coded confirmed IP Data Types/PDUs .....................................................................................25 5.4.1.2 Rate Â¾ coded confirmed IP Data Types/PDUs .....................................................................................25 5.4.1.2A Rate 1 coded confirmed IP Data Types/PDUs ......................................................................................25 5.4.1.3 Confirmed response Data Types/PDUs ................................................................................................. 26 5.4.2 Confirmed IP Data SDL .............................................................................................................................26 5.4.2.0 Confirmed IP Data SDL introduction ...................................................................................................26 5.4.2.1 Confirmed data source SDL .................................................................................................................. 26 5.4.2.2 Confirmed data target SDL ................................................................................................................... 29 5.4.3 Confirmed data MSCs ................................................................................................................................30 5.4.3.0 Confirmed data MSCs introduction ......................................................................................................30 5.4.3.1 Confirmed data source MSCs ...............................................................................................................30 5.4.3.1.1 TX confirmed IP data MSC............................................................................................................. 30 5.4.3.1.2 Form and send DLL data message MSC ......................................................................................... 31 
 5.4.3.1.3 Process DLL confirmed response MSC ..........................................................................................31 
 5.4.3.2 Confirmed data target MSCs.................................................................................................................32 
 5.4.3.2.1 RX confirmed data MSC ................................................................................................................. 32 
@@ -271,22 +271,22 @@ Figure 4.1: DMR protocol stack
 4.1.1 Air Interface Physical Layer (layer 1) 
 The Air Interface layer 1 shall be the physical interface. It shall deal with the physical burst, composed of bits, which is to be sent and/or received. The Physical Layer is described in ETSI TS 102 361-1 [1]. 
 The Air Interface layer 1 contains the following functions: 
-• 
+â€¢ 
 modulation and demodulation; 
 
-• 
+â€¢ 
 transmitter and receiver switching; 
 
-• 
+â€¢ 
 RF characteristics; 
 
-• 
+â€¢ 
 bits and symbol definition; 
 
-• 
+â€¢ 
 frequency and symbol synchronization; 
 
-• 
+â€¢ 
 burst building. 
 
 
@@ -294,55 +294,55 @@ burst building.
 4.1.2 Air Interface Data Link Layer (layer 2) 
 The Air Interface layer 2 shall handle logical connections and shall hide the physical medium from the upper layers. The Data Link Layer is described in ETSI TS 102 361-1 [1]. 
 The main functions are as follows: 
-• 
+â€¢ 
 channel coding (FEC, CRC); 
 
-• 
+â€¢ 
 interleaving, de-interleaving and bit ordering; 
 
-• 
+â€¢ 
 acknowledgement and retry mechanism; 
 
-• 
+â€¢ 
 media access control and channel management; 
 
-• 
+â€¢ 
 framing, superframe building and synchronization; 
 
-• 
+â€¢ 
 burst and parameter definition; 
 
-• 
+â€¢ 
 link addressing (source and/or destination); 
 
-• 
+â€¢ 
 interfacing of voice applications (vocoder data) with the PL; 
 
-• 
+â€¢ 
 data bearer services; 
 
 
-• exchanging signalling and/or user data with the CCL. Packet Data Protocol specific DLL features are described in the present document. 
+â€¢ exchanging signalling and/or user data with the CCL. Packet Data Protocol specific DLL features are described in the present document. 
 
 4.1.3 Air Interface Call Control Layer (layer 3) 
 Air Interface layer 3 (CCL) is applicable only to the C-plane, and shall be an entity for the services and features supported by DMR on top of the layer 2 functionality. The Call Control Layer functionality for voice and generic services and facilities is described in clause 5 of ETSI TS 102 361-2 [2]. 
 The CCL provides the following functions: 
-• 
+â€¢ 
 BS activation; 
 
-• 
+â€¢ 
 establishing, maintaining and terminating of calls; 
 
-• 
+â€¢ 
 individual or group call transmission and reception; 
 
-• 
+â€¢ 
 destination addressing (DMR IDs or gateway as appropriate); 
 
-• 
+â€¢ 
 support of intrinsic services (emergency signalling, pre-emption, late entry, etc.); 
 
-• 
+â€¢ 
 announcement signalling. 
 
 
@@ -354,18 +354,18 @@ The Packet Data Protocol described for DMR is related to packet data transmissio
 All users related signalling or presentation above layer 3 are not part of the present document and are implementation specific. 
 The Packet Data Protocol defined in the present document may be used for DMR products and is called the "default Packet Data Protocol". There is a possibility in the DMR standard which allows manufacturers to define and implement "private" feature sets which contains additional "private" signalling, which may not be understood by products not supporting this "private" feature set. 
 The Packet Data Protocol contains the following types of DLL bearer service data transmissions: 
-• 
+â€¢ 
 unconfirmed data transmission; 
 
-• 
+â€¢ 
 confirmed data: -data transmission; -response transmission. 
 
 
 The Packet Data Protocol contains the following types of layer 3 bearer service data transmissions: 
-• 
+â€¢ 
 Internet Protocol; 
 
-• 
+â€¢ 
 Short Data: -raw data; -status/precoded data; -defined data. 
 
 
@@ -382,7 +382,7 @@ Packet data transmissions that are not standardized in the present document are 
 5 Internet Protocol (IP) bearer service 
 5.0 Internet Protocol (IP) bearer service introduction 
 The present document supports the following network layer protocol: 
-• Internet Protocol version 4 (IPv4). 
+â€¢ Internet Protocol version 4 (IPv4). 
 NOTE: For detailed description refer to IETF RFC 791 [4]. 
 IPv4 provides a connectionless, best-effort datagram delivery between two service access points. IPv4 protocol is called on by host-to-host protocols (e.g. TCP, UDP) in an internet environment. IPv4 calls on Air Interface protocol to carry the IP datagram over the air. 
 The DMR IP bearer service is built on top of the DLL bearer services (unconfirmed data and confirmed data) that are defined in clauses 5.3 and 5.4 of the present document. 
@@ -474,32 +474,32 @@ An unconfirmed IP data transmission shall use a Polite Type (Polite to Own Colou
 The data blocks shall be transmitted via the Data Block and Last Data Block PDUs for the selected FEC coding rate as defined in clause 8.2.2 of ETSI TS 102 361-1 [1]. The Data Type of the data blocks shall indicate the FEC coding rate. During the data transmission the FEC coding rate and therefore the Data Type of all data blocks shall be the same. 
 
 5.3.1 Unconfirmed IP Data Types/PDUs 
-5.3.1.1 Rate ½ coded unconfirmed IP Data Types/PDUs 
-Rate ½ coded IP unconfirmed Data for both direct mode and repeater mode requires two Data Types and three PDUs. These are listed in table 5.2. If a proprietary header is supported, a fourth PDU is required. 
-Table 5.2: Rate ½ Coded Unconfirmed IP Data Types/PDUs 
+5.3.1.1 Rate Â½ coded unconfirmed IP Data Types/PDUs 
+Rate Â½ coded IP unconfirmed Data for both direct mode and repeater mode requires two Data Types and three PDUs. These are listed in table 5.2. If a proprietary header is supported, a fourth PDU is required. 
+Table 5.2: Rate Â½ Coded Unconfirmed IP Data Types/PDUs 
 
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  U_HEAD  00102  
 Proprietary Header  P_HEAD  11112  
-Rate ½ Coded Data  01112  Data Block  R_1_2_DATA  NA  
+Rate Â½ Coded Data  01112  Data Block  R_1_2_DATA  NA  
 Last Data Block  R_1_2_LDATA  NA  
 
 
-5.3.1.2 Rate ¾ coded unconfirmed IP Data Types/PDUs 
-Rate ¾ coded unconfirmed IP Data for both direct mode and repeater mode requires two Data Types and three PDUs. These are listed in table 5.3. If a proprietary header is supported, a fourth PDU is required. 
-NOTE: The headers for rate ¾ unconfirmed IP data are rate ½ coded. 
-Table 5.3: Rate ¾ Coded Unconfirmed IP Data Types/PDUs 
+5.3.1.2 Rate Â¾ coded unconfirmed IP Data Types/PDUs 
+Rate Â¾ coded unconfirmed IP Data for both direct mode and repeater mode requires two Data Types and three PDUs. These are listed in table 5.3. If a proprietary header is supported, a fourth PDU is required. 
+NOTE: The headers for rate Â¾ unconfirmed IP data are rate Â½ coded. 
+Table 5.3: Rate Â¾ Coded Unconfirmed IP Data Types/PDUs 
 
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  U_HEAD  00102  
 Proprietary Header  P_HEAD  11112  
-Rate ¾ Coded Data  10002  Data Block  R_3_4_DATA  NA  
+Rate Â¾ Coded Data  10002  Data Block  R_3_4_DATA  NA  
 Last Data Block  R_3_4_LDATA  NA  
 
 
 5.3.1.3 Rate 1 coded unconfirmed IP Data Types/PDUs 
 Rate 1 coded unconfirmed IP Data for both direct mode and repeater mode requires two Data Types and three PDUs. These are listed in table 5.3A. If a proprietary header is supported, a fourth PDU is required. 
-NOTE: The headers for rate 1 unconfirmed IP data are rate ½ coded. 
+NOTE: The headers for rate 1 unconfirmed IP data are rate Â½ coded. 
 Table 5.3A: Rate 1 coded Unconfirmed IP Data Types/PDUs 
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  U_HEAD  00102  
@@ -556,39 +556,39 @@ DLL. When operating with a stop and wait flow control procedure, the Acknowledge
 A confirmed data message is made of multiple blocks where each block has a 7-bit serial number and a 9-bit CRC. On the first transmission, all of the blocks are sent. The last block also contains a message CRC for the entire message. The data blocks shall be transmitted via the Data Block and Last Data Block PDUs for the selected FEC coding rate as defined in clause 8.2.2 of ETSI TS 102 361-1 [1]. The Data Type of the data blocks shall indicate the FEC coding rate. During the data transmission the FEC coding rate and therefore the Data Type of all data blocks shall be the same. 
 In direct mode after the Last Data Block PDU is transmitted, the source shall complete the confirmed data transmission by transmitting the Terminator Data Link Control (TD_LC) PDU using a Terminator with LC Data Type burst. In repeater mode the source shall not transmit anything after the Last Data Block PDU. However, the BS may transmit the TD_LC PDU to establish a reserved response time for the destination to transmit a response. 
 Upon receiving a stop and wait data transmission, the target shall respond with a response that is unconfirmed. In repeater mode the MS shall send the response with an impolite channel access mechanism as defined in clause 5.2.1 of ETSI TS 102 361-1 [1]. In direct mode the MS shall send the response with an impolite or polite channel access mechanism as defined in clause 5.2.1 of ETSI TS 102 361-1 [1]. 
-The MS shall send a confirmed response with a Confirmed Response packet Header (C_RHEAD) using the Data Header Data Type burst. The SAP Identifier information element in the C_RHEAD PDU shall be the same value as contained in the C_HEAD PDU when no proprietary header is used. Optionally, if a proprietary header is required a second header (P_HEAD) PDU is transmitted using the Data Header Data Type burst. If all messages received from the source passed the CRC checks, then the target has completed its response after transmitting the header(s). However, if there is a CRC mismatch for some of the blocks then the target shall also send a response message containing the list of blocks whose CRC is not matching. The response message uses a Confirmed Response packet Data block (C_RDATA) PDU with a Data Type of Rate ½ Coded Data. 
+The MS shall send a confirmed response with a Confirmed Response packet Header (C_RHEAD) using the Data Header Data Type burst. The SAP Identifier information element in the C_RHEAD PDU shall be the same value as contained in the C_HEAD PDU when no proprietary header is used. Optionally, if a proprietary header is required a second header (P_HEAD) PDU is transmitted using the Data Header Data Type burst. If all messages received from the source passed the CRC checks, then the target has completed its response after transmitting the header(s). However, if there is a CRC mismatch for some of the blocks then the target shall also send a response message containing the list of blocks whose CRC is not matching. The response message uses a Confirmed Response packet Data block (C_RDATA) PDU with a Data Type of Rate Â½ Coded Data. 
 In the case when a selective retry is attempted, the sender retransmits the listed block(s), which are preceded by the Confirmed data packet header (C_HEAD) PDU. The Full Message Flag (F) information element in the C_HEAD PDU shall be set to 02 to indicate it is transmitting a partial message with regards to the DLL. This process repeats until all 
 the blocks are received successfully up to a maximum number of times. 
 
 5.4.1 Confirmed IP Data Types/PDUs 
-5.4.1.1 Rate ½ coded confirmed IP Data Types/PDUs 
-Rate ½ coded confirmed IP data for both direct mode and repeater mode requires three Data Types and four PDUs. These are listed in table 5.4. If a proprietary header is supported, a fifth PDU is required. 
-Table 5.4: Rate ½ coded confirmed IP Data Types/PDUs 
+5.4.1.1 Rate Â½ coded confirmed IP Data Types/PDUs 
+Rate Â½ coded confirmed IP data for both direct mode and repeater mode requires three Data Types and four PDUs. These are listed in table 5.4. If a proprietary header is supported, a fifth PDU is required. 
+Table 5.4: Rate Â½ coded confirmed IP Data Types/PDUs 
 
 Data Type  Value  Function  PDU  DPF/FLCO  
 Data Header  01102  Addressing  C_HEAD  00112  
 Proprietary Header  P_HEAD  11112  
-Rate ½ Coded Data  01112  Data Block  R_1_2_DATA  NA  
+Rate Â½ Coded Data  01112  Data Block  R_1_2_DATA  NA  
 Last Data Block  R_1_2_LDATA  NA  
 Terminator with LC  00102  Hangtime  TD_LC  1100002  
 
 
-5.4.1.2 Rate ¾ coded confirmed IP Data Types/PDUs 
-Rate ¾ coded confirmed IP data for both direct mode and repeater mode requires three Data Types and four PDUs. These are listed in table 5.5. If a proprietary header is supported, a fifth PDU is required. 
-NOTE: The headers for rate ¾ confirmed IP data are rate ½ coded. 
-Table 5.5: Rate ¾ coded confirmed Data Types/PDUs 
+5.4.1.2 Rate Â¾ coded confirmed IP Data Types/PDUs 
+Rate Â¾ coded confirmed IP data for both direct mode and repeater mode requires three Data Types and four PDUs. These are listed in table 5.5. If a proprietary header is supported, a fifth PDU is required. 
+NOTE: The headers for rate Â¾ confirmed IP data are rate Â½ coded. 
+Table 5.5: Rate Â¾ coded confirmed Data Types/PDUs 
 
 Data Type  Value  Function  PDU  DPF/FLCO  
 Data Header  01102  Addressing  C_HEAD  00112  
 Proprietary Header  P_HEAD  11112  
-Rate ¾ Coded Data  10002  Data Block  R_3_4_DATA  NA  
+Rate Â¾ Coded Data  10002  Data Block  R_3_4_DATA  NA  
 Last Data Block  R_3_4_LDATA  NA  
 Terminator with LC  00102  Hangtime  TD_LC  1100002  
 
 
 5.4.1.2A Rate 1 coded confirmed IP Data Types/PDUs 
 Rate 1 coded confirmed IP data for both direct mode and repeater mode requires three Data Types and four PDUs. These are listed in table 5.5A. If a proprietary header is supported, a fifth PDU is required. 
-NOTE: The headers for rate 1 confirmed IP data are rate ½ coded. 
+NOTE: The headers for rate 1 confirmed IP data are rate Â½ coded. 
 Table 5.5A: Rate 1 coded confirmed Data Types/PDUs 
 Data Type  Value  Function  PDU  DPF/FLCO  
 Data Header  01102  Addressing  C_HEAD  00112  
@@ -606,7 +606,7 @@ Table 5.6: Confirmed response data types/PDUs
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  C_RHEAD  00012  
 Proprietary Header  P_HEAD  11112  
-Rate ½ Coded Data  01112  Response Packet Data Block  C_RDATA  NA  
+Rate Â½ Coded Data  01112  Response Packet Data Block  C_RDATA  NA  
 
 The response message defined by the Class, Type and Status information elements of the C_RHEAD for stop and wait flow control is listed in table 5.7. Information element N(S) is the Send Sequence Number contained in C_HEAD. 
 NOTE: Table 5.7 is a subset of the Response Packet definitions table found in clause 8.2.2.3 of ETSI TS 102 361-1 [1]. 
@@ -707,7 +707,7 @@ Besides an application's data payload, UDP/IPv4 data packets carry both a UDP he
 The UDP/IPv4 compression mechanism only supports IPv4 headers that do not use IP Options. If the IP Options information element is used in the IPv4 header, the data shall be sent with the full UDP/IPv4 header. A number of information elements in both the UDP and the IPv4 headers are either constants or can be calculated without additional transmitted header information at the receiving radio. These information elements are not sent over the air when transmitting the UDP/IPv4 Compressed Header. UDP header information elements not transmitted are UDP Length and UDP Checksum. IPv4 header information elements not transmitted are IPv4 Version, IPv4 Internet Header Length (IHL), IPv4 Type of Service (TOS), IPv4 Total Length, IPv4 IP Flags, IPv4 Fragment Offset, IPv4 Time to Live, IPv4 Protocol and IPv4 Header Checksum. 
 The remaining information elements (UDP Source Port, UDP Destination Port, IPv4 Identification, IPv4 Source Address and IPv4 Destination Address) require a mechanism to be sent over the air. The IPv4 Identification information element, which supports fragmentation by either the transmitting MS or within an IP network, is sent in its entirety and a further reduction in header size is accomplished by indexing UDP Source Port and UDP Destination Port with actual port numbers. The header is further reduced by combining the Source LLID in the L2 data header with an additional Source Address IDentifier (SAID) value in the compressed header to create a unique IPv4 Source Address and by combining the Destination LLID in the L2 data header with an additional Destination Address IDentifier (DAID) value in the compressed header to create a unique IPv4 Destination Address. Additionally, if either one of the UDP ports (source or destination) or both of the UDP ports do not have a defined index, then the compressed header supports a mechanism to transmit the full port number(s). 
 The compression mechanism will typically reduce the 28 byte UDP/IPv4 data header down to 5 bytes, though 7 byte and 9 byte variances are also defined to support certain use cases. The compressed UDP/IPv4 header shall be carried in the first Data Continuation burst and its presence is indicated in the Data Header (U_HEAD PDU or C_HEAD PDU) with a UDP/IP header compression SAP information element value of 00112, as defined in ETSI TS 102 361-1 [1], 
-clause 9.3.18. The structure of the first data continuation block for unconfirmed rate ½ coded data and the structure of the first data continuation block for confirmed rate ¾ coded data are shown in figures 5.16 and 5.17 respectively as examples. The optional Extended Header 1 and optional Extended Header 2 information elements carry full UDP port numbers when either one of the UDP ports (source or destination) or both of the UDP ports do not contain a predefined index. When the optional Extended Header information elements are not used, these fields are replaced with Application Data. See clause 7.2 of the present document for details on how UDP Header and IPv4 Header information elements are utilized in both the compression and decompression processes. 
+clause 9.3.18. The structure of the first data continuation block for unconfirmed rate Â½ coded data and the structure of the first data continuation block for confirmed rate Â¾ coded data are shown in figures 5.16 and 5.17 respectively as examples. The optional Extended Header 1 and optional Extended Header 2 information elements carry full UDP port numbers when either one of the UDP ports (source or destination) or both of the UDP ports do not contain a predefined index. When the optional Extended Header information elements are not used, these fields are replaced with Application Data. See clause 7.2 of the present document for details on how UDP Header and IPv4 Header information elements are utilized in both the compression and decompression processes. 
 
 
 
@@ -725,8 +725,8 @@ Location shall utilize the Location Information Protocol [13]. It should use a d
 
 6 Short data bearer service 
 6.0 Short data bearer service introduction 
-This clause describes the mechanism to transmit Short Data messages from a DMR entity to other DMR entity(ies). The transmission may be confirmed or unconfirmed. Depending on the FEC and unconfirmed/confirmed bearer service, the mechanism is able to transmit up to 1 508 bytes (24 bytes/block × 63 blocks - 4 bytes). 
-Each message is composed of a data header and in most cases data (rate ½ coded, rate ¾ coded or rate 1 coded) bursts. The last block of the data bursts shall contain a 32 bit message CRC. 
+This clause describes the mechanism to transmit Short Data messages from a DMR entity to other DMR entity(ies). The transmission may be confirmed or unconfirmed. Depending on the FEC and unconfirmed/confirmed bearer service, the mechanism is able to transmit up to 1 508 bytes (24 bytes/block Ã— 63 blocks - 4 bytes). 
+Each message is composed of a data header and in most cases data (rate Â½ coded, rate Â¾ coded or rate 1 coded) bursts. The last block of the data bursts shall contain a 32 bit message CRC. 
 The short data header contains the parameters that specify the bearer service and in particular the quantity of data transported by the message and their format. 
 At the DLL, unconfirmed short data bearer service shall conform to the unconfirmed IP bearer service as defined in clause 5.3, though a MS may use Impolite Type channel access mechanism. Also at the DLL, confirmed short data bearer services shall conform to the confirmed IP bearer service as defined in clause 5.4, though a MS may use Impolite Type channel access mechanism. The confirmed short data bearer service shall support the stop and wait flow control. 
 NOTE: The header formats do not support sliding window flow control for short data. 
@@ -737,7 +737,7 @@ A short data bearer service transmission should use a Polite Type (Polite to Own
 Defined Data is the transmission of a small quantity of data among DMR entities with a predefined data format as defined by the "DD Format" information element in the Short Data Header block. The DD Format information element shall be the same as defined in ETSI TS 102 361-1 [1]. 
 
 6.1.1 Defined Data Types/PDUs 
-Defined data may use rate ½ coded unconfirmed data, rate ¾ coded unconfirmed data, rate 1 coded unconfirmed data, rate ½ coded confirmed data, rate ¾ confirmed data or rate 1 coded confirmed data. All Data Types/PDUs are the same as those defined in clause 5 of the present document with the exception of the data header as listed in table 6.1. 
+Defined data may use rate Â½ coded unconfirmed data, rate Â¾ coded unconfirmed data, rate 1 coded unconfirmed data, rate Â½ coded confirmed data, rate Â¾ confirmed data or rate 1 coded confirmed data. All Data Types/PDUs are the same as those defined in clause 5 of the present document with the exception of the data header as listed in table 6.1. 
 Table 6.1: Raw data specific data types/PDUs 
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  DD_HEAD  11012  
@@ -754,7 +754,7 @@ The Response Requested (A) information element of the header shall be set to 02 
 Raw data is the transmission of a small quantity of data among applications running on DMR entities that leaves the management of the format of the transmitted data to the applications themselves. The DMR DLL provides the transmission of data between a source port and a destination port of the DMR entities as specified in the source and destination port fields respectively. 
 
 6.2.1 Raw data types/PDUs 
-Raw data may use rate ½ coded unconfirmed data, rate ¾ coded unconfirmed data, rate 1 coded unconfirmed data, rate ½ coded confirmed data, rate ¾ coded confirmed data or rate 1 coded confirmed data. All Data Types/PDUs are the same as those defined in clause 5 of the present document with the exception of the data header as listed in table 6.2. 
+Raw data may use rate Â½ coded unconfirmed data, rate Â¾ coded unconfirmed data, rate 1 coded unconfirmed data, rate Â½ coded confirmed data, rate Â¾ coded confirmed data or rate 1 coded confirmed data. All Data Types/PDUs are the same as those defined in clause 5 of the present document with the exception of the data header as listed in table 6.2. 
 Table 6.2: Raw data specific data types/PDUs 
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  R_HEAD  11102  
@@ -792,7 +792,7 @@ Table 6.4: Confirmed response data types/PDUs
 Data Type  Value  Function  PDU  DPF  
 Data Header  01102  Addressing  C_RHEAD  00012  
 Proprietary Header  P_HEAD  11112  
-Rate ½ Coded Data  01112  Response Packet Data Block  C_RDATA  NA  
+Rate Â½ Coded Data  01112  Response Packet Data Block  C_RDATA  NA  
 
 The combination of the A and the SARQ information elements contained in the R_HEAD PDU or the DD_HEAD PDU shall indicate the type of response as listed in table 6.5. 
 Table 6.5: Data response 
@@ -823,23 +823,23 @@ Class  Type  Status  Message  Comment
 7.0 PDU description introduction 
 This clause describes the PDUs which apply to the DMR layer 3 Packet Data Protocol as described in the present document. 
 The following clauses contain descriptions of the PDUs and the information elements contained within them. The structure of the PDU definition represented by the tables is as follows: 
-• 
+â€¢ 
 the information element column gives the name of the contained element(s); 
 
-• 
+â€¢ 
 the element length column defines the length of the element in bits; 
 
 
-• the remarks column contains other information on the information element. The elements shall be transmitted in the order specified by ETSI TS 102 361-1 [1]. 
+â€¢ the remarks column contains other information on the information element. The elements shall be transmitted in the order specified by ETSI TS 102 361-1 [1]. 
 
 7.1 Layer 3 and 4 PDP PDUs 
 7.1.0 Layers 3 and 4 PDP PDUs introduction 
 Due to the nature of DMR, with close interaction between layers 2 and 3, and with a high degree of information about the state of the channel being needed, the layer 3 PDUs detailed in the following clauses may include two element types: 
-• Message dependent elements: 
+â€¢ Message dependent elements: 
 -These elements are visible to layer 2 and may be used by any MS (that is able to decode them), 
 irrespective of addressing. These elements depend on the message type element. Some are generated by 
 layer 2 when it constructs the complete message whereas others are generated by layer 3. 
-• Feature elements: 
+â€¢ Feature elements: 
 -These are "true" layer 3 elements. They are only processed by the MSs to which they are addressed. Where both types exist in the PDU they are shown separately. 
 
 7.1.1 Full Link Control (FULL LC) PDUs 
@@ -1112,7 +1112,7 @@ Annex B (normative): Opcode reference lists
 
 B.0 Opcode reference lists introduction 
 This annex lists the following Opcodes used for DMR PDP: 
-• Full Link Control Opcodes. 
+â€¢ Full Link Control Opcodes. 
 
 B.1 PDP Full Link Control Opcode list 
 Table B.1 shows the FLCO coding. 
@@ -1152,10 +1152,10 @@ Table C.3: IPv4-mapped IPv6 address
 
 C.2 Address mapping over PDP 
 In order to have the possibility to transport IPv6 packets over the DMR Packet Data Protocol two strategies are possible: 
-• 
+â€¢ 
 map directly the IPv6 packet into one bearer service (confirmed or unconfirmed data); 
 
-• 
+â€¢ 
 transport the IPv6 packet using one of the IPv6 over IPv4 tunnelling techniques. 
 
 
@@ -1163,30 +1163,30 @@ The direct mapping of IPv6 packets onto one of the two data bearer services migh
 
 C.3 IPv6 tunnelling techniques 
 Various tunnelling techniques of IPv6 over IPv4 are described. Detailed description will be found in the following documents: 
-• 
+â€¢ 
 IETF RFC 2529 [9]: "Transmission of IPv6 over IPv4 Domains without Explicit Tunnels"; 
 
-• 
+â€¢ 
 IETF RFC 3056 [10]: "Connection of IPv6 Domains via IPv4 Clouds"; 
 
-• 
+â€¢ 
 IETF RFC 3142 [11]: "An IPv6-to-IPv4 Transport Relay Translator"; 
 
-• 
+â€¢ 
 IETF RFC 4213 [12]: "Transition Mechanisms for IPv6 Hosts and Routers". 
 
 
 These different solutions use some mapping between IPv4 and IPv6 addresses. In particular a good description of the various scenarios is present in IETF RFC 4213 [12]. The mechanisms specified in IETF RFC 4213 [12] include: 
-• 
+â€¢ 
 Dual IP layer (also known as Dual Stack): A technique for providing complete support for both Internet protocols (IPv4 and IPv6) in hosts and routers. 
 
-• 
+â€¢ 
 Configured tunnelling of IPv6 over IPv4: Point-to-point tunnels made by encapsulating IPv6 packets within IPv4 headers to carry them over IPv4 routing infrastructures. 
 
-• 
+â€¢ 
 IPv4-compatible IPv6 addresses: An IPv6 address format that employs embedded IPv4 addresses. 
 
-• 
+â€¢ 
 Automatic tunnelling of IPv6 over IPv4: A mechanism for using IPv4-compatible IPv6 addresses to automatically tunnel IPv6 packets over IPv4 networks. 
 
 
@@ -1246,10 +1246,10 @@ No  Standard Version  Clauses affected or description  Title
 
 
 Annex E (informative): Bibliography 
-• 
+â€¢ 
 ETSI TR 102 335-1: "Electromagnetic compatibility and Radio spectrum Matters (ERM); System reference document for harmonized use of Digital Mobile Radio (DMR); Part 1: Tier 1 DMR#, expected to be for general authorization with no individual rights operation". 
 
-• 
+â€¢ 
 ETSI TR 102 335-2: "Electromagnetic compatibility and Radio spectrum Matters (ERM); System reference document for harmonized use of Digital Mobile Radio (DMR); Part 2: Systems operating under individual licences in the existing land mobile service spectrum bands". 
 
 

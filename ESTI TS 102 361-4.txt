@@ -9,7 +9,7 @@ data, digital, MS, radio, signalling, trunking
 ETSI 
 650 Route des Lucioles F-06921 Sophia Antipolis Cedex - FRANCE 
 Tel.: +33 4 92 94 42 00   Fax: +33 4 93 65 47 16 
-Siret N° 348 623 562 00017 -APE 7112B Association à but non lucratif enregistrée à la Sous-Préfecture de Grasse (06) N° w061004871 
+Siret NÂ° 348 623 562 00017 -APE 7112B Association Ã  but non lucratif enregistrÃ©e Ã  la Sous-PrÃ©fecture de Grasse (06) NÂ° w061004871 
 Important notice 
 The present document can be downloaded from: 
 https://www.etsi.org/standards-search 
@@ -25,7 +25,7 @@ The information provided in the present deliverable is directed solely to profes
 Any software contained in this deliverable is provided "AS IS" with no warranties, express or implied, including but not limited to, the warranties of merchantability, fitness for a particular purpose and non-infringement of intellectual property rights and ETSI shall not be held liable in any event for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, or any other pecuniary loss) arising out of or related to the use of or inability to use the software. 
 Copyright Notification 
 No part may be reproduced or utilized in any form or by any means, electronic or mechanical, including photocopying and microfilm except as authorized by written permission of ETSI. The content of the PDF version shall not be modified without the written authorization of ETSI. The copyright and the foregoing restriction extend to reproduction in all media. 
-© ETSI 2023. All rights reserved. 
+Â© ETSI 2023. All rights reserved. 
 Contents 
 Intellectual Property Rights...................................................................................................................... 14 
 Foreword ................................................................................................................................................... 14 
@@ -209,8 +209,8 @@ Modal verbs terminology ........................................................
 6.6.1.1.3 General MS Radio Check ..................................................................................................... 119 
 6.6.1.2 Call Cancellation ........................................................................................................................ 119 
 6.6.1.2.0 Call Cancellation - Introduction ........................................................................................... 119 
-6.6.1.2.1 Call Cancellation – Procedures for the Calling MS.............................................................. 119 
-6.6.1.2.2 Call Cancellation – Procedures for the Called MS ............................................................... 119 
+6.6.1.2.1 Call Cancellation Â– Procedures for the Calling MS.............................................................. 119 
+6.6.1.2.2 Call Cancellation Â– Procedures for the Called MS ............................................................... 119 
 6.6.1.3 Acknowledgements Sent to Calling MS .................................................................................... 120 
 6.6.1.4 Called Party (MS) Answering Mechanism ................................................................................ 121 
 6.6.1.4.0 Called Party (MS) Answering Mechanism - Introduction .................................................... 121 
@@ -523,7 +523,7 @@ IPRs essential or potentially essential to normative deliverables may have been 
 Pursuant to the ETSI Directives including the ETSI IPR Policy, no investigation regarding the essentiality of IPRs, including IPR searches, has been carried out by ETSI. No guarantee can be given as to the existence of other IPRs not referenced in ETSI SR 000 314 (or the updates on the ETSI Web server) which are, or may be, or may become, essential to the present document. 
 Trademarks 
 The present document may include trademarks and/or tradenames which are asserted and/or registered by their owners. ETSI claims no ownership of these except for any which are indicated as being the property of ETSI, and conveys no right to use or reproduce any trademark and/or tradename. Mention of those trademarks in the present document does not constitute an endorsement by ETSI of products, services or organizations associated with those trademarks. 
-DECT™, PLUGTESTS™, UMTS™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPP™ and LTE™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2M™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSM® and the GSM logo are trademarks registered and owned by the GSM Association. 
+DECTÂ™, PLUGTESTSÂ™, UMTSÂ™ and the ETSI logo are trademarks of ETSI registered for the benefit of its Members. 3GPPÂ™ and LTEÂ™ are trademarks of ETSI registered for the benefit of its Members and of the 3GPP Organizational Partners. oneM2MÂ™ logo is a trademark of ETSI registered for the benefit of its Members and of the oneM2M Partners. GSMÂ® and the GSM logo are trademarks registered and owned by the GSM Association. 
 Foreword 
 This Technical Specification (TS) has been produced by ETSI Technical Committee Electromagnetic compatibility and Radio spectrum Matters (ERM). 
 The present document is part 4 of a multi-part deliverable covering the Technical Requirements for Digital Mobile Radio (DMR), as identified below: 
@@ -560,7 +560,7 @@ The following referenced documents are necessary for the application of the pres
 [6] ETSI TS 102 361-2: "Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) Systems; Part 2: DMR voice and generic services and facilities". 
 [7] ETSI TS 102 361-3: "Electromagnetic compatibility and Radio spectrum Matters (ERM); Digital Mobile Radio (DMR) Systems; Part 3: DMR data protocol". 
 [8] IEC 61162-1: "Maritime navigation and radiocommunications equipment and systems - Digital Interfaces - Part 1: Single talker and multiple listeners". 
-[9] The Unicode® Standard. 
+[9] The UnicodeÂ® Standard. 
 [10]  Void.  
 [11]  ISO/IEC 646:1991: "Information technology -- ISO 7-bit coded character set for information interchange".  
 [12]  ISO/IEC 8859 series (1998-2001): "Information technology -- 8-bit single-byte coded graphic character sets".  
@@ -645,7 +645,7 @@ NOTE: A reference designating a fixed end device.
 CACH  Common Announcement CHannel  
 CAI  Call User Address Identity  
 CC  Colour Code  
-CCITT  Comité Consultatif International Téléphonique et Télégraphique  
+CCITT  ComitÃ© Consultatif International TÃ©lÃ©phonique et TÃ©lÃ©graphique  
 CCL  Call Control Layer  
 CG  Channel Grant  
 CG_AP  Channel Grant Absolute Parameters  
@@ -812,22 +812,22 @@ C Plane U Plane
 4.1.1 Air Interface Physical Layer (layer 1) 
 The Air Interface layer 1 shall be the physical interface. It shall deal with the physical burst, composed of bits, which is to be sent and/or received. The Physical Layer is described in part 1 of this multi-part deliverable, see ETSI TS 102 361-1 [5]. 
 The Air Interface layer 1 contains the following functions: 
-• 
+Â• 
 modulation and demodulation; 
 
-• 
+Â• 
 transmitter and receiver switching; 
 
-• 
+Â• 
 RF characteristics; 
 
-• 
+Â• 
 bits and symbol definition; 
 
-• 
+Â• 
 frequency and symbol synchronization; 
 
-• 
+Â• 
 burst building. 
 
 
@@ -835,37 +835,37 @@ burst building.
 4.1.2 Air Interface Data Link Layer (layer 2) 
 The Air Interface layer 2 handles logical connections and hides the physical medium from the upper layers. The Data Link Layer is described in clauses 5 to 9 of ETSI TS 102 361-1 [5]. Layer 2 services are described in the present document if those services are not already described in ETSI TS 102 361-1 [5]. 
 The main functions are as follows: 
-• 
+Â• 
 channel coding (FEC, CRC); 
 
-• 
+Â• 
 interleaving, de-interleaving and bit ordering; 
 
-• 
+Â• 
 service answer response and retry mechanism; 
 
-• 
+Â• 
 media access control and channel management; 
 
-• 
+Â• 
 framing, superframe building and synchronization; 
 
-• 
+Â• 
 burst and parameter definition; 
 
-• 
+Â• 
 link addressing (source and/or destination); 
 
-• 
+Â• 
 interfacing of voice applications (vocoder data) with the PL; 
 
-• 
+Â• 
 data bearer services; 
 
-• 
+Â• 
 exchanging signalling and/or user data with the CCL; 
 
-• 
+Â• 
 authentication by challenge and response. 
 
 
@@ -873,40 +873,40 @@ authentication by challenge and response.
 4.1.3 Air Interface Call Control Layer (layer 3) 
 Air Interface layer 3 (CCL) is applicable only to the C-plane, and shall be an entity for the services and facilities supported by DMR on top of the layer 2 functionality. The Call Control Layer for trunking described in the present document and may have embedded intrinsic services associated to it. 
 The CCL provides the following functions: 
-• 
+Â• 
 BS/TS/TSCC activation/deactivation (for asynchronous access mode); 
 
-• 
+Â• 
 establishing, maintaining and terminating of calls; 
 
-• 
+Â• 
 individual or talkgroup call transmission and reception; 
 
-• 
+Â• 
 destination addressing (DMR IDs or gateways as appropriate); 
 
-• 
+Â• 
 support of intrinsic services (emergency signalling, pre-emption, late entry, etc.); 
 
-• 
+Â• 
 data call control; 
 
-• 
+Â• 
 announcement signalling; 
 
-• 
+Â• 
 management of available resources: -management of a control channel resource by a random access protocol; -queuing for payload resource; 
 
-• 
+Â• 
 individual or talkgroup call set-up via a dedicated signalling channel; 
 
-• 
+Â• 
 MS location information by registration; 
 
-• 
+Â• 
 MS power save; 
 
-• 
+Â• 
 broadcast of system parameters to radio subscriber terminals. 
 
 
@@ -1089,10 +1089,10 @@ When active on a payload channel, the TSCC shall discard any PDUs inbound that h
 4.8 DMR TDMA Burst and Channel Structure 
 The described solution is based on the 2-slot TDMA structure described in ETSI TS 102 361-1 [5], clause 4.2. 
 The logical channels are separated into two categories: 
-• 
+Â• 
 a control channel carrying signalling; and 
 
-• 
+Â• 
 payload channels carrying speech or data information. 
 
 
@@ -1127,28 +1127,28 @@ MS Inbound
 AD 
 Figure 4.2: Key Points for a Tier III TSCC 
 Key points particular to Tier III trunking illustrated by figure 4.2 include the following: 
-• 
+Â• 
 While the TSCC is keyed up, the two outbound logical channels are continuously transmitted, even if there is no information to send. If either of the logical channels is configured as a control channel, and that control channel is idle, information is constantly transmitted to manage MS access and broadcast parameters to MSs. 
 
-• 
+Â• 
 The channel 1 and 2 bursts in the inbound channel are offset 30 ms in time from the channel 1 and 2 bursts in the outbound channel. This number scheme allows a single channel identifier field in the outbound CACH to use the same channel number when referring to the inbound and outbound channels. 
 
-• 
+Â• 
 Differing SYNC patterns are used in voice bursts and data bursts to allow the receiver to differentiate between them. Different SYNC patterns are used for inbound and outbound channels to help the receiver reject co-channel interference. 
 
-• 
+Â• 
 The TSCC shall broadcast the used timing. Two independent control channels or one control channel + one payload channel may be configured. A TSCC may temporarily revert to a payload channel. Aligned timing operations allows for shorter call set up times. Offset timing operations allows for one MS to MS full duplex call on a single carrier or full duplex Line Connected calls in a single slot. 
 
-• 
+Â• 
 Referring to figure 4.2, a random access burst on the inbound channel labelled "A" shall be acknowledged by a PDU on the outbound channel. This acknowledgement may be transmitted in slot "B", although the protocol is able to postpone the acknowledgement to allow for computational or network delays. 
 
-• 
+Â• 
 For an MS response to a PDU received from the TSCC, the MS shall transmit its PDU in the timeslot but one following the end of the TSCC PDU. I.e. a PDU from the TSCC in slot "C" that requires a response from an MS shall be acknowledged on the TSCC in slot "D". 
 
-• 
+Â• 
 The MS response at "D" cannot collide with another random access burst because the slot is protected by setting the AT bit is the CACH to busy. MS shall test this bit before making a random access attempt. Random access is not permitted if AT = 1. 
 
-• 
+Â• 
 The outbound channel defines a CACH channel between TDMA bursts that manages the framing and channel access of the logical channels and provides a low speed channel for signalling. CACH framing bits are defined, allowing the low speed channel to support a range of PDU sizes. 
 
 
@@ -1342,10 +1342,10 @@ A payload channel is allocated to the called and calling parties at the start of
 5.0 Trunking Control Channel Formats - Introduction 
 A TS shall employ a minimum of one physical channel partitioned in time into TDMA frames and timeslots as defined in ETSI TS 102 361-1 [5], clause 4.2. At least one of the TDMA channels shall carry control channel signalling. When idle, MSs shall monitor the Trunk Station Control Channel (TSCC) outbound channel. This protocol permits one additional TSCC to be employed in a TS to share the load. 
 A physical channel may support both a Trunk Station Control Channel (TSCC) and a Trunk Station Control Channel Alternate Slot (TSCCAS). When idle, an MS supporting a TSCCAS shall monitor both the TSCC and the TSCCAS outbound logical channels. The following SYNC patterns shall be deployed (see ETSI TS 102 361-1 [5], clause 9.1.1 for details and bit patterns for the frame SYNC): 
-• 
+Â• 
 For the TS outbound channel -BS sourced data. 
 
-• 
+Â• 
 For the MS inbound channel -MS sourced data. 
 
 
@@ -1359,7 +1359,7 @@ power-save-frame is transmitted by a TSCC every 480 ms.
 5.1 The Use of the CACH 
 5.1.0 System Identity Code Structure 
 The Short LC contains 3 octets of data (see ETSI TS 102 361-1 [5], clause 7.1.4). Tier III systems that have any one of the logical channels configured as a TSCC shall continuously or periodically transmit the C_SYS_Parms Short Link Control to broadcast a sub-set of the System Identity Code, the Reg information element and a Common_Slot_Counter. All information carried by the Short Link Control is common to both logical channels. 
-Since the entire Short LC payload can be delivered in 4 CACH bursts, one SLCO can be sent by the CACH every 4 × 30 ms = 120 ms. 
+Since the entire Short LC payload can be delivered in 4 CACH bursts, one SLCO can be sent by the CACH every 4 Ã— 30 ms = 120 ms. 
 NOTE: The Tier III protocol makes use of the AT bit transmitted in the CACH as key elements in the random access protocol described in clause 6.2. 
 
 5.1.1 C_SYS_Parms and P_SYS Parms - System Identity Code Subset 
@@ -1378,7 +1378,7 @@ The Common_Slot_Counter is broadcast by the C_SYS_Parms and represents a positiv
 
 2121212121212121 2 
 
-Counter Counter+1 Counter+2 Counter+3 …………………... 
+Counter Counter+1 Counter+2 Counter+3 Â…Â…Â…Â…Â…Â…Â…... 
 Figure 5.2: Common Slot Counter 
 Figure 5.2 illustrates how the Common Slot Counter is broadcast in the CACH. The Common_Slot_Counter is read by MS wishing to synchronize power save periodic sleep cycles (see clause 6.4.7). 
 
@@ -1551,10 +1551,10 @@ Annex C provides an illustration how the logical channels may be mapped to physi
 Certain PDUs transmitted on the TSCC may be directed to and applicable only to a sub-set of the MS population. Examples are Aloha (C_ALOHA) PDUs and Broadcast (C_BCAST) PDUs. Applicable PDUs contain a 24 bit address information elements and a 5 bit (Mask) number information element. The sub-set division is achieved by using the address qualifier (Mask) from the PDU. This parameter instructs an MS to compare the "Mask" least significant bits of its individual address with the "Mask" least significant bits of the address field from the PDU (containing the MASK) to determine if that PDU is applicable. 
 An MS shall note the population subdivision contained in each applicable PDU that it receives. For Mask = 0 to 24, the PDU is applicable to the unit if the "Mask" least significant bits of the Aloha address match the "Mask" least significant bits of its individual address. 
 In this way, the MS population is effectively divided into 2Masksubsets: 
-• 
+Â• 
 If Mask = 0 then no address bits are compared, so there is no subdivision. 
 
-• 
+Â• 
 If Mask = 1 then only MS whose least significant individual address bit matches the least significant individual address bit from the PDU received shall consider the PDU to be applicable to that particular MS. 
 
 
@@ -1581,16 +1581,16 @@ Figure 6.3: Non-Applicable PDU defined by Address and Mask
 6.2 Random Access Procedures 
 6.2.0 Random Access Procedures -Introduction 
 These clauses define the random access protocol, which is based on slotted Aloha that is used to: 
-• 
+Â• 
 control the collision of simultaneous random access attempts from different MSs; 
 
-• 
+Â• 
 manage the TSCC to minimize access delays; 
 
-• 
+Â• 
 ensure system stability; and 
 
-• 
+Â• 
 maintain optimum throughput under heavy traffic loads. 
 
 
@@ -1616,13 +1616,13 @@ PDUs transmitted on the TSCC on the outbound channel are divided between those t
 6.2.1.1.0 Random Access Control -Introduction 
 The TSCC outbound channel creates an environment where TSCC access may be managed and controlled. This protocol specifies a specific C_ALOHA PDU that contains the information elements Random-Backoff, Mask, and Service Function, to manage and control random access. Other PDUs transmitted on the TSCC also contain the random backoff information element. 
 All MS initiated services are by random access. If an MS wishes to make a random access attempt, the MS may send the random access service request PDU so long as: 
-• 
+Â• 
 access is not inhibited by Mask (see clause 6.2.1.1.1); or 
 
-• 
+Â• 
 access is not inhibited by the Service Function (see clause 6.2.1.1.2); or 
 
-• 
+Â• 
 the slot chosen is not withdrawn (see clause 6.2.1.1.3). 
 
 
@@ -1632,13 +1632,13 @@ C_ALOHA PDUs contain an address information element and a Mask information eleme
 An MS shall note the population subdivision contained in each Aloha PDU that it receives. When attempting random access, the MS shall check if the population subdivision is applicable to it using the qualifier (Mask) and the address field from the Aloha PDU. For Mask = 0 to 24, the PDU is applicable to the MS if the "Mask" least significant bits of the Aloha address match the "Mask" least significant bits of its individual address. 
 The subdivision is applied to subsequent TDMA frames marked PDUs that do not contain the Mask information element, until updated or changed by the next Aloha PDU. 
 In this way, the MS population is effectively divided into 2Mask subsets: 
-• 
+Â• 
 If Mask = 0 then no address bits are compared, so there is no subdivision (under normal traffic loading, this will usually be the case). 
 
-• 
+Â• 
 If Mask = 1 then only units whose least significant individual address bit matches the Aloha address may send non-emergency random access PDUs. Thus the MS population has been divided into two subsets. 
 
-• 
+Â• 
 This process continues up to Mask = 24. In this case only one MS shall be permitted to make a random access attempt (unless the MS requested an emergency service whereupon the MS may make a random access attempt for all values of Mask except Mask = 24). 
 
 
@@ -1646,10 +1646,10 @@ When an MS becomes active on a TSCC, including when returning from a payload cha
 
 6.2.1.1.2 Checking the Service-Function 
 For service requests except emergency: 
-• 
+Â• 
 An MS shall use the Service Function from the C_ALOHA PDU. An MS shall not choose a slot for random access unless the random access attempt is for a service type invited by the Service Function information element. 
 
-• 
+Â• 
 The Service function shall apply until the Service-Function is updated by a subsequent C_ALOHA PDU. 
 
 
@@ -1804,10 +1804,10 @@ the MS shall rely on the AT bit to determine if the following random-access slot
 6.2.1.1.7 Retry decision and Time-outs 
 After sending a random access PDU, an MS shall wait to receive a response from the TSCC. Various PDUs shall be accepted as a valid response (as specified in the clauses detailing the registration and call procedures). 
 The MS shall abandon its access attempt if it has sent the maximum permitted number of random access for the particular service requested and received no valid response. This number depends on the service and priority of service being requested: 
-• 
+Â• 
 For non-emergency random access requests, it is NRand_NR. 
 
-• 
+Â• 
 For emergency random access requests, it is NRand_NE. 
 
 
@@ -1918,13 +1918,13 @@ An MS shall not make any transmissions on a TSCC unless it is active on that cha
 If an MS is hunting over a number of candidate channels, it shall leave the selected channel as soon as it becomes evident that the MS shall not be permitted service. 
 The discipline for MSs whilst active a TSCC and the circumstances which may result in a search for a new TSCC are the subjects of clause 6.3.2. 
 In particular: 
-• 
+Â• 
 the method by which the MS searches for an appropriate TSCC; 
 
-• 
+Â• 
 the criteria to which a TSCC shall be considered appropriate by the MS - authorization; 
 
-• 
+Â• 
 procedures for returning to the TSCC acquisition procedures. 
 
 
@@ -2402,12 +2402,12 @@ The Subscription/Attachment list permits up to seven talkgroup addresses to be r
 Table 6.10: Index Pattern 
 
 List  Response_Info bits  
-ADDRESS1  x-----­ 
-ADDRESS2  -x----­ 
-ADDRESS3  --x---­ 
-ADDRESS4  ---x--­ 
-ADDRESS5  ----x-­ 
-ADDRESS6  -----x­ 
+ADDRESS1  x-----Â­ 
+ADDRESS2  -x----Â­ 
+ADDRESS3  --x---Â­ 
+ADDRESS4  ---x--Â­ 
+ADDRESS5  ----x-Â­ 
+ADDRESS6  -----xÂ­ 
 ADDRESS7  ------x  
 
 If the Talkgroup Subscription/Attachment transaction is completed without errors and registration is accepted, the calling TSCC shall send a final C_ACK acknowledgement to the calling MS. The Response_Info bits in the C_ACK((Reason = Reg_Accepted (0110 00102)) or C_ACK (Reason Code = Reg_Subscription/Attachment service 
@@ -2415,16 +2415,16 @@ If the Talkgroup Subscription/Attachment transaction is completed without errors
 Response_Info bit is a 12 then the TSCC has accepted that talkgroup address. If the TSCC Response_Info bit is a 02 then the TSCC has rejected that talkgroup address. The TSCC may accept the registration but send Response_Info = 000 00002. In that case the TSCC has rejected all of the talkgroup Subscription/Attachment addresses in the list. 
 To remove previously accepted talkgroup Subscriptions/Attachments, the talkgroup Attachment transaction shall be repeated with the appropriate talkgroups replaced by ADRNULL. 
 To modify the talkgroup Subscriptions/Attachments, a new talkgroup transaction shall be performed and the existing list shall be replaced in the TSCC with the list from the new transaction. The different scenarios for talkgroup Subscription/Attachment modification (additions or deletions) or channel changes include: 
-• Trgt_Adr_Cnts = 002: 
+Â• Trgt_Adr_Cnts = 002: 
 -New Subscription List size = 0. 
 -Send Registration without TG Subscription. 
-• Trgt_Adr_Cnts = 012: 
+Â• Trgt_Adr_Cnts = 012: 
 -New Subscription List size = 1. 
 -Send Registration with single TG Subscription. 
-• Trgt_Adr_Cnts = 102: 
+Â• Trgt_Adr_Cnts = 102: 
 -New Subscription List size > 1. 
 -Send Registration with new TG Subscription List. 
-• If Trgt_Adr_Cnts = 1 and ADRNULL is sent all TG Subscription (one or more) are deleted. 
+Â• If Trgt_Adr_Cnts = 1 and ADRNULL is sent all TG Subscription (one or more) are deleted. 
 If requesting registration along with a talkgroup Subscription/Attachment list, the MS shall transmit a C_RAND with Trgt_Adr_Cnts = 102, the Target address = the Gateway addresses TATTSI and Appended_UDT_Short_Data = the number of appended UDT blocks to transport the Subscription/Attachment list. 
 On reception of the C_RAND, the TSCC may immediately respond with a C_AHOY to the requesting MS for it to upload the talkgroup Subscription/Attachment list. The TSCC will then check both the registration request and the talkgroup Subscription/Attachment list at the same time. Alternatively, the TSCC may validate registration before requesting the talkgroup Subscription/Attachment list. 
 If the TSCC does not accept the registration request, it shall transmit either a C_NACK(Reason = Reg_Refused) or C_NACK(Reason = Reg_Denied) to the MS, Source Address = TATTSI, Target Address = address of the MS making the C_RAND. Upon reception the MS shall behave as defined in clauses 6.4.4.1.3 and 6.4.4.1.4 respectively. 
@@ -2510,7 +2510,7 @@ Random
 
 Ack 
 
-Appended Data ­
+Appended Data Â­
 Recipient of 
 Access RQ 
 Response 
@@ -2533,7 +2533,7 @@ Random
 
 Ack 
 
-Appended Data ­
+Appended Data Â­
 Recipient of 
 Access RQ 
 Response 
@@ -2662,14 +2662,14 @@ The PS_Counter is counting up continuously. Suppose the PS_Counter at this momen
 Table 6.14: Power Save Example - MS State 
 
 PS_Counter  Count  Mask Counter with PowerSave RQ  
-…  ……  ..  
+Â…  Â…Â…  ..  
 65  010 00012  0  1  0  0  0  0  1  
 66  010 00102  0  1  0  0  0  1  0  
 67  010 00112  0  1  0  0  0  1  1  
 68  010 01002  0  1  0  0  1  0  0  
 69  010 01012  0  1  0  0  1  0  1  
 70  010 01102  0  1  0  0  1  1  0  
-…  ……  ..  ..  ..  ..  ..  ..  ..  
+Â…  Â…Â…  ..  ..  ..  ..  ..  ..  ..  
 
 .. 
 -
@@ -2686,7 +2686,7 @@ Sleep
 Sleep  
 Sleep  
 Wake  
-…..  
+Â…..  
 
 Table 6.14 illustrates how a TSCC determines when an MS is awake. The TSCC applies a mask of length PowerSave_RQ. In this example the mask leaves two bits. When the masked PS_Counter equals the PowerSave_Offset the TSCC may signal the MS. 
 MS can sample the CACH at any time, read the Common_Slot Counter and determine when the wake frame will be transmitted. The MS may then sleep until a point at which its wake frame is scheduled. A PDU addressed to the MS by its individual address shall cause the MS to awaken for T_Awake seconds. Each MS individually addressed or applicable talkgroup address PDU transmitted on the TSCC or MS shall refresh T_Awake. If no PDUs have been transmitted or received by the MS when T_Awake expires the MS shall return to its sleeping state retaining its previous power save settings. 
@@ -2721,19 +2721,19 @@ NOTE: A compromised key only affects one MS and not the entire system.
 
 6.4.8.1.2 PSN (Physical Serial Number) 
 PSN is a 3-byte number that is factory coded into a MS. Manufactures may use their own implementation to provide PSN as long as they adhere to the following rules: 
-• 
+Â• 
 It shall be non-modifiable ID associated with every device. 
 
-• 
+Â• 
 It shall be a unique number, for every device they produce. 
 
-• 
+Â• 
 It shall be at least 3 bytes long. 
 
-• 
+Â• 
 It shall be read using their provision tools to be later entered in the infrastructure configuration. 
 
-• 
+Â• 
 It shall not be possible to be changed by any software or programming changes. 
 
 
@@ -3249,7 +3249,7 @@ Random
 
 Ack 
 
-Appended Data ­
+Appended Data Â­
 Recipient of 
 Access RQ 
 Response 
@@ -3321,13 +3321,13 @@ The Reverse Channel is defined in ETSI TS 102 361-1 [5] and can be utilized in a
 A trunked network may employ a combination of MS that do and do not support this feature. The Tier III system shall be able to deal with this. 
 Closed loop power control is a method by which a TS is able to dynamically control the transmitter output power of an MS. If a Tier III TS or MS supports this feature, the feature shall be implemented as described in this clause. 
 The principle of power control is: 
-• The TS measures the received signal strength of a transmitting MS and compares the received value with two programmable thresholds. The thresholds are the upper limit for the received signal strength (L_Power_Hi) and the lower limit (L_Power_Low). If the received signal strength exceeds the threshold L_Power_Hi, the TS will send a decrease power PDU to the MS. If the signal strength is below the lower limit L_Power_Low, the TS will send an increase power control PDU to the MS. 
+Â• The TS measures the received signal strength of a transmitting MS and compares the received value with two programmable thresholds. The thresholds are the upper limit for the received signal strength (L_Power_Hi) and the lower limit (L_Power_Low). If the received signal strength exceeds the threshold L_Power_Hi, the TS will send a decrease power PDU to the MS. If the signal strength is below the lower limit L_Power_Low, the TS will send an increase power control PDU to the MS. 
 MS De-key utilizes Transmit Interrupt to end an MS unit's voice transmission. If a Tier III TS or MS supports this feature, the feature shall be implemented as described in this clause and in clause 6.4.15 (Transmit Interrupt for MS De-key) of the present document. Various use cases covering both TSCC and MS initiated scenarios are supported.  
 The principles of MS De-key are: 
-• TS Initiated: 
+Â• TS Initiated: 
 -Emergency Pre-emption MS De-key: Utilized so that a new call of higher priority (i.e. emergency) may use the payload channel. 
 -Call Timer Expiration MS De-key: Utilized to end a call when the maximum call timer duration has been reached. 
-• MS or Gateway Initiated: -Payload Interrupt MS De-key: Utilized to switch the transmitting MS unit during a call. -Ambient Listening Service (ALS) Termination MS De-key: Utilized to terminate an ALS voice call. 
+Â• MS or Gateway Initiated: -Payload Interrupt MS De-key: Utilized to switch the transmitting MS unit during a call. -Ambient Listening Service (ALS) Termination MS De-key: Utilized to terminate an ALS voice call. 
 
 6.4.14.1 Reverse Channel (RC) Command 
 Both MS power control and MS PTT De-key use the Reverse Channel. The 4 bits of the Reverse Channel Command are illustrated in table 6.32. 
@@ -3413,10 +3413,10 @@ If either the MS or gateway initiated Transmit Interrupt request has been accept
 An MS is involved in a voice call on a payload channel. If this MS wishes to interrupt another MS that is presently transmitting, the interrupting MS shall follow this procedure. 
 The interrupting MS shall return to the TSCC. When the TSCC has been acquired the MS shall make a status call request, status = 125 addressed to the MS to be interrupted. The MS shall note the response from the TSCC. If the response is C_NACKD(Reason = Not_Supported or Reason = Perm_User_Refused) then the MS shall interpret the interrupt request as unsuccessful. If the response is C_ACKD(Reason = Message_Accepted) the interrupt request shall be interpreted as successful. 
 Following the TSCC response, the interrupting MS shall return to the payload channel: 
-• 
+Â• 
 If the interrupt request is unsuccessful the MS shall continue with the call. 
 
-• 
+Â• 
 If the interrupt request is successful, the MS shall utilize outbound signalling to determine if the transmitting MS transmission has ceased. If the transmitting MS transmission has ceased, the interrupting MS may then may PTT. 
 
 
@@ -3559,7 +3559,7 @@ Random
 
 Ack 
 
-Appended Data ­
+Appended Data Â­
 Recipient of Access RQ 
 Response 
 Dialling Digits 
@@ -3582,7 +3582,7 @@ Channel Grant
 Appended Data 
 Ack 
 
-Appended Data ­
+Appended Data Â­
 Recipient of 
 Response 
 CLI Digits 
@@ -3659,13 +3659,13 @@ LIP Format. The appended blocks is defined in ETSI TS 100 392-18-1 [14].
 
 6.5.1.1 UDT Block Structure 
 The UDT block structure is described in ETSI TS 102 361-1 [5] in the following clauses: 
-• 
+Â• 
 header: clause 8.2.1.8; 
 
-• 
+Â• 
 non-last block: clause 8.2.2.1; 
 
-• 
+Â• 
 last data block: clause 8.2.2.5. 
 
 
@@ -3706,8 +3706,8 @@ The information elements of the PDUs in the UDT Header information elements are 
 UDT_Format  Specifies the format of the data transported in the appended data blocks of the multi-block UDT  
 If the UDT outbound is the second phase preceded by a UDT Inbound, the UDT_Format shall be copied from the UDT_Inbound Header  
 Appended_Blocks  Specifies the number of appended data blocks concatenated to the header  
-Supplementary_Flag  Specifies if: • 0: this UDT Header is carrying the data for the primary service; or • 1: this UDT Header is carrying supplementary_user data, supporting another service  
-Response Expected (A) See ETSI TS 102 361-1 [5]  Specifies if the TSCC is expecting a response from this UDT download: • if the UDT download is addressing an individual MS then: - if the UDT download is supporting an Supplementary Data transfer then this information element may be set or clear - for the UDT Short Data Service then this information element shall be set to 12 - response expected • if the UDT download is addressing a talkgroup then: - the UDT information element shall be set to 02 - response not expected  
+Supplementary_Flag  Specifies if: Â• 0: this UDT Header is carrying the data for the primary service; or Â• 1: this UDT Header is carrying supplementary_user data, supporting another service  
+Response Expected (A) See ETSI TS 102 361-1 [5]  Specifies if the TSCC is expecting a response from this UDT download: Â• if the UDT download is addressing an individual MS then: - if the UDT download is supporting an Supplementary Data transfer then this information element may be set or clear - for the UDT Short Data Service then this information element shall be set to 12 - response expected Â• if the UDT download is addressing a talkgroup then: - the UDT information element shall be set to 02 - response not expected  
 Pad Nibble See ETSI TS 102 361-1 [5]  Appended to the data to form an integer number of blocks. The number of pad nibbles for each of the UDT data formats is specified in Annex B  
 Target _address or Gateway  Individual MS address or Talkgroup or All_Unit  
 Source_address or gateway  Source MS address for a service originating from an MS PABXI for a service originating from a PABX extension PSTNI for a service originating from the PSTN IPI for a service originating from an IP network SUPLI for supplementary user data  
@@ -3737,8 +3737,8 @@ Table 6.36: UDT Header Information
 
 UDT_Format  Specifies the format of the data transported in the appended data blocks of the multi-block UDT  
 Appended_Blocks  Specifies the number of appended data blocks concatenated to the header  
-Supplementary_Flag  Specifies if: • this UDT Header is carrying the data for the primary service (UDT Short Data, Data Polling); or • this UDT Header is carrying supplementary data, supporting another service  
-(A) See ETSI TS 102 361-1 [5]  Specifies if:the MS is expecting a response: • if the UDT upload is addressing an invididual MS then: - if the UDT upload is supporting a Supplementary Data transfer then this Information Element shall be set to 02 - for the UDT Short Data Service then this Information Element is Not Applicable. Value may be 02 or 12 • if the UDT download is addressing a talkgroup then: - the UDT Information Element shall be set to 02 - response not expected   
+Supplementary_Flag  Specifies if: Â• this UDT Header is carrying the data for the primary service (UDT Short Data, Data Polling); or Â• this UDT Header is carrying supplementary data, supporting another service  
+(A) See ETSI TS 102 361-1 [5]  Specifies if:the MS is expecting a response: Â• if the UDT upload is addressing an invididual MS then: - if the UDT upload is supporting a Supplementary Data transfer then this Information Element shall be set to 02 - for the UDT Short Data Service then this Information Element is Not Applicable. Value may be 02 or 12 Â• if the UDT download is addressing a talkgroup then: - the UDT Information Element shall be set to 02 - response not expected   
 Pad Nibble See ETSI TS 102 361-1 [5]  Appended to the data to form an integer number of blocks. The number of pad nibbles for each of the UDT data formats is specified in Annex B  
 Target _address or Gateway  Target MS address PABXI for a service to a PABX extension PSTNI for a service to the PSTN IPI for a service to an IP network DIVERTI for the call diversion service SUPLI for supplementary user data TATTSI for the talkgroup subscription/attachment service  
 Source_address or gateway  Source MS address or gateway  
@@ -3788,10 +3788,10 @@ ALS Service addressed to an Individual MS.
 To support these services the Tier III protocol implements a supplementary data transport mechanism whereby data may be carried between entities to support or enhance other services. 
 For MS call to an MS, talkgroup or All-MS, the full source and destination address is provided in the C_RAND PDU so a single-part call set-up procedure shall be invoked. 
 For MS calls to destinations connected through a gateway (such as PSTN), a multi-part call procedure sets an appropriate gateway address as the destination in the C_RAND PDU. The TSCC then demands the extended_addressing information from the calling MS using the Unified Data Transport Service (see clause 6.5): 
-• 
+Â• 
 calls where the TS uses only the Control Channel to signal Local Ringing to the initiating MS (no in-band ringing). 
 
-• 
+Â• 
 calls where the TS provisions a payload channel to signal In-Band Ringing to the initiating MS. 
 
 
@@ -3927,14 +3927,14 @@ In addition to the Calling MS and called party radio checks sent as part of a ca
 6.6.1.2.0 Call Cancellation - Introduction 
 Either the calling party or called party may cancel a voice call. The procedures to cancel an OACSU and a FOACSU differ if the call is cancelled by the called party MS. 
 
-6.6.1.2.1 Call Cancellation – Procedures for the Calling MS 
+6.6.1.2.1 Call Cancellation Â– Procedures for the Calling MS 
 The statements in this clause apply to voice calls to MS and voice calls to line connected destinations, as well as to both OACSU and FOACSU calls. 
 If the call is cancelled before the Random Access PDU has been transmitted by the Calling Party MS to the TSCC, the MS shall cancel its pending transmission and return to the idle state. 
 If an MS has initiated a voice call service and the call has not matured (by the transmission of Channel Grant PDUs) the call may be cancelled by the calling party by initiating a Call Cancel Service request. This is a random access service request (Service_Kind = 11112 Cancel Call Request). 
 The TSCC response to a call cancel request shall be C_ACKD (Reason = 0110 00002 Message Accepted]. 
 If the called MS has already been sent a C_AHOY availability check, the called party is notified of the call cancellation. If the called party is an MS, the procedure is described in clause 6.6.1.2.2. For a line connected device, the cancellation procedure is protocol specific. 
 
-6.6.1.2.2 Call Cancellation – Procedures for the Called MS 
+6.6.1.2.2 Call Cancellation Â– Procedures for the Called MS 
 The statements in this clause apply to voice calls to MS and voice calls to line connected destinations, as well as to both OACSU and FOACSU calls. 
 If a call is initiated to an MS, and the call has not matured (by the transmission of Channel Grant PDUs), the call shall be cancelled if the TSCC detects that the calling party has ended the call (e.g PSTN goes on hook, or a calling MS has performed a random access request as described in clause 6.6.1.2.1). 
 If the call is cancelled before the TSCC has transmitted any MS availability checks, the call is abandoned. 
@@ -3982,7 +3982,7 @@ The TSCC may process individual voice and packet data calls using either OACSU o
 For a call using OACSU, the TS allocates a payload channel as soon as the resource is available to connect that call. Channel Grant PDUs are sent to the calling and called party. When the called party has successfully received the Channel Grant the user may be alerted to the incoming call. 
 
 6.6.1.4.0.2 FOACSU Call 
-For a call using FOACSU, the TS checks that the called party is available but the Channel Grant PDUs are not sent by the TSCC until the called party chooses to accept the call by RFC (perhaps by an off hook mechanism). In this case the called party sends a C_RAND - Call Answer Service request with ACCEPT = 02 to accept the call, or a C_RAND ­
+For a call using FOACSU, the TS checks that the called party is available but the Channel Grant PDUs are not sent by the TSCC until the called party chooses to accept the call by RFC (perhaps by an off hook mechanism). In this case the called party sends a C_RAND - Call Answer Service request with ACCEPT = 02 to accept the call, or a C_RAND Â­
 Answer Call Service request with ACCEPT = 12 to reject the call. 
 The C_RAND Information Elements for the Answer Call Service are illustrated in table 6.38. 
 Table 6.38: C_RAND information elements for the Answer Call Service 
@@ -4007,7 +4007,7 @@ NOTE 1: Privacy is not defined in the present document. NOTE 2: Target_Address r
 The process for the called party MS accepting the call is described in clause 6.6.1.4.1. In the case where the called party MS rejects the call, the process is described in clause 6.6.1.4.2. 
 
 6.6.1.4.1 FOACSU - Called Party Accepts the Call 
-6.6.1.4.1.1 FOACSU – Called Party Accepts the Call. Calling Party is an MS 
+6.6.1.4.1.1 FOACSU Â– Called Party Accepts the Call. Calling Party is an MS 
 Figure 6.51 illustrates the process. In this example an MS is the calling party. 
 
 The steps involved in the call setup are: 
@@ -4035,7 +4035,7 @@ At "F", if a traffic channel resource is available, the TSCC sends Channel Grant
 
 
 
-6.6.1.4.1.2 FOACSU – Called Party Accepts the Call. Calling Party is a Line Connected Device 
+6.6.1.4.1.2 FOACSU Â– Called Party Accepts the Call. Calling Party is a Line Connected Device 
 The steps involved in a call to an MS from a line connected device are: 
 a) 
 A Line Connected Device initiates a FOACSU call to an MS; 
@@ -4093,7 +4093,7 @@ At "G" the TSCC sends a C_NACKD (Reason Code = 0001 01002) [Recipient Refused] t
 
 
 NOTE: Steps "F" and "G" may be sent by the TSCC in reverse order. 
-6.6.1.4.2.2 FOACSU – Called Party Rejects the Call from a Line Connected Device 
+6.6.1.4.2.2 FOACSU Â– Called Party Rejects the Call from a Line Connected Device 
 The steps involved in the call setup are: 
 a) 
 A Line Connected Device initiates a FOACSU call to an MS. 
@@ -4148,30 +4148,30 @@ The TSCC shall maintain an identical timer. If the TSCC receives a random access
 
 6.6.1.5.2 Call Waiting Timer for the Called MS 
 If an MS receives an individually addressed: 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 00002, Service_kind_Flag = 02); 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 00102, Service_Kind_Flag = 02); 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 10102, Service_Kind_Flag = 02); or 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 10112, Service_Kind_Flag = 02); 
 
 
 indicating an OACSU availability check for a payload channel, the MS shall start timer T_Pending. If an MS receives an individually addressed: 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 00002, Service_Kind_Flag = 12); 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 10102, Service_Kind_Flag = 12); 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 00102, Service_Kind_Flag = 12); or 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 10112, Service_Kind_Flag = 12); 
 
 
@@ -4180,16 +4180,16 @@ If while the timer T_Pending or T_AnswerCall is running, the TSCC transmits a Ch
 While the applicable T_Pending or T_AnswerCall timer is running, if the MS receives a Talkgroup voice channel grant or Packet Data Talkgroup Channel Grant PDUwith Emergency bit = 02, the PDU shall be discarded. 
 If the applicable T_Pending or T_AnswerCall timer expires and the MS has not been directed to a payload channel, the MS may assume that the TSCC has abandoned the call that was indicated in the C_AHOY PDU. If the call set up is FOACSU, the MS shall be alerting and expiry of T_AnswerCall shall cancel the MS alerting state. 
 If while the applicable T_Pending or T_AnswerCall timer is running, the TSCC repeats the: 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 00002); 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 10102); 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 00102); or 
 
-• 
+Â• 
 C_AHOY PDU (Service_Kind = 10112). 
 
 
@@ -4217,22 +4217,22 @@ If a particular talkgroup call is active on a payload channel, the TSCC may cont
 MSs are directed to a payload physical/logical channel for voice and certain data services. Where a payload channel is 
 allocated MS shall comply with the timing requirement defined in this clause. If neither slot of a payload channel is active, there is no requirement that the payload channel is keyed. If at least one of the payload channel slots becomes active then the payload channel keys up. 
 A payload channel that is not active in a call shall send IDLE PDUs. A payload channel that is active in a call may send: 
-• 
+Â• 
 Payload Channel Grant. 
 
-• 
+Â• 
 P_PROTECT PDUs to remove MSs that are not legitimate users of the traffic channel. 
 
-• 
+Â• 
 P_CLEAR PDUs to indicate the end of the call and clear down the MSs. 
 
-• 
+Â• 
 P_AHOY and P_xACK PDU's. 
 
-• 
+Â• 
 Speech (or data) items received inbound. 
 
-• 
+Â• 
 Terminator PDUs between inbound speech (data) items. 
 
 
@@ -4275,27 +4275,27 @@ Line Connected source via a Gateway: PABX Extension PSTN destination Other gatew
 
 The Individual/Talkgroup PDU in the Random Access Service Request shall determine if the caller has selected a Tier III service to an individual MS or a talkgroup. 
 The Service_Options PDU in the Random Access Service Request shall activate options for the Voice Call Service Request: 
-• 
+Â• 
 Emergency service: 
 
 -Emergency calls shall take precedence over all other calls. Emergency call may be pre-emptive causing another call to be cleared down if the resource requested for the emergency call is not available. 
 
-• 
+Â• 
 Supplementary_user data Transfer Service requested for this call: 
 
 -Information may be sent to the called party as part of and to support another call service. For instance the PSTN Call Line Identity may be passed to the called party as part of a voice call setup. 
 
-• 
+Â• 
 Broadcast service: 
 
 -The Broadcast Call Voice service provides a one-way voice call from any user to a predetermined talkgroup. 
 
-• 
+Â• 
 Priority: 
 
 -The priority option permits the originator to select one of four levels of priority. The TSCC may manage and manipulate a call queue to cause calls with a higher priority to mature faster. The procedures the TSCC may employ are not prescribed in the present document. 
 
-• 
+Â• 
 Call to All MS: 
 
 
@@ -4401,16 +4401,16 @@ Sending a Multi-block UDT with supplementary_user data (if the supplementary_use
 If b) is sent, b) shall follow a). (See clause 6.4.13.) 
 If a response is not received from the called party the TSCC may repeat the C_AHOY. 
 The availability check demands a response from the called party: 
-• 
+Â• 
 If the response is C_NACKU, the TSCC shall send an appropriate call failed response to the calling MS and echo the Reason in the C_NACKU PDU (mirrored_reason). 
 
-• 
+Â• 
 If the response is C_ACKU(Reason = CallBack), the TSCC shall send an appropriate CallBack response to the calling MS, C_ACKD (mirrored_reason = 0100 01012). 
 
-• 
+Â• 
 If the response is C_ACKU(Reason = Message_Accepted), the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs. 
 
-• 
+Â• 
 If the called MS is FOACSU enabled, a valid response to C_AHOY Service_Kind = 00002 Service_Kind_Flag = 12 is C_ACKU(Reason = MS_ALERTING), i.e. MS alerting but not yet RFC. 
 
 
@@ -4533,24 +4533,24 @@ If the TS has previously accepted a call diversion indicating that this type of 
 
 6.6.2.2.6 Availability Check to the Called Party (voice) 
 For an individual MS address call set-up, the called MS shall receive a radio check to which it shall respond with an appropriate acknowledgement: 
-• 
+Â• 
 The called party shall respond C_NACKU, if it cannot accept the call (the TSCC shall send an appropriate call failed response to the calling MS). 
 
-• 
+Â• 
 The called party shall respond C_ACKU(Reason = CallBack), if the called MS wishes to return the call at some future time (the TSCC shall send an appropriate CallBack response (mirrored reason) to the calling MS). 
 
-• 
+Â• 
 The called party shall respond C_ACKU(Reason = MS_Accepted), if the call is accepted and the MS can accept the call immediately (the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs). If the MS is not FOACSU enabled and the message to which the MS is sending the acknowledgment is C_AHOY Service_Kind = 00002 Service_Kind_Flag = 12 then a 
 
 valid response is C_ACKU(Reason = MS_Accepted). 
 
-• 
+Â• 
 If the MS is FOACSU enabled and the message to which the MS is sending the acknowledgment is C_AHOY 
 
 
 Service_Kind = 00002 Service_Kind_Flag = 12 then a valid response is C_ACKU(Reason = MS_ALERTING), i.e. MS alerting but not yet RFC. After sending the acknowledgment the MS may indicate RFC by sending a C_RAND (Answer Call Service, ACCEPT = 02). If the called MS is alerting but the user 
 does not wish to accept the call the MS shall send a C_RAND(Answer Call Service, ACCEPT = 12) to reject the call. 
-• If the MS is FOACSU enabled, the call includes supplementary data, and the message to which the MS is sending the acknowledgment is HEAD Source - SUPLI, Target = MS(B) + AD [supplementary data] UDT_Option_Flag = 12 then a valid response is C_ACKU(Reason = MS_ALERTING), i.e. MS alerting but 
+Â• If the MS is FOACSU enabled, the call includes supplementary data, and the message to which the MS is sending the acknowledgment is HEAD Source - SUPLI, Target = MS(B) + AD [supplementary data] UDT_Option_Flag = 12 then a valid response is C_ACKU(Reason = MS_ALERTING), i.e. MS alerting but 
 not yet RFC. After sending the acknowledgment the MS may indicate RFC by sending a C_RAND (Answer Call Service, ACCEPT = 02). If the called MS is alerting but the user does not wish to accept the call the MS shall send a C_RAND(Answer Call Service, ACCEPT = 12) to reject the call. 
 
 6.6.2.2.7 Payload Channel Allocation 
@@ -4999,10 +4999,10 @@ For calls to individual MS, the TSCC shall check that the called party is in rad
 The TSCC may check availability of the called party by: 
 a) Sending a C_AHOY PDU to that called party. 
 b) Sending a Multi-block UDT with supplementary data (if the supplementary data service is active for this call). If a response is not received from the calling party the TSCC may repeat the C_AHOY. The availability check demands a response from the called party: 
-• 
+Â• 
 If the response is C_NACKU, the TSCC shall send an appropriate call failed response to the calling MS and echo the Reason in the C_NACKD PDU. 
 
-• 
+Â• 
 If the response is C_ACKU(Reason = Message_Accepted), the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs. 
 
 
@@ -5113,10 +5113,10 @@ Termination PDUs are selected from an appropriate Reason information element in 
 
 6.6.3.2.6 Availability Check to the Called MS (packet data) 
 For an individual MS address call set-up, the called MS shall receive a radio check to which it shall respond with an appropriate acknowledgement: 
-• 
+Â• 
 The called party shall respond C_NACKU, if it cannot accept the call or its data terminal equipment is not ready (the TSCC shall send an appropriate call failed response to the calling MS (mirrored_reason)). 
 
-• 
+Â• 
 The calling party shall respond C_ACKU (Reason = Message_Accepted), if the call is accepted (the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs). 
 
 
@@ -5438,10 +5438,10 @@ For calls to individual MS, the TSCC may check that the called party is in radio
 The TSCC may check availability of the called party by: 
 a) Sending a C_AHOY PDU to that called party (C_AHOY, Service_Kind = 01002, Source address = calling party MSID, Target address = called party MSID). 
 b) Sending a Multi-block UDT with supplementary data (if the supplementary data service is active for this call). If a response is not received from the calling party the TSCC may repeat the C_AHOY. The availability check demands a response from the called party: 
-• 
+Â• 
 If the response is C_NACKU, the TSCC shall abandon the short message call send an appropriate call failed response to the calling MS and echo the mirrored_reason in the C_NACKD PDU. 
 
-• 
+Â• 
 If the response is C_ACKU (Reason = Message_Accepted), the TSCC shall progress the service request and download the UDT Short Data message using the UDT mechanism. 
 
 
@@ -5721,24 +5721,24 @@ A C_NACKU PDU if the polled MS does not wish to accept the polling request.
 6.6.6.0 Status Call Service - Introduction 
 The Status Message service enables data to be transmitted between DMR entities on the control channel. Seven bits of data may be transported using this service. The status delivery service transports a status message from the initiator to a single recipient or a talkgroup. The status polling service enables an initiator to request a status message from an addressed entity. Seven bits are transported representing 128 status messages. 100 status values 0 to 99 (000 00002 to 
 110 00112) are used for the Status Delivery Service and have a user-defined meaning that is not described in the present document, while others have a meaning defined in the present document: 
-• 
+Â• 
 Status values in the range 100 to 122 (110 01002 to 111 10102) are reserved. 
 
-• 
+Â• 
 Status value 123 (111 10112) is a system status defined for the Transmit Interrupt service to request the 
 
 termination of a call: this includes the termination of an ALS call by the MS that initiated the ALS service (see clause 6.4.14.3.4). 
 
-• 
+Â• 
 Status value 124 (111 11002) is a system status used to cancel an emergency alarm (see clause 6.6.6.3.2). The procedures for transporting this status are identical to those specified in clause 6.6.6.1. 
 
-• 
+Â• 
 Status value 125 (111 11012) is a system status defined for the Transmit Interrupt procedure (see clause 6.4.15). 
 
-• 
+Â• 
 Status value 126 (111 11102) is a system status used for an emergency alarm (see clause 6.6.6.3.1). The procedures for transporting this status are identical to those specified in clause 6.6.6.1. 
 
-• 
+Â• 
 Status value 127 (111 11112) defines the Status Polling Service (see clause 6.6.6.2). 
 
 
@@ -6388,11 +6388,11 @@ An MS makes a service access request by random access. If the destination addres
 aligned timing 
 TSCC Outbound TSCC 
 TSCC 
-The UDT Header sets the following information elements: • Supplementary_Flag -12. 
-• 
+The UDT Header sets the following information elements: Â• Supplementary_Flag -12. 
+Â• 
 UDT Response -02. 
 
-• 
+Â• 
 Target_address or Gateway -Address of the calling MS. 
 
 
@@ -6776,16 +6776,16 @@ The TSCC shall check availability of the called party by sending a C_AHOY PDU to
 Checking availability by sending a multi-block UDT with supplementary_user data is not possible for full duplex MS to MS, as the full-duplex property of the requested call cannot be signalled. 
 If a response is not received from the called party the TSCC may repeat the C_AHOY. 
 The availability check demands a response from the called party: 
-• 
+Â• 
 If the response is C_NACKU, the TSCC shall send an appropriate call failed response to the calling MS and echo the Reason in the C_NACKD PDU (mirrored_reason). 
 
-• 
+Â• 
 If the response is C_ACKU(Reason = CallBack), the TSCC shall send an appropriate CallBack response to the calling MS, C_ACKD (mirrored_reason = 0100 01012). 
 
-• 
+Â• 
 If the response is C_ACKU(Reason = Message_Accepted), the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs. 
 
-• 
+Â• 
 If the called MS is FOACSU enabled, a valid response to C_AHOY Service_Kind = 10102 Service_Kind_Flag = 12 is C_ACKU(Reason = MS_ALERTING), i.e. MS alerting but not yet RFC. 
 
 
@@ -6876,18 +6876,18 @@ If the TS has previously accepted a call diversion indicating that this type of 
 
 6.6.9.2.5 Availability Check to the Called Party (voice) 
 For a full-duplex MS to MS call set-up, the called MS shall receive a radio check to which it shall respond with an appropriate acknowledgement: 
-• 
+Â• 
 The called party shall respond C_NACKU, if it cannot accept the call (the TSCC shall send an appropriate call failed response to the calling MS): 
 
 -If the called MS does not support full-duplex MS to MS calls, it shall set the reason code to MS_Duplex_Not_Supported. The calling radio may then try to set up the call using individual voice call service. 
 
-• 
+Â• 
 The called party shall respond C_ACKU(Reason = CallBack), if the called MS wishes to return the call at some future time (the TSCC shall send an appropriate CallBack response (mirrored reason) to the calling MS). 
 
-• 
+Â• 
 The called party shall respond C_ACKU(Reason = MS_Accepted), if the call is accepted and the MS can accept the call immediately (the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs). 
 
-• 
+Â• 
 If the MS is FOACSU enabled and the message to which the MS is sending the acknowledgment is C_AHOY 
 
 
@@ -6972,10 +6972,10 @@ The TSCC may send acknowledgement PDUs following the random access data packet s
 
 6.6.10.1.4 Radio Check for Packet Data 
 For calls to individual MS, the TSCC shall check that the called party is in radio contact and shall accept the call before a payload channel is allocated. The radio check may also indicate that the called party data terminal equipment is ready. The TSCC shall check availability of the called party by sending a C_AHOY PDU to that called party. If a response is not received from the calling party the TSCC may repeat the C_AHOY. The availability check demands a response from the called party: 
-• 
+Â• 
 If the response is C_NACKU, the TSCC shall send an appropriate call failed response to the calling MS and echo the Reason in the C_NACKD PDU. 
 
-• 
+Â• 
 If the response is C_ACKU(Reason = Message_Accepted), the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs. 
 
 
@@ -7054,10 +7054,10 @@ Termination PDUs are selected from an appropriate Reason information element in 
 
 6.6.10.2.5 Availability Check to the Called MS (packet data) 
 For a full-duplex MS to MS call set-up, the called MS shall receive a radio check to which it shall respond with an appropriate acknowledgement: 
-• 
+Â• 
 The called party shall respond C_NACKU, if it cannot accept the call or its data terminal equipment is not ready (the TSCC shall send an appropriate call failed response to the calling MS (mirrored_reason)). 
 
-• 
+Â• 
 The calling party shall respond C_ACKU (Reason = Message_Accepted), if the call is accepted (the TSCC shall progress the service request and allocate a payload channel by transmitting appropriate Channel Grant PDUs). 
 
 
@@ -7179,19 +7179,19 @@ If MS supports Poll Service but does not support the Service Type in the Poll Re
 6.6.11.3.0 General 
 The USBD Polling Service supports a valuable subset of the Location Information Protocol (LIP) as defined in ETSI TS 100 392-18-1 [14]. This subset is Immediate Reporting and combined with the USBD Polling Service provides a highly efficient method of supporting large quantities of location updates. The USBD Poll Request is utilized as a compressed LIP Immediate Location Update Request and the Poll Response is utilized as the LIP Short Location Report. 
 To support LIP end to end: 
-• 
+Â• 
 LIP Immediate Location Update Request is compressed into a Poll Request PDU. 
 
-• 
+Â• 
 Upon reception of Poll Request PDU, MS decompresses to reconstruct LIP Immediate Location Request. 
 
-• 
+Â• 
 The Short Location Report response to an Immediate Location Update Request from the MS is compressed to a Poll Response PDU. 
 
-• 
+Â• 
 Upon reception of Poll Response PDU, TSCC or TSCCAS decompresses to reconstruct LIP Short Location Report. 
 
-• 
+Â• 
 All other LIP messages are sent as UDTs on the control channel. 
 
 
@@ -7343,10 +7343,10 @@ If UTC offset is to be transmitted, then this shall represent the difference in 
 UTC offset, where transmitted in the announcement, shall be conveyed as a 4-bit unsigned number (UTC_OFFSET) representing whole hours, a fractional component (UTC_OFFSET_FRACTION) representing additional 15 minute increments, and a sign field (UTC_OFFSET_SIGN). The UTC_OFFSET_SIGN unambiguously determines whether local time leads Coordinated Universal Time (positive UTC offset), or lags Coordinated Universal Time (negative UTC offset) time. UTC time is calculated by subtracting the overall signed UTC offset (including fractional component) from local time. 
 DAY, MONTH, & DATE shall be adjusted accordingly on underflow or overflow. 
 The following examples illustrate how these fields shall be used: 
-• 
+Â• 
 e.g. if UTC_OFFSET = 01002, UTC_OFFSET_FRACTION = 102, and UTC_OFFSET_SIGN = 02, the combined UTC offset for the current location shall be interpreted as +4 hours:30 minutes. For a local time broadcast of 11:00:00, Coordinated Universal Time shall be determined to be 06:30:00 (same day). 
 
-• 
+Â• 
 e.g. if UTC_OFFSET = 01102, UTC_OFFSET_FRACTION = 112, and UTC_OFFSET_SIGN =12, the combined UTC offset for the current location shall be interpreted as -6 hours:45 minutes. For a local time broadcast of 20:00:00, Coordinated Universal Time shall be determined to be 02:45:00 (next day). 
 
 
@@ -7361,7 +7361,7 @@ This PDU announces a logical to physical channel relationship. The PDU defines t
 This PDU announces information about the TSCCs in use on radio sites in the vicinity of this TSCC to assist MS to acquire an appropriate TSCC if the MS moves out of radio contact with the current TSCC. 
 The broadcast PDU contains both the logical channel number and C_SYScode which is being transmitted by the announced TSCC. 
 The action to be taken by the MS on receipt of this PDU is not prescribed in the present document but the following comments are offered for the benefit of designers implementing processes that use Adjacent Site information: 
-• When searching for a valid TSCC the MS hunts through a list of candidate physical channels until an appropriate TSCC is selected and confirmed. The physical channel number (CH_ADJ) received in the Adjacent Site PDU may be used to modify the TSCC search in favour of radio channels which are more likely to provide a satisfactory service than other radio channels which the search parameters may specify. 
+Â• When searching for a valid TSCC the MS hunts through a list of candidate physical channels until an appropriate TSCC is selected and confirmed. The physical channel number (CH_ADJ) received in the Adjacent Site PDU may be used to modify the TSCC search in favour of radio channels which are more likely to provide a satisfactory service than other radio channels which the search parameters may specify. 
 
 6.7.1.8 General Site Parameters 
 This PDU contains information that is relevant to MS regardless of which site they may acquiring or confirmed upon. As such, the information may be specific to the current site, or to the network as a whole. 
@@ -7374,27 +7374,27 @@ Information elements that pertain to the network as a whole shall persist betwee
 7.0 PDU description - Introduction 
 This clause describes the PDUs which apply to the DMR layer 3, the Tier III trunking services and facilities protocol. 
 The following clauses contain descriptions of the PDUs and the information elements contained within them. The structure of the PDU definition represented by the tables is as follows: 
-• 
+Â• 
 the information element column gives the name of the contained element(s); 
 
-• 
+Â• 
 the element length column defines the length of the element in bits; 
 
-• 
+Â• 
 the Alias used in the description of the procedures; 
 
 
-• the remarks column contains other information on the information element. The elements shall be transmitted in the order specified by ETSI TS 102 361-1 [5]. 
+Â• the remarks column contains other information on the information element. The elements shall be transmitted in the order specified by ETSI TS 102 361-1 [5]. 
 
 7.1 Layer 3 PDUs 
 7.1.0 Layer 3 PDUs -Introduction 
 Due to the nature of DMR, with close interaction between layers 2 and 3, and with a high degree of information about the state of the channel being needed, the layer 3 PDUs detailed in the following clauses may include two element types: 
-• 
+Â• 
 Message dependent elements: 
 
 -These elements are visible to layer 2 and may be used by any MS (that is able to decode them), irrespective of addressing. These elements depend on the message type element. Some are generated by layer 2 when it constructs the complete message whereas others are generated by layer 3. 
 
-• 
+Â• 
 Facility elements: 
 
 
@@ -7404,16 +7404,16 @@ Facility elements:
 7.1.1.0 Control Signalling Block (CSBK/MBC/UDT) PDUs - Introduction 
 CSBK/MBC and UDT PDUs form a core part of the Tier III protocol. The control signalling PDUs are classified into their core functionality. 
 The Call Control Layer 3 requires three Data Type bursts (see ETSI TS 102 361-1 [5], clause 6.2). These are listed in: 
-• 
+Â• 
 table 7.1 for TSCC outbound PDUs; 
 
-• 
+Â• 
 table 7.2 for TSCC inbound PDUs; 
 
-• 
+Â• 
 table 7.3 for Payload channel outbound PDUs; and 
 
-• 
+Â• 
 table 7.4 for Payload inbound PDUs. 
 
 
@@ -8359,16 +8359,16 @@ The P_SYS_Parms PDU is broadcast in the CACH when both timeslots of the physical
 7.2 Layer 3 Information Element Coding 
 7.2.0 Layer 3 Information Element Coding - Introduction 
 The following clauses contain descriptions of the information elements contained within layer 3 PDUs, and provide a description of what the elements represent in relation to their bit representation. The structure of the tables is as follows: 
-• 
+Â• 
 the information element column gives the name of the element; 
 
-• 
+Â• 
 the element length column defines the length of the element in bits; 
 
-• 
+Â• 
 the value column denotes fixed values or a range of values; 
 
-• 
+Â• 
 the remarks column defines the meaning of the information element against each of its bit represented values. 
 
 
@@ -8643,9 +8643,9 @@ Table 7.50: Service_Kind_Flag Information Element
 
 Service_ Kind  Message  Service_ Kind_Flag_ Value  Remark  
 TSCC Channel  
-00002  C_AHOY Voice Service Individual Radio Check – call to an MS  02  Check if called MS is in radio contact and can accept this call immediately. (OACSU)  
+00002  C_AHOY Voice Service Individual Radio Check Â– call to an MS  02  Check if called MS is in radio contact and can accept this call immediately. (OACSU)  
 12  checks whether called MS is ready to accept speech or data call. (FOACSU)  
-C_AHOY Voice Service Individual Call to a line connected destination – C_AHOY to upload destination digits  02  
+C_AHOY Voice Service Individual Call to a line connected destination Â– C_AHOY to upload destination digits  02  
 00012  C_AHOY Voice Service Talkgroup Radio Check  02  Check if at least one member of the called talkgroup is in radio contact  
 00102  C_AHOY Packet Data individual radio check  02  Check if called MS is in radio contact  
 00112  C_AHOY Packet Data talkgroup radio check  02  Check if at least one member of the called talkgroup is in radio contact  
@@ -9249,7 +9249,7 @@ UDT Format  4  00002  Binary
 01112  16 bit UTF-16BE Unicode characters  
 10002  Manufacturer Specific  
 10012  Manufacturer Specific  
-10102  Mixed. Appended blocks contain an address and 16 bit UTF­16BE Unicode characters  
+10102  Mixed. Appended blocks contain an address and 16 bit UTFÂ­16BE Unicode characters  
 10112  Location Information Protocol (LIP [14])  
 11002  Reserved  
 11012  Reserved  
@@ -9334,8 +9334,8 @@ The One Key format flag is described in table 7.97. The One Key flag is applicab
 Table 7.97: One Key format flag Information Element 
 
 Information element  Length  Value  Appended Data Address Format  Appended Data Mixed Format  
-One Key format flag (OK)  1  02  ADDRESS1 in the UDT Appended data Addressing Format is not the One­Key_talkgroup  ADDRESS in the UDT Appended data Mixed Format is not the One­Key_talkgroup  
-12  ADDRESS1 in the UDT Appended data Addressing Format is the One­Key_talkgroup  ADDRESS in the UDT Appended data Mixed Format is the One-Key_talkgroup  
+One Key format flag (OK)  1  02  ADDRESS1 in the UDT Appended data Addressing Format is not the OneÂ­Key_talkgroup  ADDRESS in the UDT Appended data Mixed Format is not the OneÂ­Key_talkgroup  
+12  ADDRESS1 in the UDT Appended data Addressing Format is the OneÂ­Key_talkgroup  ADDRESS in the UDT Appended data Mixed Format is the One-Key_talkgroup  
 
 
 7.2.37 Single Item Multi-Item(SIMI) Data 
@@ -9630,9 +9630,9 @@ Figure B.1: UDT Header Block
 B.3.1 Appended Data Binary Format 
 Appended data is binary coded. Up to four appended UDT blocks may be concatenated with the UDT header to form a multi-block UDT PDU. Up to 368 bits may be transported. For binary format transport the Pad Nibble information element in the UDT header is set to 0 00002. If variable length binary data is being transported, the last bit of the user 
 data may identified as follows: 
-• A 02 is appended to the user data and the remaining bits to fill a UDT block are set to 12. The UDT header and appended blocks are then transmitted. 
-• The receiver may identify the end of user data by counting backwards until the first 02 is reached. That point is one bit past the user data. 
-• In this case the maximum number of applicable data bits is 96 + 96 + 96 + 79 = 367. Figures B.2, B.3, B.4 and B.5 assume variable length binary data is being transmitted. 
+Â• A 02 is appended to the user data and the remaining bits to fill a UDT block are set to 12. The UDT header and appended blocks are then transmitted. 
+Â• The receiver may identify the end of user data by counting backwards until the first 02 is reached. That point is one bit past the user data. 
+Â• In this case the maximum number of applicable data bits is 96 + 96 + 96 + 79 = 367. Figures B.2, B.3, B.4 and B.5 assume variable length binary data is being transmitted. 
 APPENDED DATA UDTF=00002  
 
  7  6  5  4  3  2  1  0  
@@ -10255,13 +10255,13 @@ Octet 2  Digit(7)
  
 Octet 3  Digit(7)  Digit(7)  
 Octet 4  
- Digit(7)--­ 
+ Digit(7)--Â­ 
 Octet 5  Digit(7)  
 Octet 6  
  Digit(7)  
 Octet 7  Digit(7)  
  
-Octet 8  Digit(7)  ---­ 
+Octet 8  Digit(7)  ---Â­ 
 Octet 9  
  1  1  1  
 Figure B.14: Unified Data Transport Format (ISO 7 bit) 1 text symbol to 11 text symbols 
@@ -10277,17 +10277,17 @@ Octet 2  Digit(7)
  
 Octet 3  Digit(7)  Digit(7)  
 Octet 4  
- Digit(7)­-­ 
+ Digit(7)Â­-Â­ 
 Octet 5  Digit(7)  
 Octet 6  
  Digit(7)  
 Octet 7  Digit(7)  
  
-Octet 8  Digit(7)  ---­ 
+Octet 8  Digit(7)  ---Â­ 
 Octet 9  Digit(7)  
  
 Octet 10  Digit(7)  Digit(7)  
-Octet 11  -­ 
+Octet 11  -Â­ 
 Figure B.15: Unified Data Transport Format (ISO 7 bit) 12 text symbols to 25 text symbols 
 
 
@@ -10299,11 +10299,11 @@ Octet 1
  Digit(7)  
 Octet 2  Digit(7)  
  
-Octet 3  Digit(7)  ---­ 
+Octet 3  Digit(7)  ---Â­ 
 Octet 4  Digit(7)  
 Octet 5  Digit(7)  Digit(7)  
 Octet 6  
- Digit(7)--­ 
+ Digit(7)--Â­ 
 Octet 7  Digit(7)  
 Octet 8  
  Digit(7)  
@@ -10356,7 +10356,7 @@ Digit(7)
 APPENDED UDT #1 
 Digit(7) 
 APPENDED UDT #2 
-Digit(7)­
+Digit(7)Â­
 APPENDED UDT #1 
 APPENDED DATA UDTF=00112  
 
@@ -10368,13 +10368,13 @@ Octet 2  Digit(7)
  
 Octet 3  Digit(7)  Digit(7)  
 Octet 4  
- Digit(7)--­ 
+ Digit(7)--Â­ 
 Octet 5  
 Octet 6  
  Digit(7) Digit(7)  
 Octet 7  Digit(7)  
  
-Octet 8  Digit(7)  ---­ 
+Octet 8  Digit(7)  ---Â­ 
 Octet 9  Digit(7)  
  
 Octet 10  Digit(7)  Digit(7)  
@@ -10391,12 +10391,12 @@ Octet 1
  Digit(7)  
 Octet 2  Digit(7)  
  
-Octet 3  Digit(7)  ---­ 
+Octet 3  Digit(7)  ---Â­ 
 Octet 4  Digit(7)  
 Octet 5  
  
 Octet 6  
-Digit(7)  Digit(7) Digit(7)-­- 
+Digit(7)  Digit(7) Digit(7)-Â­- 
 Octet 7  Digit(7)  
 Octet 8  
  Digit(7)  
@@ -10417,17 +10417,17 @@ Octet 1  Digit(7)
 Octet 2  Digit(7)  
  
 Octet 3  Digit(7)  Digit(7)  
-Octet 4  Digit(7)--­ 
+Octet 4  Digit(7)--Â­ 
 Octet 5  Digit(7)  
 Octet 6  
  Digit(7)  
 Octet 7  Digit(7)  
  
-Octet 8  Digit(7)  ---­ 
+Octet 8  Digit(7)  ---Â­ 
 Octet 9  Digit(7)  
  
 Octet 10  Digit(7)  Digit(7)  
-Octet 11  --­ 
+Octet 11  --Â­ 
 Figure B.17: Unified Data Transport Format (ISO 7 bit) 39 text symbols to 52 text symbols 
 
 
@@ -10439,10 +10439,10 @@ Octet 1
  Digit(7)  
 Octet 2  Digit(7)  
  
-Octet 3  Digit(7)  ---­ 
+Octet 3  Digit(7)  ---Â­ 
 Octet 4  Digit(7)  
 Octet 5  Digit(7)  Digit(7)  
-Octet 6  Digit(7)--­ 
+Octet 6  Digit(7)--Â­ 
 Octet 7  Digit(7)  
 Octet 8  
  Digit(7)  
@@ -10458,7 +10458,7 @@ APPENDED DATA UDTF=00112
 
  7  6  5  4  3  2  1  0  
 Octet 0  Digit(7)  Digit(7)  
-Octet 1  Digit(7)--­ 
+Octet 1  Digit(7)--Â­ 
 Octet 2  Digit(7)  
 Octet 3  
  Digit(7)  
@@ -10468,7 +10468,7 @@ Octet 5  Digit(7)
  
 Octet 6  Digit(7)  
 Octet 7  Digit(7)  Digit(7)  
-Octet 8  Digit(7)--­ 
+Octet 8  Digit(7)--Â­ 
 Octet 9  Digit(7)  
 Octet 10  
  Digit(7)  
@@ -10479,10 +10479,10 @@ Octet 11
 APPENDED DATA UDTF=00112  
 
  7  6  5  4  3  2  1  0  
-Octet 0  Digit(7)  ---­ 
+Octet 0  Digit(7)  ---Â­ 
 Octet 1  Digit(7)  
 Octet 2  Digit(7)  Digit(7)  
-Octet 3  Digit(7)--­ 
+Octet 3  Digit(7)--Â­ 
 Octet 4  Digit(7)  
 Octet 5  
  Digit(7)  
@@ -10500,22 +10500,22 @@ APPENDED DATA UDTF=00112
 
  7  6  5  4  3  2  1  0  
 Octet 0  Digit(7)  Digit(7)  
-Octet 1  Digit(7)-­- 
+Octet 1  Digit(7)-Â­- 
 Octet 2  Digit(7)  
 Octet 3  
  Digit(7)  
 Octet 4  
  
-Octet 5  Digit(7) Digit(7)  ---­ 
+Octet 5  Digit(7) Digit(7)  ---Â­ 
 Octet 6  Digit(7)  
 Octet 7  Digit(7)  Digit(7)  
-Octet 8  Digit(7)-­- 
+Octet 8  Digit(7)-Â­- 
 Octet 9  
  1  1  
  
 
 APPENDED UDT #3 
-Digit(7)--­Digit(7) 
+Digit(7)--Â­Digit(7) 
 APPENDED UDT #1 APPENDED UDT #2 
 Digit(7) 
 APPENDED UDT #4 
@@ -10760,15 +10760,15 @@ Table B.6 specifies the value of UAB and Pad Nibble.
 APPENDED DATA UDTF=01012  
 
  7  6  5  4  3  2  1  0  
-Octet 0  C  NS  EW  Q  SPEED(7)--­ 
-Octet 1  -­ 
-NDEG(7)--­ 
-Octet 2  -­ NMIN(6)  
-Octet 3  NMINF(14)--­ 
-Octet 4  -------­ --­ 
-Octet 5  ---EDEG(8)  -­ 
-Octet 6  --EMINmm(6)  --­ 
-Octet 7  ----EMINF(14)---­ 
+Octet 0  C  NS  EW  Q  SPEED(7)--Â­ 
+Octet 1  -Â­ 
+NDEG(7)--Â­ 
+Octet 2  -Â­ NMIN(6)  
+Octet 3  NMINF(14)--Â­ 
+Octet 4  -------Â­ --Â­ 
+Octet 5  ---EDEG(8)  -Â­ 
+Octet 6  --EMINmm(6)  --Â­ 
+Octet 7  ----EMINF(14)---Â­ 
 Octet 8  --- 
 UTChh(5)  - 
 Octet 9  
@@ -10782,18 +10782,18 @@ APPENDED DATA UDTF=01012
  7  6  5  4  3  2  1  0  
 Octet 0  C  NS  EW  Q  
  
-Octet 1  -­ SPEED(7)--­-­- 
-Octet 2  -­ NDEG(7) 
-Octet 3  NMIN(6) --­ 
-Octet 4  NMINF(14)-------­ -­- 
+Octet 1  -Â­ SPEED(7)--Â­-Â­- 
+Octet 2  -Â­ NDEG(7) 
+Octet 3  NMIN(6) --Â­ 
+Octet 4  NMINF(14)-------Â­ -Â­- 
 Octet 5  
- -­ 
-Octet 6  ---EDEG( 8) -­- 
-Octet 7  --EMINmm(6) -­ 
-Octet 8  --­ --EMINF(14)----UTChh - 
+ -Â­ 
+Octet 6  ---EDEG( 8) -Â­- 
+Octet 7  --EMINmm(6) -Â­ 
+Octet 8  --Â­ --EMINF(14)----UTChh - 
 Octet 9  
 UTCmm (5)  
-Octet 10  -­ (6) UTCss6(6)  
+Octet 10  -Â­ (6) UTCss6(6)  
 Octet 11  Spare(5)  
 Figure B.23: Appended Data Long NMEA Format Specified 
 
@@ -10818,7 +10818,7 @@ APPENDED DATA UDTF=01012
 
  7  6  5  4  3  2  1  0  
 Octet 0  
- -­- 
+ -Â­- 
 Octet 1  Spare(7)  
 Octet 2  ---COG(9) SPARE(64)  
 Octet 3  
@@ -10918,7 +10918,7 @@ Figure B.25: Appended Data IPV4 Format
 APPENDED DATA UDTF=01102  
 
  7  6  5  4  3  2  1  0  
-Octet 0  IPV6 ADDRESS(96)---­ 
+Octet 0  IPV6 ADDRESS(96)---Â­ 
 Octet 1  
 Octet 2  
 Octet 3  
@@ -10934,7 +10934,7 @@ Octet 11
 APPEN DED DATA UDTF=01102  
 
  7  6  5  4  3  2  1  0  
-Octet 0  IPV6 ADDRESS(32)---­ 
+Octet 0  IPV6 ADDRESS(32)---Â­ 
 Octet 1  
 Octet 2  
 Octet 3  
@@ -11350,16 +11350,16 @@ C.1.1 RF carriers
 C.1.1.1 Nominal Carriers Frequencies 
 The nominal carrier frequencies for DMR may be allocated in any of the frequency bands in the range 50 MHz to 999 MHz. Upper layers of the protocol stack define a single logical channel number that equates to a transmitter and receiver frequencies in the range 1 to 4 094. Since the DMR Standard supports re-assigning of existing analogue channels, flexibility may be provided where prescribed channel plans are suitable. 
 DMR may therefore support: 
-• 
+Â• 
 a number of fixed channel plans where the MS transmit frequency, the split between transmit and receive, the channel separation and if the receiver is high or low relative to the transmitter; 
 
-• 
+Â• 
 a flexible channel plan whereby each logical channel may represent a transmitter and receiver frequency pair; 
 
-• 
+Â• 
 a broadcast PDU that enables the TSCC to announce a logical/physical transmitter and receiver relationship; 
 
-• 
+Â• 
 an extended channel grant PDU that specifies the physical transmitter and receiver frequencies. 
 
 
@@ -11370,9 +11370,9 @@ The nominal MS Tx frequency fMS_Tx corresponds to its logical carrier number, CH
 fMS_Tx - MS transmit frequency (MHz) 
 fbase - The lowest frequency in a particular band relating to logical CHAN = 1 (MHz) 
 fseparation -The frequency separation between two adjacent channels (kHz) 
-fduplexsplit -The difference between MS Tx and MS Rx [for clarity MS Tx minus MS Rx] (±MHz) 
-fMS_Tx = fbase + ((CHAN-1) × (fseparation/1 000)) MHz 
-fMS_Rx = fMS_Tx ± fduplexsplit MHz 
+fduplexsplit -The difference between MS Tx and MS Rx [for clarity MS Tx minus MS Rx] (Â±MHz) 
+fMS_Tx = fbase + ((CHAN-1) Ã— (fseparation/1 000)) MHz 
+fMS_Rx = fMS_Tx Â± fduplexsplit MHz 
 fduplexsplit = 0 MHz to 50 MHz in 2,5 kHz steps 
 fseparation - Definition 
 Table C.1: Frequency Separation 
@@ -11388,7 +11388,7 @@ SDU Code (SEP)  Separation (kHz)
 01112  30  
 1xxx2  reserved  
 
-fsplit - The difference between MS Tx and MS Rx [for clarity MS Tx minus MS Rx] (±MHz) 
+fsplit - The difference between MS Tx and MS Rx [for clarity MS Tx minus MS Rx] (Â±MHz) 
 Table C.2: Frequency Split high/low 
 
 SDU Code (TXRX_SPLIT)  
@@ -11401,13 +11401,13 @@ Table C.3: Frequency Split
 SDU Code (DUPLEX_SPLIT)  Duplex Split (kHz)  
 000 0000 0000 00002  0  
 000 0000 0000 00012  2,5  
-………………..  
+Â…Â…Â…Â…Â…Â…..  
 000 0111 0011 00002  4 600 (4,6 MHz)  
-………………..  
+Â…Â…Â…Â…Â…Â…..  
 000 1100 1000 00002  8 000 (8 MHz)  
-………………..  
+Â…Â…Â…Â…Â…Â…..  
 000 1111 1010 00002  10 000 (10 MHz)  
-………………..  
+Â…Â…Â…Â…Â…Â…..  
 100 0110 0101 00002  45 000 (45 MHz)  
 
 fbase - Band Definition chan - Logical Channel Numbers 
@@ -11419,9 +11419,9 @@ SDU Code (BAND)  fbase MHz
 000 01012  50  
 000 01102  60  
 000 01112  70 
- ………..  
+ Â…Â…Â…..  
 010 11012  450 
- ………..  
+ Â…Â…Â…..  
 101 00002  800  
 110 01002  1 000  
 
@@ -11429,7 +11429,7 @@ Table C.5: Logical Channel Numbers
 
 Channel Number  SDU Code (CHAN)  Colour Code (see note)  
 1  0000 0000 00012  Value  
-…………..  ……..  
+Â…Â…Â…Â…..  Â…Â…..  
 4 094  1111 1111 11102  Value  
 NOTE: The default colour code = 00002.  
 
@@ -11440,7 +11440,7 @@ Table C.6: Flexible Channel Plan
 
 Channel Number  SDU Code (CHAN)  Transmitter Frequency  Receiver Frequency  Colour Code (see note)  
 1  0000 0000 00012  Value  
-…………..  ……..  
+Â…Â…Â…Â…..  Â…Â…..  
 4 094  1111 1111 11102  Value  
 NOTE: The default colour code = 00002.  
 
@@ -11456,7 +11456,7 @@ TXKHz  0 0000 0000 00012  +125 Hz
 RXKHz  0 0000 0000 00102  +250 Hz  
 1 1111 0011 11112  +999 875 Hz  
 
-The absolute transmitter frequency (MHz) = TXMHz + (TXKHz × 125) / 1 000 000. The absolute receiver frequency (MHz) = RXMHz + (RXKHz × 125) / 1 000 000. 
+The absolute transmitter frequency (MHz) = TXMHz + (TXKHz Ã— 125) / 1 000 000. The absolute receiver frequency (MHz) = RXMHz + (RXKHz Ã— 125) / 1 000 000. 
 Annex D (informative): Control Channel Hunting Procedures 
 
 
@@ -11483,7 +11483,7 @@ NOTE 1: The "Comprehensive Hunt Sequence" may be suppressed by network personali
 When carrying out a "resuming a TSCC hunt channel" or "commanded TSCC hunt channel" the hunting procedure is considered complete when the MS has tuned directly to the physical channel and has carried out the appropriate verification and confirmation procedures specified in clause 6.3. 
 
 Channel # 
-Channel #+…. Channel #+2 Channel #+1 
+Channel #+Â…. Channel #+2 Channel #+1 
 Channel # 
 COMPREHENSIVE 
 SHORT HUNT Sig > L_short SHORT HUNT Sig < L_short HUNT 
@@ -11497,21 +11497,21 @@ all physical channel numbers within the scope of the hunting sequence have been 
 
 
 The MS carries out the hunting procedure in the order described in this clause. If a hunting sequence is unsuccessfully completed, then the MS starts the next hunting sequence. The final hunting sequence is the "comprehensive hunt sequence". If this hunting sequence cannot be completed, the MS stays in this hunting sequence until a TSCC is confirmed. However, the foregoing provisions of this clause may be relaxed in the following circumstances: 
-• 
+Â• 
 the "comprehensive hunt sequence" may be suppressed by MS personalization for a network; 
 
-• 
+Â• 
 an MS in a "comprehensive hunt sequence" may elect to perform complete hunting sequences of any other type, returning to the "comprehensive hunt sequence" in the event of failure to confirm an appropriate TSCC; 
 
-• 
+Â• 
 an MS may elect to sample any physical channel that may satisfy the TSCC verification and confirmation tests specified in clause 6.3. 
 
 
 Where a hunting stage involves more than one physical channel the order in which physical channels are sampled is not specified. However, in order to guard against bias towards certain physical channels, MSs should ensure randomness in the order in which physical channels are sampled by one of the following: 
-• 
+Â• 
 hunting physical channel numbers sequentially (e.g. from lowest to highest number) but beginning the hunting stage at a random position in the sequence of physical channel numbers; 
 
-• 
+Â• 
 hunting physical channel numbers in a random fashion. 
 
 
@@ -11618,13 +11618,13 @@ E.1 Introduction
 This annex describes a fleet dialling plan whereby an MS that is equipped with a CCITT keypad may address called entities and select many of the available features and facilities. 
 It is recognized that manufacturers of MSs will wish to exercise design independence in their products and, accordingly, the requirements of these clauses are informative only. 
 This clause is intended to: 
-• 
+Â• 
 define the user visible numbering (User Interface domain); and 
 
-• 
+Â• 
 dialling in an MS for accessing other MS(s) or other entity(ies) over the AI; and 
 
-• 
+Â• 
 describe how the visible user numbering and dial strings may be mapped on to the AI. 
 
 
@@ -11675,16 +11675,16 @@ Signalling Bits
 = Variable Length Strings = Fixed Length Data = Decimal Representation = Binary Representation = CCITT Keypad - 24 Bits Digits 0 to 9 - call modifier flags Digits * and # 
 Figure E.2: Number Conversion 
 Address fields in the Air-Interface domain structure has a length of 24 bits. The content of a 24-bit AI MS address field may represent: 
-• 
+Â• 
 an MS individual address; 
 
-• 
+Â• 
 an MS group address; 
 
-• 
+Â• 
 a gateway address; or 
 
-• 
+Â• 
 a special identifier. 
 
 
@@ -11695,26 +11695,26 @@ E.3.0 Numbering Plan - Introduction
 Each call is made to a numeric address. The mapping between the User-Interface domain and the Air Interface uses a number of reversible coding algorithms. 
 The MS equipment may contain predefined parameters prescribing the minimum and maximum length of the user dial string. By limiting the length of the dialled string, the address range that the MS is able to dial is restricted. 
 The present document permits Calls from an MS to be initiated with a number of call and priority options: 
-• 
+Â• 
 Emergency service: 
 
 -Emergency calls take precedence over all other calls. Emergency call may be pre-emptive causing another call to be cleared down if the resource requested for the emergency call is not available. 
 
-• 
+Â• 
 Broadcast service: -The Broadcast Call service provides a one-way voice call from any user to a predetermined talkgroup. 
 
-• 
+Â• 
 Priority: 
 
 
 -The priority option permits the originator to select one of four levels of priority. The TSCC may manage and manipulate a call queue to cause calls with a higher priority to mature faster. (The procedures the TSCC may employ are not prescribed in the present document). In the present document one call modifier (High Priority (Alias PRIORTY_SV = 102) is defined to select the high priority call service. If a 
 priority is not selected during dialling of a destination address and call service, Normal (low) Priority is assumed. 
-• 
+Â• 
 Call to All MS: 
 
 -A call may be made to all MS. In this case, the MS or Gateway selects dialled digits that transpose to the Identifier ALLMSID, ALLMSIDL, or ALLMSIDZ (see clause E.3.4) as the destination address. The call uses the Broadcast Service. 
 
-• 
+Â• 
 Full Duplex Call: 
 
 
@@ -11751,17 +11751,17 @@ E.3.1.3.1 Short Subscriber Identity (SSI)
 The length of the SSI is 15 bits, in the range 0 to 32 767. 0 refers to a NULL address that is reserved and thus invalid. Values of 1 to 32 200 represent a Short Subscriber Identity SSI. The values 32 201 to 32 767 are special Short Subscriber Identities. 
 
 E.3.1.3.2 Fleet Individual Identity 
-The complete MS Fleet Individual Identity is represented by 8 digits, represented as a Number Prefix(NP) concatenated with a Fleet Individual Number (FIN) concatenated with an Individual Number (IN):  NP (3 digits) ¦ FIN (2 digits) ¦ IN (3 digits). NOTE 1: indicates concatenation 
-¦ 
-A shortened 5 digit MS is represented as: FIN (2 digits) ¦ IN (3 digits). NOTE 2: indicates concatenation 
-¦ 
+The complete MS Fleet Individual Identity is represented by 8 digits, represented as a Number Prefix(NP) concatenated with a Fleet Individual Number (FIN) concatenated with an Individual Number (IN):  NP (3 digits) Â¦ FIN (2 digits) Â¦ IN (3 digits). NOTE 1: indicates concatenation 
+Â¦ 
+A shortened 5 digit MS is represented as: FIN (2 digits) Â¦ IN (3 digits). NOTE 2: indicates concatenation 
+Â¦ 
 A shortened 3 digit MS is represented as: 
 IN (3 digits) The range of FIN is 20 to 89. Every NP may therefore encompass 70 individual fleets. Every fleet number in the range 20 to 41 may encompass 700 INs. For each FIN the range of IN values is 200 to 899. Every fleet in number in the range 42 to 89 may encompass 350 INs. For each FIN, the range of IN values is 200 to 
 549. 
 
 E.3.1.3.3 Algorithm to Convert an Individual Number to an AI Address 
-All NPs have same fleet structure. The relationship of NP, FIN, IN and the AI MS address is as follows: For dialled FIN 20 to 41: AI MS address = (NP - 328) × 8 00016 + (FIN - 20) × 700 + (IN - 200) + 100 00116 
-For dialled FIN 42 to 89: AI MS address = (NP - 328) × 8 00016 + (FIN - 42) × 350 + (IN - 200) + 103C2916 
+All NPs have same fleet structure. The relationship of NP, FIN, IN and the AI MS address is as follows: For dialled FIN 20 to 41: AI MS address = (NP - 328) Ã— 8 00016 + (FIN - 20) Ã— 700 + (IN - 200) + 100 00116 
+For dialled FIN 42 to 89: AI MS address = (NP - 328) Ã— 8 00016 + (FIN - 42) Ã— 350 + (IN - 200) + 103C2916 
 
 
 E.3.1.4 Group Number 
@@ -11769,37 +11769,37 @@ E.3.1.4.1 Group Identity
 The length of SGI is 15 bits. SGI = 0 is reserved. The range of values from 1 to 7 000 represents a group identity. 32 767 is all call identity to the entire fleet. Unlike other All Call types (Site, Multi-Site and All Site) that are routed based on sites, this is essentially a TG call that is routed to all sites where the Fleet's MS units are registered. All other values are reserved. 
 
 E.3.1.4.2 Fleet Group Identity 
-Complete group identity consists of 8 digits consisting of: NP (3 digits) ¦ FGN (2 digits) ¦ GN (3 digits). NOTE 1: indicates concatenation. 
-¦ 
-A shortened 5 digits group identity is represented as: FGN (2 digits) ¦ GN (3 digits). NOTE 2: indicates concatenation. 
-¦ 
+Complete group identity consists of 8 digits consisting of: NP (3 digits) Â¦ FGN (2 digits) Â¦ GN (3 digits). NOTE 1: indicates concatenation. 
+Â¦ 
+A shortened 5 digits group identity is represented as: FGN (2 digits) Â¦ GN (3 digits). NOTE 2: indicates concatenation. 
+Â¦ 
 A shortened 3 digits group identity is represented as: 
 GN (3 digits). The range of FGN is 20 to 89. Every NP consists of 70 group fleets (corresponding with FIN). The range of GN is 900 to 999. Every group fleet consists of 100 GN. The total number of fleet group numbers for each NP is 7 000. 
 
 E.3.1.4.3 Algorithm to Convert a Group Number to a CAI Address 
-All NP have same fleet structure. The relationship of NP, FGN, GN and an CAI address is as follows: ID = (NP - 328) × 8 00016 + (FGN - 20) × 100 + (GN - 900) + 100 00116 
+All NP have same fleet structure. The relationship of NP, FGN, GN and an CAI address is as follows: ID = (NP - 328) Ã— 8 00016 + (FGN - 20) Ã— 100 + (GN - 900) + 100 00116 
 
 
 
 E.3.2 Dispatcher 
-Dispatchers are six digit dialled strings. Calls to the dispatcher use the individual address space. The individual AI address is 6 digits (where n is a number from 0 to 9) calculated from: NP (three digits) ¦ 10n (three digits) = (NP - 328) × 8 00016 + 32 481 + n + 100 00016 
+Dispatchers are six digit dialled strings. Calls to the dispatcher use the individual address space. The individual AI address is 6 digits (where n is a number from 0 to 9) calculated from: NP (three digits) Â¦ 10n (three digits) = (NP - 328) Ã— 8 00016 + 32 481 + n + 100 00016 
 NOTE: indicates concatenation. 
-¦ 
+Â¦ 
 For a local dispatcher the NP may be pre-defined. In this case the dispatcher may be addressed by dialling three digits. 
 Table E.3: Address Space Occupied by Dispatchers 
 
 Dialled Digits  ID  
-NP ¦100  (NP-328) × 8 00016 + 32 481 + 100 00016  
-NP ¦101  (NP-328) × 8 00016 + 32 482 + 100 00016  
-NP ¦102  (NP-328) × 8 00016 + 32 483 + 100 00016  
-NP ¦103  (NP-328) × 8 00016 + 32 484 + 100 00016  
-NP ¦104  (NP-328) × 8 00016 + 32 485 + 100 00016  
-NP ¦105  (NP-328) × 8 00016 + 32 486 + 100 00016  
-NP ¦106  (NP-328) × 8 00016 + 32 487 + 100 00016  
-NP ¦107  (NP-328) × 8 00016 + 32 488 + 100 00016  
-NP ¦108  (NP-328) × 8 00016 + 32 489 + 100 00016  
-NP ¦109  (NP-328) × 8 00016 + 32 490 + 100 00016  
-NOTE: ¦ indicates concatenation.  
+NP Â¦100  (NP-328) Ã— 8 00016 + 32 481 + 100 00016  
+NP Â¦101  (NP-328) Ã— 8 00016 + 32 482 + 100 00016  
+NP Â¦102  (NP-328) Ã— 8 00016 + 32 483 + 100 00016  
+NP Â¦103  (NP-328) Ã— 8 00016 + 32 484 + 100 00016  
+NP Â¦104  (NP-328) Ã— 8 00016 + 32 485 + 100 00016  
+NP Â¦105  (NP-328) Ã— 8 00016 + 32 486 + 100 00016  
+NP Â¦106  (NP-328) Ã— 8 00016 + 32 487 + 100 00016  
+NP Â¦107  (NP-328) Ã— 8 00016 + 32 488 + 100 00016  
+NP Â¦108  (NP-328) Ã— 8 00016 + 32 489 + 100 00016  
+NP Â¦109  (NP-328) Ã— 8 00016 + 32 490 + 100 00016  
+NOTE: Â¦ indicates concatenation.  
 
 
 E.3.3 Short Dispatcher Dialling 
@@ -11863,18 +11863,18 @@ Codes that change a function between two states (such as set call diversion and 
 Table E.8: Summary of Call Modifiers 
 
 Dialled Digits  Call Modifier  
-*11*nn…#  Broadcast Call  
-*8*nn…#  Priority Call  
-*8*1*nn…#  Priority Level 1 Call  
-*8*2*nn…#  Priority Level 2 Call  
-*8*3*nn…#  Priority Level 3 Call  
-*9*nn…#  Emergency Call  
-*12*nn….#  Full Duplex MS to MS call  
-*0ss*nn…#  Status Delivery Call. Status ss is delivered to MS nnn….  
-*41*nn…#  Divert Own Call to number nn…..  
+*11*nnÂ…#  Broadcast Call  
+*8*nnÂ…#  Priority Call  
+*8*1*nnÂ…#  Priority Level 1 Call  
+*8*2*nnÂ…#  Priority Level 2 Call  
+*8*3*nnÂ…#  Priority Level 3 Call  
+*9*nnÂ…#  Emergency Call  
+*12*nnÂ….#  Full Duplex MS to MS call  
+*0ss*nnÂ…#  Status Delivery Call. Status ss is delivered to MS nnnÂ….  
+*41*nnÂ…#  Divert Own Call to number nnÂ…..  
 #41#  Cancel Divert Own call  
-*2*nn…*dddd#  UDT Short Data to nnn.. with data d (UDT transfer)  
-*7*i...*i...*i...*i...#  Call to IP destination i... i… i… i…. (see note 1)  
+*2*nnÂ…*dddd#  UDT Short Data to nnn.. with data d (UDT transfer)  
+*7*i...*i...*i...*i...#  Call to IP destination i... iÂ… iÂ… iÂ…. (see note 1)  
 NOTE 1: The dotted IP address may be defined with sufficient digits to be unambiguous/ e.g. 213.048.132.002 may be dialled by 213.48.132.2. NOTE 2: Encryption is not defined in the present document.  
 
 Dialling with control code begins with "*", and start the call with pressing "#" or PTT. "*" is used as a separation among control code, subscriber number (wire or wireless), and attached data. Subscribers may combine call modifiers if 
@@ -11899,8 +11899,8 @@ Table E.9 illustrates calls to the PABX and PSTN.
 Table E.9: Calls to PABX and PSTN 
 
 Starting dial  Remark  
-01 followed by 4 digits (nnn……..) to a maximum of 44 digits  Dial PSTN to nnnn……..  
-02 followed by 4 digits (nnn……..) to a maximum of 44 digits  Dial PABX to nnnn……..  
+01 followed by 4 digits (nnnÂ…Â…..) to a maximum of 44 digits  Dial PSTN to nnnnÂ…Â…..  
+02 followed by 4 digits (nnnÂ…Â…..) to a maximum of 44 digits  Dial PABX to nnnnÂ…Â…..  
 1 000 to 8 999, 4 digits abbreviated dialling  Reserved for future definition  
 9 600 to 9 699, 4 digits dialling  Reserved for future definition  
 
@@ -11943,7 +11943,7 @@ The full requirement is:
 2) the ability to address a called party (individual or talkgroup) for all call services supported by the MS within the addressable range 00 000 001 to 16 776 415; and 
 3) if supported by the MS, the ability to address ALLMSIDL (16 777 213), ALLMSIDZ (16 777 214), ALLMSID (16 777 215). 
 Annex H (informative): Bibliography 
-• ETSI TR 102 335-2: "Electromagnetic compatibility and Radio spectrum Matters (ERM); System reference document for harmonized use of Digital Mobile Radio (DMR); Part 2: Systems operating under individual licences in the existing land mobile service spectrum bands". 
+Â• ETSI TR 102 335-2: "Electromagnetic compatibility and Radio spectrum Matters (ERM); System reference document for harmonized use of Digital Mobile Radio (DMR); Part 2: Systems operating under individual licences in the existing land mobile service spectrum bands". 
 History 
 Document history  
 V1.1.1  January 2006  Publication  
