@@ -217,10 +217,11 @@ void CDMRSlotRX::procSlot2()
           frame[0U] = ++m_n;
         }
 
+        uint8_t slot = m_slot ? 1U : 0U;
 #if defined(MS_MODE)
         serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
-        serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+        serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
       } else if (m_state == DMRRXS_DATA) {
         if (m_type != 0x00U) {
           frame[0U] = CONTROL_DATA | m_type;
@@ -280,7 +281,6 @@ void CDMRSlotRX::correlateSync()
   }
 
   if (control != CONTROL_NONE) {
-    io.setDecode(true);
     syncPtr = m_dataPtr;
 
     startPtr = m_dataPtr + DMR_BUFFER_LENGTH_BITS - DMR_SLOT_TYPE_LENGTH_BITS / 2U - DMR_INFO_LENGTH_BITS / 2U - DMR_SYNC_LENGTH_BITS + 1;
@@ -350,6 +350,8 @@ void CDMRSlotRX::setDelay(uint8_t delay)
 
 void CDMRSlotRX::writeRSSIData()
 {
+  uint8_t slot = m_slot ? 1U : 0U;
+  
 #if defined(SEND_RSSI_DATA)
   uint16_t rssi = io.readRSSI();
 
@@ -359,12 +361,12 @@ void CDMRSlotRX::writeRSSIData()
 #if defined(MS_MODE)
   serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #endif
-  serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 3U);
+  serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #else
 #if defined(MS_MODE)
   serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
-  serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+  serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
 }
 

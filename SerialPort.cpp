@@ -600,6 +600,13 @@ void CSerialPort::start()
 #if defined(SERIAL_REPEATER) || defined(SERIAL_REPEATER_USART1)
   beginInt(3U, SERIAL_REPEATER_BAUD);
 #endif
+
+#if defined(MS_MODE) && defined(DUPLEX)
+  m_duplex = true;
+  io.ifConf(STATE_DMR, true);
+  io.start();
+  io.setMode(STATE_DMR);
+#endif
 }
 
 void CSerialPort::process()
