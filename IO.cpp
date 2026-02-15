@@ -433,6 +433,9 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
 
 void CIO::setMode(MMDVM_STATE modemState)
 {
+#if defined(MS_MODE)
+  modemState = STATE_DMR;
+#endif
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   if (modemState != STATE_POCSAG) {
 #endif
