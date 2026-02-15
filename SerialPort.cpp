@@ -376,13 +376,17 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
       io.ifConf(STATE_POCSAG, true);
   }
 
-#if defined(DUPLEX) && defined(MS_MODE)
+#if defined(MS_MODE)
   // Force DMR mode and ensure second ADF7021 is configured for RX in MS_MODE
-  if (m_dmrEnable && m_duplex) {
+  m_dmrEnable = true;
+#if defined(DUPLEX)
+  if (m_duplex) {
     m_modemState = STATE_DMR;
     m_modemState_prev = STATE_DMR;
+    io.setMode(STATE_DMR);
     io.ifConf(STATE_DMR, true);
   }
+#endif
 #endif
 
   io.start();
@@ -441,6 +445,11 @@ uint8_t CSerialPort::setMode(const uint8_t* data, uint8_t length)
     tmpState  = modemState;
     m_calState = STATE_IDLE;
   }
+
+#if defined(MS_MODE)
+  if (tmpState == STATE_IDLE)
+    tmpState = STATE_DMR;
+#endif
 
   setMode(tmpState);
 
@@ -1093,11 +1102,13 @@ void CSerialPort::writeDStarEOT()
 
 void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
 {
+#if !defined(MS_MODE)
   if (m_modemState != STATE_DMR && m_modemState != STATE_IDLE)
     return;
 
   if (!m_dmrEnable)
     return;
+#endif
 
   uint8_t reply[40U];
 
