@@ -381,6 +381,7 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   if (m_dmrEnable && m_duplex) {
     m_modemState = STATE_DMR;
     m_modemState_prev = STATE_DMR;
+    io.setMode(STATE_DMR);
     io.ifConf(STATE_DMR, true);
   }
 #endif
