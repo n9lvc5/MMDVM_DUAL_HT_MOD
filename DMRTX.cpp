@@ -64,6 +64,12 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
   if (length != (DMR_FRAME_LENGTH_BYTES + 1U))
     return 4U;
 
+#if defined(MS_MODE)
+  uint8_t dataType = data[0] & 0x0FU;
+  if (dataType == DT_IDLE)
+    return 0U;
+#endif
+
   if (m_fifo[1].getSpace() < (DMR_FRAME_LENGTH_BYTES + 1U))
     return 5U;
 
