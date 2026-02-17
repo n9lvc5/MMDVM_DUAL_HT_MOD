@@ -62,8 +62,9 @@ bool m_duplex = false;
 bool m_tx  = false;
 bool m_dcd = false;
 
-CDStarRX   dstarRX;
-CDStarTX   dstarTX;
+// Removed modes - not used in MS_MODE wireless bridge
+// CDStarRX   dstarRX;
+// CDStarTX   dstarTX;
 
 uint8_t    m_control = 0x04U;
 
@@ -76,19 +77,19 @@ CDMRTX     dmrTX;
 CDMRDMORX  dmrDMORX;
 CDMRDMOTX  dmrDMOTX;
 
-CYSFRX     ysfRX;
-CYSFTX     ysfTX;
-
-CP25RX     p25RX;
-CP25TX     p25TX;
+// Removed modes - not used in MS_MODE wireless bridge
+// CYSFRX     ysfRX;
+// CYSFTX     ysfTX;
+// CP25RX     p25RX;
+// CP25TX     p25TX;
 
 CM17RX     m17RX;
 CM17TX     m17TX;
 
-CNXDNRX    nxdnRX;
-CNXDNTX    nxdnTX;
-
-CPOCSAGTX  pocsagTX;
+// Removed modes - not used in MS_MODE wireless bridge
+// CNXDNRX    nxdnRX;
+// CNXDNTX    nxdnTX;
+// CPOCSAGTX  pocsagTX;
 
 CCalDMR    calDMR;
 
@@ -117,8 +118,9 @@ void loop()
   serial.process();
 
   // The following is for transmitting
-  if (m_dstarEnable && m_modemState == STATE_DSTAR)
-    dstarTX.process();
+  // Removed modes commented out - not used in MS_MODE
+  // if (m_dstarEnable && m_modemState == STATE_DSTAR)
+  //   dstarTX.process();
 
   if (m_dmrEnable && m_modemState == STATE_DMR && m_calState == STATE_IDLE) {
 #if defined(DUPLEX)
@@ -131,20 +133,20 @@ void loop()
 #endif
   }
   
-  if (m_ysfEnable && m_modemState == STATE_YSF)
-    ysfTX.process();
-
-  if (m_p25Enable && m_modemState == STATE_P25)
-    p25TX.process();
-
-  if (m_nxdnEnable && m_modemState == STATE_NXDN)
-    nxdnTX.process();
+  // Removed modes commented out - not used in MS_MODE
+  // if (m_ysfEnable && m_modemState == STATE_YSF)
+  //   ysfTX.process();
+  // if (m_p25Enable && m_modemState == STATE_P25)
+  //   p25TX.process();
+  // if (m_nxdnEnable && m_modemState == STATE_NXDN)
+  //   nxdnTX.process();
 
   if (m_m17Enable && m_modemState == STATE_M17)
     m17TX.process();
 
-  if (m_pocsagEnable && (m_modemState == STATE_POCSAG || pocsagTX.busy()))
-    pocsagTX.process();
+  // Removed modes commented out - not used in MS_MODE
+  // if (m_pocsagEnable && (m_modemState == STATE_POCSAG || pocsagTX.busy()))
+  //   pocsagTX.process();
 
   if (m_calState == STATE_DMRCAL || m_calState == STATE_DMRDMO1K || m_calState == STATE_INTCAL)
     calDMR.process();
