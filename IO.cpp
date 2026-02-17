@@ -112,13 +112,21 @@ void CIO::process()
   m_ledCount++;
 
   if (m_started) {
+#if defined(MS_MODE)
+    if (m_modemState == STATE_IDLE && m_dmrEnable) {
+      setMode(STATE_DMR);
+      m_modemState = STATE_DMR;
+      ifConf(STATE_DMR, true);
+    }
+#endif
+
     // Two seconds timeout
     if (m_watchdog >= 19200U) {
 #if defined(MS_MODE)
       // In MS_MODE (wireless bridge), keep DMR mode active for continuous RX
-      // Only timeout if we're not in DMR mode with duplex enabled
-      if (!(m_modemState == STATE_DMR && m_duplex)) {
-        if (m_modemState == STATE_DSTAR || m_modemState == STATE_DMR || m_modemState == STATE_YSF || m_modemState == STATE_P25 || m_modemState == STATE_NXDN || m_modemState == STATE_M17) {
+      // Only timeout if we're not in DMR mode
+      if (m_modemState != STATE_DMR) {
+        if (m_modemState == STATE_DSTAR || m_modemState == STATE_YSF || m_modemState == STATE_P25 || m_modemState == STATE_NXDN || m_modemState == STATE_M17) {
           m_modemState = STATE_IDLE;
           setMode(m_modemState);
         }
@@ -282,7 +290,7 @@ void CIO::start()
     m_TotalModes++;
   }
 
-#if defined(ENABLE_SCAN_MODE)
+#if defined(ENABLE_SCAN_MODE) && !defined(MS_MODE)
   if(m_TotalModes > 1U)
     m_scanEnable = true;
   else {
@@ -425,6 +433,10 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
 
 void CIO::setMode(MMDVM_STATE modemState)
 {
+#if defined(MS_MODE)
+  if (modemState == STATE_IDLE)
+    modemState = STATE_DMR;
+#endif
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   if (modemState != STATE_POCSAG) {
 #endif

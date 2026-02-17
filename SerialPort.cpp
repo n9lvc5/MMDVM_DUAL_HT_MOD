@@ -328,6 +328,11 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
 
   m_duplex      = !simplex;
 
+#if defined(MS_MODE) && defined(DUPLEX)
+  // Force duplex mode for MS_MODE wireless bridge operation
+  m_duplex = true;
+#endif
+
 #if !defined(DUPLEX)
   if (m_duplex && m_calState == STATE_IDLE && modemState != STATE_DSTARCAL) {
     DEBUG1("Full duplex not supported with this firmware");
@@ -376,13 +381,20 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
       io.ifConf(STATE_POCSAG, true);
   }
 
-#if defined(DUPLEX) && defined(MS_MODE)
+#if defined(MS_MODE)
   // Force DMR mode and ensure second ADF7021 is configured for RX in MS_MODE
-  if (m_dmrEnable && m_duplex) {
+  m_dmrEnable = true;
+#if defined(DUPLEX)
+  if (m_duplex) {
+    DEBUG1("MS_MODE: Forcing DMR duplex mode");
     m_modemState = STATE_DMR;
     m_modemState_prev = STATE_DMR;
+    io.setMode(STATE_DMR);
     io.ifConf(STATE_DMR, true);
+  } else {
+    DEBUG1("MS_MODE: WARNING - Duplex not enabled!");
   }
+#endif
 #endif
 
   io.start();
@@ -441,6 +453,11 @@ uint8_t CSerialPort::setMode(const uint8_t* data, uint8_t length)
     tmpState  = modemState;
     m_calState = STATE_IDLE;
   }
+
+#if defined(MS_MODE)
+  if (tmpState == STATE_IDLE)
+    tmpState = STATE_DMR;
+#endif
 
   setMode(tmpState);
 
@@ -599,13 +616,6 @@ void CSerialPort::start()
 
 #if defined(SERIAL_REPEATER) || defined(SERIAL_REPEATER_USART1)
   beginInt(3U, SERIAL_REPEATER_BAUD);
-#endif
-
-#if defined(MS_MODE) && defined(DUPLEX)
-  m_duplex = true;
-  io.ifConf(STATE_DMR, true);
-  io.start();
-  io.setMode(STATE_DMR);
 #endif
 }
 
@@ -1100,11 +1110,45 @@ void CSerialPort::writeDStarEOT()
 
 void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
 {
+#if !defined(MS_MODE)
   if (m_modemState != STATE_DMR && m_modemState != STATE_IDLE)
     return;
 
   if (!m_dmrEnable)
     return;
+#endif
+
+#if defined(ENABLE_DEBUG)
+  static uint32_t frameCounter = 0;
+  static uint32_t slot1Counter = 0;
+  static uint32_t slot2Counter = 0;
+  
+  frameCounter++;
+  if (slot)
+    slot2Counter++;
+  else
+    slot1Counter++;
+  
+  // Debug: Dump first 10 bytes of frame to verify structure
+  static uint32_t dumpCounter = 0;
+  dumpCounter++;
+  if (dumpCounter <= 5) {
+    DEBUG2I("DMR Frame dump - Slot", slot ? 2 : 1);
+    DEBUG2I("  Control byte [0]", data[0]);
+    if (length >= 4) {
+      DEBUG2I("  Payload [1-3]", (data[1] << 16) | (data[2] << 8) | data[3]);
+    }
+  }
+    
+  if (frameCounter == 100) {
+    DEBUG2I("DMR: Total frames sent", frameCounter);
+    DEBUG2I("DMR: Slot1 frames", slot1Counter);
+    DEBUG2I("DMR: Slot2 frames", slot2Counter);
+    frameCounter = 0;
+    slot1Counter = 0;
+    slot2Counter = 0;
+  }
+#endif
 
   uint8_t reply[40U];
 

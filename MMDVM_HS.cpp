@@ -27,15 +27,9 @@
 #include "Globals.h"
 
 // Global variables
-#if defined(MS_MODE)
-MMDVM_STATE m_modemState = STATE_DMR;
-MMDVM_STATE m_calState = STATE_IDLE;
-MMDVM_STATE m_modemState_prev = STATE_DMR;
-#else
 MMDVM_STATE m_modemState = STATE_IDLE;
 MMDVM_STATE m_calState = STATE_IDLE;
 MMDVM_STATE m_modemState_prev = STATE_IDLE;
-#endif
 
 bool m_cwid_state = false;
 bool m_pocsag_state = false;

@@ -140,7 +140,17 @@ void CDMRSlotRX::procSlot2()
       CDMRSlotType slotType;
       slotType.decode(frame + 1U, colorCode, dataType);
 
+#if defined(ENABLE_DEBUG)
+      static uint8_t lastColorCode = 0xFF;
+      if (colorCode != lastColorCode) {
+        DEBUG2I("DMRSlotRX: RX ColorCode", colorCode);
+        DEBUG2I("DMRSlotRX: Expected ColorCode", m_colorCode);
+        lastColorCode = colorCode;
+      }
+#endif
+
 #if defined(MS_MODE)
+      // MS_MODE: Accept all color codes (promiscuous mode for listening)
       if (true) {
 #else
       if (colorCode == m_colorCode) {
@@ -170,6 +180,15 @@ void CDMRSlotRX::procSlot2()
             DEBUG2("DMRSlot2RX: voice header found pos", m_syncPtr);
             writeRSSIData();
             m_state = DMRRXS_VOICE;
+            {
+              uint8_t slot = m_slot ? 1U : 0U;
+#if defined(MS_MODE)
+              // In MS_MODE, repurpose mode LEDs as timeslot indicators
+              io.DSTAR_pin(slot == 0U);
+              io.P25_pin(slot == 1U);
+#endif
+              serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+            }
             break;
           case DT_VOICE_PI_HEADER:
             if (m_state == DMRRXS_VOICE) {
@@ -182,6 +201,14 @@ void CDMRSlotRX::procSlot2()
             if (m_state == DMRRXS_VOICE) {
               DEBUG2("DMRSlot2RX: voice terminator found pos", m_syncPtr);
               writeRSSIData();
+              {
+                uint8_t slot = m_slot ? 1U : 0U;
+#if defined(MS_MODE)
+                io.DSTAR_pin(slot == 0U);
+                io.P25_pin(slot == 1U);
+#endif
+                serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+              }
               m_state  = DMRRXS_NONE;
               m_endPtr = NOENDPTR;
             }
@@ -193,6 +220,14 @@ void CDMRSlotRX::procSlot2()
             m_endPtr = NOENDPTR;
             break;
         }
+      } else {
+#if defined(ENABLE_DEBUG)
+        static uint32_t ccMismatchCount = 0;
+        ccMismatchCount++;
+        if (ccMismatchCount % 10 == 1) {
+          DEBUG2I("DMRSlotRX: ColorCode MISMATCH! Count", ccMismatchCount);
+        }
+#endif
       }
     } else if (m_control == CONTROL_VOICE) {
       // Voice sync found
@@ -219,7 +254,10 @@ void CDMRSlotRX::procSlot2()
 
         uint8_t slot = m_slot ? 1U : 0U;
 #if defined(MS_MODE)
-        serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+        // In MS_MODE, repurpose mode LEDs as timeslot indicators
+        // D-Star LED = TS1 (slot 0), P25 LED = TS2 (slot 1)
+        io.DSTAR_pin(slot == 0U);
+        io.P25_pin(slot == 1U);
 #endif
         serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
       } else if (m_state == DMRRXS_DATA) {
@@ -232,6 +270,14 @@ void CDMRSlotRX::procSlot2()
 
     // End of this slot, reset some items for the next slot.
     m_control = CONTROL_NONE;
+    
+#if defined(MS_MODE)
+    // In MS_MODE, timeslots alternate. Toggle to next slot AFTER sending this frame.
+    m_slot = !m_slot;
+#if defined(ENABLE_DEBUG)
+    DEBUG2("DMRSlotRX: Next slot will be", m_slot ? 2 : 1);
+#endif
+#endif
   }
 }
 
@@ -242,15 +288,19 @@ void CDMRSlotRX::correlateSync()
   uint16_t endPtr;
   uint8_t  control = CONTROL_NONE;
 
-  if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-    control = CONTROL_DATA;
-  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-    control = CONTROL_VOICE;
-  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
-    control = CONTROL_DATA;
-  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
-    control = CONTROL_VOICE;
-  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+#if defined(ENABLE_DEBUG)
+  static uint32_t debugCounter = 0;
+  static uint32_t totalSyncs = 0;
+  debugCounter++;
+  if (debugCounter == 50000) {
+    DEBUG2("DMRSlotRX: Pattern Hi", (uint16_t)(m_patternBuffer >> 32));
+    DEBUG2("DMRSlotRX: Pattern Lo", (uint16_t)(m_patternBuffer & 0xFFFF));
+    DEBUG2I("DMRSlotRX: Total syncs found", totalSyncs);
+    debugCounter = 0;
+  }
+#endif
+
+  if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
 #if defined(DUPLEX)
     if (dmrTX.isWaitingForBSSync()) {
       dmrTX.confirmBSSync();
@@ -278,9 +328,28 @@ void CDMRSlotRX::correlateSync()
     }
 #endif
     control = CONTROL_VOICE;
+#if !defined(MS_MODE)
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+    control = CONTROL_DATA;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
+    control = CONTROL_VOICE;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+    control = CONTROL_DATA;
+  } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
+    control = CONTROL_VOICE;
+#endif
   }
 
   if (control != CONTROL_NONE) {
+#if defined(ENABLE_DEBUG)
+    totalSyncs++;
+    static uint32_t syncDebugCounter = 0;
+    syncDebugCounter++;
+    if (syncDebugCounter % 100 == 1) {
+      DEBUG2("DMRSlotRX: SYNC Type", control);
+      DEBUG2("DMRSlotRX: SYNC Pos", m_dataPtr);
+    }
+#endif
     syncPtr = m_dataPtr;
 
     startPtr = m_dataPtr + DMR_BUFFER_LENGTH_BITS - DMR_SLOT_TYPE_LENGTH_BITS / 2U - DMR_INFO_LENGTH_BITS / 2U - DMR_SYNC_LENGTH_BITS + 1;
@@ -358,14 +427,8 @@ void CDMRSlotRX::writeRSSIData()
   frame[34U] = (rssi >> 8) & 0xFFU;
   frame[35U] = (rssi >> 0) & 0xFFU;
 
-#if defined(MS_MODE)
-  serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 3U);
-#endif
   serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #else
-#if defined(MS_MODE)
-  serial.writeDMRData(0U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
-#endif
   serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
 }
