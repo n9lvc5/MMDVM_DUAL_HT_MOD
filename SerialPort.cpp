@@ -233,6 +233,19 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   bool pocsagEnable = (data[1U] & 0x20U) == 0x20U;
   bool m17Enable    = (data[1U] & 0x40U) == 0x40U;
 
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+  // Debug: Show which modes MMDVMHost is requesting
+  DEBUG1("SET_CONFIG received:");
+  DEBUG2I("  dstarEnable", dstarEnable);
+  DEBUG2I("  dmrEnable", dmrEnable);
+  DEBUG2I("  ysfEnable", ysfEnable);
+  DEBUG2I("  p25Enable", p25Enable);
+  DEBUG2I("  nxdnEnable", nxdnEnable);
+  DEBUG2I("  pocsagEnable", pocsagEnable);
+  DEBUG2I("  m17Enable", m17Enable);
+  DEBUG2I("  simplex", simplex);
+#endif
+
   uint8_t txDelay = data[2U];
   if (txDelay > 50U)
     return 4U;
@@ -255,6 +268,20 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
     return 4U;
   if (modemState == STATE_M17 && !m17Enable)
     return 4U;
+
+#if defined(MS_MODE)
+  // MS_MODE only supports DMR and calibration modes - reject unsupported modes
+  if (dstarEnable || ysfEnable || p25Enable || nxdnEnable || pocsagEnable) {
+    DEBUG1("MS_MODE: Only DMR mode supported, rejecting config with unsupported modes");
+    return 4U;  // NAK - mode not supported
+  }
+  if (modemState != STATE_IDLE && modemState != STATE_DMR && 
+      modemState != STATE_DMRCAL && modemState != STATE_DMRDMO1K && 
+      modemState != STATE_INTCAL && modemState != STATE_RSSICAL) {
+    DEBUG1("MS_MODE: Unsupported mode requested");
+    return 4U;  // NAK - mode not supported
+  }
+#endif
 
   uint8_t colorCode = data[6U];
   if (colorCode > 15U)
