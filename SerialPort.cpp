@@ -386,7 +386,6 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   m_dmrEnable = true;
 #if defined(DUPLEX)
   if (m_duplex) {
-    DEBUG1("MS_MODE: Forcing DMR duplex mode");
     m_modemState = STATE_DMR;
     m_modemState_prev = STATE_DMR;
     io.setMode(STATE_DMR);
@@ -1116,38 +1115,6 @@ void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
 
   if (!m_dmrEnable)
     return;
-#endif
-
-#if defined(ENABLE_DEBUG)
-  static uint32_t frameCounter = 0;
-  static uint32_t slot1Counter = 0;
-  static uint32_t slot2Counter = 0;
-  
-  frameCounter++;
-  if (slot)
-    slot2Counter++;
-  else
-    slot1Counter++;
-  
-  // Debug: Dump first 10 bytes of frame to verify structure
-  static uint32_t dumpCounter = 0;
-  dumpCounter++;
-  if (dumpCounter <= 5) {
-    DEBUG2I("DMR Frame dump - Slot", slot ? 2 : 1);
-    DEBUG2I("  Control byte [0]", data[0]);
-    if (length >= 4) {
-      DEBUG2I("  Payload [1-3]", (data[1] << 16) | (data[2] << 8) | data[3]);
-    }
-  }
-    
-  if (frameCounter == 100) {
-    DEBUG2I("DMR: Total frames sent", frameCounter);
-    DEBUG2I("DMR: Slot1 frames", slot1Counter);
-    DEBUG2I("DMR: Slot2 frames", slot2Counter);
-    frameCounter = 0;
-    slot1Counter = 0;
-    slot2Counter = 0;
-  }
 #endif
 
   uint8_t reply[40U];

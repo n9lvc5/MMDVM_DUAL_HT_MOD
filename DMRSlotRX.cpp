@@ -140,21 +140,7 @@ void CDMRSlotRX::procSlot2()
       CDMRSlotType slotType;
       slotType.decode(frame + 1U, colorCode, dataType);
 
-#if defined(ENABLE_DEBUG)
-      static uint8_t lastColorCode = 0xFF;
-      if (colorCode != lastColorCode) {
-        DEBUG2I("DMRSlotRX: RX ColorCode", colorCode);
-        DEBUG2I("DMRSlotRX: Expected ColorCode", m_colorCode);
-        lastColorCode = colorCode;
-      }
-#endif
-
-#if defined(MS_MODE)
-      // MS_MODE: Accept all color codes (promiscuous mode for listening)
-      if (true) {
-#else
       if (colorCode == m_colorCode) {
-#endif
         m_syncCount = 0U;
         m_n         = 0U;
 
@@ -252,14 +238,7 @@ void CDMRSlotRX::procSlot2()
           frame[0U] = ++m_n;
         }
 
-        uint8_t slot = m_slot ? 1U : 0U;
-#if defined(MS_MODE)
-        // In MS_MODE, repurpose mode LEDs as timeslot indicators
-        // D-Star LED = TS1 (slot 0), P25 LED = TS2 (slot 1)
-        io.DSTAR_pin(slot == 0U);
-        io.P25_pin(slot == 1U);
-#endif
-        serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+        serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
       } else if (m_state == DMRRXS_DATA) {
         if (m_type != 0x00U) {
           frame[0U] = CONTROL_DATA | m_type;
@@ -287,18 +266,6 @@ void CDMRSlotRX::correlateSync()
   uint16_t startPtr;
   uint16_t endPtr;
   uint8_t  control = CONTROL_NONE;
-
-#if defined(ENABLE_DEBUG)
-  static uint32_t debugCounter = 0;
-  static uint32_t totalSyncs = 0;
-  debugCounter++;
-  if (debugCounter == 50000) {
-    DEBUG2("DMRSlotRX: Pattern Hi", (uint16_t)(m_patternBuffer >> 32));
-    DEBUG2("DMRSlotRX: Pattern Lo", (uint16_t)(m_patternBuffer & 0xFFFF));
-    DEBUG2I("DMRSlotRX: Total syncs found", totalSyncs);
-    debugCounter = 0;
-  }
-#endif
 
   if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
 #if defined(DUPLEX)
@@ -427,9 +394,9 @@ void CDMRSlotRX::writeRSSIData()
   frame[34U] = (rssi >> 8) & 0xFFU;
   frame[35U] = (rssi >> 0) & 0xFFU;
 
-  serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 3U);
+  serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #else
-  serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+  serial.writeDMRData(1U, frame, DMR_FRAME_LENGTH_BYTES + 1U);
 #endif
 }
 
