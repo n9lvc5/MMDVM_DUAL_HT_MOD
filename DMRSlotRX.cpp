@@ -24,6 +24,7 @@
 #include "Globals.h"
 #include "DMRSlotRX.h"
 #include "DMRSlotType.h"
+#include "DMRLC.h"
 #include "Utils.h"
 
 const uint8_t MAX_SYNC_BYTES_ERRS   = 3U;
@@ -182,11 +183,26 @@ void CDMRSlotRX::procSlot2()
             m_state = DMRRXS_VOICE;
             {
               uint8_t slot = m_slot ? 1U : 0U;
+              
+#if defined(ENABLE_DEBUG)
+              // Extract Link Control (LC) data for debugging only
+              DMRLC_T lc;
+              if (CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc)) {
+                // Successfully extracted LC - log it
+                DEBUG2I("LC decoded - SrcID", lc.srcId);
+                DEBUG2I("LC decoded - DstID", lc.dstId);
+              } else {
+                DEBUG2("LC decode failed", 0);
+              }
+#endif
+              
 #if defined(MS_MODE)
               // In MS_MODE, repurpose mode LEDs as timeslot indicators
               io.DSTAR_pin(slot == 0U);
               io.P25_pin(slot == 1U);
 #endif
+              // Send the voice header frame data
+              // MMDVMHost will decode the LC from the 33-byte payload
               serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
             }
             break;
@@ -207,6 +223,7 @@ void CDMRSlotRX::procSlot2()
                 io.DSTAR_pin(slot == 0U);
                 io.P25_pin(slot == 1U);
 #endif
+                // Send terminator frame - MMDVMHost will decode LC
                 serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
               }
               m_state  = DMRRXS_NONE;

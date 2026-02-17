@@ -23,6 +23,11 @@
 
 #include "Globals.h"
 #include "DMRRX.h"
+#include "Debug.h"
+
+static uint32_t bitCounter = 0;
+static uint32_t syncCounter = 0;
+static bool firstSync = true;
 
 CDMRRX::CDMRRX() :
 m_control_old(0U)
@@ -31,6 +36,29 @@ m_control_old(0U)
 
 void CDMRRX::databit(bool bit, const uint8_t control)
 {
+#if defined(MS_MODE)
+  // In MS_MODE, we don't have a hardware control signal to indicate slots
+  // The slot will be determined by sync pattern detection in DMRSlotRX
+  bitCounter++;
+  if (bitCounter == 10000) {
+    DEBUG2I("DMRRX: Received bits", bitCounter);
+    DEBUG2I("DMRRX: Syncs detected", syncCounter);
+    bitCounter = 0;
+    syncCounter = 0;
+  }
+  
+  bool decode = m_slotRX.databit(bit);
+  if (decode) {
+    syncCounter++;
+    if (firstSync) {
+      DEBUG1("DMRRX: First sync detected!");
+      firstSync = false;
+    }
+  }
+  
+  io.setDecode(decode);
+  io.resetWatchdog();
+#else
   if (control != m_control_old) {
     m_control_old = control;
     if (control)
@@ -40,9 +68,6 @@ void CDMRRX::databit(bool bit, const uint8_t control)
   }
 
   io.setDecode(m_slotRX.databit(bit));
-  
-#if defined(MS_MODE)
-  io.resetWatchdog();
 #endif
 }
 

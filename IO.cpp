@@ -222,9 +222,7 @@ void CIO::process()
     m_rxBuffer.get(bit, control);
 
     switch (m_modemState_prev) {
-      case STATE_DSTAR:
-        dstarRX.databit(bit);
-        break;
+      
       case STATE_DMR:
 #if defined(DUPLEX)
         if (m_duplex) {
@@ -242,15 +240,7 @@ void CIO::process()
         dmrDMORX.databit(bit);
 #endif
         break;
-      case STATE_YSF:
-        ysfRX.databit(bit);
-        break;
-      case STATE_P25:
-        p25RX.databit(bit);
-        break;
-      case STATE_NXDN:
-        nxdnRX.databit(bit);
-        break;
+   
       case STATE_M17:
         m17RX.databit(bit);
         break;

@@ -26,14 +26,14 @@
 #define VER_MAJOR       "2"
 #define VER_MINOR       "0"
 #define VER_REV         "0"
-#define VERSION_DATE    "20251007"
+#define VERSION_DATE    "02162026"
 
 #if defined(ZUMSPOT_ADF7021)
 #define BOARD_INFO      "ZUMspot"
 #elif defined(MMDVM_HS_HAT_REV12)
 #define BOARD_INFO      "MMDVM_HS_Hat"
 #elif defined(MMDVM_HS_DUAL_HAT_REV10)
-#define BOARD_INFO      "MMDVM_HS_Dual_Hat_DMR_HT"
+#define BOARD_INFO      "MMDVM_HS_Dual_Hat_DMR_MOD"
 #elif defined(NANO_HOTSPOT)
 #define BOARD_INFO      "Nano_hotSPOT"
 #elif defined(NANO_DV_REV11)
@@ -69,7 +69,7 @@
 
 #define FW_VERSION      "v" VER_MAJOR "." VER_MINOR "." VER_REV " " VERSION_DATE
 
-#define DESCRIPTION     BOARD_INFO "-" FW_VERSION " " TCXO_FREQ "MHz " RF_DUAL RF_CHIP " FW by CA6JAU"
+#define DESCRIPTION     BOARD_INFO "-" FW_VERSION " " TCXO_FREQ "MHz " RF_DUAL RF_CHIP " FW by CA6JAU with mods by KE9CNK"
 
 #if defined(MADEBYMAKEFILE)
 #include "GitVersion.h"

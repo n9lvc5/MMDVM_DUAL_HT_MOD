@@ -25,11 +25,15 @@
 // Scan Mode
 #define ENABLE_SCAN_MODE
 
-// Digital Modes
+// Digital Modes - Only DMR for MS_MODE
 #define MODE_DMR
-#define MODE_YSF
+// Removed: MODE_YSF, MODE_DSTAR, MODE_P25, MODE_NXDN, MODE_POCSAG
+// to free flash space for LC decoder
 
 // Mobile Station Mode
 #define MS_MODE
+
+// Debug Mode
+#define ENABLE_DEBUG
 
 #endif

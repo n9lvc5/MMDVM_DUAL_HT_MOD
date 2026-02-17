@@ -55,7 +55,7 @@ www.analog.com/media/en/technical-documentation/data-sheets/ADF7021.pdf
 
 // Enable AFC support for DMR, YSF, P25, and M17 (experimental):
 // (AFC is already enabled by default in D-Star)
-// #define ADF7021_ENABLE_4FSK_AFC
+ //#define ADF7021_ENABLE_4FSK_AFC
 
 // Configure AFC with positive initial frequency offset:
 // #define ADF7021_AFC_POS

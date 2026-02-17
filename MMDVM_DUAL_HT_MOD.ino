@@ -35,6 +35,16 @@ uint8_t m_cwIdTXLevel = 30;
 
 uint32_t m_modeTimerCnt;
 
+#if defined(MS_MODE)
+// In MS_MODE wireless bridge, only DMR is supported
+bool m_dstarEnable  = false;
+bool m_dmrEnable    = true;
+bool m_ysfEnable    = false;
+bool m_p25Enable    = false;
+bool m_nxdnEnable   = false;
+bool m_m17Enable    = false;
+bool m_pocsagEnable = false;
+#else
 bool m_dstarEnable  = true;
 bool m_dmrEnable    = true;
 bool m_ysfEnable    = true;
@@ -42,14 +52,13 @@ bool m_p25Enable    = true;
 bool m_nxdnEnable   = true;
 bool m_m17Enable    = true;
 bool m_pocsagEnable = true;
+#endif
 
 bool m_duplex = false;
 
 bool m_tx  = false;
 bool m_dcd = false;
 
-CDStarRX   dstarRX;
-CDStarTX   dstarTX;
 
 uint8_t    m_control;
 
@@ -62,19 +71,9 @@ CDMRTX     dmrTX;
 CDMRDMORX  dmrDMORX;
 CDMRDMOTX  dmrDMOTX;
 
-CYSFRX     ysfRX;
-CYSFTX     ysfTX;
-
-CP25RX     p25RX;
-CP25TX     p25TX;
 
 CM17RX     m17RX;
 CM17TX     m17TX;
-
-CNXDNRX    nxdnRX;
-CNXDNTX    nxdnTX;
-
-CPOCSAGTX  pocsagTX;
 
 CCalDMR    calDMR;
 
@@ -98,8 +97,7 @@ void loop()
   io.process();
 
   // The following is for transmitting
-  if (m_dstarEnable && m_modemState == STATE_DSTAR)
-    dstarTX.process();
+
 
   if (m_dmrEnable && m_modemState == STATE_DMR && m_calState == STATE_IDLE) {
 #if defined(DUPLEX)
@@ -112,20 +110,10 @@ void loop()
 #endif
   }
 
-  if (m_ysfEnable && m_modemState == STATE_YSF)
-    ysfTX.process();
-
-  if (m_p25Enable && m_modemState == STATE_P25)
-    p25TX.process();
-
-  if (m_nxdnEnable && m_modemState == STATE_NXDN)
-    nxdnTX.process();
 
   if (m_m17Enable && m_modemState == STATE_M17)
     m17TX.process();
 
-  if (m_pocsagEnable && (m_modemState == STATE_POCSAG || pocsagTX.busy()))
-    pocsagTX.process();
 
   if (m_calState == STATE_DMRCAL || m_calState == STATE_DMRDMO1K || m_calState == STATE_INTCAL)
     calDMR.process();

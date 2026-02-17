@@ -26,7 +26,7 @@
 #include "DMRSlotType.h"
 #include "Utils.h"
 
-const uint8_t MAX_SYNC_BYTES_ERRS = 2U;
+const uint8_t MAX_SYNC_BYTES_ERRS = 4U;
 
 const uint16_t NOENDPTR = 9999U;
 
