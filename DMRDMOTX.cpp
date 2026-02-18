@@ -47,6 +47,7 @@ void CDMRDMOTX::process()
     if (m_poLen == 0U) {
       m_delay = false;
       createCal();
+      DEBUG1("DMRDMOTX: Calibration frame created");
     }
   }
   else {
@@ -54,6 +55,7 @@ void CDMRDMOTX::process()
       if (!m_tx) {
         m_delay = true;
         m_poLen = m_txDelay;
+        DEBUG1("DMRDMOTX: Delaying transmission");  
       } else {
         m_delay = false;
 

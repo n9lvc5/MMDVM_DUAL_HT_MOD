@@ -40,6 +40,7 @@ public:
   void writeDStarEOT();
 
   void writeDMRData(bool slot, const uint8_t* data, uint8_t length);
+  void writeDMRStart(bool slot, uint8_t colorCode, uint32_t srcId, uint32_t dstId);
   void writeDMRLost(bool slot);
 
   void writeYSFData(const uint8_t* data, uint8_t length);

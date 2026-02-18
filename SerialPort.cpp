@@ -161,10 +161,7 @@ void CSerialPort::getStatus()
   if (io.hasTXOverflow())
     reply[5U] |= 0x08U;
 
-  if (m_dstarEnable)
-    reply[6U] = dstarTX.getSpace();
-  else
-    reply[6U] = 0U;
+ 
 
   if (m_dmrEnable) {
 #if defined(DUPLEX)
@@ -184,26 +181,7 @@ void CSerialPort::getStatus()
     reply[8U] = 0U;
   }
 
-  if (m_ysfEnable)
-    reply[9U] = ysfTX.getSpace();
-  else
-    reply[9U] = 0U;
-
-  if (m_p25Enable)
-    reply[10U] = p25TX.getSpace();
-  else
-    reply[10U] = 0U;
-
-  if (m_nxdnEnable)
-    reply[11U] = nxdnTX.getSpace();
-  else
-    reply[11U] = 0U;
-
-  if (m_pocsagEnable)
-    reply[12U] = pocsagTX.getSpace();
-  else
-    reply[12U] = 0U;
-
+ 
   if (m_m17Enable)
     reply[13U] = m17TX.getSpace();
   else
@@ -239,8 +217,8 @@ void CSerialPort::getVersion()
 
 uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
 {
-  if (length < 23U)
-    return 4U;
+  //if (length < 23U)
+  //  return 4U;
 
   bool ysfLoDev  = (data[0U] & 0x08U) == 0x08U;
   bool simplex   = (data[0U] & 0x80U) == 0x80U;
@@ -254,6 +232,19 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   bool nxdnEnable   = (data[1U] & 0x10U) == 0x10U;
   bool pocsagEnable = (data[1U] & 0x20U) == 0x20U;
   bool m17Enable    = (data[1U] & 0x40U) == 0x40U;
+
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+  // Debug: Show which modes MMDVMHost is requesting
+  DEBUG1("SET_CONFIG received:");
+  DEBUG2I("  dstarEnable", dstarEnable);
+  DEBUG2I("  dmrEnable", dmrEnable);
+  DEBUG2I("  ysfEnable", ysfEnable);
+  DEBUG2I("  p25Enable", p25Enable);
+  DEBUG2I("  nxdnEnable", nxdnEnable);
+  DEBUG2I("  pocsagEnable", pocsagEnable);
+  DEBUG2I("  m17Enable", m17Enable);
+  DEBUG2I("  simplex", simplex);
+#endif
 
   uint8_t txDelay = data[2U];
   if (txDelay > 50U)
@@ -277,6 +268,20 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
     return 4U;
   if (modemState == STATE_M17 && !m17Enable)
     return 4U;
+
+#if defined(MS_MODE)
+  // MS_MODE only supports DMR and calibration modes - reject unsupported modes
+  if (dstarEnable || ysfEnable || p25Enable || nxdnEnable || pocsagEnable) {
+    DEBUG1("MS_MODE: Only DMR mode supported, rejecting config with unsupported modes");
+    return 4U;  // NAK - mode not supported
+  }
+  if (modemState != STATE_IDLE && modemState != STATE_DMR && 
+      modemState != STATE_DMRCAL && modemState != STATE_DMRDMO1K && 
+      modemState != STATE_INTCAL && modemState != STATE_RSSICAL) {
+    DEBUG1("MS_MODE: Unsupported mode requested");
+    return 4U;  // NAK - mode not supported
+  }
+#endif
 
   uint8_t colorCode = data[6U];
   if (colorCode > 15U)
@@ -328,6 +333,11 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
 
   m_duplex      = !simplex;
 
+#if defined(MS_MODE) && defined(DUPLEX)
+  // Force duplex mode for MS_MODE wireless bridge operation
+  m_duplex = true;
+#endif
+
 #if !defined(DUPLEX)
   if (m_duplex && m_calState == STATE_IDLE && modemState != STATE_DSTARCAL) {
     DEBUG1("Full duplex not supported with this firmware");
@@ -340,12 +350,8 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   }
 #endif
 
-  dstarTX.setTXDelay(txDelay);
-  ysfTX.setTXDelay(txDelay);
-  p25TX.setTXDelay(txDelay);
-  nxdnTX.setTXDelay(txDelay);
   m17TX.setTXDelay(txDelay);
-  pocsagTX.setTXDelay(txDelay);
+ 
   dmrDMOTX.setTXDelay(txDelay);
 
 #if defined(DUPLEX)
@@ -376,13 +382,20 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
       io.ifConf(STATE_POCSAG, true);
   }
 
-#if defined(DUPLEX) && defined(MS_MODE)
+#if defined(MS_MODE)
   // Force DMR mode and ensure second ADF7021 is configured for RX in MS_MODE
-  if (m_dmrEnable && m_duplex) {
+  m_dmrEnable = true;
+#if defined(DUPLEX)
+  if (m_duplex) {
+    DEBUG1("MS_MODE: Forcing DMR duplex mode");
     m_modemState = STATE_DMR;
     m_modemState_prev = STATE_DMR;
+    io.setMode(STATE_DMR);
     io.ifConf(STATE_DMR, true);
+  } else {
+    DEBUG1("MS_MODE: WARNING - Duplex not enabled!");
   }
+#endif
 #endif
 
   io.start();
@@ -442,6 +455,11 @@ uint8_t CSerialPort::setMode(const uint8_t* data, uint8_t length)
     m_calState = STATE_IDLE;
   }
 
+#if defined(MS_MODE)
+  if (tmpState == STATE_IDLE)
+    tmpState = STATE_DMR;
+#endif
+
   setMode(tmpState);
 
   return 0U;
@@ -452,8 +470,10 @@ uint8_t CSerialPort::setFreq(const uint8_t* data, uint8_t length)
   uint32_t freq_rx, freq_tx, pocsag_freq_tx;
   uint8_t rf_power;
 
-  if (length < 9U)
+  if (length < 9U) {
+    DEBUG1("SET_FREQ: Invalid length");
     return 4U;
+  }
 
   // Very old MMDVMHost, set full power
   if (length == 9U)
@@ -473,6 +493,15 @@ uint8_t CSerialPort::setFreq(const uint8_t* data, uint8_t length)
   freq_tx |= data[7U] << 16;
   freq_tx |= data[8U] << 24;
 
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+  DEBUG1("SET_FREQ received:");
+  DEBUG2I("  RX freq (Hz)", freq_rx);
+  DEBUG2I("  TX freq (Hz)", freq_tx);
+  DEBUG2I("  Length", length);
+  if (length >= 10U)
+    DEBUG2I("  RF power", data[9U]);
+#endif
+
   // New MMDVMHost, set POCSAG TX frequency
   if (length >= 14U) {
     pocsag_freq_tx  = data[10U] << 0;
@@ -491,10 +520,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
   switch (modemState) {
     case STATE_DMR:
       DEBUG1("Mode set to DMR");
-      dstarRX.reset();
-      ysfRX.reset();
-      p25RX.reset();
-      nxdnRX.reset();
+
       m17RX.reset();
       cwIdTX.reset();
       break;
@@ -505,9 +531,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
       dmrRX.reset();
 #endif
       dmrDMORX.reset();
-      ysfRX.reset();
-      p25RX.reset();
-      nxdnRX.reset();
+     
       m17RX.reset();
       cwIdTX.reset();
       break;
@@ -518,9 +542,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
       dmrRX.reset();
 #endif
       dmrDMORX.reset();
-      dstarRX.reset();
-      p25RX.reset();
-      nxdnRX.reset();
+     
       m17RX.reset();
       cwIdTX.reset();
       break;
@@ -531,9 +553,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
       dmrRX.reset();
 #endif
       dmrDMORX.reset();
-      dstarRX.reset();
-      ysfRX.reset();
-      nxdnRX.reset();
+     
       m17RX.reset();
       cwIdTX.reset();
       break;
@@ -544,9 +564,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
       dmrRX.reset();
 #endif
       dmrDMORX.reset();
-      dstarRX.reset();
-      ysfRX.reset();
-      p25RX.reset();
+    
       m17RX.reset();
       cwIdTX.reset();
       break;
@@ -557,10 +575,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
       dmrRX.reset();
 #endif
       dmrDMORX.reset();
-      dstarRX.reset();
-      ysfRX.reset();
-      p25RX.reset();
-      nxdnRX.reset();
+     
       cwIdTX.reset();
       break;
     case STATE_POCSAG:
@@ -570,10 +585,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
       dmrRX.reset();
 #endif
       dmrDMORX.reset();
-      dstarRX.reset();
-      ysfRX.reset();
-      p25RX.reset();
-      nxdnRX.reset();
+    
       m17RX.reset();
       cwIdTX.reset();
       break;
@@ -667,9 +679,7 @@ void CSerialPort::process()
           case MMDVM_CAL_DATA:
             if (m_calState == STATE_DMRCAL || m_calState == STATE_DMRDMO1K) {
               err = calDMR.write(m_buffer + 3U, m_len - 3U);
-            } else if (m_calState == STATE_POCSAGCAL) {
-              err = pocsagTX.setCal(m_buffer + 3U, m_len - 3U);
-            } else if (m_calState == STATE_RSSICAL || m_calState == STATE_INTCAL) {
+            }             else if (m_calState == STATE_RSSICAL || m_calState == STATE_INTCAL) {
               err = 0U;
             }
             if (err == 0U) {
@@ -689,48 +699,6 @@ void CSerialPort::process()
             }
             if (err != 0U) {
               DEBUG2("Invalid CW Id data", err);
-              sendNAK(err);
-            }
-            break;
-
-          case MMDVM_DSTAR_HEADER:
-            if (m_dstarEnable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_DSTAR)
-                err = dstarTX.writeHeader(m_buffer + 3U, m_len - 3U);
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_DSTAR);
-            } else {
-              DEBUG2("Received invalid D-Star header", err);
-              sendNAK(err);
-            }
-            break;
-
-          case MMDVM_DSTAR_DATA:
-            if (m_dstarEnable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_DSTAR)
-                err = dstarTX.writeData(m_buffer + 3U, m_len - 3U);
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_DSTAR);
-            } else {
-              DEBUG2("Received invalid D-Star data", err);
-              sendNAK(err);
-            }
-            break;
-
-          case MMDVM_DSTAR_EOT:
-            if (m_dstarEnable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_DSTAR)
-                err = dstarTX.writeEOT();
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_DSTAR);
-            } else {
-              DEBUG2("Received invalid D-Star EOT", err);
               sendNAK(err);
             }
             break;
@@ -821,62 +789,6 @@ void CSerialPort::process()
           #endif
             break;
 
-          case MMDVM_YSF_DATA:
-            if (m_ysfEnable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_YSF)
-                err = ysfTX.writeData(m_buffer + 3U, m_len - 3U);
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_YSF);
-            } else {
-              DEBUG2("Received invalid System Fusion data", err);
-              sendNAK(err);
-            }
-            break;
-
-          case MMDVM_P25_HDR:
-            if (m_p25Enable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
-                err = p25TX.writeData(m_buffer + 3U, m_len - 3U);
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_P25);
-            } else {
-              DEBUG2("Received invalid P25 header", err);
-              sendNAK(err);
-            }
-            break;
-
-          case MMDVM_P25_LDU:
-            if (m_p25Enable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
-                err = p25TX.writeData(m_buffer + 3U, m_len - 3U);
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_P25);
-            } else {
-              DEBUG2("Received invalid P25 LDU", err);
-              sendNAK(err);
-            }
-            break;
-
-          case MMDVM_NXDN_DATA:
-            if (m_nxdnEnable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_NXDN)
-                err = nxdnTX.writeData(m_buffer + 3U, m_len - 3U);
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_NXDN);
-            } else {
-              DEBUG2("Received invalid NXDN data", err);
-              sendNAK(err);
-            }
-            break;
-
           case MMDVM_M17_LINK_SETUP:
             if (m_m17Enable) {
               if (m_modemState == STATE_IDLE || m_modemState == STATE_M17)
@@ -919,21 +831,6 @@ void CSerialPort::process()
             }
             break;
 
-          case MMDVM_POCSAG_DATA:
-            if (m_pocsagEnable) {
-              if (m_modemState == STATE_IDLE || m_modemState == STATE_POCSAG) {
-                m_pocsag_state = true;
-                err = pocsagTX.writeData(m_buffer + 3U, m_len - 3U);
-              }
-            }
-            if (err == 0U) {
-              if (m_modemState == STATE_IDLE)
-                setMode(STATE_POCSAG);
-            } else {
-              DEBUG2("Received invalid POCSAG data", err);
-              sendNAK(err);
-            }
-            break;
 
           case MMDVM_TRANSPARENT:
           case MMDVM_QSO_INFO:
@@ -1093,11 +990,45 @@ void CSerialPort::writeDStarEOT()
 
 void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
 {
+#if !defined(MS_MODE)
   if (m_modemState != STATE_DMR && m_modemState != STATE_IDLE)
     return;
 
   if (!m_dmrEnable)
     return;
+#endif
+
+#if defined(ENABLE_DEBUG)
+  static uint32_t frameCounter = 0;
+  static uint32_t slot1Counter = 0;
+  static uint32_t slot2Counter = 0;
+  
+  frameCounter++;
+  if (slot)
+    slot2Counter++;
+  else
+    slot1Counter++;
+  
+  // Debug: Dump first 10 bytes of frame to verify structure
+  static uint32_t dumpCounter = 0;
+  dumpCounter++;
+  if (dumpCounter <= 5) {
+    DEBUG2I("DMR Frame dump - Slot", slot ? 2 : 1);
+    DEBUG2I("  Control byte [0]", data[0]);
+    if (length >= 4) {
+      DEBUG2I("  Payload [1-3]", (data[1] << 16) | (data[2] << 8) | data[3]);
+    }
+  }
+    
+  if (frameCounter == 100) {
+    DEBUG2I("DMR: Total frames sent", frameCounter);
+    DEBUG2I("DMR: Slot1 frames", slot1Counter);
+    DEBUG2I("DMR: Slot2 frames", slot2Counter);
+    frameCounter = 0;
+    slot1Counter = 0;
+    slot2Counter = 0;
+  }
+#endif
 
   uint8_t reply[40U];
 
@@ -1112,6 +1043,44 @@ void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
   reply[1U] = count;
 
   writeInt(1U, reply, count);
+}
+
+void CSerialPort::writeDMRStart(bool slot, uint8_t colorCode, uint32_t srcId, uint32_t dstId)
+{
+#if !defined(MS_MODE)
+  if (m_modemState != STATE_DMR && m_modemState != STATE_IDLE)
+    return;
+
+  if (!m_dmrEnable)
+    return;
+#endif
+
+  uint8_t reply[11U];
+  
+  reply[0U] = MMDVM_FRAME_START;
+  reply[1U] = 11U;
+  reply[2U] = MMDVM_DMR_START;
+  reply[3U] = slot ? 0x01U : 0x00U;
+  reply[4U] = colorCode;
+  
+  // Talkgroup (destination ID) - 3 bytes, big-endian
+  reply[5U] = (dstId >> 16) & 0xFFU;
+  reply[6U] = (dstId >> 8) & 0xFFU;
+  reply[7U] = (dstId >> 0) & 0xFFU;
+  
+  // Source DMR ID - 3 bytes, big-endian
+  reply[8U] = (srcId >> 16) & 0xFFU;
+  reply[9U] = (srcId >> 8) & 0xFFU;
+  reply[10U] = (srcId >> 0) & 0xFFU;
+  
+#if defined(ENABLE_DEBUG)
+  DEBUG2I("DMR_START: Slot", slot ? 2 : 1);
+  DEBUG2I("  ColorCode", colorCode);
+  DEBUG2I("  Talkgroup", dstId);
+  DEBUG2I("  Source ID", srcId);
+#endif
+  
+  writeInt(1U, reply, 11U);
 }
 
 void CSerialPort::writeDMRLost(bool slot)

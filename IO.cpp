@@ -112,13 +112,21 @@ void CIO::process()
   m_ledCount++;
 
   if (m_started) {
+#if defined(MS_MODE)
+    if (m_modemState == STATE_IDLE && m_dmrEnable) {
+      setMode(STATE_DMR);
+      m_modemState = STATE_DMR;
+      ifConf(STATE_DMR, true);
+    }
+#endif
+
     // Two seconds timeout
     if (m_watchdog >= 19200U) {
 #if defined(MS_MODE)
       // In MS_MODE (wireless bridge), keep DMR mode active for continuous RX
-      // Only timeout if we're not in DMR mode with duplex enabled
-      if (!(m_modemState == STATE_DMR && m_duplex)) {
-        if (m_modemState == STATE_DSTAR || m_modemState == STATE_DMR || m_modemState == STATE_YSF || m_modemState == STATE_P25 || m_modemState == STATE_NXDN || m_modemState == STATE_M17) {
+      // Only timeout if we're not in DMR mode
+      if (m_modemState != STATE_DMR) {
+        if (m_modemState == STATE_DSTAR || m_modemState == STATE_YSF || m_modemState == STATE_P25 || m_modemState == STATE_NXDN || m_modemState == STATE_M17) {
           m_modemState = STATE_IDLE;
           setMode(m_modemState);
         }
@@ -214,9 +222,7 @@ void CIO::process()
     m_rxBuffer.get(bit, control);
 
     switch (m_modemState_prev) {
-      case STATE_DSTAR:
-        dstarRX.databit(bit);
-        break;
+      
       case STATE_DMR:
 #if defined(DUPLEX)
         if (m_duplex) {
@@ -234,15 +240,7 @@ void CIO::process()
         dmrDMORX.databit(bit);
 #endif
         break;
-      case STATE_YSF:
-        ysfRX.databit(bit);
-        break;
-      case STATE_P25:
-        p25RX.databit(bit);
-        break;
-      case STATE_NXDN:
-        nxdnRX.databit(bit);
-        break;
+   
       case STATE_M17:
         m17RX.databit(bit);
         break;
@@ -282,7 +280,7 @@ void CIO::start()
     m_TotalModes++;
   }
 
-#if defined(ENABLE_SCAN_MODE)
+#if defined(ENABLE_SCAN_MODE) && !defined(MS_MODE)
   if(m_TotalModes > 1U)
     m_scanEnable = true;
   else {
@@ -354,6 +352,15 @@ void CIO::checkBand(uint32_t frequency_rx, uint32_t frequency_tx) {
 }
 
 uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+  DEBUG1("checkZUMspot called:");
+  DEBUG2I("  RX freq (Hz)", frequency_rx);
+  DEBUG2I("  TX freq (Hz)", frequency_tx);
+  DEBUG2I("  hasSingleADF7021", io.hasSingleADF7021());
+  DEBUG2I("  isDualBand", io.isDualBand());
+  DEBUG2I("  VHF2_MAX", VHF2_MAX);
+  DEBUG2I("  UHF1_MIN", UHF1_MIN);
+#endif
   if (!(io.hasSingleADF7021())) {
     // There are two ADF7021s on the board
     if (io.isDualBand()) {
@@ -361,14 +368,23 @@ uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
       if ((frequency_tx <= VHF2_MAX) && (frequency_rx <= VHF2_MAX)) {
         // Turn on VHF side
         io.setBandVHF(true);
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+        DEBUG1("checkZUMspot: VHF band selected");
+#endif
       } else if ((frequency_tx >= UHF1_MIN) && (frequency_rx >= UHF1_MIN)) {
         // Turn on UHF side
         io.setBandVHF(false);
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+        DEBUG1("checkZUMspot: UHF band selected");
+#endif
       }
     } else if (!io.isDualBand()) {
       // Duplex board
       if ((frequency_tx < UHF1_MIN) || (frequency_rx < UHF1_MIN)) {
         // Reject VHF frequencies
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+        DEBUG1("checkZUMspot: Rejecting VHF frequencies for duplex board");
+#endif
         return 4U;
       }
     }
@@ -379,22 +395,18 @@ uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
 
 uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_power, uint32_t pocsag_freq_tx)
 {
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+  DEBUG1("IO::setFreq called:");
+  DEBUG2I("  RX freq (Hz)", frequency_rx);
+  DEBUG2I("  TX freq (Hz)", frequency_tx);
+  DEBUG2I("  RF power", rf_power);
+  DEBUG2I("  POCSAG freq (Hz)", pocsag_freq_tx);
+#endif
   // Configure power level
   setPower(rf_power);
 
 #if !defined(DISABLE_FREQ_CHECK)
-  // Check frequency ranges
-  if( !( ((frequency_rx >= VHF1_MIN)&&(frequency_rx < VHF1_MAX)) || ((frequency_tx >= VHF1_MIN)&&(frequency_tx < VHF1_MAX)) || \
-  ((frequency_rx >= UHF1_MIN)&&(frequency_rx < UHF1_MAX)) || ((frequency_tx >= UHF1_MIN)&&(frequency_tx < UHF1_MAX)) || \
-  ((frequency_rx >= VHF2_MIN)&&(frequency_rx < VHF2_MAX)) || ((frequency_tx >= VHF2_MIN)&&(frequency_tx < VHF2_MAX)) || \
-  ((frequency_rx >= UHF2_MIN)&&(frequency_rx < UHF2_MAX)) || ((frequency_tx >= UHF2_MIN)&&(frequency_tx < UHF2_MAX)) ) )
-    return 4U;
-
-  if( !( ((pocsag_freq_tx >= VHF1_MIN)&&(pocsag_freq_tx < VHF1_MAX)) || \
-  ((pocsag_freq_tx >= UHF1_MIN)&&(pocsag_freq_tx < UHF1_MAX)) || \
-  ((pocsag_freq_tx >= VHF2_MIN)&&(pocsag_freq_tx < VHF2_MAX)) || \
-  ((pocsag_freq_tx >= UHF2_MIN)&&(pocsag_freq_tx < UHF2_MAX)) ) )
-    return 4U;
+  //return 4U;
 #endif
 
 #if !defined(DISABLE_FREQ_BAN)
@@ -425,6 +437,10 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
 
 void CIO::setMode(MMDVM_STATE modemState)
 {
+#if defined(MS_MODE)
+  if (modemState == STATE_IDLE)
+    modemState = STATE_DMR;
+#endif
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   if (modemState != STATE_POCSAG) {
 #endif

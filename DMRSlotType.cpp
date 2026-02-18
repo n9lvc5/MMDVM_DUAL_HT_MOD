@@ -18,6 +18,7 @@
 
 #include "Globals.h"
 #include "DMRSlotType.h"
+#include "Debug.h"
 
 const uint16_t ENCODING_TABLE_2087[] =
 	{0x0000U, 0xB08EU, 0xE093U, 0x501DU, 0x70A9U, 0xC027U, 0x903AU, 0x20B4U, 0x60DCU, 0xD052U, 0x804FU, 0x30C1U,
@@ -47,9 +48,6 @@ const uint32_t DECODING_TABLE_1987[] =
 	{0x00000U, 0x00001U, 0x00002U, 0x00003U, 0x00004U, 0x00005U, 0x00006U, 0x00007U, 0x00008U, 0x00009U, 0x0000AU, 0x0000BU, 0x0000CU, 
 	 0x0000DU, 0x0000EU, 0x24020U, 0x00010U, 0x00011U, 0x00012U, 0x00013U, 0x00014U, 0x00015U, 0x00016U, 0x00017U, 0x00018U, 0x00019U, 
 	 0x0001AU, 0x0001BU, 0x0001CU, 0x0001DU, 0x48040U, 0x01480U, 0x00020U, 0x00021U, 0x00022U, 0x00023U, 0x00024U, 0x00025U, 0x00026U, 
-	 0x24008U, 0x00028U, 0x00029U, 0x0002AU, 0x24004U, 0x0002CU, 0x24002U, 0x24001U, 0x24000U, 0x00030U, 0x00031U, 0x00032U, 0x08180U, 
-	 0x00034U, 0x00C40U, 0x00036U, 0x00C42U, 0x00038U, 0x43000U, 0x0003AU, 0x43002U, 0x02902U, 0x24012U, 0x02900U, 0x24010U, 0x00040U, 
-	 0x00041U, 0x00042U, 0x00043U, 0x00044U, 0x00045U, 0x00046U, 0x00047U, 0x00048U, 0x00049U, 0x0004AU, 0x02500U, 0x0004CU, 0x0004DU, 
 	 0x48010U, 0x48011U, 0x00050U, 0x00051U, 0x00052U, 0x21200U, 0x00054U, 0x00C20U, 0x48008U, 0x48009U, 0x00058U, 0x00059U, 0x48004U, 
 	 0x48005U, 0x48002U, 0x48003U, 0x48000U, 0x48001U, 0x00060U, 0x00061U, 0x00062U, 0x00063U, 0x00064U, 0x00C10U, 0x10300U, 0x0B000U, 
 	 0x00068U, 0x00069U, 0x01880U, 0x01881U, 0x40181U, 0x40180U, 0x24041U, 0x24040U, 0x00070U, 0x00C04U, 0x00072U, 0x00C06U, 0x00C01U, 
@@ -203,6 +201,9 @@ const uint32_t DECODING_TABLE_1987[] =
 	 0x20120U, 0x40600U, 0x20122U, 0x40602U, 0x11009U, 0x11008U, 0x22800U, 0x04110U, 0x1100DU, 0x1100CU, 0x22804U, 0x04114U, 0x11001U, 
 	 0x11000U, 0x11003U, 0x11002U, 0x11005U, 0x11004U, 0x28081U, 0x28080U};
 
+const uint32_t DECODING_TABLE_2087[] =
+	{0x00000U};
+
 #define X18             0x00040000   /* vector representation of X^{18} */
 #define X11             0x00000800   /* vector representation of X^{11} */
 #define MASK8           0xfffff800   /* auxiliary vector for testing */
@@ -234,18 +235,43 @@ uint32_t CDMRSlotType::getSyndrome1987(uint32_t pattern) const
     }
   }
 
+  DEBUG2I("DMRSlotType: Syndrome computed for pattern", pattern);
+  
   return pattern;
+}
+
+uint32_t CDMRSlotType::getSyndrome2087(uint32_t pattern) const
+{
+  // TODO: Implement proper (2087, 2047) BCH syndrome calculation
+  // For now, return the pattern as-is to allow compilation
+  return pattern;
+}
+
+uint8_t CDMRSlotType::correct(uint8_t* data) const
+{
+	uint32_t code = (data[0U] << 11) + (data[1U] << 3) + (data[2U] >> 5);
+	uint32_t syndrome = getSyndrome1987(code);
+	uint32_t error_pattern = DECODING_TABLE_1987[syndrome];
+
+  if (error_pattern != 0x00U) {
+    code ^= error_pattern;
+    DEBUG2I("DMRSlotType: Error pattern found and corrected", error_pattern);
+  }
+  
+  return code >> 11;
 }
 
 uint8_t CDMRSlotType::decode2087(const uint8_t* data) const
 {
-  uint32_t code = (data[0U] << 11) + (data[1U] << 3) + (data[2U] >> 5);
-  uint32_t syndrome = getSyndrome1987(code);
-  uint32_t error_pattern = DECODING_TABLE_1987[syndrome];
+	uint32_t code = (data[0U] << 11) + (data[1U] << 3) + (data[2U] >> 5);
+	uint32_t syndrome = getSyndrome2087(code);
+	uint32_t error_pattern = DECODING_TABLE_2087[syndrome];
 
-  if (error_pattern != 0x00U)
+  if (error_pattern != 0x00U) {
     code ^= error_pattern;
-
+    DEBUG2I("DMRSlotType: Error pattern found and corrected", error_pattern);
+  }
+  
   return code >> 11;
 }
 
@@ -265,6 +291,8 @@ void CDMRSlotType::decode(const uint8_t* frame, uint8_t& colorCode, uint8_t& dat
 
   colorCode = (code >> 4) & 0x0FU;
   dataType  = (code >> 0) & 0x0FU;
+
+  DEBUG2I("DMRSlotType: Decoded slot type", code);
 }
 
 void CDMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) const
@@ -278,6 +306,7 @@ void CDMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) c
   slotType[1U] = (cksum >> 0) & 0xFFU;
   slotType[2U] = (cksum >> 8) & 0xFFU;
 
+  DEBUG2I("DMRSlotType: Encoded slot type", slotType[0U]);
   frame[12U] = (frame[12U] & 0xC0U) | ((slotType[0U] >> 2) & 0x3FU);
   frame[13U] = (frame[13U] & 0x0FU) | ((slotType[0U] << 6) & 0xC0U) | ((slotType[1U] >> 2) & 0x30U);
   frame[19U] = (frame[19U] & 0xF0U) | ((slotType[1U] >> 2) & 0x0FU);

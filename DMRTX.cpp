@@ -19,6 +19,7 @@
  */
 
 #include "Config.h"
+#include "Debug.h"
 
 #if defined(DUPLEX)
 
@@ -55,14 +56,25 @@ m_backoff_timer(0U)
 }
 
 uint8_t CDMRTX::writeData1(const uint8_t* data, uint8_t length)
+
 {
+  DEBUG1("DMRTX : writeData1");
   return 4U; // Disabled for MS mode TS1
 }
 
 uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
+
 {
+ DEBUG1("DMRTX : writeData2");
+ 
   if (length != (DMR_FRAME_LENGTH_BYTES + 1U))
     return 4U;
+
+#if defined(MS_MODE)
+  uint8_t dataType = data[0] & 0x0FU;
+  if (dataType == DT_IDLE)
+    return 0U;
+#endif
 
   if (m_fifo[1].getSpace() < (DMR_FRAME_LENGTH_BYTES + 1U))
     return 5U;
@@ -74,12 +86,16 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
 }
 
 uint8_t CDMRTX::writeShortLC(const uint8_t* data, uint8_t length)
+
 {
+  DEBUG1("DMRTX : writeShortLC");
   return 0U;
 }
 
 uint8_t CDMRTX::writeAbort(const uint8_t* data, uint8_t length)
+
 {
+  DEBUG1("DMRTX : writeAbort");
   if (length != 1U)
     return 4U;
 
@@ -101,7 +117,9 @@ void CDMRTX::reset()
 }
 
 void CDMRTX::process()
+
 {
+  
   switch (m_state) {
   case DMRTXSTATE_IDLE:
     if (m_fifo[1].getData() >= (DMR_FRAME_LENGTH_BYTES + 1U)) {
@@ -114,6 +132,7 @@ void CDMRTX::process()
     io.setTX();
     m_frameCount = 0U;
     m_state = DMRTXSTATE_PREAMBLE;
+    DEBUG1("DMRTX : requestChannel");
     break;
 
   case DMRTXSTATE_PREAMBLE:
@@ -128,7 +147,9 @@ void CDMRTX::process()
     break;
 
   case DMRTXSTATE_WAIT_BS_CONFIRM:
+
     if (m_bs_sync_confirmed) {
+      DEBUG1("DMRTX : confirmBSSync");
       m_state = DMRTXSTATE_SLOT1;
       m_frameCount = 0U;
       // Stay in TX

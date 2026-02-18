@@ -31,6 +31,8 @@ private:
 
   uint8_t  decode2087(const uint8_t* data) const;
   uint32_t getSyndrome1987(uint32_t pattern) const;
+  uint32_t getSyndrome2087(uint32_t pattern) const;
+  uint8_t  correct(uint8_t* data) const;
 };
 
 #endif

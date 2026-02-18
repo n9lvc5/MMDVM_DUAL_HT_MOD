@@ -104,8 +104,7 @@
 // Enable for RPi 3B+, USB mode
 // #define LONG_USB_RESET
 
-// Enable modem debug messages
-// #define ENABLE_DEBUG
+// Enable modem debug messages #define ENABLE_DEBUG
 
 // Disable frequency bands check
 // #define DISABLE_FREQ_CHECK
