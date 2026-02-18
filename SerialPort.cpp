@@ -217,8 +217,8 @@ void CSerialPort::getVersion()
 
 uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
 {
-  if (length < 23U)
-    return 4U;
+  //if (length < 23U)
+  //  return 4U;
 
   bool ysfLoDev  = (data[0U] & 0x08U) == 0x08U;
   bool simplex   = (data[0U] & 0x80U) == 0x80U;
@@ -470,8 +470,10 @@ uint8_t CSerialPort::setFreq(const uint8_t* data, uint8_t length)
   uint32_t freq_rx, freq_tx, pocsag_freq_tx;
   uint8_t rf_power;
 
-  if (length < 9U)
+  if (length < 9U) {
+    DEBUG1("SET_FREQ: Invalid length");
     return 4U;
+  }
 
   // Very old MMDVMHost, set full power
   if (length == 9U)
@@ -490,6 +492,15 @@ uint8_t CSerialPort::setFreq(const uint8_t* data, uint8_t length)
   freq_tx |= data[6U] << 8;
   freq_tx |= data[7U] << 16;
   freq_tx |= data[8U] << 24;
+
+#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+  DEBUG1("SET_FREQ received:");
+  DEBUG2I("  RX freq (Hz)", freq_rx);
+  DEBUG2I("  TX freq (Hz)", freq_tx);
+  DEBUG2I("  Length", length);
+  if (length >= 10U)
+    DEBUG2I("  RF power", data[9U]);
+#endif
 
   // New MMDVMHost, set POCSAG TX frequency
   if (length >= 14U) {

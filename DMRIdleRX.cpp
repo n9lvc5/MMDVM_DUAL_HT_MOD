@@ -90,6 +90,7 @@ void CDMRIdleRX::databit(bool bit)
     if (colorCode == m_colorCode) {
       frame[0U] = CONTROL_IDLE | CONTROL_DATA | dataType;
       serial.writeDMRData(false, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+      DEBUG2I("DMRIdleRX: Received idle frame with color code", colorCode);
       io.setDecode(true);
     }
 
@@ -143,6 +144,7 @@ void CDMRIdleRX::bitsToBytes(uint16_t start, uint8_t count, uint8_t* buffer)
 void CDMRIdleRX::setColorCode(uint8_t colorCode)
 {
   m_colorCode = colorCode;
+  DEBUG2I("DMRIdleRX: Color code set to", colorCode);
 }
 
 #endif
