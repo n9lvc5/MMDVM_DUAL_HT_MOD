@@ -156,6 +156,12 @@ bool CDMRSlotRX::databit(bool bit)
 
 void CDMRSlotRX::procSlot2()
 {
+#if defined(MS_MODE)
+  uint8_t slot = m_currentSlot - 1U;
+#else
+  uint8_t slot = m_slot ? 1U : 0U;
+#endif
+
   if (m_dataPtr == m_endPtr) {
     DEBUG2("DMRSlotRX: Processing frame", 0);
     DEBUG2I("DMRSlotRX: Frame control byte", m_control);
@@ -228,12 +234,7 @@ void CDMRSlotRX::procSlot2()
             DEBUG2("DMRSlot2RX: voice header found pos", m_syncPtr);
             m_state = DMRRXS_VOICE;
             {
-#if defined(MS_MODE)
-              uint8_t slot = m_currentSlot - 1U;
               DEBUG2("DMRSlotRX: Voice header slot (MS_MODE)", slot);
-#else
-              uint8_t slot = m_slot ? 1U : 0U;
-#endif
               
               // Extract and embed Link Control (LC) data in the frame
               DMRLC_T lc;
@@ -289,12 +290,7 @@ void CDMRSlotRX::procSlot2()
             if (m_state == DMRRXS_VOICE) {
               DEBUG2("DMRSlot2RX: voice terminator found pos", m_syncPtr);
               {
-#if defined(MS_MODE)
-                uint8_t slot = m_currentSlot - 1U;
                 DEBUG2("DMRSlotRX: Voice terminator slot (MS_MODE)", slot);
-#else
-                uint8_t slot = m_slot ? 1U : 0U;
-#endif
 #if defined(MS_MODE)
                 io.DSTAR_pin(slot == 0U);
                 io.P25_pin(slot == 1U);
@@ -365,12 +361,7 @@ void CDMRSlotRX::procSlot2()
           frame[0U] = ++m_n;
         }
 
-#if defined(MS_MODE)
-        uint8_t slot = m_currentSlot - 1U;
         DEBUG2("DMRSlotRX: Voice frame slot (MS_MODE)", slot);
-#else
-        uint8_t slot = m_slot ? 1U : 0U;
-#endif
 #if defined(MS_MODE)
         // In MS_MODE, repurpose mode LEDs as timeslot indicators
         // D-Star LED = TS1 (slot 0), P25 LED = TS2 (slot 1)
@@ -391,7 +382,12 @@ void CDMRSlotRX::procSlot2()
 #endif
         
         DEBUG2("DMRSlotRX: Sending DMR data to MMDVMHost", 0);
+#if defined(MS_MODE)
+        if (m_syncLocked)
+          serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+#else
         serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+#endif
       } else if (m_state == DMRRXS_DATA) {
         if (m_type != 0x00U) {
           frame[0U] = CONTROL_DATA | m_type;
@@ -476,10 +472,7 @@ void CDMRSlotRX::correlateSync()
 #endif
 #if defined(MS_MODE)
     // Set sync lock when we find a BS sync pattern
-    if ((m_patternBuffer & DMR_SYNC_BITS_MASK) == DMR_BS_DATA_SYNC_BITS ||
-        (m_patternBuffer & DMR_SYNC_BITS_MASK) == DMR_BS_VOICE_SYNC_BITS ||
-        (m_patternBuffer & DMR_SYNC_BITS_MASK) == DMR_BS_DATA_SYNC_BITS_INV ||
-        (m_patternBuffer & DMR_SYNC_BITS_MASK) == DMR_BS_VOICE_SYNC_BITS_INV) {
+    if (control != CONTROL_NONE) {
       if (!m_syncLocked || m_syncCount > 5) {
         m_currentSlot = 1U;
         m_syncLocked = true;
