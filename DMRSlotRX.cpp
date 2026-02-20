@@ -216,7 +216,7 @@ void CDMRSlotRX::procSlot2()
 
         switch (dataType) {
           case DT_DATA_HEADER:
-            DEBUG2("DMRSlot2RX: data header found pos", m_syncPtr);
+            DEBUG2("DMRSlotRX: data header found pos", m_syncPtr);
             writeRSSIData();
             m_state = DMRRXS_DATA;
             m_type  = 0x00U;
@@ -225,7 +225,7 @@ void CDMRSlotRX::procSlot2()
           case DT_RATE_34_DATA:
           case DT_RATE_1_DATA:
             if (m_state == DMRRXS_DATA) {
-              DEBUG2("DMRSlot2RX: data payload found pos", m_syncPtr);
+              DEBUG2("DMRSlotRX: data payload found pos", m_syncPtr);
               writeRSSIData();
               m_type = dataType;
             }
@@ -281,7 +281,7 @@ void CDMRSlotRX::procSlot2()
             break;
           case DT_VOICE_PI_HEADER:
             if (m_state == DMRRXS_VOICE) {
-              DEBUG2("DMRSlot2RX: voice pi header found pos", m_syncPtr);
+              DEBUG2("DMRSlotRX: voice pi header found pos", m_syncPtr);
               writeRSSIData();
             }
             m_state = DMRRXS_VOICE;
@@ -319,14 +319,18 @@ void CDMRSlotRX::procSlot2()
                 writeRSSIData();
               }
               m_state  = DMRRXS_NONE;
+#if !defined(MS_MODE)
               m_endPtr = NOENDPTR;
+#endif
             }
             break;
           default:    // DT_CSBK
-            DEBUG2("DMRSlot2RX: csbk found pos", m_syncPtr);
+            DEBUG2("DMRSlotRX: csbk found pos", m_syncPtr);
             writeRSSIData();
             m_state  = DMRRXS_NONE;
+#if !defined(MS_MODE)
             m_endPtr = NOENDPTR;
+#endif
             break;
         }
       } else {
@@ -398,6 +402,14 @@ void CDMRSlotRX::procSlot2()
 
     // End of this slot, reset some items for the next slot.
     m_control = CONTROL_NONE;
+
+#if defined(MS_MODE)
+    // Advance end pointer for next slot (flywheel)
+    m_endPtr = (m_endPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    // Toggle slot
+    m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+    DEBUG2("DMRSlotRX: Flywheel advanced to slot", m_currentSlot);
+#endif
   }
 }
 
@@ -505,7 +517,6 @@ void CDMRSlotRX::correlateSync()
         m_state = DMRRXS_NONE;
         DEBUG2("DMRSlotRX: State machine reset on new sync", 0);
     }
-    m_endPtr = (m_syncPtr + DMR_FRAME_LENGTH_BITS) % DMR_BUFFER_LENGTH_BITS;
   }
 }
 
