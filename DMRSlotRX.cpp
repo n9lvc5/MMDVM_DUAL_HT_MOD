@@ -163,7 +163,7 @@ void CDMRSlotRX::procSlot2()
 #endif
 
   if (m_dataPtr == m_endPtr) {
-    DEBUG2("DMRSlotRX: Processing frame", 0);
+    DEBUG2("DMRSlotRX: Processing frame", slot);
     DEBUG2I("DMRSlotRX: Frame control byte", m_control);
     frame[0U] = m_control;
 
@@ -246,7 +246,7 @@ void CDMRSlotRX::procSlot2()
                 DEBUG2I("LC decoded - SrcID", lc.srcId);
                 DEBUG2I("LC decoded - DstID", lc.dstId);
               } else {
-                DEBUG2("LC decode failed", 0);
+                DEBUG2("LC decode failed", slot);
               }
 #endif
               
@@ -255,7 +255,7 @@ void CDMRSlotRX::procSlot2()
               if (lcValid) {
                 memcpy(m_lcData, lc.rawData, 12);
                 m_lcValid = true;
-                DEBUG2("LC data stored for voice frames", 0);
+                DEBUG2("LC data stored for voice frames", slot);
               } else {
                 m_lcValid = false;
               }
@@ -266,7 +266,7 @@ void CDMRSlotRX::procSlot2()
                   // Copy LC data into frame at appropriate location
                   // LC data is 12 bytes, typically placed after the frame type byte
                   memcpy(frame + 1, lc.rawData, 12);
-                  DEBUG2("LC data embedded in header frame", 0);
+                  DEBUG2("LC data embedded in header frame", slot);
                 }
                 
                 DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", 0);
@@ -305,14 +305,14 @@ void CDMRSlotRX::procSlot2()
                   DEBUG2I("Terminator LC decoded - SrcID", lc.srcId);
                   DEBUG2I("Terminator LC decoded - DstID", lc.dstId);
                 } else {
-                  DEBUG2("Terminator LC decode failed", 0);
+                  DEBUG2("Terminator LC decode failed", slot);
                 }
 #endif
                 
                 if (lcValid) {
                   // Copy LC data into frame for MMDVMHost
                   memcpy(frame + 1, lc.rawData, 12);
-                  DEBUG2("LC data embedded in terminator frame", 0);
+                  DEBUG2("LC data embedded in terminator frame", slot);
                 }
                 
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", 0);
@@ -374,10 +374,10 @@ void CDMRSlotRX::procSlot2()
 #if defined(MS_MODE)
         if (m_lcValid) {
           memcpy(frame + 1, m_lcData, 12);
-          DEBUG2("LC data embedded in voice frame", 0);
+          DEBUG2("LC data embedded in voice frame", slot);
           DEBUG2I("LC data status", m_lcValid);
         } else {
-          DEBUG2("No LC data available for voice frame", 0);
+          DEBUG2("No LC data available for voice frame", slot);
         }
 #endif
         
@@ -579,7 +579,7 @@ void CDMRSlotRX::writeRSSIData()
     DEBUG2("DMRSlotRX: Sending RSSI data to slot", slot);
     serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 3U);
   } else {
-    DEBUG2("DMRSlotRX: RSSI data blocked - sync not locked", 0);
+    DEBUG2("DMRSlotRX: RSSI data blocked - sync not locked", slot);
   }
 #else
   serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 3U);
@@ -591,7 +591,7 @@ void CDMRSlotRX::writeRSSIData()
     DEBUG2("DMRSlotRX: Sending voice/data to slot", slot);
     serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
   } else {
-    DEBUG2("DMRSlotRX: Voice/data blocked - sync not locked", 0);
+    DEBUG2("DMRSlotRX: Voice/data blocked - sync not locked", slot);
   }
 #else
   serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
