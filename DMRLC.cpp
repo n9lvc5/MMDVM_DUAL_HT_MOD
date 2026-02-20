@@ -69,44 +69,44 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
 
 void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
 {
-  // DMR frame structure: 33 bytes (264 bits)
-  // frame[0] = control byte
-  // frame[1-33] = DMR payload: [108 bits Info1][48 bits SYNC][108 bits Info2]
-  // LC data (196 bits) is in the Info sections
+  // DMR frame structure: 33 bytes (264 bits) payload + 1 control byte at frame[0]
+  // Voice Header Burst Structure (ETSI TS 102 361-1, Section 6.2):
+  // [98 bits LC Part 1] [10 bits Slot Type Part 1] [48 bits SYNC] [10 bits Slot Type Part 2] [98 bits LC Part 2]
+  // Bits 0-97: LC Part 1
+  // Bits 98-107: Slot Type Part 1
+  // Bits 108-155: SYNC
+  // Bits 156-165: Slot Type Part 2
+  // Bits 166-263: LC Part 2
   
   // Clear output
   memset(lcData, 0x00U, 25U);
   
   uint32_t bitPos = 0U;
   
-  // Extract bits from Info1 (bytes 1-13 of frame, before SYNC at bytes 14-19)
-  for (uint32_t i = 1U; i <= 13U; i++) {
-    for (uint32_t j = 0U; j < 8U; j++) {
-      bool bit = (frame[i] & (1U << (7U - j))) != 0;
-      if (bitPos < 196U) {
-        uint32_t byteIdx = bitPos / 8U;
-        uint32_t bitIdx = 7U - (bitPos % 8U);
-        if (bit)
-          lcData[byteIdx] |= (1U << bitIdx);
-        bitPos++;
-      }
-    }
+  // Extract bits from LC Part 1 (bits 0-97 of burst)
+  for (uint32_t i = 0U; i < 98U; i++) {
+    uint32_t srcByte = 1U + (i / 8U);
+    uint32_t srcBit = 7U - (i % 8U);
+    bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
+
+    uint32_t dstByte = bitPos / 8U;
+    uint32_t dstBit = 7U - (bitPos % 8U);
+    if (bit)
+      lcData[dstByte] |= (1U << dstBit);
+    bitPos++;
   }
   
-  // Skip SYNC (bytes 14-19, which is 48 bits)
-  
-  // Extract bits from Info2 (bytes 20-33 of frame)
-  for (uint32_t i = 20U; i <= 33U; i++) {
-    for (uint32_t j = 0U; j < 8U; j++) {
-      bool bit = (frame[i] & (1U << (7U - j))) != 0;
-      if (bitPos < 196U) {
-        uint32_t byteIdx = bitPos / 8U;
-        uint32_t bitIdx = 7U - (bitPos % 8U);
-        if (bit)
-          lcData[byteIdx] |= (1U << bitIdx);
-        bitPos++;
-      }
-    }
+  // Extract bits from LC Part 2 (bits 166-263 of burst)
+  for (uint32_t i = 166U; i < 264U; i++) {
+    uint32_t srcByte = 1U + (i / 8U);
+    uint32_t srcBit = 7U - (i % 8U);
+    bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
+
+    uint32_t dstByte = bitPos / 8U;
+    uint32_t dstBit = 7U - (bitPos % 8U);
+    if (bit)
+      lcData[dstByte] |= (1U << dstBit);
+    bitPos++;
   }
 }
 
