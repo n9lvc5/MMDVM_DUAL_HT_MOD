@@ -269,7 +269,7 @@ void CDMRSlotRX::procSlot2()
                   DEBUG2("LC data embedded in header frame", slot);
                 }
                 
-                DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
+                DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", 0);
                 writeRSSIData();
               
 #if defined(MS_MODE)
@@ -315,7 +315,7 @@ void CDMRSlotRX::procSlot2()
                   DEBUG2("LC data embedded in terminator frame", slot);
                 }
                 
-                DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", slot);
+                DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", 0);
                 writeRSSIData();
               }
               m_state  = DMRRXS_NONE;
@@ -381,7 +381,7 @@ void CDMRSlotRX::procSlot2()
         }
 #endif
         
-        DEBUG2("DMRSlotRX: Sending DMR data to MMDVMHost", slot);
+        DEBUG2("DMRSlotRX: Sending DMR data to MMDVMHost", 0);
 #if defined(MS_MODE)
         if (m_syncLocked)
           serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
