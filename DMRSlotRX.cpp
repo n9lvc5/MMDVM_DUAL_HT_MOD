@@ -94,8 +94,6 @@ void CDMRSlotRX::reset()
   m_syncLocked = false;
   m_lcValid = false;
   memset(m_lcData, 0, sizeof(m_lcData));
-  io.DSTAR_pin(false);
-  io.P25_pin(false);
 #endif
 }
 
@@ -270,12 +268,6 @@ void CDMRSlotRX::procSlot2()
                 
                 DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
                 writeRSSIData();
-              
-#if defined(MS_MODE)
-              // In MS_MODE, repurpose mode LEDs as timeslot indicators
-              io.DSTAR_pin(slot == 0U);
-              io.P25_pin(slot == 1U);
-#endif
             }
             break;
           case DT_VOICE_PI_HEADER:
@@ -290,10 +282,6 @@ void CDMRSlotRX::procSlot2()
               DEBUG2("DMRSlotRX: voice terminator found pos", m_syncPtr);
               {
                 DEBUG2("DMRSlotRX: Voice terminator slot (MS_MODE)", slot);
-#if defined(MS_MODE)
-                io.DSTAR_pin(slot == 0U);
-                io.P25_pin(slot == 1U);
-#endif
                 // Extract and embed Link Control (LC) data in the terminator frame
                 DMRLC_T lc;
                 
@@ -376,12 +364,6 @@ void CDMRSlotRX::procSlot2()
         }
 
         DEBUG2("DMRSlotRX: Voice frame slot (MS_MODE)", slot);
-#if defined(MS_MODE)
-        // In MS_MODE, repurpose mode LEDs as timeslot indicators
-        // D-Star LED = TS1 (slot 0), P25 LED = TS2 (slot 1)
-        io.DSTAR_pin(slot == 0U);
-        io.P25_pin(slot == 1U);
-#endif
         DEBUG2("DMRSlotRX: Sending voice frame to slot", slot);
         
         // Embed stored LC data in voice frames for MMDVMHost

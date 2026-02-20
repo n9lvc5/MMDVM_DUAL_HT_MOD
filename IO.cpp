@@ -47,10 +47,14 @@ m_last_clk2(0U)
   CE_pin(HIGH);
   LED_pin(HIGH);
   PTT_pin(LOW);
+#if !defined(MS_MODE)
   DSTAR_pin(LOW);
+#endif
   DMR_pin(LOW);
   YSF_pin(LOW);
+#if !defined(MS_MODE)
   P25_pin(LOW);
+#endif
   NXDN_pin(LOW);
   //M17_pin(LOW);
   POCSAG_pin(LOW);
@@ -86,10 +90,14 @@ void CIO::selfTest()
 
       LED_pin(!ledValue);
       PTT_pin(ledValue);
+#if !defined(MS_MODE)
       DSTAR_pin(ledValue);
+#endif
       DMR_pin(ledValue);
       YSF_pin(ledValue);
+#if !defined(MS_MODE)
       P25_pin(ledValue);
+#endif
       NXDN_pin(ledValue);
       //M17_pin(ledValue);
       POCSAG_pin(ledValue);
@@ -444,7 +452,9 @@ void CIO::setMode(MMDVM_STATE modemState)
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   if (modemState != STATE_POCSAG) {
 #endif
+#if !defined(MS_MODE)
     DSTAR_pin(modemState  == STATE_DSTAR);
+#endif
     DMR_pin(modemState    == STATE_DMR);
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   }
@@ -453,7 +463,9 @@ void CIO::setMode(MMDVM_STATE modemState)
   if (modemState != STATE_NXDN) {
 #endif
     YSF_pin(modemState    == STATE_YSF);
+#if !defined(MS_MODE)
     P25_pin(modemState    == STATE_P25);
+#endif
 #if defined(USE_ALTERNATE_NXDN_LEDS)
   }
 #endif
@@ -461,7 +473,9 @@ void CIO::setMode(MMDVM_STATE modemState)
   if (modemState != STATE_M17) {
 #endif
     YSF_pin(modemState    == STATE_YSF);
+#if !defined(MS_MODE)
     P25_pin(modemState    == STATE_P25);
+#endif
 #if defined(USE_ALTERNATE_M17_LEDS)
   }
 #endif
