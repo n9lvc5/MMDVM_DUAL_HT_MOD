@@ -151,6 +151,11 @@ bool CDMRSlotRX::databit(bool bit)
   if (m_dataPtr >= DMR_BUFFER_LENGTH_BITS)
     m_dataPtr = 0U;
 
+#if defined(MS_MODE)
+  if (m_syncLocked)
+    return true;
+#endif
+
   return (m_state != DMRRXS_NONE || m_control != CONTROL_NONE);
 }
 
@@ -349,6 +354,16 @@ void CDMRSlotRX::procSlot2()
       m_syncCount = 0U;
       m_n         = 0U;
     } else {
+#if defined(MS_MODE)
+      if (m_syncLocked) {
+        m_syncCount++;
+        if (m_syncCount >= MAX_SYNC_LOST_FRAMES) {
+          DEBUG2("DMRSlotRX: Sync lost in MS_MODE", m_syncCount);
+          serial.writeDMRLost(1U);
+          reset();
+        }
+      }
+#else
       if (m_state != DMRRXS_NONE) {
         m_syncCount++;
         if (m_syncCount >= MAX_SYNC_LOST_FRAMES) {
@@ -356,6 +371,7 @@ void CDMRSlotRX::procSlot2()
           reset();
         }
       }
+#endif
 
       if (m_state == DMRRXS_VOICE) {
         if (m_n >= 5U) {
