@@ -860,7 +860,8 @@ void CIO::interrupt()
 
   // we set the TX bit at TXD low, sampling of ADF7021 happens at rising clock
   if (m_tx && clk == 0U) {
-    m_txBuffer.get(bit, m_control);
+    uint8_t control;
+    m_txBuffer.get(bit, control);
     even = !even;
 
 #if defined(BIDIR_DATA_PIN)
@@ -906,7 +907,7 @@ void CIO::interrupt()
     else
       bit = 0U;
 
-    m_rxBuffer.put(bit, m_control);
+    m_rxBuffer.put(bit, 0U);
   }
 
   if (torx_request && even == ADF7021_EVEN_BIT && m_tx && clk == 0U) {
@@ -933,7 +934,7 @@ void CIO::interrupt()
 
   m_watchdog++;
   m_modeTimerCnt++;
-  m_int1counter++;
+  //m_int1counter++;
 
   if (m_scanPauseCnt >= SCAN_PAUSE)
     m_scanPauseCnt = 0U;
@@ -964,11 +965,11 @@ void CIO::interrupt2()
       else
         bit = 0U;
 
-      m_rxBuffer.put(bit, m_control);
+      m_rxBuffer.put(bit, 0U);
     }
   }
 
-  m_int2counter++;
+  //m_int2counter++;
 }
 #endif
 

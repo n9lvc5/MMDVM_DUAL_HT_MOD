@@ -49,7 +49,7 @@ bool m_tx  = false;
 bool m_dcd = false;
 
 
-uint8_t    m_control;
+//uint8_t    m_control;
 
 #if defined(DUPLEX)
 CDMRIdleRX dmrIdleRX;

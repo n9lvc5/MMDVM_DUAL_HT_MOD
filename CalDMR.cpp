@@ -79,9 +79,9 @@ void CCalDMR::process()
       m_count++;
       if (m_count >= CAL_DLY_LOOP) {
         m_count = 0U;
-        uint16_t int1, int2;
-        io.getIntCounter(int1, int2);
-        DEBUG3("Counter INT1/INT2:", int1 >> 1U, int2);
+        //uint16_t int1, int2;
+        //io.getIntCounter(int1, int2);
+        //DEBUG3("Counter INT1/INT2:", int1 >> 1U, int2);
       }
       break;
     default:

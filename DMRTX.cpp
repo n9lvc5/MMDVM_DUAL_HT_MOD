@@ -35,11 +35,11 @@
 
 CDMRTX::CDMRTX() :
 m_state(DMRTXSTATE_IDLE),
-m_cachPtr(0U),
+//m_cachPtr(0U),
 m_poLen(0U),
 m_poPtr(0U),
 m_frameCount(0U),
-m_control_old(0U),
+//m_control_old(0U),
 m_bs_sync_confirmed(false),
 m_wait_timestamp(0U),
 m_request_retries(0U),
@@ -48,8 +48,8 @@ m_backoff_timer(0U)
   m_fifo[0].reset();
   m_fifo[1].reset();
 
-  for (unsigned int i = 0U; i < 2U; i++)
-    m_abort[i] = false;
+  //for (unsigned int i = 0U; i < 2U; i++)
+  //  m_abort[i] = false;
 
   memset(m_idle, 0U, DMR_FRAME_LENGTH_BYTES);
   m_idle[0] = (DT_IDLE << 0);
@@ -58,6 +58,8 @@ m_backoff_timer(0U)
 uint8_t CDMRTX::writeData1(const uint8_t* data, uint8_t length)
 
 {
+  (void)data;
+  (void)length;
   DEBUG1("DMRTX : writeData1");
   return 4U; // Disabled for MS mode TS1
 }
@@ -88,6 +90,8 @@ uint8_t CDMRTX::writeData2(const uint8_t* data, uint8_t length)
 uint8_t CDMRTX::writeShortLC(const uint8_t* data, uint8_t length)
 
 {
+  (void)data;
+  (void)length;
   DEBUG1("DMRTX : writeShortLC");
   return 0U;
 }
@@ -95,14 +99,16 @@ uint8_t CDMRTX::writeShortLC(const uint8_t* data, uint8_t length)
 uint8_t CDMRTX::writeAbort(const uint8_t* data, uint8_t length)
 
 {
+  (void)data;
+  (void)length;
   DEBUG1("DMRTX : writeAbort");
-  if (length != 1U)
-    return 4U;
+  //if (length != 1U)
+  //  return 4U;
 
-  if (data[0] == 0U)
-    m_abort[0] = true;
-  else
-    m_abort[1] = true;
+  //if (data[0] == 0U)
+  //  m_abort[0] = true;
+  //else
+  //  m_abort[1] = true;
 
   return 0U;
 }
@@ -235,6 +241,7 @@ uint8_t CDMRTX::getSpace2() const
 
 void CDMRTX::setColorCode(uint8_t colorCode)
 {
+  (void)colorCode;
 }
 
 void CDMRTX::confirmBSSync()
@@ -282,6 +289,8 @@ void CDMRTX::createData(uint8_t slotIndex, bool forceIdle)
 
 void CDMRTX::createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex)
 {
+  (void)txSlotIndex;
+  (void)rxSlotIndex;
   m_poLen = 3U;
   memset(m_poBuffer, 0, 3);
   m_poPtr = 0U;
@@ -289,6 +298,7 @@ void CDMRTX::createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex)
 
 void CDMRTX::writeByte(uint8_t c, uint8_t control)
 {
+  (void)control;
   uint8_t bit;
   uint8_t mask = 0x80U;
   for (uint8_t i = 0U; i < 8U; i++, c <<= 1) {

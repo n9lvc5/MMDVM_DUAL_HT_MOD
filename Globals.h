@@ -132,7 +132,7 @@ extern CSerialPort serial;
 
 
 
-extern uint8_t m_control;
+//extern uint8_t m_control;
 
 #if defined(DUPLEX)
 extern CDMRIdleRX dmrIdleRX;
