@@ -225,6 +225,9 @@ void CDMRSlotRX::procSlot2()
             writeRSSIData();
             m_state = DMRRXS_DATA;
             m_type  = 0x00U;
+#if defined(MS_MODE)
+            m_lcValid = false;
+#endif
             break;
           case DT_RATE_12_DATA:
           case DT_RATE_34_DATA:
@@ -261,8 +264,6 @@ void CDMRSlotRX::procSlot2()
                 memcpy(m_lcData, lc.rawData, 12);
                 m_lcValid = true;
                 DEBUG2("LC data stored for voice frames", slot);
-              } else {
-                m_lcValid = false;
               }
 #endif
               
@@ -294,6 +295,9 @@ void CDMRSlotRX::procSlot2()
           case DT_TERMINATOR_WITH_LC:
             if (m_state == DMRRXS_VOICE) {
               DEBUG2("DMRSlot2RX: voice terminator found pos", m_syncPtr);
+#if defined(MS_MODE)
+              m_lcValid = false;
+#endif
               {
                 DEBUG2("DMRSlotRX: Voice terminator slot (MS_MODE)", slot);
 #if defined(MS_MODE)
@@ -333,6 +337,9 @@ void CDMRSlotRX::procSlot2()
             DEBUG2("DMRSlotRX: csbk found pos", m_syncPtr);
             writeRSSIData();
             m_state  = DMRRXS_NONE;
+#if defined(MS_MODE)
+            m_lcValid = false;
+#endif
 #if !defined(MS_MODE)
             m_endPtr = NOENDPTR;
 #endif
