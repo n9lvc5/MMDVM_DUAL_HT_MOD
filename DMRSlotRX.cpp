@@ -124,10 +124,37 @@ bool CDMRSlotRX::databit(bool bit)
   // Slot timing logic for MS mode
   m_slotTimer++;
   if (m_syncLocked) {
-    // After sync lock, switch slots every 288 bits (30ms)
     // 288 bits = 30ms at 9600 bps
-    if (m_slotTimer >= 288U) {
-      m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+    if (m_slotTimer == 287U) {
+      // End of CACH. Extract TC bit to confirm slot.
+      uint8_t TACT[4];
+      uint8_t H[3];
+      // TACT bits: 0, 4, 8, 12. H bits: 16, 20, 23.
+      uint16_t cachStart = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 23) % DMR_BUFFER_LENGTH_BITS;
+
+      TACT[0] = READ_BIT1(m_buffer, (cachStart + 0) % DMR_BUFFER_LENGTH_BITS);
+      TACT[1] = READ_BIT1(m_buffer, (cachStart + 4) % DMR_BUFFER_LENGTH_BITS);
+      TACT[2] = READ_BIT1(m_buffer, (cachStart + 8) % DMR_BUFFER_LENGTH_BITS);
+      TACT[3] = READ_BIT1(m_buffer, (cachStart + 12) % DMR_BUFFER_LENGTH_BITS);
+      H[2]    = READ_BIT1(m_buffer, (cachStart + 16) % DMR_BUFFER_LENGTH_BITS);
+      H[1]    = READ_BIT1(m_buffer, (cachStart + 20) % DMR_BUFFER_LENGTH_BITS);
+      H[0]    = READ_BIT1(m_buffer, (cachStart + 23) % DMR_BUFFER_LENGTH_BITS);
+
+      bool S0 = H[0] ^ TACT[1] ^ TACT[2] ^ TACT[3];
+      bool S1 = H[1] ^ TACT[0] ^ TACT[1] ^ TACT[2];
+      bool S2 = H[2] ^ TACT[0] ^ TACT[2] ^ TACT[3];
+
+      if (!S0 && !S1 && !S2) {
+        // TACT decoded correctly. TACT[1] is TC bit.
+        // TC=0 means the FOLLOWING slot is 1.
+        m_currentSlot = TACT[1] ? 2U : 1U;
+        DEBUG2("DMRSlotRX: TACT Decoded - Next Slot", m_currentSlot);
+      } else {
+        // Error in TACT. Fallback to flywheel.
+        m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+        DEBUG1("DMRSlotRX: TACT Error - Flywheel toggle");
+      }
+    } else if (m_slotTimer >= 288U) {
       m_slotTimer = 0U;
     }
   }
@@ -135,10 +162,16 @@ bool CDMRSlotRX::databit(bool bit)
   
 #if defined(MS_MODE)
   uint8_t slot = m_currentSlot - 1U;
+  if (m_syncLocked) {
+    // When sync is locked, only search for sync in a small window around the expected position
+    if (m_slotTimer >= 150U && m_slotTimer <= 160U)
+      correlateSync();
+  } else {
+    // Searching for initial lock
+    correlateSync();
+  }
 #else
   uint8_t slot = m_slot ? 1U : 0U;
-#endif
-
   if (m_state[slot] == DMRRXS_NONE) {
     correlateSync();
   } else {
@@ -158,6 +191,7 @@ bool CDMRSlotRX::databit(bool bit)
         correlateSync();
     }
   }
+#endif
 
   procSlot2();
 
@@ -274,12 +308,10 @@ void CDMRSlotRX::procSlot2()
               }
 #endif
               
-              // Store LC data for embedding in voice frames
 #if defined(MS_MODE)
               if (lcValid) {
-                memcpy(m_lcData[slot], lc.rawData, 12);
                 m_lcValid[slot] = true;
-                DEBUG2("LC data stored for voice frames", slot);
+                DEBUG2("LC decoded successfully for slot", slot);
                 // Signal start of call to host with decoded metadata
                 serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
               }
@@ -317,7 +349,7 @@ void CDMRSlotRX::procSlot2()
                 io.DSTAR_pin(slot == 0U);
                 io.P25_pin(slot == 1U);
 #endif
-                // Extract and embed Link Control (LC) data in the terminator frame
+                // Extract Link Control (LC) data from the terminator frame
                 DMRLC_T lc;
                 
                 bool lcValid = CDMRLC::decode(frame, DT_TERMINATOR_WITH_LC, &lc);
@@ -331,9 +363,6 @@ void CDMRSlotRX::procSlot2()
                 }
 #endif
                 
-                // MMDVMHost will decode the LC itself from the properly encoded frame.
-                // Do not overwrite frame payload with decoded LC bytes.
-                
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", 0);
                 writeRSSIData();
               }
@@ -343,9 +372,8 @@ void CDMRSlotRX::procSlot2()
 #endif
             }
             break;
-          default:    // DT_CSBK
+          default:    // DT_CSBK / DT_IDLE
             DEBUG2("DMRSlotRX: csbk found pos", m_syncPtr);
-            writeRSSIData();
             m_state[slot]  = DMRRXS_NONE;
 #if defined(MS_MODE)
             m_lcValid[slot] = false;
@@ -512,10 +540,12 @@ void CDMRSlotRX::correlateSync()
     if (control != CONTROL_NONE) {
       uint8_t slot = m_currentSlot - 1U;
       if (!m_syncLocked || m_syncCount[slot] > 5) {
+        // Force slot 1 on initial sync or after significant loss
         m_currentSlot = 1U;
         m_syncLocked = true;
       }
-      m_slotTimer = 0U;
+      // SYNC ends at bit 155 of the 264-bit burst (0-263)
+      m_slotTimer = 155U;
     }
 #endif
     syncPtr = m_dataPtr;
