@@ -217,6 +217,7 @@ void CSerialPort::getVersion()
 
 uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
 {
+  (void)length;
   //if (length < 23U)
   //  return 4U;
 

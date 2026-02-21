@@ -55,7 +55,7 @@ bool m_dcd = false;
 // CDStarRX   dstarRX;
 // CDStarTX   dstarTX;
 
-uint8_t    m_control = 0x04U;
+//uint8_t    m_control = 0x04U;
 
 #if defined(DUPLEX)
 CDMRIdleRX dmrIdleRX;

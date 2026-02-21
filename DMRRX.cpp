@@ -37,6 +37,7 @@ m_control_old(0U)
 void CDMRRX::databit(bool bit, const uint8_t control)
 {
 #if defined(MS_MODE)
+  (void)control;
   // In MS_MODE, we don't have a hardware control signal to indicate slots
   // The slot will be determined by sync pattern detection in DMRSlotRX
   bitCounter++;

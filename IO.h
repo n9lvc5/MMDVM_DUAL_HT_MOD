@@ -187,8 +187,8 @@ private:
   MMDVM_STATE        m_Modes[6];
   bool               m_ledValue;
   volatile uint32_t  m_watchdog;
-  volatile uint16_t  m_int1counter;
-  volatile uint16_t  m_int2counter;
+  //volatile uint16_t  m_int1counter;
+  //volatile uint16_t  m_int2counter;
   uint8_t            m_last_clk2;
 };
 
