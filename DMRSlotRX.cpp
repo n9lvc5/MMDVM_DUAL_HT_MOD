@@ -130,7 +130,7 @@ bool CDMRSlotRX::databit(bool bit)
       uint8_t TACT[4];
       uint8_t H[3];
       // TACT bits: 0, 4, 8, 12. H bits: 16, 20, 23.
-      uint16_t cachStart = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 23) % DMR_BUFFER_LENGTH_BITS;
+      uint16_t cachStart = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 287) % DMR_BUFFER_LENGTH_BITS;
 
       TACT[0] = READ_BIT1(m_buffer, (cachStart + 0) % DMR_BUFFER_LENGTH_BITS);
       TACT[1] = READ_BIT1(m_buffer, (cachStart + 4) % DMR_BUFFER_LENGTH_BITS);
@@ -164,7 +164,7 @@ bool CDMRSlotRX::databit(bool bit)
   uint8_t slot = m_currentSlot - 1U;
   if (m_syncLocked) {
     // When sync is locked, only search for sync in a small window around the expected position
-    if (m_slotTimer >= 150U && m_slotTimer <= 160U)
+    if (m_slotTimer >= 140U && m_slotTimer <= 170U)
       correlateSync();
   } else {
     // Searching for initial lock
