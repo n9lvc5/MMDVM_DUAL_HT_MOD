@@ -280,16 +280,13 @@ void CDMRSlotRX::procSlot2()
                 memcpy(m_lcData[slot], lc.rawData, 12);
                 m_lcValid[slot] = true;
                 DEBUG2("LC data stored for voice frames", slot);
+                // Signal start of call to host with decoded metadata
+                serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
               }
 #endif
               
-              // Embed LC data in frame for MMDVMHost
-                if (lcValid) {
-                  // Copy LC data into frame at appropriate location
-                  // LC data is 12 bytes, typically placed after the frame type byte
-                  memcpy(frame + 1, lc.rawData, 12);
-                  DEBUG2("LC data embedded in header frame", slot);
-                }
+              // MMDVMHost will decode the LC itself from the properly encoded frame.
+              // Do not overwrite frame payload with decoded LC bytes.
                 
                 DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", 0);
                 writeRSSIData();
@@ -334,11 +331,8 @@ void CDMRSlotRX::procSlot2()
                 }
 #endif
                 
-                if (lcValid) {
-                  // Copy LC data into frame for MMDVMHost
-                  memcpy(frame + 1, lc.rawData, 12);
-                  DEBUG2("LC data embedded in terminator frame", slot);
-                }
+                // MMDVMHost will decode the LC itself from the properly encoded frame.
+                // Do not overwrite frame payload with decoded LC bytes.
                 
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", 0);
                 writeRSSIData();
@@ -413,16 +407,8 @@ void CDMRSlotRX::procSlot2()
 #endif
         DEBUG2("DMRSlotRX: Sending voice frame to slot", slot);
         
-        // Embed stored LC data in voice frames for MMDVMHost
-#if defined(MS_MODE)
-        if (m_lcValid[slot]) {
-          memcpy(frame + 1, m_lcData[slot], 12);
-          DEBUG2("LC data embedded in voice frame", slot);
-          DEBUG2I("LC data status", m_lcValid[slot]);
-        } else {
-          DEBUG2("No LC data available for voice frame", slot);
-        }
-#endif
+        // MMDVMHost already knows how to decode LC from raw frames.
+        // We do not need to embed stored LC data here.
         
         DEBUG2("DMRSlotRX: Sending DMR data to MMDVMHost", 0);
 #if defined(MS_MODE)
