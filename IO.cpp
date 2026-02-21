@@ -120,14 +120,6 @@ void CIO::process()
   m_ledCount++;
 
   if (m_started) {
-#if defined(MS_MODE)
-    if (m_modemState == STATE_IDLE && m_dmrEnable) {
-      setMode(STATE_DMR);
-      m_modemState = STATE_DMR;
-      ifConf(STATE_DMR, true);
-    }
-#endif
-
     // Two seconds timeout
     if (m_watchdog >= 19200U) {
 #if defined(MS_MODE)
@@ -445,10 +437,6 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
 
 void CIO::setMode(MMDVM_STATE modemState)
 {
-#if defined(MS_MODE)
-  if (modemState == STATE_IDLE)
-    modemState = STATE_DMR;
-#endif
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   if (modemState != STATE_POCSAG) {
 #endif

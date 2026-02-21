@@ -69,7 +69,7 @@
 
 #define FW_VERSION      "v" VER_MAJOR "." VER_MINOR "." VER_REV " " VERSION_DATE
 
-#define DESCRIPTION     BOARD_INFO "-" FW_VERSION " " TCXO_FREQ "MHz " RF_DUAL RF_CHIP " FW by CA6JAU with mods by KE9CNK"
+#define DESCRIPTION     BOARD_INFO "-" FW_VERSION
 
 #if defined(MADEBYMAKEFILE)
 #include "GitVersion.h"
