@@ -114,6 +114,14 @@ bool CDMRSlotRX::databit(bool bit)
 #if defined(MS_MODE)
   // Slot timing logic for MS mode
   m_slotTimer++;
+  if (m_syncLocked) {
+    // After sync lock, switch slots every 288 bits (30ms)
+    // 288 bits = 30ms at 9600 bps
+    if (m_slotTimer >= 288U) {
+      m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+      m_slotTimer = 0U;
+    }
+  }
 #endif
   
   if (m_state == DMRRXS_NONE) {
@@ -160,8 +168,8 @@ void CDMRSlotRX::procSlot2()
 #endif
 
   if (m_dataPtr == m_endPtr) {
-    DEBUG2("DMRSlotRX: Processing burst, slot", slot + 1);
-    DEBUG2I("DMRSlotRX: Control byte", m_control);
+    DEBUG2("DMRSlotRX: Processing frame", slot);
+    DEBUG2I("DMRSlotRX: Frame control byte", m_control);
     frame[0U] = m_control;
 
     bitsToBytes(m_startPtr, DMR_FRAME_LENGTH_BYTES, frame + 1U);
@@ -177,7 +185,7 @@ void CDMRSlotRX::procSlot2()
       frame[18] = msSync[4];
       frame[19] = msSync[5];
       frame[20] = (msSync[6] & 0xF0U) | (frame[20] & 0x0FU);
-      DEBUG2("DMRSlotRX: MS sync transposed", m_control);
+      DEBUG2("MS_MODE: Transposed BS sync to MS sync", m_control);
     }
 #endif
 
@@ -228,7 +236,7 @@ void CDMRSlotRX::procSlot2()
             }
             break;
           case DT_VOICE_LC_HEADER:
-            DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
+            DEBUG2("DMRSlot2RX: voice header found pos", m_syncPtr);
             m_state = DMRRXS_VOICE;
             {
               DEBUG2("DMRSlotRX: Voice header slot (MS_MODE)", slot);
@@ -266,8 +274,14 @@ void CDMRSlotRX::procSlot2()
                   DEBUG2("LC data embedded in header frame", slot);
                 }
                 
-                DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
+                DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", 0);
                 writeRSSIData();
+              
+#if defined(MS_MODE)
+              // In MS_MODE, repurpose mode LEDs as timeslot indicators
+              io.DSTAR_pin(slot == 0U);
+              io.P25_pin(slot == 1U);
+#endif
             }
             break;
           case DT_VOICE_PI_HEADER:
@@ -279,9 +293,13 @@ void CDMRSlotRX::procSlot2()
             break;
           case DT_TERMINATOR_WITH_LC:
             if (m_state == DMRRXS_VOICE) {
-              DEBUG2("DMRSlotRX: voice terminator found pos", m_syncPtr);
+              DEBUG2("DMRSlot2RX: voice terminator found pos", m_syncPtr);
               {
                 DEBUG2("DMRSlotRX: Voice terminator slot (MS_MODE)", slot);
+#if defined(MS_MODE)
+                io.DSTAR_pin(slot == 0U);
+                io.P25_pin(slot == 1U);
+#endif
                 // Extract and embed Link Control (LC) data in the terminator frame
                 DMRLC_T lc;
                 
@@ -302,7 +320,7 @@ void CDMRSlotRX::procSlot2()
                   DEBUG2("LC data embedded in terminator frame", slot);
                 }
                 
-                DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", slot);
+                DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", 0);
                 writeRSSIData();
               }
               m_state  = DMRRXS_NONE;
@@ -364,6 +382,12 @@ void CDMRSlotRX::procSlot2()
         }
 
         DEBUG2("DMRSlotRX: Voice frame slot (MS_MODE)", slot);
+#if defined(MS_MODE)
+        // In MS_MODE, repurpose mode LEDs as timeslot indicators
+        // D-Star LED = TS1 (slot 0), P25 LED = TS2 (slot 1)
+        io.DSTAR_pin(slot == 0U);
+        io.P25_pin(slot == 1U);
+#endif
         DEBUG2("DMRSlotRX: Sending voice frame to slot", slot);
         
         // Embed stored LC data in voice frames for MMDVMHost
@@ -377,7 +401,7 @@ void CDMRSlotRX::procSlot2()
         }
 #endif
         
-        DEBUG2("DMRSlotRX: Sending DMR data to MMDVMHost", slot);
+        DEBUG2("DMRSlotRX: Sending DMR data to MMDVMHost", 0);
 #if defined(MS_MODE)
         if (m_syncLocked)
           serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
@@ -509,7 +533,6 @@ void CDMRSlotRX::correlateSync()
         m_state = DMRRXS_NONE;
         DEBUG2("DMRSlotRX: State machine reset on new sync", 0);
     }
-    m_endPtr = endPtr;
   }
 }
 
