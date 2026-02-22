@@ -121,7 +121,7 @@ public:
   void      setLoDevYSF(bool ysfLoDev);
   void      resetWatchdog(void);
   uint32_t  getWatchdog(void);
-  void      getIntCounter(uint16_t &int1, uint16_t &int2);
+  //void      getIntCounter(uint16_t &int1, uint16_t &int2);
   void      selfTest(void);
 #if defined(ZUMSPOT_ADF7021) || defined(LONESTAR_USB) || defined(SKYBRIDGE_HS)
   void      checkBand(uint32_t frequency_rx, uint32_t frequency_tx);
@@ -184,8 +184,8 @@ private:
   MMDVM_STATE        m_Modes[6];
   bool               m_ledValue;
   volatile uint32_t  m_watchdog;
-  volatile uint16_t  m_int1counter;
-  volatile uint16_t  m_int2counter;
+  //volatile uint16_t  m_int1counter;
+  //volatile uint16_t  m_int2counter;
   uint8_t            m_last_clk2;
 };
 

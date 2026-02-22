@@ -157,6 +157,7 @@ bool CDMRSlotRX::databit(bool bit)
         correlateSync();
     }
   }
+#endif
 
   procSlot2();
 
@@ -269,7 +270,6 @@ void CDMRSlotRX::procSlot2()
               }
 #endif
               
-              // Store LC data for embedding in voice frames
 #if defined(MS_MODE)
               if (lcValid) {
                 memcpy(m_lcData, lc.rawData, 12);
