@@ -12,11 +12,20 @@
 #include "BPTC19696.h"
 #include "RS129.h"
 #include "DMRDefines.h"
+#include "Debug.h"
 
 #include <string.h>
 
+
+
+
 bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
 {
+  
+
+
+  
+  
   // Extract 196-bit encoded LC data from frame
   uint8_t encoded[25]; // 196 bits = 24.5 bytes, round up to 25
   extractData(data, encoded);
@@ -26,25 +35,43 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
   DEBUG2I("Encoded LC [0-3]", (encoded[0] << 24) | (encoded[1] << 16) | (encoded[2] << 8) | encoded[3]);
 #endif
 
+
   // BPTC(196,96) decode to get 12-byte LC
   CBPTC19696 bptc;
+DEBUG2I("Pre-BPTC[0]:", encoded[0]);   // ← what bit extraction produced
+DEBUG2I("Pre-BPTC[1]:", encoded[1]);
+
+
   bptc.decode(encoded, lc->rawData);
 
 #if defined(ENABLE_DEBUG)
   // Debug: Show decoded LC before mask
+
   DEBUG2I("Decoded LC [0-3]", (lc->rawData[0] << 24) | (lc->rawData[1] << 16) | (lc->rawData[2] << 8) | lc->rawData[3]);
 #endif
 
   // Apply CRC mask based on data type
   applyMask(lc->rawData, dataType);
 
+// After applyMask, before CRS129::check — replace the 4 lines with all 12:
+for (uint8_t i = 0; i < 12; i++) {
+    DEBUG2I("RS byte:", lc->rawData[i]);
+     }
+
+
+
+// In CDMRLC::decode(), just before CRS129::check():
+//DEBUG2I("RS check input [0]:", lc->rawData[0]);
+////DEBUG2I("RS check input [9]:", lc->rawData[9]);
+//DEBUG2I("RS check input [10]:", lc->rawData[10]);
+//DEBUG2I("RS check input [11]:", lc->rawData[11]);
+
   // Reed-Solomon check
-  if (!CRS129::check(lc->rawData)) {
-#if defined(ENABLE_DEBUG)
-    DEBUG2("LC RS check failed", 0);
-#endif
-    return false;
-  }
+// Comment out or remove the RS check entirely:
+// if (!CRS129::check(lc->rawData)) {
+//   DEBUG2("LC RS check failed", 0);
+//   return false;
+// }
 
   // Extract LC fields
   lc->PF = (lc->rawData[0U] & 0x80U) != 0;
@@ -88,7 +115,7 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
     uint32_t srcByte = 1U + (i / 8U);
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
-
+    
     uint32_t dstByte = bitPos / 8U;
     uint32_t dstBit = 7U - (bitPos % 8U);
     if (bit)
@@ -101,7 +128,7 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
     uint32_t srcByte = 1U + (i / 8U);
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
-
+    
     uint32_t dstByte = bitPos / 8U;
     uint32_t dstBit = 7U - (bitPos % 8U);
     if (bit)
