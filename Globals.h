@@ -70,8 +70,35 @@ const uint8_t  MARK_SLOT1 = 0x08U;
 const uint8_t  MARK_SLOT2 = 0x04U;
 const uint8_t  MARK_NONE  = 0x00U;
 
+extern MMDVM_STATE m_modemState;
+extern MMDVM_STATE m_calState;
+extern MMDVM_STATE m_modemState_prev;
+
+extern bool m_cwid_state;
+extern bool m_pocsag_state;
+
+extern uint8_t m_cwIdTXLevel;
+
+extern uint32_t m_modeTimerCnt;
+
+extern bool m_dstarEnable;
+extern bool m_dmrEnable;
+extern bool m_ysfEnable;
+extern bool m_p25Enable;
+extern bool m_nxdnEnable;
+extern bool m_m17Enable;
+extern bool m_pocsagEnable;
+
+extern bool m_duplex;
+
+extern bool m_tx;
+extern bool m_dcd;
+
 // Bidirectional Data pin (Enable Standard TX/RX Data Interface of ADF7021):
 #define BIDIR_DATA_PIN
+
+class CIO;
+extern CIO io;
 
 #include "IO.h"
 #include "SerialPort.h"
@@ -103,31 +130,6 @@ const uint8_t  MARK_NONE  = 0x00U;
 #include "Utils.h"
 #include "I2CHost.h"
 
-extern MMDVM_STATE m_modemState;
-extern MMDVM_STATE m_calState;
-extern MMDVM_STATE m_modemState_prev;
-
-extern bool m_cwid_state;
-extern bool m_pocsag_state;
-
-extern uint8_t m_cwIdTXLevel;
-
-extern uint32_t m_modeTimerCnt;
-
-extern bool m_dstarEnable;
-extern bool m_dmrEnable;
-extern bool m_ysfEnable;
-extern bool m_p25Enable;
-extern bool m_nxdnEnable;
-extern bool m_m17Enable;
-extern bool m_pocsagEnable;
-
-extern bool m_duplex;
-
-extern bool m_tx;
-extern bool m_dcd;
-
-extern CIO io;
 extern CSerialPort serial;
 
 

@@ -70,8 +70,8 @@ private:
   uint8_t     m_currentSlot;
   uint32_t    m_slotTimer;
   bool        m_syncLocked;
-  uint8_t     m_lcData[2][12];  // Store LC data for embedding in voice frames
-  bool        m_lcValid[2];     // Flag indicating if LC data is valid
+  uint8_t     m_lcData[12];  // Store LC data for embedding in voice frames
+  bool        m_lcValid[2];  // Flag indicating if LC data is valid
 #endif
 
   void procSlot2();
