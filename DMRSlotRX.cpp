@@ -130,8 +130,8 @@ bool CDMRSlotRX::databit(bool bit)
       uint8_t TACT[4];
       uint8_t H[3];
       // TACT bits: 0, 4, 8, 12. H bits: 16, 20, 23.
-      uint16_t cachStart = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 287) % DMR_BUFFER_LENGTH_BITS;
-
+      uint16_t cachStart = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 264) % DMR_BUFFER_LENGTH_BITS;
+      
       TACT[0] = READ_BIT1(m_buffer, (cachStart + 0) % DMR_BUFFER_LENGTH_BITS);
       TACT[1] = READ_BIT1(m_buffer, (cachStart + 4) % DMR_BUFFER_LENGTH_BITS);
       TACT[2] = READ_BIT1(m_buffer, (cachStart + 8) % DMR_BUFFER_LENGTH_BITS);
@@ -215,7 +215,20 @@ void CDMRSlotRX::procSlot2()
   uint8_t slot = m_currentSlot - 1U;
 #else
   uint8_t slot = m_slot ? 1U : 0U;
+
+  // Only relay TS2 (slot 1) - ignore TS1
+  if (slot != 1U) {
+    m_control = CONTROL_NONE;
+    m_endPtr = (m_endPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    return;
+  }
+    //#endif
+
+
 #endif
+
+
+
 
   if (m_dataPtr == m_endPtr) {
     DEBUG2("DMRSlotRX: Processing frame", slot);
@@ -313,7 +326,9 @@ void CDMRSlotRX::procSlot2()
                 m_lcValid[slot] = true;
                 DEBUG2("LC decoded successfully for slot", slot);
                 // Signal start of call to host with decoded metadata
-                serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
+               // DEBUG2("writeDMRStart called", 0);
+               // serial.writeDMRStart(slot == 0U ? false : true, colorCode, lc.srcId, lc.dstId);
+               // serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
               }
 #endif
               
@@ -460,7 +475,7 @@ void CDMRSlotRX::procSlot2()
     // Advance end pointer for next slot (flywheel)
     m_endPtr = (m_endPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
     // Toggle slot
-    m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+   // m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
     DEBUG2("DMRSlotRX: Flywheel advanced to slot", m_currentSlot);
 #endif
   }
@@ -577,6 +592,7 @@ void CDMRSlotRX::correlateSync()
     // Only reset the state if we are not in the middle of a voice or data call
     if (m_state[slot] != DMRRXS_VOICE && m_state[slot] != DMRRXS_DATA) {
         m_state[slot] = DMRRXS_NONE;
+        serial.writeDMRLost(slot == 0U ? false : true); // ← add this
         DEBUG2("DMRSlotRX: State machine reset on new sync", 0);
     }
   }

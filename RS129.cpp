@@ -9,6 +9,7 @@
  */
 
 #include "RS129.h"
+#include "Debug.h"
 
 // Reed-Solomon (12,9) over GF(2^8)
 // Primitive polynomial: x^8 + x^4 + x^3 + x^2 + 1 (0x11D)
