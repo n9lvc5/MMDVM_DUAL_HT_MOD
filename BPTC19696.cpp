@@ -124,13 +124,22 @@ void CBPTC19696::hamming1503(bool* d) const
 void CBPTC19696::extractData(uint8_t* data) const
 {
   // Extract the 96 bits of data from the de-interleaved and error-corrected data
+  // BPTC (196,96) has 96 information bits.
+  // According to ETSI TS 102 361-1, these are in 8 rows of 11 bits and 1 row of 8 bits.
   bool bData[96U];
   uint32_t pos = 0U;
   
-  for (uint32_t a = 0U; a < 9U; a++) {
+  for (uint32_t a = 0U; a < 8U; a++) {
     for (uint32_t b = 0U; b < 11U; b++) {
-      bData[pos++] = m_deInterData[a * 15U + b];
+      if (pos < 96U)
+        bData[pos++] = m_deInterData[a * 15U + b];
     }
+  }
+
+  // Last row (row 8) has only 8 bits of information
+  for (uint32_t b = 0U; b < 8U; b++) {
+    if (pos < 96U)
+      bData[pos++] = m_deInterData[8U * 15U + b];
   }
 
   // Convert 96 bits to 12 bytes

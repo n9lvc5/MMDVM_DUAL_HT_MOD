@@ -58,10 +58,10 @@ private:
   uint16_t    m_startPtr;
   uint16_t    m_endPtr;
   uint8_t     m_control;
-  uint8_t     m_syncCount;
-  DMRRX_STATE m_state;
-  uint8_t     m_n;
-  uint8_t     m_type;
+  uint8_t     m_syncCount[2];
+  DMRRX_STATE m_state[2];
+  uint8_t     m_n[2];
+  uint8_t     m_type[2];
 
   uint16_t    m_delayPtr;
   uint8_t     m_colorCode;
@@ -71,7 +71,7 @@ private:
   uint32_t    m_slotTimer;
   bool        m_syncLocked;
   uint8_t     m_lcData[12];  // Store LC data for embedding in voice frames
-  bool        m_lcValid;     // Flag indicating if LC data is valid
+  bool        m_lcValid[2];  // Flag indicating if LC data is valid
 #endif
 
   void procSlot2();
