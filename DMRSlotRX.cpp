@@ -222,12 +222,7 @@ void CDMRSlotRX::procSlot2()
       }
 #endif
 
-#if defined(MS_MODE)
-      // MS_MODE: Validate color code but be more permissive (accept color code 1-15)
-      if (colorCode > 0U && colorCode <= 15U) {
-#else
       if (colorCode == m_colorCode) {
-#endif
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
@@ -252,7 +247,6 @@ void CDMRSlotRX::procSlot2()
           case DT_VOICE_LC_HEADER:
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
             m_state[slot] = DMRRXS_VOICE;
-             m_state[slot ^ 1U] = DMRRXS_NONE;   // ← THIS LINE
             {
               DEBUG2("DMRSlotRX: Voice header slot (MS_MODE)", slot);
               
@@ -265,7 +259,7 @@ void CDMRSlotRX::procSlot2()
         uint32_t dstId = lcValid ? lc.dstId : 9U;  // 9 = fallback TG
         
         // Always fire writeDMRStart - Pi-Star needs this to open the call
-       // serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
+        serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
         DEBUG2I("writeDMRStart sent, lcValid:", lcValid ? 1 : 0);
         
         writeRSSIData();
@@ -305,7 +299,6 @@ void CDMRSlotRX::procSlot2()
               writeRSSIData();
             }
             m_state[slot] = DMRRXS_VOICE;
-            m_state[slot ^ 1U] = DMRRXS_NONE;  
             break;
           case DT_TERMINATOR_WITH_LC:
             if (m_state[slot] == DMRRXS_VOICE) {
