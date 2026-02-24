@@ -28,9 +28,9 @@
 #include "Utils.h"
 #include <string.h>
 
-const uint8_t MAX_SYNC_BYTES_ERRS   = 5U;
+const uint8_t MAX_SYNC_BYTES_ERRS   = 3U;
 
-const uint8_t MAX_SYNC_LOST_FRAMES  = 10U;
+const uint8_t MAX_SYNC_LOST_FRAMES  = 13U;
 
 const uint16_t NOENDPTR = 9999U;
 
@@ -160,6 +160,12 @@ bool CDMRSlotRX::databit(bool bit)
 
   procSlot2();
 
+#if defined(MS_MODE)
+  if (m_syncLocked && m_slotTimer == 132U) {
+    decodeCACH();
+  }
+#endif
+
   m_dataPtr++;
 
   if (m_dataPtr >= DMR_BUFFER_LENGTH_BITS)
@@ -222,12 +228,7 @@ void CDMRSlotRX::procSlot2()
       }
 #endif
 
-#if defined(MS_MODE)
-      // MS_MODE: Validate color code but be more permissive (accept color code 1-15)
-      if (colorCode > 0U && colorCode <= 15U) {
-#else
-      if (colorCode == m_colorCode) {
-#endif
+      if (colorCode <= 15U) {
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
@@ -252,7 +253,6 @@ void CDMRSlotRX::procSlot2()
           case DT_VOICE_LC_HEADER:
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
             m_state[slot] = DMRRXS_VOICE;
-             m_state[slot ^ 1U] = DMRRXS_NONE;   // ← THIS LINE
             {
               DEBUG2("DMRSlotRX: Voice header slot (MS_MODE)", slot);
               
@@ -261,15 +261,9 @@ void CDMRSlotRX::procSlot2()
               
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
 
-        uint32_t srcId = lcValid ? lc.srcId : 0U;
-        uint32_t dstId = lcValid ? lc.dstId : 9U;  // 9 = fallback TG
-        
-        // Always fire writeDMRStart - Pi-Star needs this to open the call
-       // serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
-        DEBUG2I("writeDMRStart sent, lcValid:", lcValid ? 1 : 0);
-        
-        writeRSSIData();
-
+              if (lcValid) {
+                serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
+              }
               
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
@@ -285,7 +279,6 @@ void CDMRSlotRX::procSlot2()
               if (lcValid) {
                 memcpy(m_lcData, lc.rawData, 12);
                 m_lcValid[slot] = true;
-                serial.writeDMRStart(slot, m_colorCode, lc.srcId, lc.dstId);
                 DEBUG2("LC data stored for voice frames", slot);
               } else {
                 m_lcValid[slot] = false;
@@ -295,8 +288,8 @@ void CDMRSlotRX::procSlot2()
               // MMDVMHost decodes the LC itself from the encoded burst.
               // We do NOT overwrite the payload bits here.
                 
-                DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
-                writeRSSIData();
+              DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
+              writeRSSIData();
             }
             break;
           case DT_VOICE_PI_HEADER:
@@ -305,7 +298,6 @@ void CDMRSlotRX::procSlot2()
               writeRSSIData();
             }
             m_state[slot] = DMRRXS_VOICE;
-            m_state[slot ^ 1U] = DMRRXS_NONE;  
             break;
           case DT_TERMINATOR_WITH_LC:
             if (m_state[slot] == DMRRXS_VOICE) {
@@ -326,7 +318,9 @@ void CDMRSlotRX::procSlot2()
                 }
 #endif
                 
-                // MMDVMHost decodes the LC itself.
+                if (lcValid) {
+                  serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
+                }
                 
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", slot);
                 writeRSSIData();
@@ -475,7 +469,6 @@ void CDMRSlotRX::correlateSync()
     }
 #endif
     control = CONTROL_VOICE;
-#if !defined(MS_MODE)
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
@@ -484,7 +477,6 @@ void CDMRSlotRX::correlateSync()
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_VOICE;
-#endif
   }
 
   if (control != CONTROL_NONE) {
@@ -534,6 +526,55 @@ void CDMRSlotRX::correlateSync()
         DEBUG2("DMRSlotRX: State machine reset on new sync", 0);
     }
     m_endPtr = endPtr;
+  }
+}
+
+void CDMRSlotRX::decodeCACH()
+{
+  uint16_t cachStartPtr = (m_syncPtr + 109U) % DMR_BUFFER_LENGTH_BITS;
+
+  bool c[24];
+  for (uint8_t i = 0; i < 24; i++) {
+    c[i] = READ_BIT1(m_buffer, (cachStartPtr + i) % DMR_BUFFER_LENGTH_BITS);
+  }
+
+  // TACT bits
+  bool t[7];
+  t[0] = c[0];  // AT
+  t[1] = c[1];  // TC
+  t[2] = c[5];  // LCSS1
+  t[3] = c[6];  // LCSS0
+  t[4] = c[10]; // H2
+  t[5] = c[11]; // H1
+  t[6] = c[15]; // H0
+
+  // Hamming(7,4) check
+  bool s0 = t[0] ^ t[1] ^ t[2] ^ t[4];
+  bool s1 = t[1] ^ t[2] ^ t[3] ^ t[5];
+  bool s2 = t[0] ^ t[1] ^ t[3] ^ t[6];
+
+  uint8_t s = (s2 << 2) | (s1 << 1) | s0;
+  if (s != 0) {
+    // Single bit error correction
+    switch (s) {
+      case 5: t[0] = !t[0]; break;
+      case 7: t[1] = !t[1]; break;
+      case 3: t[2] = !t[2]; break;
+      case 6: t[3] = !t[3]; break;
+      case 1: t[4] = !t[4]; break;
+      case 2: t[5] = !t[5]; break;
+      case 4: t[6] = !t[6]; break;
+      default: return; // Multi-bit error
+    }
+  }
+
+  uint8_t tc = t[1] ? 2U : 1U;
+  if (m_currentSlot != tc) {
+    DEBUG2("DMRSlotRX: CACH Sync correction! Slot was", m_currentSlot);
+    DEBUG2("DMRSlotRX: Correcting to slot", tc);
+    m_currentSlot = tc;
+    // Align flywheel m_endPtr to this slot boundary
+    m_endPtr = (m_syncPtr + 108U) % DMR_BUFFER_LENGTH_BITS;
   }
 }
 
