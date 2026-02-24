@@ -222,7 +222,7 @@ void CDMRSlotRX::procSlot2()
       }
 #endif
 
-      if (colorCode == m_colorCode) {
+      if (colorCode >= 0U && colorCode <= 15U) {
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
@@ -259,7 +259,7 @@ void CDMRSlotRX::procSlot2()
         uint32_t dstId = lcValid ? lc.dstId : 9U;  // 9 = fallback TG
         
         // Always fire writeDMRStart - Pi-Star needs this to open the call
-        serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
+        // serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
         DEBUG2I("writeDMRStart sent, lcValid:", lcValid ? 1 : 0);
         
         writeRSSIData();
@@ -468,7 +468,6 @@ void CDMRSlotRX::correlateSync()
     }
 #endif
     control = CONTROL_VOICE;
-#if !defined(MS_MODE)
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
@@ -477,7 +476,6 @@ void CDMRSlotRX::correlateSync()
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
     control = CONTROL_VOICE;
-#endif
   }
 
   if (control != CONTROL_NONE) {
