@@ -28,9 +28,9 @@
 #include "Utils.h"
 #include <string.h>
 
-const uint8_t MAX_SYNC_BYTES_ERRS   = 6U;
+const uint8_t MAX_SYNC_BYTES_ERRS   = 3U;
 
-const uint8_t MAX_SYNC_LOST_FRAMES  = 10U;
+const uint8_t MAX_SYNC_LOST_FRAMES  = 13U;
 
 const uint16_t NOENDPTR = 9999U;
 
@@ -222,7 +222,7 @@ void CDMRSlotRX::procSlot2()
       }
 #endif
 
-      if (colorCode >= 0U && colorCode <= 15U) {
+      if (colorCode > 0U && colorCode <= 15U) {
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
@@ -255,15 +255,9 @@ void CDMRSlotRX::procSlot2()
               
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
 
-        uint32_t srcId = lcValid ? lc.srcId : 0U;
-        uint32_t dstId = lcValid ? lc.dstId : 9U;  // 9 = fallback TG
-        
-        // Always fire writeDMRStart - Pi-Star needs this to open the call
-        // serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
-        DEBUG2I("writeDMRStart sent, lcValid:", lcValid ? 1 : 0);
-        
-        writeRSSIData();
-
+              if (lcValid) {
+                serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
+              }
               
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
@@ -279,7 +273,6 @@ void CDMRSlotRX::procSlot2()
               if (lcValid) {
                 memcpy(m_lcData, lc.rawData, 12);
                 m_lcValid[slot] = true;
-                // serial.writeDMRStart(slot, m_colorCode, lc.srcId, lc.dstId);
                 DEBUG2("LC data stored for voice frames", slot);
               } else {
                 m_lcValid[slot] = false;
@@ -289,8 +282,8 @@ void CDMRSlotRX::procSlot2()
               // MMDVMHost decodes the LC itself from the encoded burst.
               // We do NOT overwrite the payload bits here.
                 
-                DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
-                writeRSSIData();
+              DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
+              writeRSSIData();
             }
             break;
           case DT_VOICE_PI_HEADER:
@@ -320,6 +313,9 @@ void CDMRSlotRX::procSlot2()
 #endif
                 
                 // MMDVMHost decodes the LC itself.
+                if (lcValid) {
+                  serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
+                }
                 
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", slot);
                 writeRSSIData();
