@@ -36,4 +36,7 @@
 // Debug Mode
 #define ENABLE_DEBUG
 
+// Not really sure
+#define SEND_RSSI_DATA
+
 #endif
