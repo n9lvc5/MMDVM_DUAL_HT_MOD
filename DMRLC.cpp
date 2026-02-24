@@ -16,62 +16,61 @@
 
 #include <string.h>
 
-
-
-
 bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
 {
-  
-
-
-  
-  
   // Extract 196-bit encoded LC data from frame
   uint8_t encoded[25]; // 196 bits = 24.5 bytes, round up to 25
   extractData(data, encoded);
 
-#if defined(ENABLE_DEBUG)
+//#if defined(ENABLE_DEBUG)
   // Debug: Show first few bytes of encoded LC
   DEBUG2I("Encoded LC [0-3]", (encoded[0] << 24) | (encoded[1] << 16) | (encoded[2] << 8) | encoded[3]);
-#endif
-
-
+//#endif
+DEBUG2I("LC enc0:", encoded[0]);
   // BPTC(196,96) decode to get 12-byte LC
   CBPTC19696 bptc;
-DEBUG2I("Pre-BPTC[0]:", encoded[0]);   // ← what bit extraction produced
-DEBUG2I("Pre-BPTC[1]:", encoded[1]);
-
-
+  
   bptc.decode(encoded, lc->rawData);
-
-#if defined(ENABLE_DEBUG)
+ DEBUG2I("LC raw0:", lc->rawData[0]);
+ DEBUG2I("LC raw9:", lc->rawData[9]);
+//#if defined(ENABLE_DEBUG)
   // Debug: Show decoded LC before mask
-
   DEBUG2I("Decoded LC [0-3]", (lc->rawData[0] << 24) | (lc->rawData[1] << 16) | (lc->rawData[2] << 8) | lc->rawData[3]);
-#endif
+//#endif
 
   // Apply CRC mask based on data type
   applyMask(lc->rawData, dataType);
+ DEBUG2I("LC msk9:", lc->rawData[9]);
+// DEBUG: Print all 12 decoded bytes
+DEBUG2I("raw0:", lc->rawData[0]);
+DEBUG2I("raw1:", lc->rawData[1]);
+DEBUG2I("raw2:", lc->rawData[2]);
+DEBUG2I("raw3:", lc->rawData[3]);
+DEBUG2I("raw4:", lc->rawData[4]);
+DEBUG2I("raw5:", lc->rawData[5]);
+DEBUG2I("raw6:", lc->rawData[6]);
+DEBUG2I("raw7:", lc->rawData[7]);
+DEBUG2I("raw8:", lc->rawData[8]);
+bool rsOk = CRS129::check(lc->rawData);
+DEBUG2I("RS check:", rsOk ? 1 : 0);
+for (uint8_t i = 0U; i < 12U; i++) DEBUG2I("LC raw", lc->rawData[i]);
 
-// After applyMask, before CRS129::check — replace the 4 lines with all 12:
-for (uint8_t i = 0; i < 12; i++) {
-    DEBUG2I("RS byte:", lc->rawData[i]);
-     }
-
-
-
-// In CDMRLC::decode(), just before CRS129::check():
-//DEBUG2I("RS check input [0]:", lc->rawData[0]);
-////DEBUG2I("RS check input [9]:", lc->rawData[9]);
-//DEBUG2I("RS check input [10]:", lc->rawData[10]);
-//DEBUG2I("RS check input [11]:", lc->rawData[11]);
 
   // Reed-Solomon check
-// Comment out or remove the RS check entirely:
-// if (!CRS129::check(lc->rawData)) {
-//   DEBUG2("LC RS check failed", 0);
-//   return false;
-// }
+  if (!CRS129::check(lc->rawData)) {
+#if defined(ENABLE_DEBUG)
+    DEBUG2("LC RS check failed", 0);
+   // DEBUG2("LC Data", lc);
+   // DEBUG2("LC's RawData",rawData);
+#endif
+    return false;
+  }
+
+if (rsOk) {
+  DEBUG1("DMRLC: Valid LC");
+} else {
+  DEBUG1("DMRLC: Invalid LC CRC");
+}
 
   // Extract LC fields
   lc->PF = (lc->rawData[0U] & 0x80U) != 0;

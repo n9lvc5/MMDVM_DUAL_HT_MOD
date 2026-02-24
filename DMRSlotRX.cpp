@@ -28,9 +28,9 @@
 #include "Utils.h"
 #include <string.h>
 
-const uint8_t MAX_SYNC_BYTES_ERRS   = 3U;
+const uint8_t MAX_SYNC_BYTES_ERRS   = 5U;
 
-const uint8_t MAX_SYNC_LOST_FRAMES  = 13U;
+const uint8_t MAX_SYNC_LOST_FRAMES  = 10U;
 
 const uint16_t NOENDPTR = 9999U;
 
@@ -88,7 +88,7 @@ void CDMRSlotRX::reset()
   m_control   = CONTROL_NONE;
   m_startPtr  = 0U;
   m_endPtr    = NOENDPTR;
-
+  
   for (uint8_t i = 0U; i < 2U; i++) {
     m_syncCount[i] = 0U;
     m_state[i]     = DMRRXS_NONE;
@@ -157,7 +157,6 @@ bool CDMRSlotRX::databit(bool bit)
         correlateSync();
     }
   }
-#endif
 
   procSlot2();
 
@@ -253,6 +252,7 @@ void CDMRSlotRX::procSlot2()
           case DT_VOICE_LC_HEADER:
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
             m_state[slot] = DMRRXS_VOICE;
+             m_state[slot ^ 1U] = DMRRXS_NONE;   // ← THIS LINE
             {
               DEBUG2("DMRSlotRX: Voice header slot (MS_MODE)", slot);
               
@@ -260,6 +260,16 @@ void CDMRSlotRX::procSlot2()
               DMRLC_T lc;
               
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
+
+        uint32_t srcId = lcValid ? lc.srcId : 0U;
+        uint32_t dstId = lcValid ? lc.dstId : 9U;  // 9 = fallback TG
+        
+        // Always fire writeDMRStart - Pi-Star needs this to open the call
+       // serial.writeDMRStart(slot, m_colorCode, srcId, dstId);
+        DEBUG2I("writeDMRStart sent, lcValid:", lcValid ? 1 : 0);
+        
+        writeRSSIData();
+
               
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
@@ -270,10 +280,12 @@ void CDMRSlotRX::procSlot2()
               }
 #endif
               
+              // Store LC data for embedding in voice frames
 #if defined(MS_MODE)
               if (lcValid) {
                 memcpy(m_lcData, lc.rawData, 12);
                 m_lcValid[slot] = true;
+                serial.writeDMRStart(slot, m_colorCode, lc.srcId, lc.dstId);
                 DEBUG2("LC data stored for voice frames", slot);
               } else {
                 m_lcValid[slot] = false;
@@ -293,6 +305,7 @@ void CDMRSlotRX::procSlot2()
               writeRSSIData();
             }
             m_state[slot] = DMRRXS_VOICE;
+            m_state[slot ^ 1U] = DMRRXS_NONE;  
             break;
           case DT_TERMINATOR_WITH_LC:
             if (m_state[slot] == DMRRXS_VOICE) {
