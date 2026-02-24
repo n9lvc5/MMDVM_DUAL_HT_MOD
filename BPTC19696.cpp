@@ -68,26 +68,30 @@ void CBPTC19696::errorCheck()
   }
 
   // Run through each of the 15 columns containing data
+  // Column is a shortened Hamming(15,11) code -> Hamming(13,9)
   for (uint32_t c = 0U; c < 15U; c++) {
-    bool data[13U];
+    bool data[15U];
+    data[0] = false; // d0
+    data[1] = false; // d1
     for (uint32_t i = 0U; i < 13U; i++)
-      data[i] = m_deInterData[c + i * 15U];
+      data[i + 2] = m_deInterData[c + i * 15U];
 
     if (!hamming1511(data)) {
       hamming1503(data);
       for (uint32_t i = 0U; i < 13U; i++)
-        m_deInterData[c + i * 15U] = data[i];
+        m_deInterData[c + i * 15U] = data[i + 2];
     }
   }
 }
 
 bool CBPTC19696::hamming1511(bool* d) const
 {
-  // Check a Hamming (15,11,3) block
-  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8];
-  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9];
-  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10];
-  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10];
+  // Check a Hamming (15,11,3) block with systematic parity
+  // Codeword: [d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 p0 p1 p2 p3]
+  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8] ^ d[11];
+  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9] ^ d[12];
+  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10] ^ d[13];
+  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10] ^ d[14];
 
   return !c0 && !c1 && !c2 && !c3;
 }
@@ -95,10 +99,10 @@ bool CBPTC19696::hamming1511(bool* d) const
 void CBPTC19696::hamming1503(bool* d) const
 {
   // Calculate the Hamming (15,11,3) error syndrome
-  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8];
-  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9];
-  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10];
-  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10];
+  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8] ^ d[11];
+  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9] ^ d[12];
+  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10] ^ d[13];
+  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10] ^ d[14];
 
   uint8_t n = 0U;
   n |= (c0 ? 0x01U : 0x00U);
@@ -106,19 +110,23 @@ void CBPTC19696::hamming1503(bool* d) const
   n |= (c2 ? 0x04U : 0x00U);
   n |= (c3 ? 0x08U : 0x00U);
 
-  // Correct single-bit errors
+  // Correct single-bit errors using syndrome mapping for the DMR systematic matrix
   switch (n) {
-    case 0x01U: d[0] = !d[0]; break;
-    case 0x02U: d[1] = !d[1]; break;
-    case 0x03U: d[2] = !d[2]; break;
-    case 0x04U: d[3] = !d[3]; break;
-    case 0x05U: d[4] = !d[4]; break;
-    case 0x06U: d[5] = !d[5]; break;
-    case 0x07U: d[6] = !d[6]; break;
-    case 0x08U: d[7] = !d[7]; break;
-    case 0x09U: d[8] = !d[8]; break;
-    case 0x0AU: d[9] = !d[9]; break;
-    case 0x0BU: d[10] = !d[10]; break;
+    case 0x09U: d[0] = !d[0]; break;
+    case 0x0BU: d[1] = !d[1]; break;
+    case 0x0FU: d[2] = !d[2]; break;
+    case 0x07U: d[3] = !d[3]; break;
+    case 0x0EU: d[4] = !d[4]; break;
+    case 0x05U: d[5] = !d[5]; break;
+    case 0x0AU: d[6] = !d[6]; break;
+    case 0x0DU: d[7] = !d[7]; break;
+    case 0x03U: d[8] = !d[8]; break;
+    case 0x06U: d[9] = !d[9]; break;
+    case 0x0CU: d[10] = !d[10]; break;
+    case 0x01U: d[11] = !d[11]; break;
+    case 0x02U: d[12] = !d[12]; break;
+    case 0x04U: d[13] = !d[13]; break;
+    case 0x08U: d[14] = !d[14]; break;
     default: break; // No correction needed or uncorrectable
   }
 }

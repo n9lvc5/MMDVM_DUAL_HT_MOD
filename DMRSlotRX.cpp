@@ -160,6 +160,12 @@ bool CDMRSlotRX::databit(bool bit)
 
   procSlot2();
 
+#if defined(MS_MODE)
+  if (m_syncLocked && m_slotTimer == 132U) {
+    decodeCACH();
+  }
+#endif
+
   m_dataPtr++;
 
   if (m_dataPtr >= DMR_BUFFER_LENGTH_BITS)
@@ -222,7 +228,7 @@ void CDMRSlotRX::procSlot2()
       }
 #endif
 
-      if (colorCode > 0U && colorCode <= 15U) {
+      if (colorCode <= 15U) {
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
@@ -312,7 +318,6 @@ void CDMRSlotRX::procSlot2()
                 }
 #endif
                 
-                // MMDVMHost decodes the LC itself.
                 if (lcValid) {
                   serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
                 }
@@ -521,6 +526,55 @@ void CDMRSlotRX::correlateSync()
         DEBUG2("DMRSlotRX: State machine reset on new sync", 0);
     }
     m_endPtr = endPtr;
+  }
+}
+
+void CDMRSlotRX::decodeCACH()
+{
+  uint16_t cachStartPtr = (m_syncPtr + 109U) % DMR_BUFFER_LENGTH_BITS;
+
+  bool c[24];
+  for (uint8_t i = 0; i < 24; i++) {
+    c[i] = READ_BIT1(m_buffer, (cachStartPtr + i) % DMR_BUFFER_LENGTH_BITS);
+  }
+
+  // TACT bits
+  bool t[7];
+  t[0] = c[0];  // AT
+  t[1] = c[1];  // TC
+  t[2] = c[5];  // LCSS1
+  t[3] = c[6];  // LCSS0
+  t[4] = c[10]; // H2
+  t[5] = c[11]; // H1
+  t[6] = c[15]; // H0
+
+  // Hamming(7,4) check
+  bool s0 = t[0] ^ t[1] ^ t[2] ^ t[4];
+  bool s1 = t[1] ^ t[2] ^ t[3] ^ t[5];
+  bool s2 = t[0] ^ t[1] ^ t[3] ^ t[6];
+
+  uint8_t s = (s2 << 2) | (s1 << 1) | s0;
+  if (s != 0) {
+    // Single bit error correction
+    switch (s) {
+      case 5: t[0] = !t[0]; break;
+      case 7: t[1] = !t[1]; break;
+      case 3: t[2] = !t[2]; break;
+      case 6: t[3] = !t[3]; break;
+      case 1: t[4] = !t[4]; break;
+      case 2: t[5] = !t[5]; break;
+      case 4: t[6] = !t[6]; break;
+      default: return; // Multi-bit error
+    }
+  }
+
+  uint8_t tc = t[1] ? 2U : 1U;
+  if (m_currentSlot != tc) {
+    DEBUG2("DMRSlotRX: CACH Sync correction! Slot was", m_currentSlot);
+    DEBUG2("DMRSlotRX: Correcting to slot", tc);
+    m_currentSlot = tc;
+    // Align flywheel m_endPtr to this slot boundary
+    m_endPtr = (m_syncPtr + 108U) % DMR_BUFFER_LENGTH_BITS;
   }
 }
 
