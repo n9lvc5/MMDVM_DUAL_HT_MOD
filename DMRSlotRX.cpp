@@ -28,7 +28,7 @@
 #include "Utils.h"
 #include <string.h>
 
-const uint8_t MAX_SYNC_BYTES_ERRS   = 5U;
+const uint8_t MAX_SYNC_BYTES_ERRS   = 6U;
 
 const uint8_t MAX_SYNC_LOST_FRAMES  = 10U;
 
@@ -279,7 +279,7 @@ void CDMRSlotRX::procSlot2()
               if (lcValid) {
                 memcpy(m_lcData, lc.rawData, 12);
                 m_lcValid[slot] = true;
-                serial.writeDMRStart(slot, m_colorCode, lc.srcId, lc.dstId);
+                // serial.writeDMRStart(slot, m_colorCode, lc.srcId, lc.dstId);
                 DEBUG2("LC data stored for voice frames", slot);
               } else {
                 m_lcValid[slot] = false;
