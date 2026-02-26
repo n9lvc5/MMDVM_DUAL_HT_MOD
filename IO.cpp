@@ -47,10 +47,14 @@ m_last_clk2(0U)
   CE_pin(HIGH);
   LED_pin(HIGH);
   PTT_pin(LOW);
+#if !defined(MS_MODE)
   DSTAR_pin(LOW);
+#endif
   DMR_pin(LOW);
   YSF_pin(LOW);
+#if !defined(MS_MODE)
   P25_pin(LOW);
+#endif
   NXDN_pin(LOW);
   //M17_pin(LOW);
   POCSAG_pin(LOW);
@@ -86,10 +90,14 @@ void CIO::selfTest()
 
       LED_pin(!ledValue);
       PTT_pin(ledValue);
+#if !defined(MS_MODE)
       DSTAR_pin(ledValue);
+#endif
       DMR_pin(ledValue);
       YSF_pin(ledValue);
+#if !defined(MS_MODE)
       P25_pin(ledValue);
+#endif
       NXDN_pin(ledValue);
       //M17_pin(ledValue);
       POCSAG_pin(ledValue);
@@ -112,14 +120,6 @@ void CIO::process()
   m_ledCount++;
 
   if (m_started) {
-#if defined(MS_MODE)
-    if (m_modemState == STATE_IDLE && m_dmrEnable) {
-      setMode(STATE_DMR);
-      m_modemState = STATE_DMR;
-      ifConf(STATE_DMR, true);
-    }
-#endif
-
     // Two seconds timeout
     if (m_watchdog >= 19200U) {
 #if defined(MS_MODE)
@@ -409,7 +409,6 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
   //return 4U;
 #endif
 
-/*
 #if !defined(DISABLE_FREQ_BAN)
   // Check banned frequency ranges
   if( ((frequency_rx >= BAN1_MIN)&&(frequency_rx <= BAN1_MAX)) || ((frequency_tx >= BAN1_MIN)&&(frequency_tx <= BAN1_MAX)) || \
@@ -420,7 +419,6 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
   ((pocsag_freq_tx >= BAN2_MIN)&&(pocsag_freq_tx <= BAN2_MAX)) )
     return 4U;
 #endif
-*/
 
 // Check if we have a single, dualband or duplex board
 #if defined(ZUMSPOT_ADF7021) || defined(LONESTAR_USB) || defined(SKYBRIDGE_HS)
@@ -439,14 +437,12 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
 
 void CIO::setMode(MMDVM_STATE modemState)
 {
-#if defined(MS_MODE)
-  if (modemState == STATE_IDLE)
-    modemState = STATE_DMR;
-#endif
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   if (modemState != STATE_POCSAG) {
 #endif
+#if !defined(MS_MODE)
     DSTAR_pin(modemState  == STATE_DSTAR);
+#endif
     DMR_pin(modemState    == STATE_DMR);
 #if defined(USE_ALTERNATE_POCSAG_LEDS)
   }
@@ -455,7 +451,9 @@ void CIO::setMode(MMDVM_STATE modemState)
   if (modemState != STATE_NXDN) {
 #endif
     YSF_pin(modemState    == STATE_YSF);
+#if !defined(MS_MODE)
     P25_pin(modemState    == STATE_P25);
+#endif
 #if defined(USE_ALTERNATE_NXDN_LEDS)
   }
 #endif
@@ -463,7 +461,9 @@ void CIO::setMode(MMDVM_STATE modemState)
   if (modemState != STATE_M17) {
 #endif
     YSF_pin(modemState    == STATE_YSF);
+#if !defined(MS_MODE)
     P25_pin(modemState    == STATE_P25);
+#endif
 #if defined(USE_ALTERNATE_M17_LEDS)
   }
 #endif

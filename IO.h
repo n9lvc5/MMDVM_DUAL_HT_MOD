@@ -22,11 +22,8 @@
 #define  CIO_H
 
 #include "Config.h"
-#include "Globals.h"
 #include "BitRB.h"
-
-//#define LOW      0
-//#define HIGH     1
+#include <stdint.h>
 
 // HS frequency ranges
 #define VHF1_MIN  144000000

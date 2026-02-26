@@ -217,8 +217,9 @@ void CSerialPort::getVersion()
 
 uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
 {
-  // if (length < 23U)
-  //  return 4U; // Invalid parameter
+  (void)length;
+  //if (length < 23U)
+  //  return 4U;
 
   bool ysfLoDev  = (data[0U] & 0x08U) == 0x08U;
   bool simplex   = (data[0U] & 0x80U) == 0x80U;

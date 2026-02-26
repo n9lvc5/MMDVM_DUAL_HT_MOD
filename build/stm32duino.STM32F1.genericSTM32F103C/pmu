@@ -1,0 +1,338 @@
+#!/usr/bin/env bash
+#
+#########################################################
+#                                                       #
+#     WPMFU: WPSD Modem Firmware Update Utility         #
+#                  Chip Cuccio (W0CHP)                  #
+#                                                       #
+#  Modified by Andy Taylor (MW0MWZ)/ and KE9CNK - all credits for   #
+#  this excellent tool should go to Chip Cuccio, this   #
+#     is significantly better than our old tools.       #
+#                                                       #
+#########################################################
+#
+
+if [ "$(id -u)" != "0" ]; then
+  echo -e "\nYou need to be root to run this command...\n"
+  exit 1
+fi
+
+# Get the hardware type, this may be important later (RPi | NanoPi | OdroidXU4)
+pistarHardware=$(awk -F "= " '/Hardware/ {print $2}' /etc/pistar-release)
+
+# Get the available firmwre version
+if [[ -f /usr/local/bin/firmware/version.txt ]]; then
+  MMDVM_HS_VERSION=$(awk -F "=" '/mmdvm_hs_version/ {print $2}' /usr/local/bin/firmware/version.txt)
+  RPT_VERSION=$(awk -F "=" '/rpt_version/ {print $2}' /usr/local/bin/firmware/version.txt)
+  DVMEGA_VERSION=$(awk -F "=" '/dvmega_version/ {print $2}' /usr/local/bin/firmware/version.txt)
+else
+  echo -e "\nNew Firmware has not arrived yet...\n"
+fi
+
+#
+# Non-interactive mode, pass "NP=1" env. var. E.g. `sudo NP=1 ./pistar-modemupgrade <foo>`
+# Verbose mode, pass "VERBOSE=1" env. var. E.g. `sudo VERBOSE=1 ./pistar-modemupgrade <bar>`
+#
+
+#
+# only takes this file
+#
+
+      firmware_file="MMDVM_DUAL_HT_MOD.ino.bin"
+      MMDVM_HS_GPIO=true
+      VERSION=${MMDVM_HS_VERSION}
+
+#
+# Pretty term stuffs ;-)
+#
+if [ -t 1 ] || [ -n "$PS1" ] || [ -n "$FORCE_COLOR" ] ; then # terminal and bash call only...
+    COL_NC='\e[0m' # No Color
+    BOLD='\e[1m'
+    REVERSE='\e[7m'
+    COL_LIGHT_GREEN='\e[1;32m'
+    COL_BRIGHT_GREEN='\e[1;92m'
+    COL_LIGHT_RED='\e[31m'
+    COL_BRIGHT_RED='\e[1;31m'
+    COL_LIGHT_CYAN='\e[1;36m'
+    COL_BRIGHT_CYAN='\e[0;96m'
+    COL_REG_CYAN='\e[38;5;30m'
+    COL_REG_ORANGE='\e[38;5;173m'
+    COL_LIGHT_ORANGE='\e[38;5;208m'
+    COL_LIGHT_BLUE='\e[1;34m'
+    COL_LIGHT_MAGENTA='\e[1;35m'
+    COL_REG_MAGENTA='\e[0;95m'
+    COL_LIGHT_YELLOW='\e[1;93m'
+    COL_REG_YELLOW='\e[93m'
+    BULL="${BOLD}\u2022${COL_NC}"
+    INFO="${BOLD}[i]${COL_NC}"
+    QUES="${BOLD}[?]${COL_NC}"
+    NOTE="${BOLD}${COL_LIGHT_YELLOW}[!]${COL_NC}"
+    TICK="${BOLD}${COL_LIGHT_GREEN}[✓]${COL_NC}"
+    CROSS="${BOLD}${COL_BRIGHT_RED}[✗]${COL_NC}"
+    DONE="${BOLD}${COL_LIGHT_GREEN}Done!${COL_NC}"
+    COMPL="${BOLD}${COL_LIGHT_GREEN}Complete!${COL_NC}"
+else # for web interfaces
+    BULL="*"
+    INFO="[i]"
+    QUES="[?]"
+    NOTE="[!]"
+    TICK="[✓]"
+    CROSS="[✗]"
+    DONE="Done!"
+    COMPL="Complete!"
+fi
+
+# progress spinner
+SPINNER_PID=
+SPINNER_CHARS="⣷⣯⣟⡿⢿⣻⣽⣾"
+spinner() {
+    local i=0
+    while :; do
+        printf "    [${SPINNER_CHARS:$i:1}] Flashing modem - please wait... \r"
+        i=$(( (i + 1) % 8 ))
+        sleep 0.1
+    done
+}
+
+#
+# gpio front/back compat. for pi5 and older Pi SBCs; since Pi5 has its own GPIO chip (gpiochip4 [pinctrl-rp1])
+# also fixes new kernels on the RPi family (Thank you WPSD team)
+#
+getGPIOpinMaps=$(ls -la /sys/class/gpio/gpiochip* | grep "0000.gpio" | sed -n "s/.*gpiochip\([0-9]*\).*/\1/p" | tail -n 1)
+getGPIOpinMaps=${getGPIOpinMaps/504/0}
+pin20=$((getGPIOpinMaps + 20))
+pin21=$((getGPIOpinMaps + 21))
+
+#
+# Output some useful information when no variables are passed
+#
+
+#
+# OK we know what the modem is, let get the firmware string from the log...
+#
+if [ -t 1 ]; then # term. only
+    clear
+    echo -e -n "${COL_NC}${COL_LIGHT_ORANGE}${BOLD}Modem Firmware Update Utility by Chip Cuccio (W0CHP) moded by KE9CNK${COL_NC}\n\n"
+fi
+
+#
+# Flash the latest firmware for the type specified in the arg.
+#
+  # Verify that the file exists
+    echo -e "${BULL} Checking if file is present"
+    if [[ -f "/home/pi-star/${firmware_file}" ]]; then
+      echo -e "    ${COL_BRIGHT_GREEN}${TICK} Good, it's there."
+    else
+      echo -e "    ${CROSS} ${COL_BRIGHT_RED}ERROR:${COL_NC} Firmware file does not exist . Aborting."
+      exit 1
+    fi
+    sleep 1
+
+  if [[ "$NP" != "1" ]]; then
+    read -n 1 -s -r -p "Press any key to flash firmware to this modem, or 'q' to abort... "
+    echo ""
+    echo ""
+
+    if [[ "$REPLY" =~ [qQ] ]]; then
+      echo ""
+      echo "Aborted by user."
+      echo ""
+      exit 1
+    fi
+  fi
+
+  flash_modem() { # Main Loop
+    local firmware_file="$2"  # Pass the firmware_file as an argument
+
+  
+ 
+    echo -e "\n${BULL} Preparing to flash modem with firmware ..."
+    # Stop MMDVMHost process to free up the serial port
+	rm /var/log/pi-star/*.*
+    systemctl stop pistar-watchdog.timer >/dev/null 2>&1
+    systemctl stop pistar-watchdog.service >/dev/null 2>&1
+    systemctl stop mmdvmhost.timer >/dev/null 2>&1
+    systemctl stop mmdvmhost.service >/dev/null 2>&1
+	
+	sleep 1
+	
+
+    # NanoPI GPIO handling
+    if [[ ${pistarHardware} == "NanoPi" ]]; then
+        gpio mode 3 out
+        gpio mode 4 out
+        gpio write 4 1
+        gpio write 3 0
+        sleep 1
+        gpio write 3 1
+    fi
+
+    if [ -t 1 ] && [ "$VERBOSE" != 1 ]; then # term. only
+        spinner &
+        # Capture the spinner's PID
+        SPINNER_PID=$!
+    else
+	echo -e "\n    ${NOTE}  Flashing modem - please wait..."
+    fi
+
+    # Configure Tools
+    DFU_RST="/usr/local/bin/firmware/utils/upload-reset"
+    DFU_UTIL="/usr/local/bin/firmware/utils/dfu-util"
+    ST_FLASH="/usr/local/bin/firmware/utils/st-flash"
+    STM32FLASH="/usr/local/bin/firmware/utils/stm32flash"
+
+    # flash handling for USB modems...
+    if [ "$USB_MODEM" = true ]; then
+	if [ "$VERBOSE" = 1 ] ; then
+	    $DFU_RST $DEV_USB_SER 750
+	    $DFU_UTIL -D /home/pi-star/${firmware_file} -d 1eaf:0003 -a 2 -R -R
+	else
+	    $DFU_RST $DEV_USB_SER 750 2>&1
+	    output=$(eval $DFU_UTIL -D /home/pi-star/${firmware_file} -d 1eaf:0003 -a 2 -R -R 2>&1)
+	fi
+    elif [ "$MMDVM_PI" = true ]; then
+	if [ "$VERBOSE" = 1 ] ; then
+	    /usr/local/bin/firmware/utils/stm32flash-${stmVer} -i ${pin20},-${pin21},${pin21}:-${pin20},${pin21} /dev/ttyAMA0 >/dev/null 2>&1
+	    /usr/local/bin/firmware/utils/stm32flash-${stmVer} -v -w /home/pi-star/${firmware_file} -g 0x0 -R /dev/ttyAMA0
+	else
+	    /usr/local/bin/firmware/utils/stm32flash-${stmVer} -i ${pin20},-${pin21},${pin21}:-${pin20},${pin21} /dev/ttyAMA0 >/dev/null 2>&1
+	    output=$(eval /usr/local/bin/firmware/utils/stm32flash-${stmVer} -v -w /home/pi-star/${firmware_file} -g 0x0 -R /dev/ttyAMA0 2>&1)
+	fi
+    elif [ "$MMDVM_HS_GPIO" = true ]; then
+	# Upload the firmware to the modem and place output into buffer for fail/success checking logic
+	if [ "$VERBOSE" = 1 ] ; then
+	  $STM32FLASH -k /dev/ttyAMA0 >/dev/null 2>&1		# try to disable write protection (doesn't always work on some annoying Chinesium locked modems)
+	    sleep 0.5
+		$STM32FLASH -k /dev/ttyAMA0 >/dev/null 2>&1
+		sleep 0.5
+		$STM32FLASH -k /dev/ttyAMA0 >/dev/null 2>&1
+		sleep 0.5
+		
+    $STM32FLASH -v -w /home/pi-star/${firmware_file} -g 0x0 -R -i ${pin20},-${pin21},${pin21}:-${pin20},${pin21} /dev/ttyAMA0
+	else
+	    $STM32FLASH -k /dev/ttyAMA0 >/dev/null 2>&1		# try to disable write protection (doesn't always work on some annoying Chinesium locked modems)
+	    sleep 0.5
+		$STM32FLASH -k /dev/ttyAMA0 >/dev/null 2>&1
+		sleep 0.5
+		$STM32FLASH -k /dev/ttyAMA0 >/dev/null 2>&1
+		sleep 0.5
+		
+		output=$(eval $STM32FLASH -v -w /home/pi-star/${firmware_file} -g 0x0 -R -i ${pin20},-${pin21},${pin21}:-${pin20},${pin21} /dev/ttyAMA0 2>&1)
+	fi
+    elif [ "$DVMega_GPIO" = true ]; then
+        # DV Mega mounted on GPIO
+        if [ "$VERBOSE" = 1 ] ; then
+            gpio mode 7 out
+            gpio write 7 1
+            sleep 0.30
+            gpio write 7 0
+            gpio write 7 1
+            sleep 0.5
+            /usr/bin/avrdude -p m328p -c arduino -P /dev/ttyAMA0 -b 115200 -F -U flash:w:/home/pi-star/${firmware_file} -v
+        else
+            gpio mode 7 out >/dev/null 2>&1
+            gpio write 7 1 >/dev/null 2>&1
+            sleep 0.30 >/dev/null 2>&1
+            gpio write 7 0 >/dev/null 2>&1
+            gpio write 7 1 >/dev/null 2>&1
+            sleep 0.5 >/dev/null 2>&1
+            output=$(eval /usr/bin/avrdude -p m328p -c arduino -P /dev/ttyAMA0 -b 115200 -F -U flash:w:/home/pi-star/${firmware_file} 2>&1)
+        fi
+    elif [ "$DVMega_USB" = true ]; then
+        # DV Mega mounted on Uno
+        if [ "$VERBOSE" = 1 ] ; then
+            /usr/bin/avrdude -p m328p -c arduino -P /dev/ttyUSB0 -b 115200 -F -U flash:w:/home/pi-star/${firmware_file} -v
+        else
+            output=$(eval /usr/bin/avrdude -p m328p -c arduino -P /dev/ttyUSB0 -b 115200 -F -U flash:w:/home/pi-star/${firmware_file} 2>&1)
+        fi
+    else  # Catch missing information
+        # Bail out with an error
+        if [ -t 1 ] && [ "$VERBOSE" != 1 ]; then # term. only
+	    # Kill the spinner process (make the cursor visible again)
+	    kill $SPINNER_PID &>/dev/null
+        fi
+        echo -e "    ${CROSS} ${COL_BRIGHT_RED}ERROR:${COL_NC} Modem flashing failed. Modem Connection type not specified.\n"
+	systemctl start mmdvmhost.service >/dev/null 2>&1
+	systemctl start mmdvmhost.timer >/dev/null 2>&1
+	systemctl start pistar-watchdog.timer >/dev/null 2>&1
+	systemctl start pistar-watchdog.service >/dev/null 2>&1
+	echo ""
+        exit 0
+    fi
+
+    if [ -t 1 ] && [ "$VERBOSE" != 1 ]; then # term. only
+	# Kill the spinner process (make the cursor visible again)
+	kill $SPINNER_PID &>/dev/null
+    fi
+
+    # did we flash successfully?
+    if [ "$VERBOSE" != 1 ] ; then
+	flash_successful=false  # Initialize to false
+	if [ "$USB_MODEM" = true ]; then # usb dfu successful output
+	    if [[ $output == *"state(8) = dfuMANIFEST-WAIT-RESET, status(0) = No error condition is present"* && $output == *"Done!"* ]]; then
+		flash_successful=true
+	    fi
+        elif [ "$MMDVM_PI" = true ] || [ "$MMDVM_HS_GPIO" = true ]; then # stm32flash output
+	    if [[ $output == *"(100.00%) Done"* && $output == *"0x08000000... done"* ]]; then
+		flash_successful=true
+	    fi
+        elif [ "$DVMega_GPIO" = true ] || [ "$DVMega_USB" = true ]; then # avrdude output
+            if [[ $output == *"bytes of flash verified"* ]]; then
+                flash_successful=true
+            fi
+	fi
+    fi
+
+    if [ "$VERBOSE" != 1 ] ; then
+	if $flash_successful; then
+  	    # reset the fw version # in the mmdvmhost logs
+	    if [ -d '/var/log/pi-star' ] ; then
+		sed -i '/MMDVM protocol version: 1, description:/d; /MMDVM protocol version: 2, description:/d' /var/log/pi-star/MMDVM-*.log  >/dev/null 2>&1
+	    fi
+  	    # re-nit!
+  	    systemctl start mmdvmhost.service >/dev/null 2>&1
+  	    systemctl start mmdvmhost.timer >/dev/null 2>&1
+  	    systemctl start pistar-watchdog.timer >/dev/null 2>&1
+	    systemctl start pistar-watchdog.service >/dev/null 2>&1
+  	    echo -e -n "    ${TICK} ${COMPL} Modem firmware flash successful!\n        Modem reinitialized.\n"
+	#	echo -e -n "${COL_BRIGHT_GREEN}If the following line is blank, then your build didn't work......please wait \n"
+		#pistar-findmodem
+  	    echo ""
+	else
+	    echo -e "    ${CROSS} ${COL_BRIGHT_RED}ERROR:${COL_NC} Modem flashing failed. The serial port was either busy, or the modem is"
+	    echo -e "               possibly locked from the vendor. You can try running this command again,"
+	    echo -e "               or you can contact the supplier of your modem/hotspot for support.\n"
+	    systemctl start mmdvmhost.service >/dev/null 2>&1
+	    systemctl start mmdvmhost.timer >/dev/null 2>&1
+	    systemctl start pistar-watchdog.timer >/dev/null 2>&1
+	    systemctl start pistar-watchdog.service >/dev/null 2>&1
+	    echo ""
+	fi
+    else
+	# reset the fw version # in the mmdvmhost logs
+	if [ -d '/var/log/pi-star' ] ; then
+	    sed -i '/MMDVM protocol version: 1, description:/d; /MMDVM protocol version: 2, description:/d' /var/log/pi-star/MMDVM-*.log  >/dev/null 2>&1
+	fi
+	# re-nit!
+	
+	systemctl start mmdvmhost.service >/dev/null 2>&1
+	systemctl start mmdvmhost.timer >/dev/null 2>&1
+	systemctl start pistar-watchdog.timer >/dev/null 2>&1
+	systemctl start pistar-watchdog.service >/dev/null 2>&1
+    fi
+    exit 0
+  }
+
+  if [ -t 1 ]; then
+      # run via terminal, only output to screen
+      flash_modem "${1}" "${firmware_file}"
+  else
+      # if not run via terminal, log everything into a log file
+      if [ ! -d /var/log/pi-star ]; then
+          mkdir -p /var/log/pi-star
+      fi
+      flash_modem "${1}" "${firmware_file}" >> /var/log/pi-star/pi-star_modemflash.log 2>&1
+  fi
+
+fi
+exit 0

@@ -33,7 +33,11 @@
 #elif defined(MMDVM_HS_HAT_REV12)
 #define BOARD_INFO      "MMDVM_HS_Hat"
 #elif defined(MMDVM_HS_DUAL_HAT_REV10)
-#define BOARD_INFO      "MMDVM_HS_Dual_Hat_DMR_MOD"
+#if defined(MS_MODE)
+#define BOARD_INFO      "MMDVM_HS_MS"
+#else
+#define BOARD_INFO      "MMDVM_HS_Dual_Hat"
+#endif
 #elif defined(NANO_HOTSPOT)
 #define BOARD_INFO      "Nano_hotSPOT"
 #elif defined(NANO_DV_REV11)
@@ -69,18 +73,18 @@
 
 #define FW_VERSION      "v" VER_MAJOR "." VER_MINOR "." VER_REV " " VERSION_DATE
 
-#define DESCRIPTION     BOARD_INFO "-" FW_VERSION " " TCXO_FREQ "MHz " RF_DUAL RF_CHIP " FW by CA6JAU with mods by KE9CNK"
+#define DESCRIPTION     BOARD_INFO "-" FW_VERSION
 
 #if defined(MADEBYMAKEFILE)
 #include "GitVersion.h"
 #endif
 
 #if defined(GITVERSION)
-#define concat(a, b) a " GitID #" b ""
+#define concat(a, b) a " #" b ""
 const char HARDWARE[] = concat(DESCRIPTION, GITVERSION);
 #else
-#define concat(a, b, c) a " (Build: " b " " c ")"
-const char HARDWARE[] = concat(DESCRIPTION, __TIME__, __DATE__);
+#define concat(a, b) a " (" b ")"
+const char HARDWARE[] = concat(DESCRIPTION, VERSION_DATE);
 #endif
 
 #endif

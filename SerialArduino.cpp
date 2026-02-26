@@ -98,6 +98,8 @@ void CSerialPort::writeInt(uint8_t n, const uint8_t* data, uint16_t length, bool
     case 1U:
     #if defined(STM32_USART1_HOST) && defined(__STM32F1__)
       Serial1.write(data, length);
+      if (flush)
+        Serial1.flush();
     #else
       Serial.write(data, length);
       if (flush)

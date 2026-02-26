@@ -20,6 +20,7 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include "Config.h"
 
 #if defined(STM32F10X_MD) || defined(STM32F4XX) || defined(STM32F7XX)
 
@@ -37,16 +38,6 @@ uint8_t m_cwIdTXLevel = 30;
 
 uint32_t m_modeTimerCnt;
 
-#if defined(MS_MODE)
-// In MS_MODE wireless bridge, only DMR is supported
-bool m_dstarEnable  = false;
-bool m_dmrEnable    = true;
-bool m_ysfEnable    = false;
-bool m_p25Enable    = false;
-bool m_nxdnEnable   = false;
-bool m_m17Enable    = false;
-bool m_pocsagEnable = false;
-#else
 bool m_dstarEnable  = true;
 bool m_dmrEnable    = true;
 bool m_ysfEnable    = true;
@@ -54,7 +45,6 @@ bool m_p25Enable    = true;
 bool m_nxdnEnable   = true;
 bool m_m17Enable    = true;
 bool m_pocsagEnable = true;
-#endif
 
 bool m_duplex = false;
 
@@ -112,9 +102,8 @@ void setup()
 
 void loop()
 {
-  io.process();
-  
   serial.process();
+  io.process();
 
   // The following is for transmitting
   // Removed modes commented out - not used in MS_MODE
