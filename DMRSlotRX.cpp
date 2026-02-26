@@ -237,22 +237,29 @@ void CDMRSlotRX::procSlot2()
         switch (dataType) {
           case DT_DATA_HEADER:
             DEBUG2("DMRSlotRX: data header found pos", m_syncPtr);
+#if !defined(MS_MODE)
             writeRSSIData();
             m_state[slot] = DMRRXS_DATA;
             m_type[slot]  = 0x00U;
+#endif
             break;
           case DT_RATE_12_DATA:
           case DT_RATE_34_DATA:
           case DT_RATE_1_DATA:
+#if !defined(MS_MODE)
             if (m_state[slot] == DMRRXS_DATA) {
               DEBUG2("DMRSlotRX: data payload found pos", m_syncPtr);
               writeRSSIData();
               m_type[slot] = dataType;
             }
+#endif
             break;
           case DT_VOICE_LC_HEADER:
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
             m_state[slot] = DMRRXS_VOICE;
+#if defined(MS_MODE)
+            m_state[slot ^ 1U] = DMRRXS_NONE;  // Only one slot active at a time
+#endif
             {
               DEBUG2("DMRSlotRX: Voice header slot (MS_MODE)", slot);
               
@@ -260,10 +267,7 @@ void CDMRSlotRX::procSlot2()
               DMRLC_T lc;
               
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
-
-              if (lcValid) {
-                serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
-              }
+              // Note: writeDMRStart removed - MMDVMHost decodes LC itself from the voice header burst
               
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
@@ -318,9 +322,7 @@ void CDMRSlotRX::procSlot2()
                 }
 #endif
                 
-                if (lcValid) {
-                  serial.writeDMRStart(slot, colorCode, lc.srcId, lc.dstId);
-                }
+                // Note: writeDMRStart removed - MMDVMHost doesn't implement message type 0x1D
                 
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", slot);
                 writeRSSIData();
@@ -333,7 +335,9 @@ void CDMRSlotRX::procSlot2()
             break;
           default:    // DT_CSBK
             DEBUG2("DMRSlotRX: csbk found pos", m_syncPtr);
+#if !defined(MS_MODE)
             writeRSSIData();
+#endif
             m_state[slot]  = DMRRXS_NONE;
 #if !defined(MS_MODE)
             m_endPtr = NOENDPTR;
@@ -350,9 +354,21 @@ void CDMRSlotRX::procSlot2()
 #endif
       }
     } else if (m_control == CONTROL_VOICE) {
-      // Voice sync found
+      // Voice sync found (frames B/C/D/E/F in a superframe have CONTROL_VOICE with no slot type)
+      // In MS_MODE: only emit to MMDVMHost if we already have a valid voice header
+      // (i.e. m_state is already DMRRXS_VOICE). Never set DMRRXS_VOICE here directly;
+      // that is done exclusively when DT_VOICE_LC_HEADER is decoded, so MMDVMHost
+      // receives the header BEFORE any voice payload frames.
+#if defined(MS_MODE)
+      if (m_state[slot] == DMRRXS_VOICE) {
+        // Already in a call - this is a mid-superframe voice sync, send it
+        writeRSSIData();
+      }
+      // else: discard - MMDVMHost hasn't seen the header yet
+#else
       writeRSSIData();
-      m_state[slot]     = DMRRXS_VOICE;
+      m_state[slot] = DMRRXS_VOICE;
+#endif
       m_syncCount[slot] = 0U;
       m_n[slot]         = 0U;
     } else {

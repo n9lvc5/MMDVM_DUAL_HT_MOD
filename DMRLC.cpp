@@ -16,6 +16,11 @@
 
 #include <string.h>
 
+// CRC mask values per ETSI TS 102 361-1 Table 9.16 / 9.17
+// These are XOR'd with RS(12,9) parity bytes 9-11 before the RS check
+const uint8_t VOICE_LC_HEADER_CRC_MASK[3]    = {0x96U, 0x96U, 0x96U};
+const uint8_t TERMINATOR_WITH_LC_CRC_MASK[3] = {0x99U, 0x99U, 0x99U};
+
 bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
 {
   // Extract 196-bit encoded LC data from frame

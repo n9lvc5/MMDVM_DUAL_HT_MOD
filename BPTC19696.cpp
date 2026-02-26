@@ -14,19 +14,22 @@
 #include <string.h>
 
 // BPTC (196,96) de-interleave table
-// Per ETSI TS 102 361-1 Section 7.2.6: a(k) = (181 * k) mod 196
-// deInterData[k] = rawData[a(k)]
+// ETSI TS 102 361-1 Section B.3.9 defines the FORWARD (encoding) permutation as:
+//   e[k] = raw[(181 * k) mod 196]
+// The INVERSE (decoding) permutation is therefore:
+//   raw[j] = e[(13 * j) mod 196]   because 13 = 181^-1 mod 196  (181 * 13 ≡ 1 mod 196)
+// This table implements the decoding direction: INTERLEAVE_TABLE[k] = (13 * k) mod 196
 const uint32_t INTERLEAVE_TABLE[196] = {
-    0U, 181U, 166U, 151U, 136U, 121U, 106U,  91U,  76U,  61U,  46U,  31U,  16U,   1U, 182U, 167U, 152U, 137U, 122U, 107U,
-   92U,  77U,  62U,  47U,  32U,  17U,   2U, 183U, 168U, 153U, 138U, 123U, 108U,  93U,  78U,  63U,  48U,  33U,  18U,   3U,
-  184U, 169U, 154U, 139U, 124U, 109U,  94U,  79U,  64U,  49U,  34U,  19U,   4U, 185U, 170U, 155U, 140U, 125U, 110U,  95U,
-   80U,  65U,  50U,  35U,  20U,   5U, 186U, 171U, 156U, 141U, 126U, 111U,  96U,  81U,  66U,  51U,  36U,  21U,   6U, 187U,
-  172U, 157U, 142U, 127U, 112U,  97U,  82U,  67U,  52U,  37U,  22U,   7U, 188U, 173U, 158U, 143U, 128U, 113U,  98U,  83U,
-   68U,  53U,  38U,  23U,   8U, 189U, 174U, 159U, 144U, 129U, 114U,  99U,  84U,  69U,  54U,  39U,  24U,   9U, 190U, 175U,
-  160U, 145U, 130U, 115U, 100U,  85U,  70U,  55U,  40U,  25U,  10U, 191U, 176U, 161U, 146U, 131U, 116U, 101U,  86U,  71U,
-   56U,  41U,  26U,  11U, 192U, 177U, 162U, 147U, 132U, 117U, 102U,  87U,  72U,  57U,  42U,  27U,  12U, 193U, 178U, 163U,
-  148U, 133U, 118U, 103U,  88U,  73U,  58U,  43U,  28U,  13U, 194U, 179U, 164U, 149U, 134U, 119U, 104U,  89U,  74U,  59U,
-   44U,  29U,  14U, 195U, 180U, 165U, 150U, 135U, 120U, 105U,  90U,  75U,  60U,  45U,  30U,  15U
+    0U,  13U,  26U,  39U,  52U,  65U,  78U,  91U, 104U, 117U, 130U, 143U, 156U, 169U, 182U, 195U,  12U,  25U,  38U,  51U,
+   64U,  77U,  90U, 103U, 116U, 129U, 142U, 155U, 168U, 181U, 194U,  11U,  24U,  37U,  50U,  63U,  76U,  89U, 102U, 115U,
+  128U, 141U, 154U, 167U, 180U, 193U,  10U,  23U,  36U,  49U,  62U,  75U,  88U, 101U, 114U, 127U, 140U, 153U, 166U, 179U,
+  192U,   9U,  22U,  35U,  48U,  61U,  74U,  87U, 100U, 113U, 126U, 139U, 152U, 165U, 178U, 191U,   8U,  21U,  34U,  47U,
+   60U,  73U,  86U,  99U, 112U, 125U, 138U, 151U, 164U, 177U, 190U,   7U,  20U,  33U,  46U,  59U,  72U,  85U,  98U, 111U,
+  124U, 137U, 150U, 163U, 176U, 189U,   6U,  19U,  32U,  45U,  58U,  71U,  84U,  97U, 110U, 123U, 136U, 149U, 162U, 175U,
+  188U,   5U,  18U,  31U,  44U,  57U,  70U,  83U,  96U, 109U, 122U, 135U, 148U, 161U, 174U, 187U,   4U,  17U,  30U,  43U,
+   56U,  69U,  82U,  95U, 108U, 121U, 134U, 147U, 160U, 173U, 186U,   3U,  16U,  29U,  42U,  55U,  68U,  81U,  94U, 107U,
+  120U, 133U, 146U, 159U, 172U, 185U,   2U,  15U,  28U,  41U,  54U,  67U,  80U,  93U, 106U, 119U, 132U, 145U, 158U, 171U,
+  184U,   1U,  14U,  27U,  40U,  53U,  66U,  79U,  92U, 105U, 118U, 131U, 144U, 157U, 170U, 183U
 };
 
 CBPTC19696::CBPTC19696()
@@ -68,18 +71,36 @@ void CBPTC19696::errorCheck()
   }
 
   // Run through each of the 15 columns containing data
-  // Column is a shortened Hamming(15,11) code -> Hamming(13,9)
+  // BPTC(196,96) layout:
+  //   Bits 0-134:   9 rows x 15 bits = row matrix (data + row Hamming parities)
+  //   Bits 135-194: 15 columns x 4 parity bits = column parity section
+  //   Bit 195:      reserved
+  // Column c uses shortened Hamming(13,9,3) from H(15,11,3) with d[0]=d[1]=0.
+  // Data bits come from rows 0-8 (m_deInterData[c + r*15] for r=0..8).
+  // Parity bits come from m_deInterData[135 + c*4 + 0..3].
   for (uint32_t c = 0U; c < 15U; c++) {
     bool data[15U];
-    data[0] = false; // d0
-    data[1] = false; // d1
-    for (uint32_t i = 0U; i < 13U; i++)
-      data[i + 2] = m_deInterData[c + i * 15U];
+    data[0U] = false;  // shortened - always 0
+    data[1U] = false;  // shortened - always 0
+    // 9 data bits: one from each row, column c
+    for (uint32_t r = 0U; r < 9U; r++)
+      data[r + 2U] = m_deInterData[c + r * 15U];
+    // 4 column parity bits from the dedicated parity section
+    data[11U] = m_deInterData[135U + c * 4U + 0U];
+    data[12U] = m_deInterData[135U + c * 4U + 1U];
+    data[13U] = m_deInterData[135U + c * 4U + 2U];
+    data[14U] = m_deInterData[135U + c * 4U + 3U];
 
     if (!hamming1511(data)) {
       hamming1503(data);
-      for (uint32_t i = 0U; i < 13U; i++)
-        m_deInterData[c + i * 15U] = data[i + 2];
+      // Write back corrected column data
+      for (uint32_t r = 0U; r < 9U; r++)
+        m_deInterData[c + r * 15U] = data[r + 2U];
+      // Write back corrected column parities
+      m_deInterData[135U + c * 4U + 0U] = data[11U];
+      m_deInterData[135U + c * 4U + 1U] = data[12U];
+      m_deInterData[135U + c * 4U + 2U] = data[13U];
+      m_deInterData[135U + c * 4U + 3U] = data[14U];
     }
   }
 }

@@ -36,7 +36,7 @@ private:
 };
 
 // CRC masks for different data types
-const uint8_t VOICE_LC_HEADER_CRC_MASK[3]    = {0x96U, 0x96U, 0x96U};
-const uint8_t TERMINATOR_WITH_LC_CRC_MASK[3] = {0x99U, 0x99U, 0x99U};
+extern const uint8_t VOICE_LC_HEADER_CRC_MASK[3];
+extern const uint8_t TERMINATOR_WITH_LC_CRC_MASK[3];
 
 #endif
