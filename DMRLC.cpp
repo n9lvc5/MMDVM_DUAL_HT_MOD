@@ -23,13 +23,10 @@ const uint8_t TERMINATOR_WITH_LC_CRC_MASK[3] = {0x99U, 0x99U, 0x99U};
 
 bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
 {
-  // Extract 196-bit encoded LC data from frame
-  uint8_t encoded[25]; // 196 bits = 24.5 bytes, round up to 25
-  extractData(data, encoded);
-
-  // BPTC(196,96) decode to get 12-byte LC
+  // BPTC(196,96) decode from the full 33‑byte DMR burst payload
+  // (data[0] is the control byte, payload starts at data[1]).
   CBPTC19696 bptc;
-  bptc.decode(encoded, lc->rawData);
+  bptc.decode(data + 1U, lc->rawData);
 
   // Apply CRC mask based on data type
   applyMask(lc->rawData, dataType);

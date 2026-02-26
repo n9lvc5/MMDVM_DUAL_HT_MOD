@@ -9,7 +9,7 @@ def hamming1511_correct(d):
     c0, c1, c2, c3 = hamming1511_check(d)
     n = (c3 << 3) | (c2 << 2) | (c1 << 1) | c0
     if n == 0: return d
-
+    
     mapping = {
         0x09: 0, 0x0B: 1, 0x0F: 2, 0x07: 3, 0x0E: 4, 0x05: 5, 0x0A: 6, 0x0D: 7, 0x03: 8, 0x06: 9, 0x0C: 10,
         0x01: 11, 0x02: 12, 0x04: 13, 0x08: 14
@@ -82,3 +82,4 @@ print(f"Tact with error in TC: {t_err}")
 t_fixed = hamming74_correct(t_err)
 print(f"Fixed Tact: {t_fixed}")
 print(f"Success: {t_fixed == t}")
+
