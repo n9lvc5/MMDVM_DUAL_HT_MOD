@@ -276,7 +276,7 @@ uint32_t CDMRSlotType::getSyndrome1987(uint32_t pattern) const
     }
   }
 
-  DEBUG2I("DMRSlotType: Syndrome computed for pattern", pattern);
+  // [debug removed]
   
   return pattern;
 }
@@ -299,7 +299,7 @@ uint8_t CDMRSlotType::correct(uint8_t* data) const
 
   if (error_pattern != 0x00U) {
     code ^= error_pattern;
-    DEBUG2I("DMRSlotType: Error pattern found and corrected", error_pattern);
+    // [debug removed]
   }
   
   return (uint8_t)(code >> 12);  // Return high 8 bits (info)
@@ -313,7 +313,7 @@ uint8_t CDMRSlotType::decode2087(const uint8_t* data) const
 
   if (error_pattern != 0x00U) {
     code ^= error_pattern;
-    DEBUG2I("DMRSlotType: Error pattern found and corrected", error_pattern);
+    // [debug removed]
   }
   
   return (uint8_t)(code >> 12);
@@ -336,7 +336,7 @@ void CDMRSlotType::decode(const uint8_t* frame, uint8_t& colorCode, uint8_t& dat
   colorCode = (code >> 4) & 0x0FU;
   dataType  = (code >> 0) & 0x0FU;
 
-  DEBUG2I("DMRSlotType: Decoded slot type", code);
+  // [debug removed]
 }
 
 void CDMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) const
@@ -350,7 +350,7 @@ void CDMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) c
   slotType[1U] = (cksum >> 0) & 0xFFU;
   slotType[2U] = (cksum >> 8) & 0xFFU;
 
-  DEBUG2I("DMRSlotType: Encoded slot type", slotType[0U]);
+  // [debug removed]
   frame[12U] = (frame[12U] & 0xC0U) | ((slotType[0U] >> 2) & 0x3FU);
   frame[13U] = (frame[13U] & 0x0FU) | ((slotType[0U] << 6) & 0xC0U) | ((slotType[1U] >> 2) & 0x30U);
   frame[19U] = (frame[19U] & 0xF0U) | ((slotType[1U] >> 2) & 0x0FU);
