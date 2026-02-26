@@ -43,7 +43,14 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
     DEBUG2I("LC raw345", (lc->rawData[3] << 16) | (lc->rawData[4] << 8) | lc->rawData[5]);
   }
 
-  if (!rsOk) {
+  // Accept LC when RS passes, or when the decoded header looks plausible
+  // (BS→MS can sometimes fail RS due to parity/mask differences; TG/dstId is often correct)
+  uint32_t dstId = ((uint32_t)lc->rawData[3U] << 16) |
+                   ((uint32_t)lc->rawData[4U] << 8) |
+                   (uint32_t)lc->rawData[5U];
+  uint8_t flco = lc->rawData[0U] & 0x3FU;
+  bool plausible = (flco <= 1U) && (dstId >= 1U && dstId <= 16777215U);
+  if (!rsOk && !plausible) {
     return false;
   }
 
