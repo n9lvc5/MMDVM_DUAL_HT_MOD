@@ -72,6 +72,7 @@ private:
   bool        m_syncLocked;
   uint8_t     m_lcData[12];  // Store LC data for embedding in voice frames
   bool        m_lcValid;     // Flag indicating if LC data is valid
+      bool        m_inverted_sync;
 #endif
 
   void procSlot2();

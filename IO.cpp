@@ -409,6 +409,7 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
   //return 4U;
 #endif
 
+/*
 #if !defined(DISABLE_FREQ_BAN)
   // Check banned frequency ranges
   if( ((frequency_rx >= BAN1_MIN)&&(frequency_rx <= BAN1_MAX)) || ((frequency_tx >= BAN1_MIN)&&(frequency_tx <= BAN1_MAX)) || \
@@ -419,6 +420,7 @@ uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_po
   ((pocsag_freq_tx >= BAN2_MIN)&&(pocsag_freq_tx <= BAN2_MAX)) )
     return 4U;
 #endif
+*/
 
 // Check if we have a single, dualband or duplex board
 #if defined(ZUMSPOT_ADF7021) || defined(LONESTAR_USB) || defined(SKYBRIDGE_HS)

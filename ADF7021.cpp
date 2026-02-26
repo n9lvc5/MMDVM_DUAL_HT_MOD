@@ -337,7 +337,7 @@ void CIO::ifConf(MMDVM_STATE modemState, bool reset)
       ADF7021_REG13 = (uint32_t) 0b1101                    << 0;   // register 13
       ADF7021_REG13 |= (uint32_t) ADF7021_SLICER_TH_DMR    << 4;   // slicer threshold
 
-      ADF7021_REG2 = (uint32_t) 0b00                       << 28;  // no data inversion (and RC alpha = 0.5)
+      ADF7021_REG2 = (uint32_t) 0b10                       << 28;  // invert data (and RC alpha = 0.5)
       ADF7021_REG2 |= (uint32_t) (m_cwIdTXLevel / div2)    << 19;  // deviation
       ADF7021_REG2 |= (uint32_t) 0b111                     << 4;   // modulation (RC 4FSK)
       break;

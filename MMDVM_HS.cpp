@@ -20,7 +20,6 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include "Config.h"
 
 #if defined(STM32F10X_MD) || defined(STM32F4XX) || defined(STM32F7XX)
 
