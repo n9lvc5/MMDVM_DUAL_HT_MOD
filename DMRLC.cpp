@@ -27,55 +27,28 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
   uint8_t encoded[25]; // 196 bits = 24.5 bytes, round up to 25
   extractData(data, encoded);
 
-//#if defined(ENABLE_DEBUG)
-  // Debug: Show first few bytes of encoded LC
-  DEBUG2I("Encoded LC [0-3]", (encoded[0] << 24) | (encoded[1] << 16) | (encoded[2] << 8) | encoded[3]);
-//#endif
-DEBUG2I("LC enc0:", encoded[0]);
   // BPTC(196,96) decode to get 12-byte LC
   CBPTC19696 bptc;
-  
   bptc.decode(encoded, lc->rawData);
- DEBUG2I("LC raw0:", lc->rawData[0]);
- DEBUG2I("LC raw9:", lc->rawData[9]);
-//#if defined(ENABLE_DEBUG)
-  // Debug: Show decoded LC before mask
-  DEBUG2I("Decoded LC [0-3]", (lc->rawData[0] << 24) | (lc->rawData[1] << 16) | (lc->rawData[2] << 8) | lc->rawData[3]);
-//#endif
 
   // Apply CRC mask based on data type
   applyMask(lc->rawData, dataType);
- DEBUG2I("LC msk9:", lc->rawData[9]);
-// DEBUG: Print all 12 decoded bytes
-DEBUG2I("raw0:", lc->rawData[0]);
-DEBUG2I("raw1:", lc->rawData[1]);
-DEBUG2I("raw2:", lc->rawData[2]);
-DEBUG2I("raw3:", lc->rawData[3]);
-DEBUG2I("raw4:", lc->rawData[4]);
-DEBUG2I("raw5:", lc->rawData[5]);
-DEBUG2I("raw6:", lc->rawData[6]);
-DEBUG2I("raw7:", lc->rawData[7]);
-DEBUG2I("raw8:", lc->rawData[8]);
-bool rsOk = CRS129::check(lc->rawData);
-DEBUG2I("RS check:", rsOk ? 1 : 0);
-for (uint8_t i = 0U; i < 12U; i++) DEBUG2I("LC raw", lc->rawData[i]);
 
-
-  // Reed-Solomon check
-  if (!CRS129::check(lc->rawData)) {
-#if defined(ENABLE_DEBUG)
-    DEBUG2("LC RS check failed", 0);
-   // DEBUG2("LC Data", lc);
-   // DEBUG2("LC's RawData",rawData);
-#endif
-    return false;
+  // Reed-Solomon check - log result (rare: once per voice call)
+  bool rsOk = CRS129::check(lc->rawData);
+  DEBUG2I("LC RS:", rsOk ? 1 : 0);
+  if (rsOk) {
+    DEBUG2I("LC dstId", ((uint32_t)lc->rawData[3] << 16) | ((uint32_t)lc->rawData[4] << 8) | lc->rawData[5]);
+    DEBUG2I("LC srcId", ((uint32_t)lc->rawData[6] << 16) | ((uint32_t)lc->rawData[7] << 8) | lc->rawData[8]);
+  } else {
+    // RS failed - log first 3 raw bytes to help diagnose decode errors
+    DEBUG2I("LC raw012", (lc->rawData[0] << 16) | (lc->rawData[1] << 8) | lc->rawData[2]);
+    DEBUG2I("LC raw345", (lc->rawData[3] << 16) | (lc->rawData[4] << 8) | lc->rawData[5]);
   }
 
-if (rsOk) {
-  DEBUG1("DMRLC: Valid LC");
-} else {
-  DEBUG1("DMRLC: Invalid LC CRC");
-}
+  if (!rsOk) {
+    return false;
+  }
 
   // Extract LC fields
   lc->PF = (lc->rawData[0U] & 0x80U) != 0;
