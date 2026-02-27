@@ -58,7 +58,9 @@ m_delay(0U)
 #if defined(MS_MODE)
   ,m_currentSlot(1U),
   m_slotTimer(0U),
-  m_syncLocked(false)
+  m_syncLocked(false),
+  m_foundSyncInWindow(false),
+  m_phaseInconsistentCount(0U)
 #endif
 {
   for (uint8_t i = 0U; i < 2U; i++) {
@@ -103,6 +105,8 @@ void CDMRSlotRX::reset()
   m_currentSlot = 1U;
   m_slotTimer = 0U;
   m_syncLocked = false;
+  m_foundSyncInWindow = false;
+  m_phaseInconsistentCount = 0U;
   memset(m_lcData, 0, sizeof(m_lcData));
 #endif
 }
@@ -153,10 +157,17 @@ bool CDMRSlotRX::databit(bool bit)
     uint16_t diff2 = (m_dataPtr >= expected2) ? (m_dataPtr - expected2) : (expected2 - m_dataPtr);
     if (diff2 > DMR_BUFFER_LENGTH_BITS / 2) diff2 = DMR_BUFFER_LENGTH_BITS - diff2;
 
-    if (diff1 <= 5 || diff2 <= 5) inWindow = true;
+    // Check if we are inside a +/- 5 bit window around expected sync
+    if (diff1 <= 5 || diff2 <= 5) {
+       inWindow = true;
+    } else {
+       // Just exited a window, reset the flag for the next one
+       m_foundSyncInWindow = false;
+    }
   }
 
-  if (!m_syncLocked || inWindow) {
+  // Only correlate if not locked, or if in window and we haven't found a sync yet in THIS window
+  if (!m_syncLocked || (inWindow && !m_foundSyncInWindow)) {
     correlateSync();
   }
 #else
@@ -279,6 +290,9 @@ void CDMRSlotRX::procSlot2()
           case DT_VOICE_LC_HEADER:
             DEBUG3("DMRSlotRX: voice header found CC/Slot", colorCode, slot + 1);
             m_state[slot] = DMRRXS_VOICE;
+#if defined(MS_MODE)
+            m_state[slot ^ 1U] = DMRRXS_NONE;  // Only one slot active at a time
+#endif
             {
               // [debug removed - high frequency]
               
@@ -395,9 +409,11 @@ void CDMRSlotRX::procSlot2()
       if (m_syncLocked) {
         m_syncCount[slot]++;
         if (m_syncCount[slot] >= MAX_SYNC_LOST_FRAMES) {
-          DEBUG2("DMRSlotRX: Sync lost in MS_MODE", m_syncCount[slot]);
+          DEBUG2("DMRSlotRX: TS timeout in MS_MODE", m_syncCount[slot]);
           serial.writeDMRLost(slot);
-          reset();
+          m_state[slot] = DMRRXS_NONE;
+          m_syncCount[slot] = 0;
+          // Do NOT call reset() here, keep the flywheel lock!
         }
       }
 #else
@@ -517,16 +533,12 @@ void CDMRSlotRX::correlateSync()
   if (control != CONTROL_NONE) {
 #if defined(ENABLE_DEBUG)
     totalSyncs++;
-    static uint32_t syncDebugCounter = 0;
-    syncDebugCounter++;
-    if (syncDebugCounter % 100 == 1) {
-      // [debug removed - high frequency]
-      // [debug removed - high frequency]
-    }
 #endif
 #if defined(MS_MODE)
+    m_foundSyncInWindow = true;
     // Set sync lock when we find a BS sync pattern
     if (!m_syncLocked) {
+      DEBUG2("DMRSlotRX: Initial lock at pos", m_dataPtr);
       m_currentSlot = 1U; // Initial lock, assume slot 1
       m_syncLocked = true;
     }
@@ -576,11 +588,15 @@ void CDMRSlotRX::decodeCACH()
     c[i] = READ_BIT1(m_buffer, (cachStartPtr + i) % DMR_BUFFER_LENGTH_BITS);
   }
 
-  // TACT bits (first 7 bits of CACH)
+  // TACT bits - interleaved in first 16 bits of CACH
   bool t[7];
-  for (uint8_t i = 0; i < 7; i++) {
-    t[i] = c[i];
-  }
+  t[0] = c[0];  // AT
+  t[1] = c[1];  // TC
+  t[2] = c[5];  // LCSS1
+  t[3] = c[6];  // LCSS0
+  t[4] = c[10]; // H2
+  t[5] = c[11]; // H1
+  t[6] = c[15]; // H0
 
   // Hamming(7,4) check
   bool s0 = t[0] ^ t[1] ^ t[2] ^ t[4];
@@ -598,15 +614,22 @@ void CDMRSlotRX::decodeCACH()
       case 1: t[4] = !t[4]; break;
       case 2: t[5] = !t[5]; break;
       case 4: t[6] = !t[6]; break;
-      default: return; // Multi-bit error
+      default:
+        DEBUG2I("DMRSlotRX: CACH Multi-bit error syndrome", s);
+        return;
     }
   }
 
   uint8_t tc = t[1] ? 2U : 1U;
   if (m_currentSlot != tc) {
-    DEBUG2I("DMRSlotRX: Phase corrected to Slot", tc);
-    m_currentSlot = tc;
-    // Note: timing (m_endPtr) is handled by flywheel and correlateSync window
+    m_phaseInconsistentCount++;
+    if (m_phaseInconsistentCount >= 2U) {
+       DEBUG2I("DMRSlotRX: Phase corrected to Slot", tc);
+       m_currentSlot = tc;
+       m_phaseInconsistentCount = 0U;
+    }
+  } else {
+    m_phaseInconsistentCount = 0U;
   }
 }
 
