@@ -50,8 +50,16 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
                    (uint32_t)lc->rawData[5U];
   uint8_t flco = lc->rawData[0U] & 0x3FU;
   bool plausible = (flco <= 1U) && (dstId >= 1U && dstId <= 16777215U);
+
+  DEBUG2I("LC plausible:", plausible ? 1 : 0);
+
   if (!rsOk && !plausible) {
+    DEBUG1("LC discarded - RS and Plausible failed");
     return false;
+  }
+  
+  if (!rsOk && plausible) {
+    DEBUG1("LC accepted via plausibility check");
   }
 
   // Extract LC fields
