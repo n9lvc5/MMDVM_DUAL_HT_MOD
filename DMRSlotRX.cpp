@@ -222,13 +222,12 @@ void CDMRSlotRX::procSlot2()
 #if defined(ENABLE_DEBUG)
       static uint8_t lastColorCode = 0xFF;
       if (colorCode != lastColorCode) {
-        // [debug removed - high frequency]
-        // [debug removed - high frequency]
+        DEBUG2I("DMR CC detected:", colorCode);
         lastColorCode = colorCode;
       }
 #endif
 
-      if (colorCode <= 15U) {
+      if (colorCode == m_colorCode || m_colorCode == 0U) {
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
