@@ -30,7 +30,7 @@
 
 const uint8_t MAX_SYNC_BYTES_ERRS   = 3U;
 
-const uint8_t MAX_SYNC_LOST_FRAMES  = 13U;
+const uint8_t MAX_SYNC_LOST_FRAMES  = 30U;
 
 const uint16_t NOENDPTR = 9999U;
 
@@ -58,7 +58,9 @@ m_delay(0U)
 #if defined(MS_MODE)
   ,m_currentSlot(1U),
   m_slotTimer(0U),
-  m_syncLocked(false)
+  m_syncLocked(false),
+  m_foundSyncInWindow(false),
+  m_phaseInconsistentCount(0U)
 #endif
 {
   for (uint8_t i = 0U; i < 2U; i++) {
@@ -103,6 +105,8 @@ void CDMRSlotRX::reset()
   m_currentSlot = 1U;
   m_slotTimer = 0U;
   m_syncLocked = false;
+  m_foundSyncInWindow = false;
+  m_phaseInconsistentCount = 0U;
   memset(m_lcData, 0, sizeof(m_lcData));
 #endif
 }
@@ -128,8 +132,10 @@ bool CDMRSlotRX::databit(bool bit)
     m_patternBuffer |= 0x01U;
     
 #if defined(MS_MODE)
-  // Slot timing logic for MS mode
+  // Slot timing logic for MS mode - wrap every 30ms (288 bits)
   m_slotTimer++;
+  if (m_slotTimer >= 288U)
+    m_slotTimer = 0U;
 #endif
   
 #if defined(MS_MODE)
@@ -138,6 +144,33 @@ bool CDMRSlotRX::databit(bool bit)
   uint8_t slot_idx = m_slot ? 1U : 0U;
 #endif
 
+#if defined(MS_MODE)
+  bool inWindow = false;
+  if (m_syncLocked) {
+    // Window for Slot 1 sync or Slot 2 sync (288 bits apart)
+    uint16_t expected1 = m_syncPtr;
+    uint16_t expected2 = (m_syncPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    
+    uint16_t diff1 = (m_dataPtr >= expected1) ? (m_dataPtr - expected1) : (expected1 - m_dataPtr);
+    if (diff1 > DMR_BUFFER_LENGTH_BITS / 2) diff1 = DMR_BUFFER_LENGTH_BITS - diff1;
+    
+    uint16_t diff2 = (m_dataPtr >= expected2) ? (m_dataPtr - expected2) : (expected2 - m_dataPtr);
+    if (diff2 > DMR_BUFFER_LENGTH_BITS / 2) diff2 = DMR_BUFFER_LENGTH_BITS - diff2;
+    
+    // Check if we are inside a +/- 5 bit window around expected sync
+    if (diff1 <= 5 || diff2 <= 5) {
+       inWindow = true;
+    } else {
+       // Just exited a window, reset the flag for the next one
+       m_foundSyncInWindow = false;
+    }
+  }
+
+  // Only correlate if not locked, or if in window and we haven't found a sync yet in THIS window
+  if (!m_syncLocked || (inWindow && !m_foundSyncInWindow)) {
+    correlateSync();
+  }
+#else
   if (m_state[slot_idx] == DMRRXS_NONE) {
     correlateSync();
   } else {
@@ -157,6 +190,7 @@ bool CDMRSlotRX::databit(bool bit)
         correlateSync();
     }
   }
+#endif
 
   procSlot2();
 
@@ -222,13 +256,12 @@ void CDMRSlotRX::procSlot2()
 #if defined(ENABLE_DEBUG)
       static uint8_t lastColorCode = 0xFF;
       if (colorCode != lastColorCode) {
-        // [debug removed - high frequency]
-        // [debug removed - high frequency]
+        DEBUG2I("DMR CC detected:", colorCode);
         lastColorCode = colorCode;
       }
 #endif
 
-      if (colorCode <= 15U) {
+      if (colorCode == m_colorCode || m_colorCode == 0U) {
         m_syncCount[slot] = 0U;
         m_n[slot]         = 0U;
 
@@ -255,7 +288,7 @@ void CDMRSlotRX::procSlot2()
 #endif
             break;
           case DT_VOICE_LC_HEADER:
-            DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
+            DEBUG3("DMRSlotRX: voice header found CC/Slot", colorCode, slot + 1);
             m_state[slot] = DMRRXS_VOICE;
 #if defined(MS_MODE)
             m_state[slot ^ 1U] = DMRRXS_NONE;  // Only one slot active at a time
@@ -346,10 +379,10 @@ void CDMRSlotRX::procSlot2()
         }
       } else {
 #if defined(ENABLE_DEBUG)
-        static uint32_t ccMismatchCount = 0;
-        ccMismatchCount++;
-        if (ccMismatchCount % 10 == 1) {
-          // [debug removed - high frequency]
+        static uint8_t lastFailedCC = 0xFF;
+        if (colorCode != lastFailedCC) {
+          DEBUG3("DMRSlotRX: CC mismatch - expected/got", m_colorCode, colorCode);
+          lastFailedCC = colorCode;
         }
 #endif
       }
@@ -376,9 +409,11 @@ void CDMRSlotRX::procSlot2()
       if (m_syncLocked) {
         m_syncCount[slot]++;
         if (m_syncCount[slot] >= MAX_SYNC_LOST_FRAMES) {
-          DEBUG2("DMRSlotRX: Sync lost in MS_MODE", m_syncCount[slot]);
+          DEBUG2("DMRSlotRX: TS timeout in MS_MODE", m_syncCount[slot]);
           serial.writeDMRLost(slot);
-          reset();
+          m_state[slot] = DMRRXS_NONE;
+          m_syncCount[slot] = 0;
+          // Do NOT call reset() here, keep the flywheel lock!
         }
       }
 #else
@@ -498,23 +533,17 @@ void CDMRSlotRX::correlateSync()
   if (control != CONTROL_NONE) {
 #if defined(ENABLE_DEBUG)
     totalSyncs++;
-    static uint32_t syncDebugCounter = 0;
-    syncDebugCounter++;
-    if (syncDebugCounter % 100 == 1) {
-      // [debug removed - high frequency]
-      // [debug removed - high frequency]
-    }
 #endif
 #if defined(MS_MODE)
+    m_foundSyncInWindow = true;
     // Set sync lock when we find a BS sync pattern
-    if (control != CONTROL_NONE) {
-      if (!m_syncLocked) {
-        m_currentSlot = 1U; // Initial lock, assume slot 1
-        m_syncLocked = true;
-      }
-      // If already locked, we trust the flywheel but update m_slotTimer
-      m_slotTimer = 0U;
+    if (!m_syncLocked) {
+      DEBUG2("DMRSlotRX: Initial lock at pos", m_dataPtr);
+      m_currentSlot = 1U; // Initial lock, assume slot 1
+      m_syncLocked = true;
     }
+    // Update m_slotTimer relative to the burst we just saw
+    m_slotTimer = 0U; 
 #endif
     syncPtr = m_dataPtr;
 
@@ -533,13 +562,18 @@ void CDMRSlotRX::correlateSync()
     
     // [debug removed - high frequency]
     
+#if defined(MS_MODE)
+    // In MS_MODE, any valid sync from the BS resets the watchdog for both slots
+    m_syncCount[0U] = 0U;
+    m_syncCount[1U] = 0U;
+#else
     if (m_state[slot_idx] == DMRRXS_NONE) {
       m_syncCount[slot_idx] = 0U; // If we are idle, reset the sync counter as well
     }
+#endif
     // Only reset the state if we are not in the middle of a voice or data call
     if (m_state[slot_idx] != DMRRXS_VOICE && m_state[slot_idx] != DMRRXS_DATA) {
         m_state[slot_idx] = DMRRXS_NONE;
-        // [debug removed - high frequency]
     }
     m_endPtr = endPtr;
   }
@@ -554,7 +588,7 @@ void CDMRSlotRX::decodeCACH()
     c[i] = READ_BIT1(m_buffer, (cachStartPtr + i) % DMR_BUFFER_LENGTH_BITS);
   }
 
-  // TACT bits
+  // TACT bits - interleaved in first 16 bits of CACH
   bool t[7];
   t[0] = c[0];  // AT
   t[1] = c[1];  // TC
@@ -580,17 +614,22 @@ void CDMRSlotRX::decodeCACH()
       case 1: t[4] = !t[4]; break;
       case 2: t[5] = !t[5]; break;
       case 4: t[6] = !t[6]; break;
-      default: return; // Multi-bit error
+      default: 
+        DEBUG2I("DMRSlotRX: CACH Multi-bit error syndrome", s);
+        return; 
     }
   }
 
   uint8_t tc = t[1] ? 2U : 1U;
   if (m_currentSlot != tc) {
-    // [debug removed - high frequency]
-    // [debug removed - high frequency]
-    m_currentSlot = tc;
-    // Align flywheel m_endPtr to this slot boundary
-    m_endPtr = (m_syncPtr + 108U) % DMR_BUFFER_LENGTH_BITS;
+    m_phaseInconsistentCount++;
+    if (m_phaseInconsistentCount >= 2U) {
+       DEBUG2I("DMRSlotRX: Phase corrected to Slot", tc);
+       m_currentSlot = tc;
+       m_phaseInconsistentCount = 0U;
+    }
+  } else {
+    m_phaseInconsistentCount = 0U;
   }
 }
 
