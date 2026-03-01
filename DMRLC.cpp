@@ -101,7 +101,7 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
   
   // Extract bits from LC Part 1 (bits 0-97 of burst)
   for (uint32_t i = 0U; i < 98U; i++) {
-    uint32_t srcByte = 1U + (i / 8U);
+    uint32_t srcByte = i / 8U;
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
     
@@ -114,7 +114,7 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
   
   // Extract bits from LC Part 2 (bits 166-263 of burst)
   for (uint32_t i = 166U; i < 264U; i++) {
-    uint32_t srcByte = 1U + (i / 8U);
+    uint32_t srcByte = i / 8U;
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
     
