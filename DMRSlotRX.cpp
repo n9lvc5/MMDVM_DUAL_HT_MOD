@@ -228,7 +228,14 @@ void CDMRSlotRX::procSlot2()
 #endif
 
       if (colorCode == m_colorCode || m_colorCode == 0U) {
+#if defined(MS_MODE)
+        // Reset both slots - flywheel alternates slot identity so only resetting
+        // m_syncCount[slot] leaves the other slot accumulating false misses.
+        m_syncCount[0U] = 0U;
+        m_syncCount[1U] = 0U;
+#else
         m_syncCount[slot] = 0U;
+#endif
         m_n[slot]         = 0U;
 
         frame[0U] |= dataType;
@@ -368,7 +375,16 @@ void CDMRSlotRX::procSlot2()
       writeRSSIData();
       m_state[slot] = DMRRXS_VOICE;
 #endif
+      // In MS_MODE the flywheel alternates m_currentSlot every burst, so 'slot'
+      // oscillates between 0 and 1. Resetting only syncCount[slot] leaves the
+      // OTHER slot's counter accumulating, which triggers false sync-lost after
+      // 13 bursts (~390ms). Reset BOTH to prevent false dropout during voice calls.
+#if defined(MS_MODE)
+      m_syncCount[0U] = 0U;
+      m_syncCount[1U] = 0U;
+#else
       m_syncCount[slot] = 0U;
+#endif
       m_n[slot]         = 0U;
     } else {
 #if defined(MS_MODE)
@@ -585,11 +601,15 @@ void CDMRSlotRX::decodeCACH()
 
   uint8_t tc = t[1] ? 2U : 1U;
   if (m_currentSlot != tc) {
-    // [debug removed - high frequency]
-    // [debug removed - high frequency]
+    // Only correct the slot identity. DO NOT touch m_endPtr here.
+    // decodeCACH fires at m_slotTimer==132, which is 24 bits AFTER procSlot2
+    // already fired at m_slotTimer==108 and advanced m_endPtr += 288.
+    // Setting m_endPtr = m_syncPtr+108 here would reset it 288 bits backward,
+    // to a position m_dataPtr has already passed, breaking the flywheel entirely.
+    // The flywheel (m_endPtr += 288 in procSlot2) correctly tracks burst boundaries.
+    // This correction only fixes the slot-identity label (slot 1 vs slot 2).
+    DEBUG2("DMRSlotRX: Slot corrected to", tc);
     m_currentSlot = tc;
-    // Align flywheel m_endPtr to this slot boundary
-    m_endPtr = (m_syncPtr + 108U) % DMR_BUFFER_LENGTH_BITS;
   }
 }
 
