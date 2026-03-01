@@ -19,20 +19,17 @@ class CBPTC19696
 public:
   CBPTC19696();
 
-  // Decode a BPTC(196,96) codeword from a full 33‑byte
-  // DMR burst payload (voice header/terminator).
-  // The layout and error‑correction behaviour matches
-  // MMDVMHost's CBPTC19696::decode().
   void decode(const uint8_t* in, uint8_t* out);
 
 private:
   bool m_rawData[196];
   bool m_deInterData[196];
-  
-  void decodeExtractBinary(const uint8_t* in);
-  void decodeDeInterleave();
-  void decodeErrorCheck();
-  void decodeExtractData(uint8_t* data) const;
+
+  void deInterleave();
+  void errorCheck();
+  bool hamming1511(bool* d) const;
+  void hamming1503(bool* d) const;
+  void extractData(uint8_t* data) const;
 };
 
 #endif

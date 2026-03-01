@@ -608,8 +608,8 @@ void CDMRSlotRX::decodeCACH()
     // to a position m_dataPtr has already passed, breaking the flywheel entirely.
     // The flywheel (m_endPtr += 288 in procSlot2) correctly tracks burst boundaries.
     // This correction only fixes the slot-identity label (slot 1 vs slot 2).
-    DEBUG2("DMRSlotRX: Slot corrected to", tc);
     m_currentSlot = tc;
+    // [debug removed - fires every other burst on single-slot repeaters]
   }
 }
 
