@@ -1,5 +1,6 @@
 # Introduction 
 # I"M STILL WORKING ON, USE AT YOUR OWN RISK. MIGHT HAVE A RF SIGNAL PROBLEM
+https://github.com/n9lvc5/MMDVM_DUAL_HT_MOD/blob/main/Firmware_Disclaimer.docx
 
 Adrino - Generic STM32F103C Series, 20k Ram, 64k Flash, smallest, upload "Serial".
 Additonal Board Manager URL http://dan.drown.org/stm32duino/package_STM32duino_index.json
@@ -62,6 +63,7 @@ Once we fix that compile error and get the new logs, we will see what dataType t
 
 
     
+
 
 
 
