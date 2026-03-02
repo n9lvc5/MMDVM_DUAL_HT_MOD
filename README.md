@@ -1,5 +1,5 @@
 # Introduction 
-# DO NOT TRY THIS VERSION, I"M STILL WORKING ON, IT DOES NOT WORK YET
+# I"M STILL WORKING ON, USE AT YOUR OWN RISK. MIGHT HAVE A RF SIGNAL PROBLEM
 
 Adrino - Generic STM32F103C Series, 20k Ram, 64k Flash, smallest, upload "Serial".
 Additonal Board Manager URL http://dan.drown.org/stm32duino/package_STM32duino_index.json
@@ -62,6 +62,7 @@ Once we fix that compile error and get the new logs, we will see what dataType t
 
 
     
+
 
 
 
