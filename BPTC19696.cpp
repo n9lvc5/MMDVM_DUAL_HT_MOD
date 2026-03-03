@@ -56,13 +56,13 @@ void CBPTC19696::decode(const uint8_t* frame, uint8_t* out)
 
   // LC part 1: burst bits 0-97
   for (uint32_t i = 0U; i < 98U; i++) {
-    uint32_t srcByte = 1U + (i / 8U);
+    uint32_t srcByte = i / 8U;
     uint32_t srcBit  = 7U - (i % 8U);
     m_rawData[bptcPos++] = (frame[srcByte] >> srcBit) & 1U;
   }
   // LC part 2: burst bits 166-263
   for (uint32_t i = 166U; i < 264U; i++) {
-    uint32_t srcByte = 1U + (i / 8U);
+    uint32_t srcByte = i / 8U;
     uint32_t srcBit  = 7U - (i % 8U);
     m_rawData[bptcPos++] = (frame[srcByte] >> srcBit) & 1U;
   }
@@ -98,27 +98,27 @@ void CBPTC19696::errorCheck()
     // 15 columns of shortened Hamming(13,9,3) derived from Hamming(15,11,3)
     // by fixing d[0]=d[1]=0 (shortened code).
     // Column c has data bits at m_deInterData[c + r*15] for r=0..8,
-    // and column parity bits at m_deInterData[135 + c*4 + 0..3].
+    // and column parity bits at m_deInterData[135 + k*15 + c] for k=0..3.
     for (uint32_t c = 0U; c < 15U; c++) {
       bool data[15U];
       data[0U] = false;  // shortened
       data[1U] = false;  // shortened
       for (uint32_t r = 0U; r < 9U; r++)
         data[r + 2U] = m_deInterData[c + r * 15U];
-      data[11U] = m_deInterData[135U + c * 4U + 0U];
-      data[12U] = m_deInterData[135U + c * 4U + 1U];
-      data[13U] = m_deInterData[135U + c * 4U + 2U];
-      data[14U] = m_deInterData[135U + c * 4U + 3U];
+      data[11U] = m_deInterData[135U + 0U * 15U + c];
+      data[12U] = m_deInterData[135U + 1U * 15U + c];
+      data[13U] = m_deInterData[135U + 2U * 15U + c];
+      data[14U] = m_deInterData[135U + 3U * 15U + c];
 
       if (!hamming1511(data)) {
         hamming1503(data);
         fixing = true;
         for (uint32_t r = 0U; r < 9U; r++)
           m_deInterData[c + r * 15U] = data[r + 2U];
-        m_deInterData[135U + c * 4U + 0U] = data[11U];
-        m_deInterData[135U + c * 4U + 1U] = data[12U];
-        m_deInterData[135U + c * 4U + 2U] = data[13U];
-        m_deInterData[135U + c * 4U + 3U] = data[14U];
+        m_deInterData[135U + 0U * 15U + c] = data[11U];
+        m_deInterData[135U + 1U * 15U + c] = data[12U];
+        m_deInterData[135U + 2U * 15U + c] = data[13U];
+        m_deInterData[135U + 3U * 15U + c] = data[14U];
       }
     }
 

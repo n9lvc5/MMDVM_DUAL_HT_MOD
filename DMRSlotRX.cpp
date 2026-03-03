@@ -263,9 +263,6 @@ void CDMRSlotRX::procSlot2()
           case DT_VOICE_LC_HEADER:
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
             m_state[slot] = DMRRXS_VOICE;
-#if defined(MS_MODE)
-            m_state[slot ^ 1U] = DMRRXS_NONE;  // Only one slot active at a time
-#endif
             {
               // [debug removed - high frequency]
               
