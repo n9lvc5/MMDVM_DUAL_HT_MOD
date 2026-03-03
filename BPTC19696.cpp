@@ -40,7 +40,7 @@ CBPTC19696::CBPTC19696()
 }
 
 // Decode a BPTC(196,96) codeword from a full 34-byte DMR frame buffer.
-// frame[0] is the control byte; frame[1..33] are the 33 burst bytes.
+// frame points to the start of the 33-byte burst payload (skipping the control byte).
 // This function extracts the 196 BPTC bits by skipping the 48-bit SYNC
 // and 20-bit slot-type fields, exactly like MMDVMHost CBPTC19696::decode().
 void CBPTC19696::decode(const uint8_t* frame, uint8_t* out)
