@@ -12,7 +12,7 @@
 
 // Reed-Solomon (12,9) over GF(2^8)
 // Primitive polynomial: x^8 + x^4 + x^3 + x^2 + 1 (0x11D)
-// Generator polynomial roots: 1, alpha, alpha^2
+// Generator polynomial roots: alpha, alpha^2, alpha^3  (ETSI TS 102 361-1 §B.3.5)
 
 const uint8_t EXP_TABLE[512] = {
   0x01U, 0x02U, 0x04U, 0x08U, 0x10U, 0x20U, 0x40U, 0x80U, 0x1DU, 0x3AU, 0x74U, 0xE8U, 0xCDU, 0x87U, 0x13U, 0x26U,
@@ -82,12 +82,12 @@ static inline uint8_t gfMult(uint8_t a, uint8_t b)
 bool CRS129::check(const uint8_t* in)
 {
   // Reed-Solomon (12,9) check over GF(2^8)
-  // Roots: 1, alpha, alpha^2
-  
+  // Roots: alpha, alpha^2, alpha^3  (ETSI TS 102 361-1 §B.3.5)
+
   uint8_t syndromes[3] = {0, 0, 0};
 
   for (uint8_t j = 0; j < 3; j++) {
-    uint8_t root = EXP_TABLE[j];
+    uint8_t root = EXP_TABLE[j + 1U];
     uint8_t s = 0;
     for (uint8_t i = 0; i < 12; i++) {
       s = gfAdd(gfMult(s, root), in[i]);

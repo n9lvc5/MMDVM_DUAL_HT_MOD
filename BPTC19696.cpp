@@ -14,26 +14,92 @@
 #include <string.h>
 
 // BPTC (196,96) de-interleave table.
-// ETSI TS 102 361-1 Section B.3.9 defines the FORWARD (encoding) permutation as:
-//   e[k] = raw[(181 * k) mod 196]
-// The INVERSE (decoding) permutation is:
-//   raw[j] = e[(13 * j) mod 196]   because 13 * 181 ≡ 1 (mod 196)
-// This table implements the decoding direction: INTERLEAVE_TABLE[k] = (13 * k) mod 196
+// ETSI TS 102 361-1 Section B.3.9 / Formula B.1:
+//   "Interleave Index = Index × 181 modulo 196"
+// This means code bit at position Index is transmitted at position (181*Index) mod 196.
+// Decoding: decoded[n] = received[(181*n) mod 196]
+// INTERLEAVE_TABLE[k] = (181 * k) mod 196
 const uint32_t INTERLEAVE_TABLE[196] = {
-      0U,  13U,  26U,  39U,  52U,  65U,  78U,  91U, 104U, 117U, 130U, 143U, 156U, 169U, 182U, 195U,
-     12U,  25U,  38U,  51U,  64U,  77U,  90U, 103U, 116U, 129U, 142U, 155U, 168U, 181U, 194U,  11U,
-     24U,  37U,  50U,  63U,  76U,  89U, 102U, 115U, 128U, 141U, 154U, 167U, 180U, 193U,  10U,  23U,
-     36U,  49U,  62U,  75U,  88U, 101U, 114U, 127U, 140U, 153U, 166U, 179U, 192U,   9U,  22U,  35U,
-     48U,  61U,  74U,  87U, 100U, 113U, 126U, 139U, 152U, 165U, 178U, 191U,   8U,  21U,  34U,  47U,
-     60U,  73U,  86U,  99U, 112U, 125U, 138U, 151U, 164U, 177U, 190U,   7U,  20U,  33U,  46U,  59U,
-     72U,  85U,  98U, 111U, 124U, 137U, 150U, 163U, 176U, 189U,   6U,  19U,  32U,  45U,  58U,  71U,
-     84U,  97U, 110U, 123U, 136U, 149U, 162U, 175U, 188U,   5U,  18U,  31U,  44U,  57U,  70U,  83U,
-     96U, 109U, 122U, 135U, 148U, 161U, 174U, 187U,   4U,  17U,  30U,  43U,  56U,  69U,  82U,  95U,
-    108U, 121U, 134U, 147U, 160U, 173U, 186U,   3U,  16U,  29U,  42U,  55U,  68U,  81U,  94U, 107U,
-    120U, 133U, 146U, 159U, 172U, 185U,   2U,  15U,  28U,  41U,  54U,  67U,  80U,  93U, 106U, 119U,
-    132U, 145U, 158U, 171U, 184U,   1U,  14U,  27U,  40U,  53U,  66U,  79U,  92U, 105U, 118U, 131U,
-    144U, 157U, 170U, 183U
+      0U, 181U, 166U, 151U, 136U, 121U, 106U,  91U,  76U,  61U,  46U,  31U,  16U,   1U, 182U, 167U,
+    152U, 137U, 122U, 107U,  92U,  77U,  62U,  47U,  32U,  17U,   2U, 183U, 168U, 153U, 138U, 123U,
+    108U,  93U,  78U,  63U,  48U,  33U,  18U,   3U, 184U, 169U, 154U, 139U, 124U, 109U,  94U,  79U,
+     64U,  49U,  34U,  19U,   4U, 185U, 170U, 155U, 140U, 125U, 110U,  95U,  80U,  65U,  50U,  35U,
+     20U,   5U, 186U, 171U, 156U, 141U, 126U, 111U,  96U,  81U,  66U,  51U,  36U,  21U,   6U, 187U,
+    172U, 157U, 142U, 127U, 112U,  97U,  82U,  67U,  52U,  37U,  22U,   7U, 188U, 173U, 158U, 143U,
+    128U, 113U,  98U,  83U,  68U,  53U,  38U,  23U,   8U, 189U, 174U, 159U, 144U, 129U, 114U,  99U,
+     84U,  69U,  54U,  39U,  24U,   9U, 190U, 175U, 160U, 145U, 130U, 115U, 100U,  85U,  70U,  55U,
+     40U,  25U,  10U, 191U, 176U, 161U, 146U, 131U, 116U, 101U,  86U,  71U,  56U,  41U,  26U,  11U,
+    192U, 177U, 162U, 147U, 132U, 117U, 102U,  87U,  72U,  57U,  42U,  27U,  12U, 193U, 178U, 163U,
+    148U, 133U, 118U, 103U,  88U,  73U,  58U,  43U,  28U,  13U, 194U, 179U, 164U, 149U, 134U, 119U,
+    104U,  89U,  74U,  59U,  44U,  29U,  14U, 195U, 180U, 165U, 150U, 135U, 120U, 105U,  90U,  75U,
+     60U,  45U,  30U,  15U
 };
+
+// Hamming(13,9,3) decode – used for the 15 BPTC columns.
+static bool hammingDecode1393(bool* d)
+{
+  bool c0 = d[0] ^ d[1] ^ d[3] ^ d[5] ^ d[6];
+  bool c1 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7];
+  bool c2 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8];
+  bool c3 = d[0] ^ d[2] ^ d[4] ^ d[5] ^ d[8];
+
+  uint8_t n = 0x00U;
+  n |= (c0 != d[9])  ? 0x01U : 0x00U;
+  n |= (c1 != d[10]) ? 0x02U : 0x00U;
+  n |= (c2 != d[11]) ? 0x04U : 0x00U;
+  n |= (c3 != d[12]) ? 0x08U : 0x00U;
+
+  switch (n) {
+    case 0x01U: d[9]  = !d[9];  return true;
+    case 0x02U: d[10] = !d[10]; return true;
+    case 0x04U: d[11] = !d[11]; return true;
+    case 0x08U: d[12] = !d[12]; return true;
+    case 0x0FU: d[0]  = !d[0];  return true;
+    case 0x07U: d[1]  = !d[1];  return true;
+    case 0x0EU: d[2]  = !d[2];  return true;
+    case 0x05U: d[3]  = !d[3];  return true;
+    case 0x0AU: d[4]  = !d[4];  return true;
+    case 0x0DU: d[5]  = !d[5];  return true;
+    case 0x03U: d[6]  = !d[6];  return true;
+    case 0x06U: d[7]  = !d[7];  return true;
+    case 0x0CU: d[8]  = !d[8];  return true;
+    default: return false;
+  }
+}
+
+// Hamming(15,11,3) variant #2 decode – used for the 9 BPTC rows.
+static bool hammingDecode15113_2(bool* d)
+{
+  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8];
+  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9];
+  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10];
+  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10];
+
+  uint8_t n = 0x00U;
+  n |= (c0 != d[11]) ? 0x01U : 0x00U;
+  n |= (c1 != d[12]) ? 0x02U : 0x00U;
+  n |= (c2 != d[13]) ? 0x04U : 0x00U;
+  n |= (c3 != d[14]) ? 0x08U : 0x00U;
+
+  switch (n) {
+    case 0x01U: d[11] = !d[11]; return true;
+    case 0x02U: d[12] = !d[12]; return true;
+    case 0x04U: d[13] = !d[13]; return true;
+    case 0x08U: d[14] = !d[14]; return true;
+    case 0x09U: d[0]  = !d[0];  return true;
+    case 0x0BU: d[1]  = !d[1];  return true;
+    case 0x0FU: d[2]  = !d[2];  return true;
+    case 0x07U: d[3]  = !d[3];  return true;
+    case 0x0EU: d[4]  = !d[4];  return true;
+    case 0x05U: d[5]  = !d[5];  return true;
+    case 0x0AU: d[6]  = !d[6];  return true;
+    case 0x0DU: d[7]  = !d[7];  return true;
+    case 0x03U: d[8]  = !d[8];  return true;
+    case 0x06U: d[9]  = !d[9];  return true;
+    case 0x0CU: d[10] = !d[10]; return true;
+    default: return false;
+  }
+}
 
 CBPTC19696::CBPTC19696()
 {
@@ -81,107 +147,64 @@ void CBPTC19696::deInterleave()
 void CBPTC19696::errorCheck()
 {
   // Iterative row/column Hamming error correction (up to 5 passes).
+  // Mirrors MMDVMHost CBPTC19696::decodeErrorCheck().
   bool fixing;
   uint32_t count = 0U;
   do {
     fixing = false;
 
-    // 9 rows of Hamming(15,11,3)
-    for (uint32_t r = 0U; r < 9U; r++) {
-      uint32_t offset = r * 15U;
-      if (!hamming1511(m_deInterData + offset)) {
-        hamming1503(m_deInterData + offset);
+    // 15 columns of Hamming(13,9,3).
+    // Column c: data at m_deInterData[c+1 + r*15] for r=0..8 (9 bits),
+    // parity at m_deInterData[c+1 + r*15] for r=9..12 (4 bits).
+    bool col[13U];
+    for (uint32_t c = 0U; c < 15U; c++) {
+      uint32_t pos = c + 1U;
+      for (uint32_t a = 0U; a < 13U; a++) {
+        col[a] = m_deInterData[pos];
+        pos += 15U;
+      }
+      if (hammingDecode1393(col)) {
+        uint32_t wpos = c + 1U;
+        for (uint32_t a = 0U; a < 13U; a++) {
+          m_deInterData[wpos] = col[a];
+          wpos += 15U;
+        }
         fixing = true;
       }
     }
 
-    // 15 columns of shortened Hamming(13,9,3) derived from Hamming(15,11,3)
-    // by fixing d[0]=d[1]=0 (shortened code).
-    // Column c has data bits at m_deInterData[c + r*15] for r=0..8,
-    // and column parity bits at m_deInterData[135 + k*15 + c] for k=0..3.
-    for (uint32_t c = 0U; c < 15U; c++) {
-      bool data[15U];
-      data[0U] = false;  // shortened
-      data[1U] = false;  // shortened
-      for (uint32_t r = 0U; r < 9U; r++)
-        data[r + 2U] = m_deInterData[c + r * 15U];
-      data[11U] = m_deInterData[135U + 0U * 15U + c];
-      data[12U] = m_deInterData[135U + 1U * 15U + c];
-      data[13U] = m_deInterData[135U + 2U * 15U + c];
-      data[14U] = m_deInterData[135U + 3U * 15U + c];
-
-      if (!hamming1511(data)) {
-        hamming1503(data);
+    // 9 rows of Hamming(15,11,3) variant #2.
+    // Row r: bits at m_deInterData[r*15+1 .. r*15+15].
+    for (uint32_t r = 0U; r < 9U; r++) {
+      uint32_t pos = (r * 15U) + 1U;
+      if (hammingDecode15113_2(m_deInterData + pos))
         fixing = true;
-        for (uint32_t r = 0U; r < 9U; r++)
-          m_deInterData[c + r * 15U] = data[r + 2U];
-        m_deInterData[135U + 0U * 15U + c] = data[11U];
-        m_deInterData[135U + 1U * 15U + c] = data[12U];
-        m_deInterData[135U + 2U * 15U + c] = data[13U];
-        m_deInterData[135U + 3U * 15U + c] = data[14U];
-      }
     }
 
     count++;
   } while (fixing && count < 5U);
 }
 
-bool CBPTC19696::hamming1511(bool* d) const
-{
-  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8] ^ d[11];
-  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9] ^ d[12];
-  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10] ^ d[13];
-  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10] ^ d[14];
-  return !c0 && !c1 && !c2 && !c3;
-}
-
-void CBPTC19696::hamming1503(bool* d) const
-{
-  bool c0 = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8] ^ d[11];
-  bool c1 = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9] ^ d[12];
-  bool c2 = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10] ^ d[13];
-  bool c3 = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10] ^ d[14];
-
-  uint8_t n = 0U;
-  n |= c0 ? 0x01U : 0x00U;
-  n |= c1 ? 0x02U : 0x00U;
-  n |= c2 ? 0x04U : 0x00U;
-  n |= c3 ? 0x08U : 0x00U;
-
-  switch (n) {
-    case 0x09U: d[0]  = !d[0];  break;
-    case 0x0BU: d[1]  = !d[1];  break;
-    case 0x0FU: d[2]  = !d[2];  break;
-    case 0x07U: d[3]  = !d[3];  break;
-    case 0x0EU: d[4]  = !d[4];  break;
-    case 0x05U: d[5]  = !d[5];  break;
-    case 0x0AU: d[6]  = !d[6];  break;
-    case 0x0DU: d[7]  = !d[7];  break;
-    case 0x03U: d[8]  = !d[8];  break;
-    case 0x06U: d[9]  = !d[9];  break;
-    case 0x0CU: d[10] = !d[10]; break;
-    case 0x01U: d[11] = !d[11]; break;
-    case 0x02U: d[12] = !d[12]; break;
-    case 0x04U: d[13] = !d[13]; break;
-    case 0x08U: d[14] = !d[14]; break;
-    default: break;
-  }
-}
-
 void CBPTC19696::extractData(uint8_t* data) const
 {
-  // Extract the 96 information bits from the 9×15 de-interleaved matrix.
-  // Each of the 9 rows has 11 data bits (positions 0-10) and 4 parity bits (11-14).
-  // Row 8 carries only 8 information bits (positions 0-7).
+  // Extract the 96 information bits from the de-interleaved 196-bit matrix.
+  // Bit layout per ETSI TS 102 361-1 Table B.2:
+  //   Position 0:    R(3) – excluded
+  //   Positions 1-3: R(2..0) – reserved (excluded from info data)
+  //   Row 0 info: positions 4-11 (8 bits)
+  //   Rows 1-8 info: positions 16-26, 31-41, ..., 121-131 (11 bits each)
   bool bData[96U];
   uint32_t pos = 0U;
 
-  for (uint32_t r = 0U; r < 8U; r++) {
-    for (uint32_t b = 0U; b < 11U; b++)
-      bData[pos++] = m_deInterData[r * 15U + b];
-  }
-  for (uint32_t b = 0U; b < 8U; b++)
-    bData[pos++] = m_deInterData[8U * 15U + b];
+  for (uint32_t a = 4U;   a <= 11U;  a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 16U;  a <= 26U;  a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 31U;  a <= 41U;  a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 46U;  a <= 56U;  a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 61U;  a <= 71U;  a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 76U;  a <= 86U;  a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 91U;  a <= 101U; a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 106U; a <= 116U; a++, pos++) bData[pos] = m_deInterData[a];
+  for (uint32_t a = 121U; a <= 131U; a++, pos++) bData[pos] = m_deInterData[a];
 
   // Pack 96 bits into 12 bytes (big-endian)
   for (uint32_t i = 0U; i < 12U; i++) {
