@@ -27,8 +27,6 @@ private:
 
   void deInterleave();
   void errorCheck();
-  bool hamming1511(bool* d) const;
-  void hamming1503(bool* d) const;
   void extractData(uint8_t* data) const;
 };
 
