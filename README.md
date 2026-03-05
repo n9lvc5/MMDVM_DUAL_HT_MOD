@@ -14,6 +14,16 @@ Arduino 2.3.6 -IDE
 
 Modified Pistar-modemupdate to not checksum; added to accecpted file list, the custom .bin
 
+These files need to in /home/pi-star
+-rw-r--r-- 1 pi-star pi-star 52219 Mar  5 14:20 functions.php
+-rwxrwxrwx 1 pi-star pi-star 51160 Mar  5 14:22 MMDVM_DUAL_HT_MOD.ino.bin
+-rwxrwxrwx 1 pi-star pi-star 12636 Mar  5 14:22 pmu
+
+pi-star@pi-star2(ro):~$ rpi-rw
+pi-star@pi-star2(rw):~$ sudo ./pmu up
+
+
+
 So far: Let's do some review on the gd77 firmware and the stockfirmware and ESTI. Why can't we transpose a received transmission from a BS and tell Pi-Star that's really a MS?
 
 Builder
@@ -63,6 +73,7 @@ Once we fix that compile error and get the new logs, we will see what dataType t
 
 
     
+
 
 
 
