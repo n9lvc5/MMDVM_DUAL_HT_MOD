@@ -242,7 +242,7 @@ void CIO::process()
         break;
    
       case STATE_M17:
-        m17RX.databit(bit);
+        //m17RX.databit(bit);
         break;
       default:
         break;

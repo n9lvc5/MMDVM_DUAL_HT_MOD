@@ -61,8 +61,8 @@ CDMRDMORX  dmrDMORX;
 CDMRDMOTX  dmrDMOTX;
 
 
-CM17RX     m17RX;
-CM17TX     m17TX;
+//CM17RX     m17RX;
+//CM17TX     m17TX;
 
 CCalDMR    calDMR;
 
@@ -100,8 +100,8 @@ void loop()
   }
 
 
-  if (m_m17Enable && m_modemState == STATE_M17)
-    m17TX.process();
+ // if (m_m17Enable && m_modemState == STATE_M17)
+    //m17TX.process();
 
 
   if (m_calState == STATE_DMRCAL || m_calState == STATE_DMRDMO1K || m_calState == STATE_INTCAL)

@@ -62,6 +62,8 @@ private:
   DMRRX_STATE m_state[2];
   uint8_t     m_n[2];
   uint8_t     m_type[2];
+  uint32_t    m_callStartMs[2];
+  bool        m_callActive[2];
 
   uint16_t    m_delayPtr;
   uint8_t     m_colorCode;

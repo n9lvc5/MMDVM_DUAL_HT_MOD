@@ -118,11 +118,6 @@ extern CIO io;
 #endif
 #endif
 
-
-#include "M17RX.h"
-#include "M17TX.h"
-
-
 #include "CWIdTX.h"
 #include "CalRSSI.h"
 #include "CalDMR.h"
@@ -144,10 +139,6 @@ extern CDMRTX dmrTX;
 
 extern CDMRDMORX dmrDMORX;
 extern CDMRDMOTX dmrDMOTX;
-
-extern CM17RX m17RX;
-extern CM17TX m17TX;
-
 
 extern CCalDMR  calDMR;
 

@@ -27,6 +27,7 @@
 #include "DMRLC.h"
 #include "Utils.h"
 #include <string.h>
+#include <stdio.h>
 
 const uint8_t MAX_SYNC_BYTES_ERRS   = 3U;
 
@@ -66,6 +67,8 @@ m_delay(0U)
     m_state[i] = DMRRXS_NONE;
     m_n[i] = 0U;
     m_type[i] = 0U;
+    m_callStartMs[i] = 0U;
+    m_callActive[i]  = false;
 #if defined(MS_MODE)
     m_lcValid[i] = false;
 #endif
@@ -94,6 +97,8 @@ void CDMRSlotRX::reset()
     m_state[i]     = DMRRXS_NONE;
     m_n[i]         = 0U;
     m_type[i]      = 0U;
+    m_callStartMs[i] = 0U;
+    m_callActive[i]  = false;
 #if defined(MS_MODE)
     m_lcValid[i] = false;
 #endif
@@ -195,18 +200,7 @@ void CDMRSlotRX::procSlot2()
     bitsToBytes(m_startPtr, DMR_FRAME_LENGTH_BYTES, frame + 1U);
 
 #if defined(MS_MODE)
-    // MS_MODE: Transpose BS sync to MS sync so Pi-Star/MMDVMHost recognizes it
-    if (m_control != CONTROL_NONE) {
-      const uint8_t* msSync = (m_control == CONTROL_VOICE) ? DMR_MS_VOICE_SYNC_BYTES : DMR_MS_DATA_SYNC_BYTES;
-      frame[14] = (frame[14] & 0xF0U) | (msSync[0] & 0x0FU);
-      frame[15] = msSync[1];
-      frame[16] = msSync[2];
-      frame[17] = msSync[3];
-      frame[18] = msSync[4];
-      frame[19] = msSync[5];
-      frame[20] = (msSync[6] & 0xF0U) | (frame[20] & 0x0FU);
-      // [debug removed - high frequency]
-    }
+    // Keep the received sync pattern unchanged; MMDVMHost should parse RF bursts as sent.
 #endif
 
     if (m_control == CONTROL_DATA) {
@@ -260,22 +254,37 @@ void CDMRSlotRX::procSlot2()
             }
 #endif
             break;
-          case DT_VOICE_LC_HEADER:
+          case DT_VOICE_LC_HEADER: {
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
+            // Treat this as a new call only when both slots are idle.
+            // In MS_MODE the flywheel can transiently flip slot labels.
+            const bool newVoiceCall = (m_state[0U] == DMRRXS_NONE && m_state[1U] == DMRRXS_NONE);
             m_state[slot] = DMRRXS_VOICE;
-            {
+#if defined(MS_MODE)
+            if (newVoiceCall)
+              m_state[slot ^ 1U] = DMRRXS_NONE;  // Only one slot active at call start
+#endif
+            
               // [debug removed - high frequency]
               
               // Extract and embed Link Control (LC) data in the frame
               DMRLC_T lc;
               
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
-              // Note: writeDMRStart removed - MMDVMHost decodes LC itself from the voice header burst
               
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
                 DEBUG2I("LC decoded - SrcID", lc.srcId);
                 DEBUG2I("LC decoded - DstID", lc.dstId);
+                DEBUG2I("CC ", m_colorCode); // Not sure if this can go here
+                DEBUG2I("TS", slot + 1U);
+                char rfHeaderLine[96];
+                snprintf(rfHeaderLine, sizeof(rfHeaderLine), "DMR Slot %u, received RF voice header from %lu to %lu", slot + 1U, (unsigned long)lc.srcId, (unsigned long)lc.dstId);
+                DEBUG1(rfHeaderLine);
+                if (!m_callActive[slot]) {
+                  m_callActive[slot] = true;
+                  m_callStartMs[slot] = millis();
+                }
               } else {
                 DEBUG2("LC decode failed", slot);
               }
@@ -297,8 +306,8 @@ void CDMRSlotRX::procSlot2()
                 
               DEBUG2("DMRSlotRX: Sending voice header to MMDVMHost", slot);
               writeRSSIData();
-            }
             break;
+          }
           case DT_VOICE_PI_HEADER:
             if (m_state[slot] == DMRRXS_VOICE) {
               // [debug removed - high frequency]
@@ -325,10 +334,21 @@ void CDMRSlotRX::procSlot2()
                 }
 #endif
                 
-                // Note: writeDMRStart removed - MMDVMHost doesn't implement message type 0x1D
-                
                 DEBUG2("DMRSlotRX: Sending voice terminator to MMDVMHost", slot);
                 writeRSSIData();
+
+#if defined(ENABLE_DEBUG)
+                if (m_callActive[slot]) {
+                  uint32_t dtMs = millis() - m_callStartMs[slot];
+                  uint32_t sec10 = (dtMs + 50U) / 100U;
+                  uint32_t secI = sec10 / 10U;
+                  uint32_t secF = sec10 % 10U;
+                  char rfEndLine[128];
+                  snprintf(rfEndLine, sizeof(rfEndLine), "DMR Slot %u, received RF end of voice transmission, %lu.%lu seconds, BER: 0.0%%", slot + 1U, (unsigned long)secI, (unsigned long)secF);
+                  DEBUG1(rfEndLine);
+                  m_callActive[slot] = false;
+                }
+#endif
               }
               m_state[slot]  = DMRRXS_NONE;
 #if !defined(MS_MODE)
@@ -389,6 +409,18 @@ void CDMRSlotRX::procSlot2()
         m_syncCount[slot]++;
         if (m_syncCount[slot] >= MAX_SYNC_LOST_FRAMES) {
           DEBUG2("DMRSlotRX: Sync lost in MS_MODE", m_syncCount[slot]);
+#if defined(ENABLE_DEBUG)
+          if (m_callActive[slot]) {
+            uint32_t dtMs = millis() - m_callStartMs[slot];
+            uint32_t sec10 = (dtMs + 50U) / 100U;
+            uint32_t secI = sec10 / 10U;
+            uint32_t secF = sec10 % 10U;
+            char rfLostLine[128];
+            snprintf(rfLostLine, sizeof(rfLostLine), "DMR Slot %u, RF voice transmission lost, %lu.%lu seconds, BER: 0.0%%", slot + 1U, (unsigned long)secI, (unsigned long)secF);
+            DEBUG1(rfLostLine);
+            m_callActive[slot] = false;
+          }
+#endif
           serial.writeDMRLost(slot);
           reset();
         }
@@ -437,9 +469,7 @@ void CDMRSlotRX::procSlot2()
 #if defined(MS_MODE)
     // Advance end pointer for next slot (flywheel)
     m_endPtr = (m_endPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
-    // Toggle slot
-    m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
-    // [debug removed - high frequency]
+    // Slot identity comes from CACH (decodeCACH), do not blindly toggle here.
 #endif
   }
 }
@@ -596,7 +626,9 @@ void CDMRSlotRX::decodeCACH()
     }
   }
 
-  uint8_t tc = t[1] ? 2U : 1U;
+  // TC bit to logical timeslot mapping:
+  // In MS_MODE receive path for this modem, the observed mapping is inverted.
+  uint8_t tc = t[1] ? 1U : 2U;
   if (m_currentSlot != tc) {
     // Only correct the slot identity. DO NOT touch m_endPtr here.
     // decodeCACH fires at m_slotTimer==132, which is 24 bits AFTER procSlot2

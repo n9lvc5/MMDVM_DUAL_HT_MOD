@@ -182,9 +182,9 @@ void CSerialPort::getStatus()
   }
 
  
-  if (m_m17Enable)
-    reply[13U] = m17TX.getSpace();
-  else
+// if (m_m17Enable)
+  //  reply[13U] = m17TX.getSpace();
+//  else
     reply[13U] = 0U;
 
   writeInt(1U, reply, 14);
@@ -351,7 +351,7 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   }
 #endif
 
-  m17TX.setTXDelay(txDelay);
+  //m17TX.setTXDelay(txDelay);
  
   dmrDMOTX.setTXDelay(txDelay);
 
@@ -522,7 +522,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
     case STATE_DMR:
       DEBUG1("Mode set to DMR");
 
-      m17RX.reset();
+      //m17RX.reset();
       cwIdTX.reset();
       break;
     case STATE_DSTAR:
@@ -533,7 +533,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
 #endif
       dmrDMORX.reset();
      
-      m17RX.reset();
+      //m17RX.reset();
       cwIdTX.reset();
       break;
     case STATE_YSF:
@@ -544,7 +544,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
 #endif
       dmrDMORX.reset();
      
-      m17RX.reset();
+      //m17RX.reset();
       cwIdTX.reset();
       break;
     case STATE_P25:
@@ -555,7 +555,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
 #endif
       dmrDMORX.reset();
      
-      m17RX.reset();
+      //m17RX.reset();
       cwIdTX.reset();
       break;
     case STATE_NXDN:
@@ -566,7 +566,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
 #endif
       dmrDMORX.reset();
     
-      m17RX.reset();
+      //m17RX.reset();
       cwIdTX.reset();
       break;
     case STATE_M17:
@@ -587,7 +587,7 @@ void CSerialPort::setMode(MMDVM_STATE modemState)
 #endif
       dmrDMORX.reset();
     
-      m17RX.reset();
+      //m17RX.reset();
       cwIdTX.reset();
       break;
     default:
@@ -790,7 +790,7 @@ void CSerialPort::process()
           #endif
             break;
 
-          case MMDVM_M17_LINK_SETUP:
+          /*case MMDVM_M17_LINK_SETUP:
             if (m_m17Enable) {
               if (m_modemState == STATE_IDLE || m_modemState == STATE_M17)
                 err = m17TX.writeData(m_buffer + 3U, m_len - 3U);
@@ -804,6 +804,8 @@ void CSerialPort::process()
             }
             break;
 
+          
+         
           case MMDVM_M17_STREAM:
             if (m_m17Enable) {
               if (m_modemState == STATE_IDLE || m_modemState == STATE_M17)
@@ -831,7 +833,7 @@ void CSerialPort::process()
               sendNAK(err);
             }
             break;
-
+*/
 
           case MMDVM_TRANSPARENT:
           case MMDVM_QSO_INFO:
@@ -1244,7 +1246,7 @@ void CSerialPort::writeNXDNLost()
   writeInt(1U, reply, 3);
 }
 
-void CSerialPort::writeM17LinkSetup(const uint8_t* data, uint8_t length)
+/*void CSerialPort::writeM17LinkSetup(const uint8_t* data, uint8_t length)
 {
   if (m_modemState != STATE_M17 && m_modemState != STATE_IDLE)
     return;
@@ -1322,7 +1324,7 @@ void CSerialPort::writeM17Lost()
   reply[2U] = MMDVM_M17_LOST;
 
   writeInt(1U, reply, 3);
-}
+}*/
 
 #if defined(SEND_RSSI_DATA)
 
