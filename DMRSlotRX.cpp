@@ -278,12 +278,16 @@ void CDMRSlotRX::procSlot2()
                 DEBUG2I("LC decoded - DstID", lc.dstId);
                 DEBUG2I("CC ", m_colorCode); // Not sure if this can go here
                 DEBUG2I("TS", slot + 1U);
-                char rfHeaderLine[96];
-                snprintf(rfHeaderLine, sizeof(rfHeaderLine), "DMR Slot %u, received RF voice header from %lu to %lu", slot + 1U, (unsigned long)lc.srcId, (unsigned long)lc.dstId);
-                DEBUG1(rfHeaderLine);
                 if (!m_callActive[slot]) {
+                  char rfHeaderLine[96];
+                  snprintf(rfHeaderLine, sizeof(rfHeaderLine), "DMR Slot %u, received RF voice header from %lu to %lu", slot + 1U, (unsigned long)lc.srcId, (unsigned long)lc.dstId);
+                  DEBUG1(rfHeaderLine);
                   m_callActive[slot] = true;
                   m_callStartMs[slot] = millis();
+#if defined(MS_MODE)
+                  // Only one logical call slot should be active in MS receive mode.
+                  m_callActive[slot ^ 1U] = false;
+#endif
                 }
               } else {
                 DEBUG2("LC decode failed", slot);

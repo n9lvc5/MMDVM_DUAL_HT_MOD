@@ -589,7 +589,7 @@ function getHeardList($logLines) {
                         continue;
 		}
 
-		if(strpos($logLine, "end of") || strpos($logLine, "watchdog has expired") || strpos($logLine, "invalid slow data header") || strpos($logLine, "ended RF data") || strpos($logLine, "d network data") || strpos($logLine, "RF user has timed out") || strpos($logLine, "transmission lost") || strpos($logLine, "POCSAG")) {
+		if(strpos($logLine, "end of") !== false || strpos($logLine, "watchdog has expired") !== false || strpos($logLine, "invalid slow data header") !== false || strpos($logLine, "ended RF data") !== false || strpos($logLine, "d network data") !== false || strpos($logLine, "RF user has timed out") !== false || strpos($logLine, "transmission lost") !== false || strpos($logLine, "POCSAG") !== false) {
 			$lineTokens = explode(", ",$logLine);
 			if (array_key_exists(2,$lineTokens)) {
 				$duration = strtok($lineTokens[2], " ");
