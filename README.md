@@ -1,26 +1,40 @@
-# Introduction 
-# I"M STILL WORKING ON, USE AT YOUR OWN RISK. MIGHT HAVE A RF SIGNAL PROBLEM
-https://github.com/n9lvc5/MMDVM_DUAL_HT_MOD/blob/main/Firmware_Disclaimer.docx
+# Introduction
 
-Adrino - Generic STM32F103C Series, 20k Ram, 64k Flash, smallest, upload "Serial".
-Additonal Board Manager URL http://dan.drown.org/stm32duino/package_STM32duino_index.json
+## Disclaimer
+**I'm still working on this. Use at your own risk. There might be a RF signal problem.**
 
-Using a board similar to https://github.com/phl0/MMDVM_HS_Dual_Hat and instructions
-It has two ADF7021 - one for RX the other for TX
-Using a 14.74 oscillator. 
-JP1 solored together for BOOT1+0
-Geehy APM32F103C8T6 - a 64 KB flash, 20 KB SRAM microcontroller, similar to the STM32F103C8T6
-Arduino 2.3.6 -IDE
+[Firmware Disclaimer Document](https://github.com/n9lvc5/MMDVM_DUAL_HT_MOD/blob/main/Firmware_Disclaimer.docx)
 
-Modified Pistar-modemupdate to not checksum; added to accecpted file list, the custom .bin
+## Hardware and Setup Details
+- **Arduino:** Generic STM32F103C Series, 20k RAM, 64k Flash, smallest form factor, upload via "Serial".
+- **Additional Board Manager URL:** [http://dan.drown.org/stm32duino/package_STM32duino_index.json](http://dan.drown.org/stm32duino/package_STM32duino_index.json)
+- **Using a board similar to:** [https://github.com/phl0/MMDVM_HS_Dual_Hat](https://github.com/phl0/MMDVM_HS_Dual_Hat) and following its instructions.
+- **Features:**
+  - Has two ADF7021 modules — one for RX and one for TX.
+  - Uses a 14.74 MHz oscillator.
+  - JP1 is soldered together for BOOT1+0.
+- **Microcontroller:** Geehy APM32F103C8T6 — a microcontroller with 64 KB flash and 20 KB SRAM, similar to the STM32F103C8T6.
+- **IDE Version:** Arduino IDE 2.3.6.
 
-These files need to in /home/pi-star
-'-rw-r--r-- 1 pi-star pi-star 52219 Mar  5 14:20 functions.php
--rwxrwxrwx 1 pi-star pi-star 51160 Mar  5 14:22 MMDVM_DUAL_HT_MOD.ino.bin
--rwxrwxrwx 1 pi-star pi-star 12636 Mar  5 14:22 pmu'
+# Changes and File Details
 
-'pi-star@pi-star2(ro):~$ rpi-rw
-pi-star@pi-star2(rw):~$ sudo ./pmu up'
+- Modified `Pistar-modemupdate` to not checksum.
+- Added the custom `.bin` file to the accepted file list.
+
+## Files in `/home/pi-star`
+
+| Permissions | Owner | Group | Size | Date | Filename |
+|--------------|--------|-------|-------|-------|----------|
+| `-rw-r--r--` | pi-star | pi-star | 52219 | Mar 5 14:20 | functions.php |
+| `-rwxrwxrwx` | pi-star | pi-star | 51160 | Mar 5 14:22 | MMDVM_DUAL_HT_MOD.ino.bin |
+| `-rwxrwxrwx` | pi-star | pi-star | 12636 | Mar 5 14:22 | pmu |
+
+## Commands Executed
+
+```bash
+pi-star@pi-star2(~):~$ rpi-rw
+pi-star@pi-star2(~):~$ sudo ./pmu up
+```
 
 
 
@@ -73,6 +87,7 @@ Once we fix that compile error and get the new logs, we will see what dataType t
 
 
     
+
 
 
 
