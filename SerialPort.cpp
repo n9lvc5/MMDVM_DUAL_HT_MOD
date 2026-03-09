@@ -101,6 +101,8 @@ m_firstCal(false)
 
 void CSerialPort::sendACK()
 {
+  io.resetWatchdog();
+
   uint8_t reply[4U];
 
   reply[0U] = MMDVM_FRAME_START;
@@ -108,11 +110,13 @@ void CSerialPort::sendACK()
   reply[2U] = MMDVM_ACK;
   reply[3U] = m_buffer[2U];
 
-  writeInt(1U, reply, 4);
+  writeInt(1U, reply, 4, true);
 }
 
 void CSerialPort::sendNAK(uint8_t err)
 {
+  io.resetWatchdog();
+
   uint8_t reply[5U];
 
   reply[0U] = MMDVM_FRAME_START;
@@ -121,7 +125,7 @@ void CSerialPort::sendNAK(uint8_t err)
   reply[3U] = m_buffer[2U];
   reply[4U] = err;
 
-  writeInt(1U, reply, 5);
+  writeInt(1U, reply, 5, true);
 }
 
 void CSerialPort::getStatus()
@@ -234,7 +238,7 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   bool pocsagEnable = (data[1U] & 0x20U) == 0x20U;
   bool m17Enable    = (data[1U] & 0x40U) == 0x40U;
 
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
   // Debug: Show which modes MMDVMHost is requesting
   DEBUG1("SET_CONFIG received:");
   DEBUG2I("  dstarEnable", dstarEnable);
@@ -271,16 +275,21 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
     return 4U;
 
 #if defined(MS_MODE)
-  // MS_MODE only supports DMR and calibration modes - reject unsupported modes
-  if (dstarEnable || ysfEnable || p25Enable || nxdnEnable || pocsagEnable) {
-    DEBUG1("MS_MODE: Only DMR mode supported, rejecting config with unsupported modes");
-    return 4U;  // NAK - mode not supported
+  // MS_MODE only supports DMR and calibration modes - disable unsupported modes
+  if (dstarEnable || ysfEnable || p25Enable || nxdnEnable || pocsagEnable || m17Enable) {
+    DEBUG1("MS_MODE: Only DMR mode supported, disabling other modes in config");
+    dstarEnable  = false;
+    ysfEnable    = false;
+    p25Enable    = false;
+    nxdnEnable   = false;
+    pocsagEnable = false;
+    m17Enable    = false;
   }
   if (modemState != STATE_IDLE && modemState != STATE_DMR && 
       modemState != STATE_DMRCAL && modemState != STATE_DMRDMO1K && 
       modemState != STATE_INTCAL && modemState != STATE_RSSICAL) {
-    DEBUG1("MS_MODE: Unsupported mode requested");
-    return 4U;  // NAK - mode not supported
+    DEBUG1("MS_MODE: Unsupported mode requested, forcing IDLE");
+    modemState = STATE_IDLE;
   }
 #endif
 
@@ -383,21 +392,6 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
       io.ifConf(STATE_POCSAG, true);
   }
 
-#if defined(MS_MODE)
-  // Force DMR mode and ensure second ADF7021 is configured for RX in MS_MODE
-  m_dmrEnable = true;
-#if defined(DUPLEX)
-  if (m_duplex) {
-    DEBUG1("MS_MODE: Forcing DMR duplex mode");
-    m_modemState = STATE_DMR;
-    m_modemState_prev = STATE_DMR;
-    io.setMode(STATE_DMR);
-    io.ifConf(STATE_DMR, true);
-  } else {
-    DEBUG1("MS_MODE: WARNING - Duplex not enabled!");
-  }
-#endif
-#endif
 
   io.start();
 #if defined(ENABLE_DEBUG)
@@ -456,10 +450,6 @@ uint8_t CSerialPort::setMode(const uint8_t* data, uint8_t length)
     m_calState = STATE_IDLE;
   }
 
-#if defined(MS_MODE)
-  if (tmpState == STATE_IDLE)
-    tmpState = STATE_DMR;
-#endif
 
   setMode(tmpState);
 
@@ -494,7 +484,7 @@ uint8_t CSerialPort::setFreq(const uint8_t* data, uint8_t length)
   freq_tx |= data[7U] << 16;
   freq_tx |= data[8U] << 24;
 
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
   DEBUG1("SET_FREQ received:");
   DEBUG2I("  RX freq (Hz)", freq_rx);
   DEBUG2I("  TX freq (Hz)", freq_tx);

@@ -352,7 +352,7 @@ void CIO::checkBand(uint32_t frequency_rx, uint32_t frequency_tx) {
 }
 
 uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
   DEBUG1("checkZUMspot called:");
   DEBUG2I("  RX freq (Hz)", frequency_rx);
   DEBUG2I("  TX freq (Hz)", frequency_tx);
@@ -368,13 +368,13 @@ uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
       if ((frequency_tx <= VHF2_MAX) && (frequency_rx <= VHF2_MAX)) {
         // Turn on VHF side
         io.setBandVHF(true);
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
         DEBUG1("checkZUMspot: VHF band selected");
 #endif
       } else if ((frequency_tx >= UHF1_MIN) && (frequency_rx >= UHF1_MIN)) {
         // Turn on UHF side
         io.setBandVHF(false);
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
         DEBUG1("checkZUMspot: UHF band selected");
 #endif
       }
@@ -382,7 +382,7 @@ uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
       // Duplex board
       if ((frequency_tx < UHF1_MIN) || (frequency_rx < UHF1_MIN)) {
         // Reject VHF frequencies
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
         DEBUG1("checkZUMspot: Rejecting VHF frequencies for duplex board");
 #endif
         return 4U;
@@ -395,7 +395,7 @@ uint8_t CIO::checkZUMspot(uint32_t frequency_rx, uint32_t frequency_tx) {
 
 uint8_t CIO::setFreq(uint32_t frequency_rx, uint32_t frequency_tx, uint8_t rf_power, uint32_t pocsag_freq_tx)
 {
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
   DEBUG1("IO::setFreq called:");
   DEBUG2I("  RX freq (Hz)", frequency_rx);
   DEBUG2I("  TX freq (Hz)", frequency_tx);
