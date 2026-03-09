@@ -32,6 +32,8 @@
 ## Commands Executed
 
 ```bash
+sudo sed -i 's/^Debug=0/Debug=1/' /etc/mmdvmhost
+sudo systemctl restart mmdvmhost
 pi-star@pi-star2(~):~$ rpi-rw
 pi-star@pi-star2(~):~$ sudo ./pmu up
 ```
@@ -87,6 +89,7 @@ Once we fix that compile error and get the new logs, we will see what dataType t
 
 
     
+
 
 
 
