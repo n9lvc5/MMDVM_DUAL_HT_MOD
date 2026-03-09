@@ -271,16 +271,21 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
     return 4U;
 
 #if defined(MS_MODE)
-  // MS_MODE only supports DMR and calibration modes - reject unsupported modes
-  if (dstarEnable || ysfEnable || p25Enable || nxdnEnable || pocsagEnable) {
-    DEBUG1("MS_MODE: Only DMR mode supported, rejecting config with unsupported modes");
-    return 4U;  // NAK - mode not supported
+  // MS_MODE only supports DMR and calibration modes - disable unsupported modes
+  if (dstarEnable || ysfEnable || p25Enable || nxdnEnable || pocsagEnable || m17Enable) {
+    DEBUG1("MS_MODE: Only DMR mode supported, disabling other modes in config");
+    dstarEnable  = false;
+    ysfEnable    = false;
+    p25Enable    = false;
+    nxdnEnable   = false;
+    pocsagEnable = false;
+    m17Enable    = false;
   }
   if (modemState != STATE_IDLE && modemState != STATE_DMR && 
       modemState != STATE_DMRCAL && modemState != STATE_DMRDMO1K && 
       modemState != STATE_INTCAL && modemState != STATE_RSSICAL) {
-    DEBUG1("MS_MODE: Unsupported mode requested");
-    return 4U;  // NAK - mode not supported
+    DEBUG1("MS_MODE: Unsupported mode requested, forcing IDLE");
+    modemState = STATE_IDLE;
   }
 #endif
 
@@ -383,21 +388,6 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
       io.ifConf(STATE_POCSAG, true);
   }
 
-#if defined(MS_MODE)
-  // Force DMR mode and ensure second ADF7021 is configured for RX in MS_MODE
-  m_dmrEnable = true;
-#if defined(DUPLEX)
-  if (m_duplex) {
-    DEBUG1("MS_MODE: Forcing DMR duplex mode");
-    m_modemState = STATE_DMR;
-    m_modemState_prev = STATE_DMR;
-    io.setMode(STATE_DMR);
-    io.ifConf(STATE_DMR, true);
-  } else {
-    DEBUG1("MS_MODE: WARNING - Duplex not enabled!");
-  }
-#endif
-#endif
 
   io.start();
 #if defined(ENABLE_DEBUG)
@@ -456,10 +446,6 @@ uint8_t CSerialPort::setMode(const uint8_t* data, uint8_t length)
     m_calState = STATE_IDLE;
   }
 
-#if defined(MS_MODE)
-  if (tmpState == STATE_IDLE)
-    tmpState = STATE_DMR;
-#endif
 
   setMode(tmpState);
 
