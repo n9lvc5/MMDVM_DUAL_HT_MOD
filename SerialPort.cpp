@@ -101,6 +101,8 @@ m_firstCal(false)
 
 void CSerialPort::sendACK()
 {
+  io.resetWatchdog();
+
   uint8_t reply[4U];
 
   reply[0U] = MMDVM_FRAME_START;
@@ -108,11 +110,13 @@ void CSerialPort::sendACK()
   reply[2U] = MMDVM_ACK;
   reply[3U] = m_buffer[2U];
 
-  writeInt(1U, reply, 4);
+  writeInt(1U, reply, 4, true);
 }
 
 void CSerialPort::sendNAK(uint8_t err)
 {
+  io.resetWatchdog();
+
   uint8_t reply[5U];
 
   reply[0U] = MMDVM_FRAME_START;
@@ -121,7 +125,7 @@ void CSerialPort::sendNAK(uint8_t err)
   reply[3U] = m_buffer[2U];
   reply[4U] = err;
 
-  writeInt(1U, reply, 5);
+  writeInt(1U, reply, 5, true);
 }
 
 void CSerialPort::getStatus()
@@ -234,7 +238,7 @@ uint8_t CSerialPort::setConfig(const uint8_t* data, uint8_t length)
   bool pocsagEnable = (data[1U] & 0x20U) == 0x20U;
   bool m17Enable    = (data[1U] & 0x40U) == 0x40U;
 
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
   // Debug: Show which modes MMDVMHost is requesting
   DEBUG1("SET_CONFIG received:");
   DEBUG2I("  dstarEnable", dstarEnable);
@@ -480,7 +484,7 @@ uint8_t CSerialPort::setFreq(const uint8_t* data, uint8_t length)
   freq_tx |= data[7U] << 16;
   freq_tx |= data[8U] << 24;
 
-#if defined(ENABLE_DEBUG) || defined(MS_MODE)
+#if defined(ENABLE_DEBUG)
   DEBUG1("SET_FREQ received:");
   DEBUG2I("  RX freq (Hz)", freq_rx);
   DEBUG2I("  TX freq (Hz)", freq_tx);
