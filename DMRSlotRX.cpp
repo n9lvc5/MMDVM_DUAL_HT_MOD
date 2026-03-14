@@ -286,11 +286,6 @@ void CDMRSlotRX::procSlot2()
         #if defined(MS_MODE)
                 m_callActive[slot ^ 1U] = false;
         #endif
-        #if defined(ENABLE_DEBUG)
-                char headerLine[128];
-                snprintf(headerLine, sizeof(headerLine), "DMR Slot %u, received RF voice header from %lu to %lu", slot + 1U, (unsigned long)lc.srcId, (unsigned long)lc.dstId);
-                DEBUG1(headerLine);
-        #endif
               }
 
               
@@ -375,15 +370,6 @@ void CDMRSlotRX::procSlot2()
 
 
                 if (m_callActive[slot]) {
-        #if defined(ENABLE_DEBUG)
-                  uint32_t dtMs = millis() - m_callStartMs[slot];
-                  uint32_t sec10 = (dtMs + 50U) / 100U;
-                  uint32_t secI = sec10 / 10U;
-                  uint32_t secF = sec10 % 10U;
-                  char endLine[128];
-                  snprintf(endLine, sizeof(endLine), "DMR Slot %u, received RF end of voice transmission, %lu.%lu seconds, BER: 0.0%%", slot + 1U, (unsigned long)secI, (unsigned long)secF);
-                  DEBUG1(endLine);
-        #endif
                   m_callActive[slot] = false;
                 }
 
@@ -491,8 +477,10 @@ void CDMRSlotRX::procSlot2()
     m_control = CONTROL_NONE;
 
 #if defined(MS_MODE)
-    // Advance end pointer for next slot (flywheel)
-    m_endPtr = (m_endPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    // Advance pointers for next slot (flywheel)
+    m_syncPtr  = (m_syncPtr  + 288U) % DMR_BUFFER_LENGTH_BITS;
+    m_startPtr = (m_startPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    m_endPtr   = (m_endPtr   + 288U) % DMR_BUFFER_LENGTH_BITS;
     // Slot identity comes from CACH (decodeCACH), do not blindly toggle here.
 #endif
   }
