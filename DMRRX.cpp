@@ -52,8 +52,8 @@ void CDMRRX::databit(bool bit, const uint8_t control)
 
 
   
-  bool decode = m_slotRX.databit(bit);
-  if (decode) {
+  bool locked = m_slotRX.databit(bit);
+  if (locked) {
     syncCounter++;
     if (firstSync) {
       DEBUG1("DMRRX: First sync detected!");
@@ -61,7 +61,7 @@ void CDMRRX::databit(bool bit, const uint8_t control)
     }
   }
   
-  io.setDecode(decode);
+  io.setDecode(locked);
   io.resetWatchdog();
 #else
   if (control != m_control_old) {
