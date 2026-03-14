@@ -18,7 +18,7 @@
  */
 
 #if !defined(DMRSLOTRX_H)
-#define  DMRSLOTRX_H
+#define DMRSLOTRX_H
 
 #include "Config.h"
 
@@ -48,32 +48,33 @@ public:
   void reset();
 
 private:
-  bool        m_slot;
-  uint64_t    m_patternBuffer;
-  uint8_t     m_buffer[DMR_BUFFER_LENGTH_BITS / 8U];  // 72 bytes
-  uint16_t    m_dataPtr;
+  bool m_slot;
+  uint64_t m_patternBuffer;
+  uint8_t m_buffer[DMR_BUFFER_LENGTH_BITS / 8U];  // 72 bytes
+  uint16_t m_dataPtr;
 
-  uint8_t     frame[DMR_FRAME_LENGTH_BYTES + 3U];
-  uint16_t    m_syncPtr;
-  uint16_t    m_startPtr;
-  uint16_t    m_endPtr;
-  uint8_t     m_control;
-  uint8_t     m_syncCount[2];
+  uint8_t frame[DMR_FRAME_LENGTH_BYTES + 3U];
+  uint16_t m_syncPtr;
+  uint16_t m_startPtr;
+  uint16_t m_endPtr;
+  uint8_t m_control;
+  uint8_t m_syncCount[2];
   DMRRX_STATE m_state[2];
-  uint8_t     m_n[2];
-  uint8_t     m_type[2];
-  uint32_t    m_callStartMs[2];
-  bool        m_callActive[2];
+  uint8_t m_n[2];
+  uint8_t m_type[2];
+  uint32_t m_callStartMs[2];
+  bool m_callActive[2];
 
-  uint16_t    m_delayPtr;
-  uint8_t     m_colorCode;
-  uint16_t    m_delay;
+
+  uint16_t m_delayPtr;
+  uint8_t m_colorCode;
+  uint16_t m_delay;
 #if defined(MS_MODE)
-  uint8_t     m_currentSlot;
-  uint32_t    m_slotTimer;
-  bool        m_syncLocked;
-  uint8_t     m_lcData[12];  // Store LC data for embedding in voice frames
-  bool        m_lcValid[2];  // Flag indicating if LC data is valid
+  uint8_t m_currentSlot;
+  uint32_t m_slotTimer;
+  bool m_syncLocked;
+  uint8_t m_lcData[12];  // Store LC data for embedding in voice frames
+  bool m_lcValid[2];     // Flag indicating if LC data is valid
 #endif
 
   void procSlot2();

@@ -47,7 +47,6 @@ const uint8_t MMDVM_DMR_LOST1    = 0x19U;
 const uint8_t MMDVM_DMR_DATA2    = 0x1AU;
 const uint8_t MMDVM_DMR_LOST2    = 0x1BU;
 const uint8_t MMDVM_DMR_SHORTLC  = 0x1CU;
-const uint8_t MMDVM_DMR_START    = 0x1DU;
 const uint8_t MMDVM_DMR_ABORT    = 0x1EU;
 
 const uint8_t MMDVM_YSF_DATA     = 0x20U;
@@ -734,29 +733,6 @@ void CSerialPort::process()
             }
             break;
 
-          case MMDVM_DMR_START:
-          #if defined(DUPLEX)
-            if (m_dmrEnable) {
-              err = 4U;
-              if (m_len == 4U) {
-                // The concept of starting the transmitter without data is now obsolete.
-                // The transmitter is started by the arrival of data.
-                if (m_buffer[3U] == 0x01U && m_modemState == STATE_DMR) {
-                  err = 0U;
-                } else if (m_buffer[3U] == 0x00U && m_modemState == STATE_DMR) {
-                  // A value of 0 indicates a request to stop transmitting.
-                  if (m_tx)
-                    dmrTX.reset();
-                  err = 0U;
-                }
-              }
-            }
-            if (err != 0U) {
-              DEBUG2("Received invalid DMR start", err);
-              sendNAK(err);
-            }
-          #endif
-            break;
 
           case MMDVM_DMR_SHORTLC:
           #if defined(DUPLEX)
@@ -991,38 +967,6 @@ void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
     return;
 #endif
 
-#if defined(ENABLE_DEBUG)
-  static uint32_t frameCounter = 0;
-  static uint32_t slot1Counter = 0;
-  static uint32_t slot2Counter = 0;
-  
-  frameCounter++;
-  if (slot)
-    slot2Counter++;
-  else
-    slot1Counter++;
-  
-  // Debug: Dump first 10 bytes of frame to verify structure
-  static uint32_t dumpCounter = 0;
-  dumpCounter++;
-  if (dumpCounter <= 5) {
-    DEBUG2I("DMR Frame dump - Slot", slot ? 2 : 1);
-    DEBUG2I("  Control byte [0]", data[0]);
-    if (length >= 4) {
-      DEBUG2I("  Payload [1-3]", (data[1] << 16) | (data[2] << 8) | data[3]);
-    }
-  }
-    
-  if (frameCounter == 100) {
-    DEBUG2I("DMR: Total frames sent", frameCounter);
-    DEBUG2I("DMR: Slot1 frames", slot1Counter);
-    DEBUG2I("DMR: Slot2 frames", slot2Counter);
-    frameCounter = 0;
-    slot1Counter = 0;
-    slot2Counter = 0;
-  }
-#endif
-
   uint8_t reply[40U];
 
   reply[0U] = MMDVM_FRAME_START;
@@ -1038,43 +982,6 @@ void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
   writeInt(1U, reply, count);
 }
 
-void CSerialPort::writeDMRStart(bool slot, uint8_t colorCode, uint32_t srcId, uint32_t dstId)
-{
-#if !defined(MS_MODE)
-  if (m_modemState != STATE_DMR && m_modemState != STATE_IDLE)
-    return;
-
-  if (!m_dmrEnable)
-    return;
-#endif
-
-  uint8_t reply[11U];
-  
-  reply[0U] = MMDVM_FRAME_START;
-  reply[1U] = 11U;
-  reply[2U] = MMDVM_DMR_START;
-  reply[3U] = slot ? 0x01U : 0x00U;
-  reply[4U] = colorCode;
-  
-  // Talkgroup (destination ID) - 3 bytes, big-endian
-  reply[5U] = (dstId >> 16) & 0xFFU;
-  reply[6U] = (dstId >> 8) & 0xFFU;
-  reply[7U] = (dstId >> 0) & 0xFFU;
-  
-  // Source DMR ID - 3 bytes, big-endian
-  reply[8U] = (srcId >> 16) & 0xFFU;
-  reply[9U] = (srcId >> 8) & 0xFFU;
-  reply[10U] = (srcId >> 0) & 0xFFU;
-  
-#if defined(ENABLE_DEBUG)
-  DEBUG2I("DMR_START: Slot", slot ? 2 : 1);
-  DEBUG2I("  ColorCode", colorCode);
-  DEBUG2I("  Talkgroup", dstId);
-  DEBUG2I("  Source ID", srcId);
-#endif
-  
-  writeInt(1U, reply, 11U);
-}
 
 void CSerialPort::writeDMRLost(bool slot)
 {
@@ -1411,6 +1318,7 @@ void CSerialPort::writeDebug(const char* text, int16_t n1)
 }
 #endif
 
+#if defined(ENABLE_DEBUG)
 void CSerialPort::writeDebug(const char* text, int16_t n1, int16_t n2)
 {
   if (!m_debug)
@@ -1437,7 +1345,6 @@ void CSerialPort::writeDebug(const char* text, int16_t n1, int16_t n2)
   writeInt(1U, reply, count, true);
 }
 
-#if defined(ENABLE_DEBUG)
 void CSerialPort::writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3)
 {
   if (!m_debug)

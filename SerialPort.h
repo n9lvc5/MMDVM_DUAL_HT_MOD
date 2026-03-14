@@ -40,7 +40,6 @@ public:
   void writeDStarEOT();
 
   void writeDMRData(bool slot, const uint8_t* data, uint8_t length);
-  void writeDMRStart(bool slot, uint8_t colorCode, uint32_t srcId, uint32_t dstId);
   void writeDMRLost(bool slot);
 
   void writeYSFData(const uint8_t* data, uint8_t length);
@@ -66,10 +65,10 @@ public:
   void writeDebug(const char* text);
   void writeDebug(const char* text, int16_t n1);
   void writeDebugI(const char* text, int32_t n1);
+  void writeDebug(const char* text, int16_t n1, int16_t n2);
   void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3);
   void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3, int16_t n4);
 #endif
-  void writeDebug(const char* text, int16_t n1, int16_t n2);
 
 private:
   uint8_t m_buffer[256U];

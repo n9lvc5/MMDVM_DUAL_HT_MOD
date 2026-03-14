@@ -185,6 +185,94 @@ void CBPTC19696::errorCheck()
   } while (fixing && count < 5U);
 }
 
+// Encode 12 clean LC bytes into a BPTC(196,96) codeword and write the corrected
+// payload bits back into the DMR burst frame (frame points to the 33-byte burst,
+// i.e. frame[0..32], NOT the control byte).
+// Only bits 0-97 (LC part 1) and 166-263 (LC part 2) are written; sync and slot
+// type bits (98-165) are untouched.
+void CBPTC19696::encode(const uint8_t* data, uint8_t* frame)
+{
+  // Unpack 96 info bits from the 12 input bytes
+  bool bData[96U];
+  for (uint32_t i = 0U; i < 96U; i++)
+    bData[i] = (data[i / 8U] >> (7U - (i % 8U))) & 1U;
+
+  // Clear the 196-bit de-interleaved matrix
+  for (uint32_t i = 0U; i < 196U; i++)
+    m_deInterData[i] = false;
+
+  // Place info bits at their positions (reverse of extractData)
+  uint32_t pos = 0U;
+  for (uint32_t a = 4U;   a <= 11U;  a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 16U;  a <= 26U;  a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 31U;  a <= 41U;  a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 46U;  a <= 56U;  a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 61U;  a <= 71U;  a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 76U;  a <= 86U;  a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 91U;  a <= 101U; a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 106U; a <= 116U; a++) m_deInterData[a] = bData[pos++];
+  for (uint32_t a = 121U; a <= 131U; a++) m_deInterData[a] = bData[pos++];
+
+  // Compute row Hamming(15,11,3) parities for rows 0-8
+  // Row r occupies m_deInterData[r*15+1 .. r*15+15] (indices into row: d[0..14])
+  // Parity equations from hammingDecode15113_2: d[11..14] = f(d[0..10])
+  for (uint32_t r = 0U; r < 9U; r++) {
+    bool* row = m_deInterData + (r * 15U + 1U);
+    row[11] = row[0] ^ row[1] ^ row[2] ^ row[3] ^ row[5] ^ row[7] ^ row[8];
+    row[12] = row[1] ^ row[2] ^ row[3] ^ row[4] ^ row[6] ^ row[8] ^ row[9];
+    row[13] = row[2] ^ row[3] ^ row[4] ^ row[5] ^ row[7] ^ row[9] ^ row[10];
+    row[14] = row[0] ^ row[1] ^ row[2] ^ row[4] ^ row[6] ^ row[7] ^ row[10];
+  }
+
+  // Compute column Hamming(13,9,3) parities for columns 0-14
+  // Column c data bits (9 bits) are at m_deInterData[c+1 + r*15] for r=0..8
+  // Column c parity bits (4 bits) are at m_deInterData[c+1 + r*15] for r=9..12
+  // (i.e. at indices c+136, c+151, c+166, c+181)
+  // Parity equations from hammingDecode1393: d[9..12] = f(d[0..8])
+  for (uint32_t c = 0U; c < 15U; c++) {
+    uint32_t base = c + 1U;
+    bool d0 = m_deInterData[base];
+    bool d1 = m_deInterData[base + 15U];
+    bool d2 = m_deInterData[base + 30U];
+    bool d3 = m_deInterData[base + 45U];
+    bool d4 = m_deInterData[base + 60U];
+    bool d5 = m_deInterData[base + 75U];
+    bool d6 = m_deInterData[base + 90U];
+    bool d7 = m_deInterData[base + 105U];
+    bool d8 = m_deInterData[base + 120U];
+    m_deInterData[base + 135U] = d0 ^ d1 ^ d3 ^ d5 ^ d6;
+    m_deInterData[base + 150U] = d0 ^ d1 ^ d2 ^ d4 ^ d6 ^ d7;
+    m_deInterData[base + 165U] = d0 ^ d1 ^ d2 ^ d3 ^ d5 ^ d7 ^ d8;
+    m_deInterData[base + 180U] = d0 ^ d2 ^ d4 ^ d5 ^ d8;
+  }
+
+  // Re-interleave: m_rawData[INTERLEAVE_TABLE[i]] = m_deInterData[i]
+  for (uint32_t i = 0U; i < 196U; i++)
+    m_rawData[INTERLEAVE_TABLE[i]] = m_deInterData[i];
+
+  // Write corrected BPTC bits into the burst frame.
+  // LC part 1: burst bits 0-97  → frame[0..12] (bit positions 0-97)
+  // LC part 2: burst bits 166-263 → frame[20..32] (bit positions 166-263)
+  // Sync (108-155) and slot type (98-107, 156-165) are NOT touched.
+  uint32_t bptcPos = 0U;
+  for (uint32_t i = 0U; i < 98U; i++) {
+    uint32_t dstByte = i / 8U;
+    uint32_t dstBit  = 7U - (i % 8U);
+    if (m_rawData[bptcPos++])
+      frame[dstByte] |= (1U << dstBit);
+    else
+      frame[dstByte] &= ~(uint8_t)(1U << dstBit);
+  }
+  for (uint32_t i = 166U; i < 264U; i++) {
+    uint32_t dstByte = i / 8U;
+    uint32_t dstBit  = 7U - (i % 8U);
+    if (m_rawData[bptcPos++])
+      frame[dstByte] |= (1U << dstBit);
+    else
+      frame[dstByte] &= ~(uint8_t)(1U << dstBit);
+  }
+}
+
 void CBPTC19696::extractData(uint8_t* data) const
 {
   // Extract the 96 information bits from the de-interleaved 196-bit matrix.

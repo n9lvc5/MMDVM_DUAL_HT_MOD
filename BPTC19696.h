@@ -20,6 +20,7 @@ public:
   CBPTC19696();
 
   void decode(const uint8_t* in, uint8_t* out);
+  void encode(const uint8_t* data, uint8_t* frame);
 
 private:
   bool m_rawData[196];
