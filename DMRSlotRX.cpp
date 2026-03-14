@@ -285,8 +285,13 @@ void CDMRSlotRX::procSlot2()
                 m_callStartMs[slot] = millis();
         #if defined(MS_MODE)
                 m_callActive[slot ^ 1U] = false;
+        #endif
+        #if defined(ENABLE_DEBUG)
+                char headerLine[128];
+                snprintf(headerLine, sizeof(headerLine), "DMR Slot %u, received RF voice header from %lu to %lu", slot + 1U, (unsigned long)lc.srcId, (unsigned long)lc.dstId);
+                DEBUG1(headerLine);
+        #endif
               }
-#endif
 
               
               // Store LC data for embedding in voice frames
@@ -370,6 +375,15 @@ void CDMRSlotRX::procSlot2()
 
 
                 if (m_callActive[slot]) {
+        #if defined(ENABLE_DEBUG)
+                  uint32_t dtMs = millis() - m_callStartMs[slot];
+                  uint32_t sec10 = (dtMs + 50U) / 100U;
+                  uint32_t secI = sec10 / 10U;
+                  uint32_t secF = sec10 % 10U;
+                  char endLine[128];
+                  snprintf(endLine, sizeof(endLine), "DMR Slot %u, received RF end of voice transmission, %lu.%lu seconds, BER: 0.0%%", slot + 1U, (unsigned long)secI, (unsigned long)secF);
+                  DEBUG1(endLine);
+        #endif
                   m_callActive[slot] = false;
                 }
 
@@ -431,9 +445,7 @@ void CDMRSlotRX::procSlot2()
             DEBUG1(rfLostLine);
           }
 
-#if defined(ENABLE_DEBUG)
-          m_callActive[slot] = false; // what is this?????
-#endif
+          m_callActive[slot] = false;
           serial.writeDMRLost(slot);
           reset();
         }
