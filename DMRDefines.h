@@ -97,4 +97,3 @@ const uint8_t DT_IDLE               = 9U;
 const uint8_t DT_RATE_1_DATA        = 10U;
 
 #endif
-
