@@ -285,8 +285,8 @@ void CDMRSlotRX::procSlot2()
                 m_callStartMs[slot] = millis();
         #if defined(MS_MODE)
                 m_callActive[slot ^ 1U] = false;
+        #endif
               }
-#endif
 
               
               // Store LC data for embedding in voice frames
@@ -431,9 +431,7 @@ void CDMRSlotRX::procSlot2()
             DEBUG1(rfLostLine);
           }
 
-#if defined(ENABLE_DEBUG)
-          m_callActive[slot] = false; // what is this?????
-#endif
+          m_callActive[slot] = false;
           serial.writeDMRLost(slot);
           reset();
         }
@@ -479,8 +477,10 @@ void CDMRSlotRX::procSlot2()
     m_control = CONTROL_NONE;
 
 #if defined(MS_MODE)
-    // Advance end pointer for next slot (flywheel)
-    m_endPtr = (m_endPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    // Advance pointers for next slot (flywheel)
+    m_syncPtr  = (m_syncPtr  + 288U) % DMR_BUFFER_LENGTH_BITS;
+    m_startPtr = (m_startPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
+    m_endPtr   = (m_endPtr   + 288U) % DMR_BUFFER_LENGTH_BITS;
     // Slot identity comes from CACH (decodeCACH), do not blindly toggle here.
 #endif
   }
