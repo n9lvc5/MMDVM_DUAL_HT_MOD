@@ -43,42 +43,34 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
     DEBUG2I("LC raw345", (lc->rawData[3] << 16) | (lc->rawData[4] << 8) | lc->rawData[5]);
   }
 
-  // Accept LC when RS passes, or when the decoded header looks plausible
-  // (BS→MS can sometimes fail RS due to parity/mask differences; TG/dstId is often correct)
-  uint32_t dstId = ((uint32_t)lc->rawData[3U] << 16) |
-                   ((uint32_t)lc->rawData[4U] << 8) |
-                   (uint32_t)lc->rawData[5U];
-  uint8_t flco = lc->rawData[0U] & 0x3FU;
-  bool plausible = (flco <= 1U) && (dstId >= 1U && dstId <= 16777215U);
-
-  DEBUG2I("LC plausible:", plausible ? 1 : 0);
-
-  if (!rsOk && !plausible) {
-    DEBUG1("LC discarded - RS and Plausible failed");
+  if (!rsOk) {
+    DEBUG1("LC discarded - RS failed");
     return false;
-  }
-  
-  if (!rsOk && plausible) {
-    DEBUG1("LC accepted via plausibility check");
   }
 
   // Extract LC fields
   lc->PF = (lc->rawData[0U] & 0x80U) != 0;
   lc->R  = (lc->rawData[0U] & 0x40U) != 0;
   lc->FLCO = lc->rawData[0U] & 0x3FU;
-  
+
   lc->FID = lc->rawData[1U];
   lc->options = lc->rawData[2U];
-  
+
   // Destination ID (Talkgroup) - 3 bytes, big-endian
   lc->dstId = ((uint32_t)lc->rawData[3U] << 16) |
               ((uint32_t)lc->rawData[4U] << 8) |
               ((uint32_t)lc->rawData[5U]);
-  
+
   // Source ID (Caller DMR ID) - 3 bytes, big-endian
   lc->srcId = ((uint32_t)lc->rawData[6U] << 16) |
               ((uint32_t)lc->rawData[7U] << 8) |
               ((uint32_t)lc->rawData[8U]);
+
+  // Sanity check for valid DMR ID range (1 to 16,777,215)
+  if (lc->dstId == 0U || lc->dstId > 16777215U || lc->srcId == 0U || lc->srcId > 16777215U) {
+    DEBUG1("LC discarded - Invalid ID range");
+    return false;
+  }
 
   return true;
 }
@@ -93,31 +85,31 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
   // Bits 108-155: SYNC
   // Bits 156-165: Slot Type Part 2
   // Bits 166-263: LC Part 2
-  
+
   // Clear output
   memset(lcData, 0x00U, 25U);
-  
+
   uint32_t bitPos = 0U;
-  
+
   // Extract bits from LC Part 1 (bits 0-97 of burst)
   for (uint32_t i = 0U; i < 98U; i++) {
     uint32_t srcByte = i / 8U;
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
-    
+
     uint32_t dstByte = bitPos / 8U;
     uint32_t dstBit = 7U - (bitPos % 8U);
     if (bit)
       lcData[dstByte] |= (1U << dstBit);
     bitPos++;
   }
-  
+
   // Extract bits from LC Part 2 (bits 166-263 of burst)
   for (uint32_t i = 166U; i < 264U; i++) {
     uint32_t srcByte = i / 8U;
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
-    
+
     uint32_t dstByte = bitPos / 8U;
     uint32_t dstBit = 7U - (bitPos % 8U);
     if (bit)
@@ -134,13 +126,13 @@ void CDMRLC::applyMask(uint8_t* data, uint8_t dataType)
       data[10U] ^= VOICE_LC_HEADER_CRC_MASK[1U];
       data[11U] ^= VOICE_LC_HEADER_CRC_MASK[2U];
       break;
-      
+
     case DT_TERMINATOR_WITH_LC:
       data[9U]  ^= TERMINATOR_WITH_LC_CRC_MASK[0U];
       data[10U] ^= TERMINATOR_WITH_LC_CRC_MASK[1U];
       data[11U] ^= TERMINATOR_WITH_LC_CRC_MASK[2U];
       break;
-      
+
     default:
       break;
   }
