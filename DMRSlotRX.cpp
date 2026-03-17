@@ -137,6 +137,8 @@ bool CDMRSlotRX::databit(bool bit)
 #if defined(MS_MODE)
   // Slot timing logic for MS mode
   m_slotTimer++;
+  if (m_slotTimer >= 288U)
+    m_slotTimer = 0U;
 #endif
   
 #if defined(MS_MODE)
@@ -481,7 +483,8 @@ void CDMRSlotRX::procSlot2()
     m_syncPtr  = (m_syncPtr  + 288U) % DMR_BUFFER_LENGTH_BITS;
     m_startPtr = (m_startPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
     m_endPtr   = (m_endPtr   + 288U) % DMR_BUFFER_LENGTH_BITS;
-    // Slot identity comes from CACH (decodeCACH), do not blindly toggle here.
+    // Toggle slot for the flywheel - decodeCACH will correct if needed.
+    m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
 #endif
   }
 }
@@ -541,18 +544,17 @@ void CDMRSlotRX::correlateSync()
 #if defined(MS_MODE)
     // Set sync lock when we find a BS sync pattern
     if (control != CONTROL_NONE) {
-      if (!m_syncLocked) {
-        // Determine the correct timeslot from this burst's own CACH.
-        // The CACH for the current burst starts 179 bits before the sync end
-        // (sync ends at bit 179 of the 288-bit slot; CACH is at bits 0-23).
-        // Bit 1 of the CACH is the TC bit: TC=0 → TS1 (m_currentSlot=1),
-        //                                  TC=1 → TS2 (m_currentSlot=2).
-        uint16_t tcBitPos = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 178U) % DMR_BUFFER_LENGTH_BITS;
-        bool initTc = READ_BIT1(m_buffer, tcBitPos);
-        m_currentSlot = initTc ? 2U : 1U;
-        m_syncLocked = true;
-      }
-      // If already locked, we trust the flywheel but update m_slotTimer
+      // Determine the correct timeslot from this burst's own CACH.
+      // The CACH for the current burst starts 179 bits before the sync end
+      // (sync ends at bit 179 of the 288-bit slot; CACH is at bits 0-23).
+      // Bit 1 of the CACH is the TC bit: TC=0 → TS1 (m_currentSlot=1),
+      //                                  TC=1 → TS2 (m_currentSlot=2).
+      // The TC bit in the CACH describes the identity of the current burst
+      // (TC=0 → TS1, TC=1 → TS2).
+      uint16_t tcBitPos = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 178U) % DMR_BUFFER_LENGTH_BITS;
+      bool tc = READ_BIT1(m_buffer, tcBitPos);
+      m_currentSlot = tc ? 2U : 1U;
+      m_syncLocked = true;
       m_slotTimer = 0U;
     }
 #endif
@@ -587,7 +589,10 @@ void CDMRSlotRX::correlateSync()
 
 void CDMRSlotRX::decodeCACH()
 {
-  uint16_t cachStartPtr = (m_syncPtr + 109U) % DMR_BUFFER_LENGTH_BITS;
+  // decodeCACH is called 132 bits after sync detection/flywheel trigger.
+  // m_syncPtr has already been advanced by 288 in procSlot2.
+  // The CACH for the current burst is 179 bits before the advanced sync end position.
+  uint16_t cachStartPtr = (m_syncPtr + DMR_BUFFER_LENGTH_BITS - 179U) % DMR_BUFFER_LENGTH_BITS;
 
   bool c[24];
   for (uint8_t i = 0; i < 24; i++) {
@@ -625,19 +630,13 @@ void CDMRSlotRX::decodeCACH()
   }
 
   // TC bit to logical timeslot mapping per DMR spec (ETSI TS 102 361-1):
-  // TC=0 → TS1, TC=1 → TS2. This CACH was read from m_syncPtr+109 and
-  // describes the NEXT burst's timeslot identity.
-  uint8_t tc = t[1] ? 2U : 1U;
-  if (m_currentSlot != tc) {
-    // Only correct the slot identity. DO NOT touch m_endPtr here.
-    // decodeCACH fires at m_slotTimer==132, which is 24 bits AFTER procSlot2
-    // already fired at m_slotTimer==108 and advanced m_endPtr += 288.
-    // Setting m_endPtr = m_syncPtr+108 here would reset it 288 bits backward,
-    // to a position m_dataPtr has already passed, breaking the flywheel entirely.
-    // The flywheel (m_endPtr += 288 in procSlot2) correctly tracks burst boundaries.
-    // This correction only fixes the slot-identity label (slot 1 vs slot 2).
-    m_currentSlot = tc;
-    // [debug removed - fires every other burst on single-slot repeaters]
+  // TC=0 → TS1, TC=1 → TS2. This CACH was read from the burst that just finished
+  // (Slot N) and describes the identity of the *following* burst (Slot N+1).
+  // Since procSlot2 already toggled m_currentSlot to the expected Slot N+1,
+  // we verify it matches the TC bit's indication.
+  uint8_t nextSlot = t[1] ? 2U : 1U;
+  if (m_currentSlot != nextSlot) {
+    m_currentSlot = nextSlot;
   }
 }
 
