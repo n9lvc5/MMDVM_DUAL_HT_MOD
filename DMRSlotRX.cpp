@@ -60,7 +60,8 @@ m_delay(0U)
 #if defined(MS_MODE)
   ,m_currentSlot(1U),
   m_slotTimer(0U),
-  m_syncLocked(false)
+  m_syncLocked(false),
+  m_slotHysteresis(0U)
 #endif
 {
   for (uint8_t i = 0U; i < 2U; i++) {
@@ -110,6 +111,7 @@ void CDMRSlotRX::reset()
   m_currentSlot = 1U;
   m_slotTimer = 0U;
   m_syncLocked = false;
+  m_slotHysteresis = 0U;
   memset(m_lcData, 0, sizeof(m_lcData));
 #endif
 }
@@ -544,20 +546,62 @@ void CDMRSlotRX::correlateSync()
 #if defined(MS_MODE)
     // Set sync lock when we find a BS sync pattern
     if (control != CONTROL_NONE) {
-      if (!m_syncLocked) {
-        // Determine the correct timeslot from this burst's own CACH.
-        // The CACH for the current burst starts 179 bits before the sync end
-        // (sync ends at bit 179 of the 288-bit slot; CACH is at bits 0-23).
-        // Bit 1 of the CACH is the TC bit: TC=0 → TS1 (m_currentSlot=1),
-        //                                  TC=1 → TS2 (m_currentSlot=2).
-        uint16_t tcBitPos = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 178U) % DMR_BUFFER_LENGTH_BITS;
-        bool initTc = READ_BIT1(m_buffer, tcBitPos);
-        // TC=0 -> TS1, TC=1 -> TS2. This CACH is for the *current* burst, so
-        // its identity is the opposite of the next expected slot.
-        m_currentSlot = initTc ? 1U : 2U;
-        m_syncLocked = true;
+      // Determine the correct timeslot from this burst's own CACH.
+      // The CACH for the current burst starts 179 bits before the sync end
+      // (sync ends at bit 179 of the 288-bit slot; CACH is at bits 0-23).
+      // Bit 1 of the CACH is the TC bit: TC=0 → TS1 (m_currentSlot=1),
+      //                                  TC=1 → TS2 (m_currentSlot=2).
+      // The TC bit in the CACH describes the identity of the current burst
+      // (TC=0 → TS1, TC=1 → TS2).
+      uint16_t tcCachStart = (m_dataPtr + DMR_BUFFER_LENGTH_BITS - 179U) % DMR_BUFFER_LENGTH_BITS;
+      bool t[7];
+      t[0] = READ_BIT1(m_buffer, (tcCachStart + 0U) % DMR_BUFFER_LENGTH_BITS); // AT
+      t[1] = READ_BIT1(m_buffer, (tcCachStart + 1U) % DMR_BUFFER_LENGTH_BITS); // TC
+      t[2] = READ_BIT1(m_buffer, (tcCachStart + 5U) % DMR_BUFFER_LENGTH_BITS); // LCSS1
+      t[3] = READ_BIT1(m_buffer, (tcCachStart + 6U) % DMR_BUFFER_LENGTH_BITS); // LCSS0
+      t[4] = READ_BIT1(m_buffer, (tcCachStart + 10U) % DMR_BUFFER_LENGTH_BITS); // H2
+      t[5] = READ_BIT1(m_buffer, (tcCachStart + 11U) % DMR_BUFFER_LENGTH_BITS); // H1
+      t[6] = READ_BIT1(m_buffer, (tcCachStart + 15U) % DMR_BUFFER_LENGTH_BITS); // H0
+
+      // Hamming(7,4) check
+      bool s0 = t[0] ^ t[1] ^ t[2] ^ t[4];
+      bool s1 = t[1] ^ t[2] ^ t[3] ^ t[5];
+      bool s2 = t[0] ^ t[1] ^ t[3] ^ t[6];
+
+      uint8_t s = (s2 << 2) | (s1 << 1) | s0;
+      if (s != 0) {
+        // Single bit error correction
+        switch (s) {
+          case 5: t[0] = !t[0]; break;
+          case 7: t[1] = !t[1]; break;
+          case 3: t[2] = !t[2]; break;
+          case 6: t[3] = !t[3]; break;
+          case 1: t[4] = !t[4]; break;
+          case 2: t[5] = !t[5]; break;
+          case 4: t[6] = !t[6]; break;
+          default: break; // Multi-bit error - use raw bit
+        }
       }
-      // If already locked, we trust the flywheel but update m_slotTimer
+
+      // The TC bit indicates the identity of the burst that follows the CACH.
+      // Since this CACH precedes the current burst, it identifies the current burst.
+      // (TC=0 → TS1, TC=1 → TS2)
+      uint8_t indicated_current_slot = t[1] ? 2U : 1U;
+      if (!m_syncLocked) {
+        m_currentSlot = indicated_current_slot;
+        m_syncLocked = true;
+        m_slotHysteresis = 0U;
+      } else {
+        if (m_currentSlot != indicated_current_slot) {
+          if (++m_slotHysteresis >= 2U) {
+            DEBUG2("Slot changed at sync to", indicated_current_slot);
+            m_currentSlot = indicated_current_slot;
+            m_slotHysteresis = 0U;
+          }
+        } else {
+          m_slotHysteresis = 0U;
+        }
+      }
       m_slotTimer = 0U;
     }
 #endif
@@ -594,8 +638,7 @@ void CDMRSlotRX::decodeCACH()
 {
   // decodeCACH is called 132 bits after sync detection/flywheel trigger.
   // m_syncPtr has already been advanced by 288 in procSlot2.
-  // The CACH for the burst just processed is 179 bits BEFORE the *old* syncPtr,
-  // or (288 + 179) bits before the *new* advanced m_syncPtr.
+  // The CACH for the current burst is 179 bits before the advanced sync end position.
   uint16_t cachStartPtr = (m_syncPtr + DMR_BUFFER_LENGTH_BITS - 179U) % DMR_BUFFER_LENGTH_BITS;
 
   bool c[24];
@@ -637,10 +680,16 @@ void CDMRSlotRX::decodeCACH()
   // TC=0 → TS1, TC=1 → TS2. This CACH was read from the burst that just finished
   // (Slot N) and describes the identity of the *following* burst (Slot N+1).
   // Since procSlot2 already toggled m_currentSlot to the expected Slot N+1,
-  // we verify it matches the TC bit's indication.
-  uint8_t nextSlot = t[1] ? 2U : 1U;
-  if (m_currentSlot != nextSlot) {
-    m_currentSlot = nextSlot;
+  // we verify it matches the TC bit's indication with 2-burst hysteresis.
+  uint8_t indicated_next_slot = t[1] ? 2U : 1U;
+  if (m_currentSlot != indicated_next_slot) {
+    if (++m_slotHysteresis >= 2U) {
+      DEBUG2("Slot changed at CACH to", indicated_next_slot);
+      m_currentSlot = indicated_next_slot;
+      m_slotHysteresis = 0U;
+    }
+  } else {
+    m_slotHysteresis = 0U;
   }
 }
 
