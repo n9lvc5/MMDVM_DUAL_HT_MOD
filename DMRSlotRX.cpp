@@ -308,15 +308,8 @@ void CDMRSlotRX::procSlot2()
               // perfect codeword so MMDVMHost's CFullLC::decode() always succeeds.
 #if defined(MS_MODE)
               if (lcValid) {
-                uint8_t lcClean[12U];
-                memcpy(lcClean, lc.rawData, 12U);
-                // lc.rawData has had the CRC mask removed; re-apply it so
-                // MMDVMHost's applyMask() step yields the correct RS parities.
-                lcClean[9U]  ^= VOICE_LC_HEADER_CRC_MASK[0U];
-                lcClean[10U] ^= VOICE_LC_HEADER_CRC_MASK[1U];
-                lcClean[11U] ^= VOICE_LC_HEADER_CRC_MASK[2U];
                 CBPTC19696 bptcEnc;
-                bptcEnc.encode(lcClean, frame + 1U);
+                bptcEnc.encode(lc.rawData, frame + 1U);
               }
 #endif
 #if defined(ENABLE_DEBUG)
@@ -357,13 +350,8 @@ void CDMRSlotRX::procSlot2()
                 // Re-encode error-corrected LC into clean BPTC payload bits.
 #if defined(MS_MODE)
                 if (lcValid) {
-                  uint8_t lcClean[12U];
-                  memcpy(lcClean, lc.rawData, 12U);
-                  lcClean[9U]  ^= TERMINATOR_WITH_LC_CRC_MASK[0U];
-                  lcClean[10U] ^= TERMINATOR_WITH_LC_CRC_MASK[1U];
-                  lcClean[11U] ^= TERMINATOR_WITH_LC_CRC_MASK[2U];
                   CBPTC19696 bptcEnc;
-                  bptcEnc.encode(lcClean, frame + 1U);
+                  bptcEnc.encode(lc.rawData, frame + 1U);
                 }
 #endif
 
