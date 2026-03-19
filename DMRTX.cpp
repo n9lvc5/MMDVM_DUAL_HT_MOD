@@ -274,14 +274,16 @@ void CDMRTX::createData(uint8_t slotIndex, bool forceIdle)
 
   memcpy(m_poBuffer, frame + 1, 33);
 
-  // Replacement of sync bits with MS sync
-  m_poBuffer[13] = (m_poBuffer[13] & 0xF0U) | (sync[0] & 0x0FU);
+  // Replacement of sync bits with MS sync (bits 108..155)
+  // Bit 108 is bit 4 of byte 13.
+  m_poBuffer[13] = (m_poBuffer[13] & (0xFFU << 4U)) | (sync[0] & (0xFFU >> 4U));
   m_poBuffer[14] = sync[1];
   m_poBuffer[15] = sync[2];
   m_poBuffer[16] = sync[3];
   m_poBuffer[17] = sync[4];
   m_poBuffer[18] = sync[5];
-  m_poBuffer[19] = (sync[6] & 0xF0U) | (m_poBuffer[19] & 0x0FU);
+  // Bit 155 is bit 3 of byte 19.
+  m_poBuffer[19] = (sync[6] & (0xFFU << 4U)) | (m_poBuffer[19] & (0xFFU >> 4U));
 
   m_poLen = 33U;
   m_poPtr = 0U;
