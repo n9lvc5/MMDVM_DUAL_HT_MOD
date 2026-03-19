@@ -597,7 +597,7 @@ void CDMRSlotRX::correlateSync()
       } else {
         if (m_currentSlot != indicated_current_slot) {
           if (++m_slotHysteresis >= 2U) {
-            DEBUG2("Slot changed at sync to", indicated_current_slot);
+            //DEBUG2("Slot changed at sync to", indicated_current_slot);
             m_currentSlot = indicated_current_slot;
             m_slotHysteresis = 0U;
           }
@@ -687,7 +687,7 @@ void CDMRSlotRX::decodeCACH()
   uint8_t indicated_next_slot = t[1] ? 2U : 1U;
   if (m_currentSlot != indicated_next_slot) {
     if (++m_slotHysteresis >= 2U) {
-      DEBUG2("Slot changed at CACH to", indicated_next_slot);
+      //DEBUG2("Slot changed at CACH to", indicated_next_slot);
       m_currentSlot = indicated_next_slot;
       m_slotHysteresis = 0U;
     }
