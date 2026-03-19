@@ -351,8 +351,10 @@ void CDMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) c
   slotType[2U] = (cksum >> 8) & 0xFFU;
 
   // [debug removed]
-  frame[12U] = (frame[12U] & 0xC0U) | ((slotType[0U] >> 2) & 0x3FU);
-  frame[13U] = (frame[13U] & 0x0FU) | ((slotType[0U] << 6) & 0xC0U) | ((slotType[1U] >> 2) & 0x30U);
-  frame[19U] = (frame[19U] & 0xF0U) | ((slotType[1U] >> 2) & 0x0FU);
-  frame[20U] = (frame[20U] & 0x03U) | ((slotType[1U] << 6) & 0xC0U) | ((slotType[2U] >> 2) & 0x3CU);
+  // Part 1: Bits 98-107. Byte 12 bits 2-7, Byte 13 bits 0-3.
+  frame[12U] = (frame[12U] & (0xFFU << 6U)) | ((slotType[0U] >> 2) & (0xFFU >> 2U));
+  frame[13U] = (frame[13U] & (0xFFU >> 4U)) | ((slotType[0U] << 6) & (0xFFU << 6U)) | ((slotType[1U] >> 2) & (0x03U << 4U));
+  // Part 2: Bits 156-165. Byte 19 bits 0-3, Byte 20 bits 2-7.
+  frame[19U] = (frame[19U] & (0xFFU << 4U)) | ((slotType[1U] >> 2) & (0xFFU >> 4U));
+  frame[20U] = (frame[20U] & (0x03U)) | ((slotType[1U] << 6) & (0xFFU << 6U)) | ((slotType[2U] >> 2) & (0x0FU << 2U));
 }

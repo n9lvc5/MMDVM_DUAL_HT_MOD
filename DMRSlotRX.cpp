@@ -211,13 +211,16 @@ void CDMRSlotRX::procSlot2()
     // bit 108 corresponds to byte index 14 (108/8 = 13.5).
     if (m_control != CONTROL_NONE) {
       const uint8_t* msSync = (m_control == CONTROL_VOICE) ? DMR_MS_VOICE_SYNC_BYTES : DMR_MS_DATA_SYNC_BYTES;
-      frame[14U] = (frame[14U] & 0xF0U) | (msSync[0U] & 0x0FU);
+      // Sync starts at bit 108 of the 264-bit burst (bit 4 of byte 13). frame[14] is byte 13 of payload.
+      frame[14U] = (frame[14U] & (0xFFU << 4U)) | (msSync[0U] & (0xFFU >> 4U));
       frame[15U] = msSync[1U];
       frame[16U] = msSync[2U];
       frame[17U] = msSync[3U];
       frame[18U] = msSync[4U];
       frame[19U] = msSync[5U];
-      frame[20U] = (msSync[6U] & 0xF0U) | (frame[20U] & 0x0FU);
+      // Sync ends at bit 155 (bit 3 of byte 19). Bit 156 (bit 4 of byte 19) is next.
+      // frame[20] is byte 19 of payload.
+      frame[20U] = (msSync[6U] & (0xFFU << 4U)) | (frame[20U] & (0xFFU >> 4U));
     }
 #endif
 
