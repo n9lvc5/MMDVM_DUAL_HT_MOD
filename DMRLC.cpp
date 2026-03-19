@@ -52,15 +52,15 @@ bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
   lc->PF = (lc->rawData[0U] & 0x80U) != 0;
   lc->R  = (lc->rawData[0U] & 0x40U) != 0;
   lc->FLCO = lc->rawData[0U] & 0x3FU;
-
+  
   lc->FID = lc->rawData[1U];
   lc->options = lc->rawData[2U];
-
+  
   // Destination ID (Talkgroup) - 3 bytes, big-endian
   lc->dstId = ((uint32_t)lc->rawData[3U] << 16) |
               ((uint32_t)lc->rawData[4U] << 8) |
               ((uint32_t)lc->rawData[5U]);
-
+  
   // Source ID (Caller DMR ID) - 3 bytes, big-endian
   lc->srcId = ((uint32_t)lc->rawData[6U] << 16) |
               ((uint32_t)lc->rawData[7U] << 8) |
@@ -85,31 +85,31 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
   // Bits 108-155: SYNC
   // Bits 156-165: Slot Type Part 2
   // Bits 166-263: LC Part 2
-
+  
   // Clear output
   memset(lcData, 0x00U, 25U);
-
+  
   uint32_t bitPos = 0U;
-
+  
   // Extract bits from LC Part 1 (bits 0-97 of burst)
   for (uint32_t i = 0U; i < 98U; i++) {
     uint32_t srcByte = i / 8U;
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
-
+    
     uint32_t dstByte = bitPos / 8U;
     uint32_t dstBit = 7U - (bitPos % 8U);
     if (bit)
       lcData[dstByte] |= (1U << dstBit);
     bitPos++;
   }
-
+  
   // Extract bits from LC Part 2 (bits 166-263 of burst)
   for (uint32_t i = 166U; i < 264U; i++) {
     uint32_t srcByte = i / 8U;
     uint32_t srcBit = 7U - (i % 8U);
     bool bit = (frame[srcByte] & (1U << srcBit)) != 0;
-
+    
     uint32_t dstByte = bitPos / 8U;
     uint32_t dstBit = 7U - (bitPos % 8U);
     if (bit)
@@ -126,13 +126,13 @@ void CDMRLC::applyMask(uint8_t* data, uint8_t dataType)
       data[10U] ^= VOICE_LC_HEADER_CRC_MASK[1U];
       data[11U] ^= VOICE_LC_HEADER_CRC_MASK[2U];
       break;
-
+      
     case DT_TERMINATOR_WITH_LC:
       data[9U]  ^= TERMINATOR_WITH_LC_CRC_MASK[0U];
       data[10U] ^= TERMINATOR_WITH_LC_CRC_MASK[1U];
       data[11U] ^= TERMINATOR_WITH_LC_CRC_MASK[2U];
       break;
-
+      
     default:
       break;
   }
