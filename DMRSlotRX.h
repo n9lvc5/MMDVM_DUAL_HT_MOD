@@ -70,12 +70,14 @@ private:
   uint8_t m_colorCode;
   uint16_t m_delay;
 #if defined(MS_MODE)
+  static const uint16_t MIN_BITS_FOR_CACH_READ = 180U;
   uint8_t m_currentSlot;
   uint32_t m_slotTimer;
   bool m_syncLocked;
   uint8_t m_lcData[12];  // Store LC data for embedding in voice frames
   bool m_lcValid[2];     // Flag indicating if LC data is valid
   uint8_t m_slotHysteresis;
+  uint16_t m_bitsReceived;
 #endif
 
   void procSlot2();
