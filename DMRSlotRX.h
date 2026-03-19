@@ -58,6 +58,7 @@ private:
   uint16_t m_startPtr;
   uint16_t m_endPtr;
   uint8_t m_control;
+  bool m_inverted;
   uint8_t m_syncCount[2];
   DMRRX_STATE m_state[2];
   uint8_t m_n[2];
