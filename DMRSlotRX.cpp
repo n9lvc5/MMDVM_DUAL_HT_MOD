@@ -508,8 +508,8 @@ void CDMRSlotRX::procSlot2()
     m_syncPtr  = (m_syncPtr  + 288U) % DMR_BUFFER_LENGTH_BITS;
     m_startPtr = (m_startPtr + 288U) % DMR_BUFFER_LENGTH_BITS;
     m_endPtr   = (m_endPtr   + 288U) % DMR_BUFFER_LENGTH_BITS;
-    // Toggle slot for the flywheel - decodeCACH will correct if needed.
-    m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+    // Slot toggle is now deferred to decodeCACH() to prevent timing races
+    // during slot identity correction.
 #endif
   }
 }
@@ -668,6 +668,12 @@ void CDMRSlotRX::correlateSync()
 void CDMRSlotRX::decodeCACH()
 {
   // decodeCACH is called 132 bits after sync detection/flywheel trigger.
+  // This corresponds to the end of the CACH for the burst currently being received.
+
+  // Mandatory slot toggle for flywheel. Done here so that m_currentSlot
+  // matches the burst identity for the duration of its processing.
+  m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
+
   // m_syncPtr has already been advanced by 288 in procSlot2.
   // The CACH for the current burst is 179 bits before the advanced sync end position.
   uint16_t cachStartPtr = (m_syncPtr + DMR_BUFFER_LENGTH_BITS - 179U) % DMR_BUFFER_LENGTH_BITS;
@@ -708,10 +714,9 @@ void CDMRSlotRX::decodeCACH()
   }
 
   // TC bit to logical timeslot mapping per DMR spec (ETSI TS 102 361-1):
-  // TC=0 → TS1, TC=1 → TS2. This CACH was read from the burst that just finished
-  // (Slot N) and describes the identity of the *following* burst (Slot N+1).
-  // Since procSlot2 already toggled m_currentSlot to the expected Slot N+1,
-  // we verify it matches the TC bit's indication with 2-burst hysteresis.
+  // TC=0 → TS1, TC=1 → TS2. This CACH identifies the burst currently being received.
+  // Since we just toggled m_currentSlot, we verify it matches the TC bit's
+  // indication with 2-burst hysteresis.
   uint8_t indicated_next_slot = t[1] ? 2U : 1U;
   if (m_currentSlot != indicated_next_slot) {
     if (++m_slotHysteresis >= 2U) {
