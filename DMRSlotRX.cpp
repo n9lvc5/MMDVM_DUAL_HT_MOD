@@ -212,21 +212,27 @@ void CDMRSlotRX::procSlot2()
     // In our 34-byte frame buffer (frame[0]=control, frame[1..33]=payload),
     // bit 108 corresponds to byte index 14 (108/8 = 13.5).
     if (m_control != CONTROL_NONE) {
-      const uint8_t* msSync = (m_control == CONTROL_VOICE) ? DMR_MS_VOICE_SYNC_BYTES : DMR_MS_DATA_SYNC_BYTES;
-      uint8_t msSyncClean[DMR_SYNC_BYTES_LENGTH];
-      for (uint8_t i = 0U; i < DMR_SYNC_BYTES_LENGTH; i++) {
-        msSyncClean[i] = m_inverted ? (msSync[i] ^ DMR_SYNC_BYTES_MASK[i]) : msSync[i];
+      uint8_t msSync[DMR_SYNC_BYTES_LENGTH];
+      if (m_control == CONTROL_VOICE) {
+        memcpy(msSync, DMR_MS_VOICE_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
+      } else {
+        memcpy(msSync, DMR_MS_DATA_SYNC_BYTES, DMR_SYNC_BYTES_LENGTH);
+      }
+      if (m_inverted) {
+        for (uint8_t i = 0U; i < DMR_SYNC_BYTES_LENGTH; i++) {
+          msSync[i] ^= DMR_SYNC_BYTES_MASK[i];
+        }
       }
       // Sync starts at bit 108 of the 264-bit burst (bit 4 of byte 13). frame[14] is byte 13 of payload.
-      frame[14U] = (frame[14U] & (0xFFU << 4U)) | (msSyncClean[0U] & (0xFFU >> 4U));
-      frame[15U] = msSyncClean[1U];
-      frame[16U] = msSyncClean[2U];
-      frame[17U] = msSyncClean[3U];
-      frame[18U] = msSyncClean[4U];
-      frame[19U] = msSyncClean[5U];
+      frame[14U] = (frame[14U] & (0xFFU << 4U)) | (msSync[0U] & (0xFFU >> 4U));
+      frame[15U] = msSync[1U];
+      frame[16U] = msSync[2U];
+      frame[17U] = msSync[3U];
+      frame[18U] = msSync[4U];
+      frame[19U] = msSync[5U];
       // Sync ends at bit 155 (bit 3 of byte 19). Bit 156 (bit 4 of byte 19) is next.
       // frame[20] is byte 19 of payload.
-      frame[20U] = (msSyncClean[6U] & (0xFFU << 4U)) | (frame[20U] & (0xFFU >> 4U));
+      frame[20U] = (msSync[6U] & (0xFFU << 4U)) | (frame[20U] & (0xFFU >> 4U));
     }
 #endif
 
