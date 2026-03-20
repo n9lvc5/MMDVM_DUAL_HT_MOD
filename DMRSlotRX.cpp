@@ -96,7 +96,7 @@ void CDMRSlotRX::reset()
   m_inverted  = false;
   m_startPtr  = 0U;
   m_endPtr    = NOENDPTR;
-
+  
   for (uint8_t i = 0U; i < 2U; i++) {
     m_syncCount[i] = 0U;
     m_state[i]     = DMRRXS_NONE;
@@ -137,14 +137,14 @@ bool CDMRSlotRX::databit(bool bit)
   m_patternBuffer <<= 1;
   if (bit)
     m_patternBuffer |= 0x01U;
-
+    
 #if defined(MS_MODE)
   // Slot timing logic for MS mode
   m_slotTimer++;
   if (m_slotTimer >= 288U)
     m_slotTimer = 0U;
 #endif
-
+  
 #if defined(MS_MODE)
   uint8_t slot_idx = m_currentSlot - 1U;
 #else
@@ -201,7 +201,7 @@ void CDMRSlotRX::procSlot2()
 #endif
 
   if (m_dataPtr == m_endPtr) {
-
+  
     frame[0U] = m_control;
 
     bitsToBytes(m_startPtr, DMR_FRAME_LENGTH_BYTES, frame + 1U);
@@ -209,7 +209,7 @@ void CDMRSlotRX::procSlot2()
 #if defined(MS_MODE)
     // Transpose BS sync to MS sync so MMDVMHost recognizes the traffic.
     // The 48-bit sync pattern starts at bit 108 of the 264-bit burst.
-    // In our 34-byte frame buffer (frame[0]=control, frame[1..33]=payload),
+    // In our 34-byte frame buffer (frame[0]=control, frame[1..33]=payload), 
     // bit 108 corresponds to byte index 14 (108/8 = 13.5).
     if (m_control != CONTROL_NONE) {
       uint8_t msSync[DMR_SYNC_BYTES_LENGTH];
@@ -285,9 +285,9 @@ void CDMRSlotRX::procSlot2()
 #endif
               // Extract and embed Link Control (LC) data in the frame
               DMRLC_T lc;
-
+              
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
-
+              
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
                 DEBUG2I("LC decoded - SrcID", lc.srcId);
@@ -307,7 +307,7 @@ void CDMRSlotRX::procSlot2()
         #endif
               }
 
-
+              
               // Store LC data for embedding in voice frames
 #if defined(MS_MODE)
               if (lcValid) {
@@ -317,7 +317,7 @@ void CDMRSlotRX::procSlot2()
                 m_lcValid[slot] = false;
               }
 #endif
-
+              
               // Re-encode the error-corrected LC back into clean BPTC payload bits.
               // This replaces the raw (possibly erroneous) received bits with a
               // perfect codeword so MMDVMHost's CFullLC::decode() always succeeds.
@@ -345,7 +345,7 @@ void CDMRSlotRX::procSlot2()
 
           case DT_VOICE_PI_HEADER:
             if (m_state[slot] == DMRRXS_VOICE) {
-
+             
               writeRSSIData();
             }
             m_state[slot] = DMRRXS_VOICE;
@@ -357,9 +357,9 @@ void CDMRSlotRX::procSlot2()
               {
                                 // Extract and embed Link Control (LC) data in the terminator frame
                 DMRLC_T lc;
-
+                
                 bool lcValid = CDMRLC::decode(frame, DT_TERMINATOR_WITH_LC, &lc);
-
+                
 #if defined(ENABLE_DEBUG)
                 if (lcValid) {
                   DEBUG2I("Terminator LC decoded - SrcID", lc.srcId);
@@ -368,7 +368,7 @@ void CDMRSlotRX::procSlot2()
                   DEBUG2("Terminator LC decode failed!!!!", slot);
                 }
 #endif
-
+                
                 // Re-encode error-corrected LC into clean BPTC payload bits.
 #if defined(MS_MODE)
                 if (lcValid) {
@@ -397,7 +397,7 @@ void CDMRSlotRX::procSlot2()
             }
             break;
           default:    // DT_CSBK
-
+            
             writeRSSIData();
             m_state[slot]  = DMRRXS_NONE;
             break;
@@ -435,10 +435,10 @@ void CDMRSlotRX::procSlot2()
       if (m_syncLocked) {
         m_syncCount[slot]++;
         if (m_syncCount[slot] >= MAX_SYNC_LOST_FRAMES) {
-
+         
 #if defined(ENABLE_DEBUG)
           DEBUG2("DMRSlotRX: Sync lost in MS_MODE", m_syncCount[slot]);
-    #endif
+    #endif      
 
           if (m_callActive[slot]) {
             uint32_t dtMs = millis() - m_callStartMs[slot];
@@ -475,9 +475,9 @@ void CDMRSlotRX::procSlot2()
 
         // [debug removed - high frequency]
         // [debug removed - high frequency]
-
+        
         // Do NOT overwrite vocoder data with LC data.
-
+        
         // [debug removed - high frequency]
 #if defined(MS_MODE)
         serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
@@ -643,9 +643,9 @@ void CDMRSlotRX::correlateSync()
     m_startPtr = startPtr;
     m_endPtr = endPtr;
     m_control = control;
-
+    
     // [debug removed - high frequency]
-
+    
     if (m_state[slot_idx] == DMRRXS_NONE) {
       m_syncCount[slot_idx] = 0U; // If we are idle, reset the sync counter as well
     }
@@ -774,7 +774,7 @@ void CDMRSlotRX::writeRSSIData()
 #else
   uint8_t slot = m_slot ? 1U : 0U;
 #endif
-
+  
 #if defined(SEND_RSSI_DATA)
   uint16_t rssi = io.readRSSI();
 
