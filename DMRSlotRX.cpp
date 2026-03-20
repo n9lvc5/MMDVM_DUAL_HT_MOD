@@ -62,7 +62,8 @@ m_delay(0U)
   ,m_currentSlot(1U),
   m_slotTimer(0U),
   m_syncLocked(false),
-  m_slotHysteresis(0U)
+  m_slotHysteresis(0U),
+  m_bitsReceived(0U)
 #endif
 {
   for (uint8_t i = 0U; i < 2U; i++) {
@@ -114,6 +115,7 @@ void CDMRSlotRX::reset()
   m_slotTimer = 0U;
   m_syncLocked = false;
   m_slotHysteresis = 0U;
+  m_bitsReceived = 0U;
   memset(m_lcData, 0, sizeof(m_lcData));
 #endif
 }
@@ -137,6 +139,11 @@ bool CDMRSlotRX::databit(bool bit)
   m_patternBuffer <<= 1;
   if (bit)
     m_patternBuffer |= 0x01U;
+
+#if defined(MS_MODE)
+  if (m_bitsReceived < DMR_BUFFER_LENGTH_BITS)
+    m_bitsReceived++;
+#endif
     
 #if defined(MS_MODE)
   // Slot timing logic for MS mode
@@ -569,7 +576,7 @@ void CDMRSlotRX::correlateSync()
   if (control != CONTROL_NONE) {
 #if defined(MS_MODE)
     // Set sync lock when we find a BS sync pattern
-    if (control != CONTROL_NONE) {
+    if (control != CONTROL_NONE && m_bitsReceived >= MIN_BITS_FOR_CACH_READ) {
       // Determine the correct timeslot from this burst's own CACH.
       // The CACH for the current burst starts 179 bits before the sync end
       // (sync ends at bit 179 of the 288-bit slot; CACH is at bits 0-23).
