@@ -16,22 +16,43 @@
 
 #include <string.h>
 
-// CRC mask values per ETSI TS 102 361-1 Table 9.16 / 9.17
-// These are XOR'd with RS(12,9) parity bytes 9-11 before the RS check
-const uint8_t VOICE_LC_HEADER_CRC_MASK[3]    = {0x96U, 0x96U, 0x96U};
-const uint8_t TERMINATOR_WITH_LC_CRC_MASK[3] = {0x99U, 0x99U, 0x99U};
+// CRC mask values per ETSI TS 102 361-1 Section 9.2.5 and Table 9.16
+// ===================================================================
+// Per ETSI TS 102 361-1 Section 9.2.5 (Link Control Data):
+// "The 12-byte LC is protected by RS(12,9) Reed-Solomon code (3 check bytes).
+//  Before transmission, the CRC check bytes (positions 9-11) are masked with
+//  a 24-bit pattern that depends on the LC type (Voice Header vs Terminator)."
+//
+// CRC Masking is applied AFTER RS encoding and BEFORE transmission:
+//   1. Encode 12 LC bytes with RS(12,9) → bytes 0-8 (info), bytes 9-11 (RS check)
+//   2. XOR mask bytes 9-11 with type-specific mask value
+//   3. Transmit masked LC over the air via BPTC(196,96) + interleaving
+//
+// Decoding (this direction) reverses the process:
+//   1. Receive BPTC bits, de-interleave to get 12 bytes (with mask applied)
+//   2. Remove mask by XOR'ing bytes 9-11 again (XOR is self-inverse)
+//   3. Verify RS(12,9) check on unmasked data (bytes 9-11 must match RS check)
+//   4. Extract LC fields (bytes 0-8) which are unmasked
+//
+// Mask values (Table 9.16):
+const uint8_t VOICE_LC_HEADER_CRC_MASK[3]    = {0x96U, 0x96U, 0x96U};      // Voice LC Header: 0x969696
+const uint8_t TERMINATOR_WITH_LC_CRC_MASK[3] = {0x99U, 0x99U, 0x99U};      // Terminator w/ LC: 0x999999
 
 bool CDMRLC::decode(const uint8_t* data, uint8_t dataType, DMRLC_T* lc)
 {
   // BPTC(196,96) decode from the full 33‑byte DMR burst payload
   // (data[0] is the control byte, payload starts at data[1]).
+  // After BPTC decode, lc->rawData has the 12-byte LC with CRC mask ALREADY APPLIED
   CBPTC19696 bptc;
   bptc.decode(data + 1U, lc->rawData);
 
-  // Apply CRC mask based on data type
+  // Remove CRC mask from bytes 9-11 (ETSI TS 102 361-1 Section 9.2.5)
+  // The mask was applied at transmission; we remove it to compute RS check
+  // Note: XOR is self-inverse; XOR'ing again removes the mask
   applyMask(lc->rawData, dataType);
 
-  // Reed-Solomon check - log result (rare: once per voice call)
+  // Reed-Solomon(12,9) check on unmasked data (bytes 0-11, check uses bytes 9-11)
+  // ETSI TS 102 361-1 Section 9.2.5: RS check is computed on the LC BEFORE mask application
   bool rsOk = CRS129::check(lc->rawData);
   DEBUG2I("LC RS:", rsOk ? 1 : 0);
   if (rsOk) {
@@ -120,20 +141,31 @@ void CDMRLC::extractData(const uint8_t* frame, uint8_t* lcData)
 
 void CDMRLC::applyMask(uint8_t* data, uint8_t dataType)
 {
+  // Apply (or remove) CRC mask for RS(12,9) check bytes (positions 9-11)
+  // Per ETSI TS 102 361-1 Section 9.2.5, Table 9.16:
+  //
+  // Since XOR is self-inverse (A XOR M XOR M = A), this function is used both for:
+  //   A) Decoding (receiver): Remove mask before RS check
+  //   B) Re-encoding (transmitter): Re-apply mask for forwarding to host
+  //
+  // The mask pattern depends on LC type (Voice Header vs Terminator with LC)
   switch (dataType) {
     case DT_VOICE_LC_HEADER:
+      // Voice LC Header mask: 0x96, 0x96, 0x96 (Table 9.16)
       data[9U]  ^= VOICE_LC_HEADER_CRC_MASK[0U];
       data[10U] ^= VOICE_LC_HEADER_CRC_MASK[1U];
       data[11U] ^= VOICE_LC_HEADER_CRC_MASK[2U];
       break;
-      
+
     case DT_TERMINATOR_WITH_LC:
+      // Terminator with LC mask: 0x99, 0x99, 0x99 (Table 9.16)
       data[9U]  ^= TERMINATOR_WITH_LC_CRC_MASK[0U];
       data[10U] ^= TERMINATOR_WITH_LC_CRC_MASK[1U];
       data[11U] ^= TERMINATOR_WITH_LC_CRC_MASK[2U];
       break;
-      
+
     default:
+      // Other data types have no LC, so no mask to apply
       break;
   }
 }

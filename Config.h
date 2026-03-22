@@ -36,7 +36,10 @@
 // Debug Mode
 #define ENABLE_DEBUG
 
-// Not really sure
-#define SEND_RSSI_DATA
+// RSSI data breaks MMDVM frame format alignment in MS_MODE
+// MMDVMHost expects: control (1) + burst (33) = 34 bytes
+// With RSSI: control (1) + burst (33) + rssi (2) = 36 bytes → parser misalignment
+// In MS_MODE, RSSI is unnecessary (MMDVMHost handles metrics, modem just relays BS downlink)
+//#define SEND_RSSI_DATA
 
 #endif

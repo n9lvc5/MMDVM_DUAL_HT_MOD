@@ -670,7 +670,7 @@ void CDMRSlotRX::decodeCACH()
   // decodeCACH is called 132 bits after sync detection/flywheel trigger.
   // This corresponds to the end of the CACH for the burst currently being received.
 
-  // Mandatory slot toggle for flywheel. Done here so that m_currentSlot
+  // Mandatory slot toggle for flywheel. Done here so that m_currentSlot 
   // matches the burst identity for the duration of its processing.
   m_currentSlot = (m_currentSlot == 1U) ? 2U : 1U;
 
@@ -715,7 +715,7 @@ void CDMRSlotRX::decodeCACH()
 
   // TC bit to logical timeslot mapping per DMR spec (ETSI TS 102 361-1):
   // TC=0 → TS1, TC=1 → TS2. This CACH identifies the burst currently being received.
-  // Since we just toggled m_currentSlot, we verify it matches the TC bit's
+  // Since we just toggled m_currentSlot, we verify it matches the TC bit's 
   // indication with 2-burst hysteresis.
   uint8_t indicated_next_slot = t[1] ? 2U : 1U;
   if (m_currentSlot != indicated_next_slot) {

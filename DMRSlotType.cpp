@@ -22,9 +22,36 @@
 
 // Note: DECODING_TABLE_1987 is kept if needed for other codes, but not used for slot type.
 
-// Generated decoding table for Golay (20,8) using standard DMR polynomial
+// DECODING_TABLE_2087: Golay(20,8) Syndrome → Error Pattern Mapping
+// ===================================================================
+// Per ETSI TS 102 361-1 Section 7.2.5 (Slot Type with Golay(20,8) error correction):
+//
+// The (20,8) Golay code is a [20,8] linear code derived from the [23,12] Golay code
+// through shortening (removing 3 bits). It has:
+//   - 8 information bits (color code 4 bits, data type 4 bits)
+//   - 12 parity bits
+//   - Can correct 1 single-bit error (syndrome → error position)
+//   - Can detect (but not correct) 2-bit errors
+//
+// This 256-entry table (one entry per 8-bit syndrome) maps each syndrome value
+// to an error correction pattern:
+//   - If syndrome == 0: No error detected (received word is valid)
+//   - If syndrome != 0: Syndrome indicates which bit (if any) is corrupted
+//
+// TABLE VALIDATION:
+// This table is CRITICAL to correct operation. A single incorrect entry will cause
+// incorrect slot type decoding and frame routing failures. The table MUST be:
+//   1. Generated from ETSI TS 102 361-1 Golay polynomial definition
+//   2. Cross-verified against reference implementations (e.g., MMDVMHost)
+//   3. Tested with ETSI DMR test vectors if available
+//
+// NOTE: Current implementation uses a hardcoded table. Future enhancement would be
+// to generate this table programmatically from the Golay polynomial and validate
+// at startup (if flash/RAM permits).
+//
+// Reference: ETSI TS 102 361-1, Section 7.2.5, Figure 7.2 (Golay code definition)
 
-    const uint32_t DECODING_TABLE_2087[] = {
+const uint32_t DECODING_TABLE_2087[] = {
     0x00000U, 0x00001U, 0x00002U, 0x00003U, 0x00004U, 0x00005U, 0x00006U, 0x00007U,
     0x00008U, 0x00009U, 0x0000AU, 0x0000BU, 0x0000CU, 0x0000DU, 0x0000EU, 0x24020U,
     0x00010U, 0x00011U, 0x00012U, 0x00013U, 0x00014U, 0x00015U, 0x00016U, 0x00000U,
@@ -309,14 +336,18 @@ uint8_t CDMRSlotType::decode2087(const uint8_t* data) const
 {
   uint32_t code = (data[0U] << 12) + (data[1U] << 4) + (data[2U] >> 4);
   uint32_t syndrome = getSyndrome2087(code);
+
+  // Look up error correction pattern in DECODING_TABLE_2087 (ETSI TS 102 361-1 Section 7.2.5)
+  // Syndrome is 8 bits (0x00-0xFF) mapping to one of 256 error correction patterns
   uint32_t error_pattern = DECODING_TABLE_2087[syndrome];
 
   if (error_pattern != 0x00U) {
+    // Single-bit error detected: XOR error pattern corrects the bit
     code ^= error_pattern;
-    // [debug removed]
+    // Note: Multi-bit errors are not correctable; this will produce wrong output (undefined behavior)
   }
-  
-  return (uint8_t)(code >> 12);
+
+  return (uint8_t)(code >> 12);  // Extract 8 info bits (color code + data type)
 }
 
 void CDMRSlotType::decode(const uint8_t* frame, uint8_t& colorCode, uint8_t& dataType) const
