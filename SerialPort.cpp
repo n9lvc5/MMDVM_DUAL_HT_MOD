@@ -980,6 +980,12 @@ void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
     return;
 #endif
 
+#if defined(ENABLE_DEBUG)
+  if (m_debug) {
+    writeDebug("writeDMRData: Sending frame", slot, length);
+  }
+#endif
+
   if (length > 37U)
     length = 37U;
 
@@ -1001,11 +1007,13 @@ void CSerialPort::writeDMRData(bool slot, const uint8_t* data, uint8_t length)
 
 void CSerialPort::writeDMRLost(bool slot)
 {
+#if !defined(MS_MODE)
   if (m_modemState != STATE_DMR && m_modemState != STATE_IDLE)
     return;
 
   if (!m_dmrEnable)
     return;
+#endif
 
   uint8_t reply[3U];
 

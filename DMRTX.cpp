@@ -28,22 +28,13 @@
 #include "DMRDefines.h"
 #include "Utils.h"
 
-#define REQUEST_TIMEOUT 200U
-#define MAX_RETRIES 3U
-#define BACKOFF_MIN 100U
-#define BACKOFF_MAX 500U
-
 CDMRTX::CDMRTX() :
 m_state(DMRTXSTATE_IDLE),
 //m_cachPtr(0U),
 m_poLen(0U),
 m_poPtr(0U),
-m_frameCount(0U),
-//m_control_old(0U),
-m_bs_sync_confirmed(false),
-m_wait_timestamp(0U),
-m_request_retries(0U),
-m_backoff_timer(0U)
+m_frameCount(0U)
+//m_control_old(0U)
 {
   m_fifo[0].reset();
   m_fifo[1].reset();
@@ -118,7 +109,6 @@ void CDMRTX::reset()
   m_fifo[0].reset();
   m_fifo[1].reset();
   m_state = DMRTXSTATE_IDLE;
-  m_bs_sync_confirmed = false;
   io.setRX();
 }
 
@@ -130,53 +120,14 @@ void CDMRTX::process()
   case DMRTXSTATE_IDLE:
     if (m_fifo[1].getData() >= (DMR_FRAME_LENGTH_BYTES + 1U)) {
       m_state = DMRTXSTATE_REQUEST_CHANNEL;
-      m_request_retries = 0U;
     }
     break;
 
   case DMRTXSTATE_REQUEST_CHANNEL:
     io.setTX();
     m_frameCount = 0U;
-    m_state = DMRTXSTATE_PREAMBLE;
+    m_state = DMRTXSTATE_SLOT1;
     DEBUG1("DMRTX : requestChannel");
-    break;
-
-  case DMRTXSTATE_PREAMBLE:
-    // Send 10 bursts of preamble (MS sync + Idle)
-    createData(1, true);
-    m_frameCount++;
-    if (m_frameCount >= 10U) {
-      m_wait_timestamp = millis();
-      m_bs_sync_confirmed = false;
-      m_state = DMRTXSTATE_WAIT_BS_CONFIRM;
-    }
-    break;
-
-  case DMRTXSTATE_WAIT_BS_CONFIRM:
-
-    if (m_bs_sync_confirmed) {
-      DEBUG1("DMRTX : confirmBSSync");
-      m_state = DMRTXSTATE_SLOT1;
-      m_frameCount = 0U;
-      // Stay in TX
-    } else if (millis() - m_wait_timestamp > REQUEST_TIMEOUT) {
-      if (m_request_retries < MAX_RETRIES) {
-        m_request_retries++;
-        m_backoff_timer = millis() + random(BACKOFF_MIN, BACKOFF_MAX);
-        m_state = DMRTXSTATE_BACKOFF;
-        io.setRX();
-      } else {
-        m_fifo[1].reset();
-        m_state = DMRTXSTATE_IDLE;
-        io.setRX();
-      }
-    }
-    break;
-
-  case DMRTXSTATE_BACKOFF:
-    if (millis() > m_backoff_timer) {
-      m_state = DMRTXSTATE_REQUEST_CHANNEL;
-    }
     break;
 
   case DMRTXSTATE_SLOT1:
@@ -242,16 +193,6 @@ uint8_t CDMRTX::getSpace2() const
 void CDMRTX::setColorCode(uint8_t colorCode)
 {
   (void)colorCode;
-}
-
-void CDMRTX::confirmBSSync()
-{
-  m_bs_sync_confirmed = true;
-}
-
-bool CDMRTX::isWaitingForBSSync() const
-{
-  return m_state == DMRTXSTATE_WAIT_BS_CONFIRM;
 }
 
 void CDMRTX::createData(uint8_t slotIndex, bool forceIdle)

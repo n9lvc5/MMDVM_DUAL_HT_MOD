@@ -28,10 +28,12 @@
 
 const uint16_t DMR_BUFFER_LENGTH_BITS = 576U;
 
-enum DMRRX_STATE {
+enum DMR_RX_STATE : uint8_t {
   DMRRXS_NONE,
+  DMRRXS_DATA,
+  DMRRXS_VOICE_HEADER,
   DMRRXS_VOICE,
-  DMRRXS_DATA
+  DMRRXS_TERMINATOR
 };
 
 class CDMRSlotRX {
@@ -60,7 +62,7 @@ private:
   uint8_t m_control;
   bool m_inverted;
   uint8_t m_syncCount[2];
-  DMRRX_STATE m_state[2];
+  DMR_RX_STATE m_state[2];
   uint8_t m_n[2];
   uint8_t m_type[2];
   uint32_t m_callStartMs[2];
@@ -79,6 +81,7 @@ private:
   bool m_lcValid[2];     // Flag indicating if LC data is valid
   uint8_t m_slotHysteresis;
   uint16_t m_bitsReceived;
+  uint8_t m_terminator_count;
 #endif
 
   void procSlot2();

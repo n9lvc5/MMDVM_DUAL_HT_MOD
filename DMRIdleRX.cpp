@@ -66,9 +66,6 @@ void CDMRIdleRX::databit(bool bit)
                 countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS;
 
   if (msSync || bsSync) {
-    if (bsSync && dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
     m_endPtr = m_dataPtr + DMR_SLOT_TYPE_LENGTH_BITS / 2U + DMR_INFO_LENGTH_BITS / 2U;
     if (m_endPtr >= DMR_IDLE_LENGTH_BITS)
       m_endPtr -= DMR_IDLE_LENGTH_BITS;
@@ -89,7 +86,7 @@ void CDMRIdleRX::databit(bool bit)
 
     if (colorCode == m_colorCode) {
       frame[0U] = CONTROL_IDLE | CONTROL_DATA | dataType;
-      serial.writeDMRData(false, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+      serial.writeDMRData(false, &frame[1], DMR_FRAME_LENGTH_BYTES);
       DEBUG2I("DMRIdleRX: Received idle frame with color code", colorCode);
       io.setDecode(true);
     }

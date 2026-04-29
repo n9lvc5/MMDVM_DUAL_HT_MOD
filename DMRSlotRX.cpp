@@ -63,7 +63,8 @@ m_delay(0U)
   m_slotTimer(0U),
   m_syncLocked(false),
   m_slotHysteresis(0U),
-  m_bitsReceived(0U)
+  m_bitsReceived(0U),
+  m_terminator_count(0U)
 #endif
 {
   for (uint8_t i = 0U; i < 2U; i++) {
@@ -92,6 +93,8 @@ void CDMRSlotRX::reset()
   m_delayPtr  = 0U;
   m_patternBuffer = 0U;
 
+  memset(m_buffer, 0, sizeof(m_buffer));
+
   m_syncPtr   = 0U;
   m_control   = CONTROL_NONE;
   m_inverted  = false;
@@ -116,6 +119,8 @@ void CDMRSlotRX::reset()
   m_syncLocked = false;
   m_slotHysteresis = 0U;
   m_bitsReceived = 0U;
+  m_syncLocked = false;
+  m_terminator_count = 0U;
   memset(m_lcData, 0, sizeof(m_lcData));
 #endif
 }
@@ -161,8 +166,12 @@ bool CDMRSlotRX::databit(bool bit)
   if (m_state[slot_idx] == DMRRXS_NONE) {
     correlateSync();
   } else {
-    min = m_syncPtr + DMR_BUFFER_LENGTH_BITS - 2;
-    max = m_syncPtr + 2;
+    // Use a wider window (±5 bits) when a call is active so that small
+    // clock drift over a long transmission does not cause the terminator
+    // burst to fall outside the search range and go undetected.
+    const uint16_t syncWindow = (m_state[slot_idx] == DMRRXS_VOICE) ? 5U : 2U;
+    min = m_syncPtr + DMR_BUFFER_LENGTH_BITS - syncWindow;
+    max = m_syncPtr + syncWindow;
 
     if (min >= DMR_BUFFER_LENGTH_BITS)
       min -= DMR_BUFFER_LENGTH_BITS;
@@ -249,6 +258,25 @@ void CDMRSlotRX::procSlot2()
       uint8_t dataType;
       CDMRSlotType slotType;
       slotType.decode(frame + 1U, colorCode, dataType);
+
+#if defined(MS_MODE)
+      // ETSI DMR standard (TS 102 361-1) compliant terminator handling.
+      // When a Terminator with LC burst is received, we send a final data frame to MMDVMHost
+      // and then immediately signal that the call has ended. This provides a clean teardown
+      // and prevents the dashboard from waiting for a "sync lost" timeout.
+      const uint8_t TERMINATOR_THRESHOLD = 2U; // Require 2 terminator bursts
+
+      if (dataType == DT_TERMINATOR_WITH_LC) {
+          if (m_state[slot] != DMRRXS_TERMINATOR) {
+#if defined(ENABLE_DEBUG)
+            DEBUG1("DMRSlotRX: Terminator received, awaiting sync loss");
+#endif
+            m_state[slot] = DMRRXS_TERMINATOR;
+          }
+          return; // Do not process any further.
+      }
+#endif
+
       // Re-encode the slot type using the MS codeword layout so the host
       // sees a clean uplink-style burst even when the raw burst was BS.
       slotType.encode(colorCode, dataType, frame + 1U);
@@ -282,6 +310,10 @@ void CDMRSlotRX::procSlot2()
             break;
           case DT_VOICE_LC_HEADER: {
             DEBUG2("DMRSlotRX: voice header found pos", m_syncPtr);
+#if defined(ENABLE_DEBUG)
+            DEBUG2I("BS burst CC (sent to host):", colorCode);
+            DEBUG2I("Pi-Star configured CC:     ", m_colorCode);
+#endif
             // Treat this as a new call only when both slots are idle.
             // In MS_MODE the flywheel can transiently flip slot labels.
             const bool newVoiceCall = (m_state[0U] == DMRRXS_NONE && m_state[1U] == DMRRXS_NONE);
@@ -294,7 +326,7 @@ void CDMRSlotRX::procSlot2()
               DMRLC_T lc;
               
               bool lcValid = CDMRLC::decode(frame, DT_VOICE_LC_HEADER, &lc);
-              
+
 #if defined(ENABLE_DEBUG)
               if (lcValid) {
                 DEBUG2I("LC decoded - SrcID", lc.srcId);
@@ -411,6 +443,9 @@ void CDMRSlotRX::procSlot2()
         }
       }
     } else if (m_control == CONTROL_VOICE) {
+#if defined(MS_MODE)
+      m_terminator_count = 0U;
+#endif
       // Voice sync found (frames B/C/D/E/F in a superframe have CONTROL_VOICE with no slot type)
       // In MS_MODE: only emit to MMDVMHost if we already have a valid voice header
       // (i.e. m_state is already DMRRXS_VOICE). Never set DMRRXS_VOICE here directly;
@@ -418,10 +453,26 @@ void CDMRSlotRX::procSlot2()
       // receives the header BEFORE any voice payload frames.
 #if defined(MS_MODE)
       if (m_state[slot] == DMRRXS_VOICE) {
-        // Already in a call - this is a mid-superframe voice sync, send it
-        writeRSSIData();
+        // Superframe position tracking:
+        //   m_n[slot] == 0  → voice A-frame (CONTROL_VOICE = 0x20, send with RSSI)
+        //   m_n[slot] == 1..5 → voice B–F continuation (sequence byte 1–5, no RSSI)
+        // MMDVMHost CDMRSlot::writeModem() uses the sequence byte to position each
+        // 9-byte AMBE chunk correctly within the 27-byte AMBE superframe.
+        if (m_n[slot] == 0U) {
+          // Voice A-frame: frame[0] already = CONTROL_VOICE (0x20), send with RSSI
+          writeRSSIData();
+          m_n[slot] = 1U;
+        } else {
+          // Voice B–F continuation: set sequence byte and send without RSSI
+          frame[0U] = m_n[slot];
+          serial.writeDMRData(slot ? true : false, &frame[1], DMR_FRAME_LENGTH_BYTES);
+          if (m_n[slot] >= 5U)
+            m_n[slot] = 0U;   // F-frame sent; next sync starts a new superframe
+          else
+            m_n[slot]++;
+        }
       }
-      // else: discard - MMDVMHost hasn't seen the header yet
+      // else: discard — MMDVMHost hasn't seen the header yet
 #else
       writeRSSIData();
       m_state[slot] = DMRRXS_VOICE;
@@ -435,33 +486,44 @@ void CDMRSlotRX::procSlot2()
       m_syncCount[1U] = 0U;
 #else
       m_syncCount[slot] = 0U;
-#endif
       m_n[slot]         = 0U;
+#endif
     } else {
 #if defined(MS_MODE)
-      if (m_syncLocked) {
-        m_syncCount[slot]++;
-        if (m_syncCount[slot] >= MAX_SYNC_LOST_FRAMES) {
+      m_syncCount[slot]++;
+  if (m_syncCount[slot] >= MAX_SYNC_LOST_FRAMES) {
          
 #if defined(ENABLE_DEBUG)
           DEBUG2("DMRSlotRX: Sync lost in MS_MODE", m_syncCount[slot]);
     #endif      
 
-          if (m_callActive[slot]) {
-            uint32_t dtMs = millis() - m_callStartMs[slot];
-            uint32_t sec10 = (dtMs + 50U) / 100U;
-            uint32_t secI = sec10 / 10U;
-            uint32_t secF = sec10 % 10U;
-            char rfLostLine[128];
-            snprintf(rfLostLine, sizeof(rfLostLine), "DMR Slot %u, RF voice transmission lost, %lu.%lu seconds, BER: 0.0%%", slot + 1U, (unsigned long)secI, (unsigned long)secF);
-            DEBUG1(rfLostLine);
-          }
+      if (m_state[slot] == DMRRXS_VOICE || m_state[slot] == DMRRXS_TERMINATOR) {
+        if (m_state[slot] == DMRRXS_TERMINATOR) {
+#if defined(ENABLE_DEBUG)
+          DEBUG1("DMRSlotRX: Sync lost after terminator, ending call cleanly");
+#endif
+        } else if (m_callActive[slot]) {
+          uint32_t dtMs = millis() - m_callStartMs[slot];
+          uint32_t sec10 = (dtMs + 50U) / 100U;
+          uint32_t secI = sec10 / 10U;
+          uint32_t secF = sec10 % 10U;
+          char rfLostLine[128];
+          snprintf(rfLostLine, sizeof(rfLostLine), "DMR Slot %u, RF voice transmission lost, %lu.%lu seconds, BER: 0.0%%", slot + 1U, (unsigned long)secI, (unsigned long)secF);
+          DEBUG1(rfLostLine);
+        }
 
-          m_callActive[slot] = false;
-          serial.writeDMRLost(slot);
-          reset();
+        m_callActive[slot] = false;
+        serial.writeDMRLost(slot);
+        // If a voice call was active on the OTHER slot, notify MMDVMHost for that slot too
+        uint8_t otherSlot = slot ^ 1U;
+        if (m_callActive[otherSlot]) {
+          m_callActive[otherSlot] = false;
+          serial.writeDMRLost(otherSlot);
         }
       }
+      reset(); // ALWAYS reset after sync is lost to prevent looping
+    }
+  }
 #else
       if (m_state[slot] != DMRRXS_NONE) {
         m_syncCount[slot]++;
@@ -475,22 +537,15 @@ void CDMRSlotRX::procSlot2()
       if (m_state[slot] == DMRRXS_VOICE) {
         if (m_n[slot] >= 5U) {
           frame[0U] = CONTROL_VOICE;
+          serial.writeDMRData(slot, &frame[1], DMR_FRAME_LENGTH_BYTES);
           m_n[slot] = 0U;
         } else {
           frame[0U] = ++m_n[slot];
+          serial.writeDMRData(slot, &frame[1], DMR_FRAME_LENGTH_BYTES);
         }
 
         // [debug removed - high frequency]
         // [debug removed - high frequency]
-        
-        // Do NOT overwrite vocoder data with LC data.
-        
-        // [debug removed - high frequency]
-#if defined(MS_MODE)
-        serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
-#else
-        serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
-#endif
       } else if (m_state[slot] == DMRRXS_DATA) {
         if (m_type[slot] != 0x00U) {
           frame[0U] = CONTROL_DATA | m_type[slot];
@@ -512,7 +567,7 @@ void CDMRSlotRX::procSlot2()
     // during slot identity correction.
 #endif
   }
-}
+
 
 void CDMRSlotRX::correlateSync()
 {
@@ -528,35 +583,15 @@ void CDMRSlotRX::correlateSync()
   uint8_t  control = CONTROL_NONE;
 
   if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_DATA;
     m_inverted = false;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_VOICE;
     m_inverted = false;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_DATA;
     m_inverted = true;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_VOICE;
     m_inverted = true;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
@@ -803,9 +838,9 @@ void CDMRSlotRX::writeRSSIData()
 #endif
 #else
 #if defined(MS_MODE)
-  serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+  serial.writeDMRData(slot, &frame[1], DMR_FRAME_LENGTH_BYTES);
 #else
-  serial.writeDMRData(slot, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+  serial.writeDMRData(slot, &frame[1], DMR_FRAME_LENGTH_BYTES);
 #endif
 #endif
 }

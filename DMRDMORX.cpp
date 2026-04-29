@@ -177,7 +177,7 @@ void CDMRDMORX::databit(bool bit)
         } else {
           frame[0U] = ++m_n;
         }
-        serial.writeDMRData(true, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+        serial.writeDMRData(true, &frame[1], DMR_FRAME_LENGTH_BYTES);
       } else if (m_state == DMORXS_DATA) {
         if (m_type != 0x00U) {
           frame[0U] = CONTROL_DATA | m_type;
@@ -203,32 +203,12 @@ void CDMRDMORX::correlateSync()
   uint8_t control = CONTROL_NONE;
 
   if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_VOICE;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_DATA_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_DATA;
   } else if (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_BS_VOICE_SYNC_BITS_INV) <= MAX_SYNC_BYTES_ERRS) {
-#if defined(DUPLEX)
-    if (dmrTX.isWaitingForBSSync()) {
-      dmrTX.confirmBSSync();
-    }
-#endif
     control = CONTROL_VOICE;
 #if !defined(MS_MODE)
   } else if ( (countBits64((m_patternBuffer & DMR_SYNC_BITS_MASK) ^ DMR_MS_DATA_SYNC_BITS) <= MAX_SYNC_BYTES_ERRS) || \
@@ -314,7 +294,7 @@ void CDMRDMORX::writeRSSIData(uint8_t* frame)
   
   serial.writeDMRData(true, frame, DMR_FRAME_LENGTH_BYTES + 3U);
 #else
-  serial.writeDMRData(true, frame, DMR_FRAME_LENGTH_BYTES + 1U);
+  serial.writeDMRData(true, &frame[1], DMR_FRAME_LENGTH_BYTES);
 #endif
 }
 
